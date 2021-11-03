@@ -5,13 +5,13 @@ permalink: /about/
 ---
 ## Ahmed Abuiliazeed
 
-🔗 Linkedin [https://www.linkedin.com/in/abuiliazeed/]
+🔗 Linkedin [[https://www.linkedin.com/in/abuiliazeed/]]
 
-🏢 Organization [NilePreneurs]
+🏢 Organization **NilePreneurs**
 
-💼 Role [Product Manager]
+💼 Role **Product Manager**
 
-🏅 Level [Expert Mentor (6 to 14 years of experience)]
+🏅 Level **Expert**
 
 ## 👋🏼 About Me
 
