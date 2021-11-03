@@ -5,7 +5,7 @@ permalink: /about/
 ---
 ## Ahmed Abuiliazeed
 
-🔗 Linkedin [[https://www.linkedin.com/in/abuiliazeed/]]
+🔗 [Linkedin](https://www.linkedin.com/in/abuiliazeed)
 
 🏢 Organization **NilePreneurs**
 
