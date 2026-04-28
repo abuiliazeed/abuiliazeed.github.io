@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#fafafa"/>
+  <rect x="440" y="100" width="120" height="160" rx="2" fill="#1e293b"/>
+  <rect x="440" y="100" width="8" height="160" rx="2" fill="#0f172a"/>
+  <text x="500" y="192" text-anchor="middle" font-size="36" fill="#94a3b8">◆</text>
+  <text x="600" y="330" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="42" font-weight="600" letter-spacing="-1" fill="#1a1a1a">Harness Engineering</text>
+  <text x="600" y="380" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="22" font-weight="400" fill="#6b7280">The Complete Guide to Agent-First Software Development</text>
+  <text x="600" y="440" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="16" fill="#94a3b8">27 chapters · 8 appendices · 620+ pages</text>
+  <text x="600" y="510" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif" font-size="16" fill="#94a3b8">abuiliazeed.github.io</text>
+</svg>
