@@ -20,6 +20,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 60px;
 }
 
 body {
@@ -35,6 +36,82 @@ body {
   max-width: var(--max-width);
   margin: 0 auto;
   padding: 0 24px;
+}
+
+/* Navbar */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 52px;
+  background: rgba(250, 250, 250, 0);
+  z-index: 100;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.navbar.scrolled {
+  background: rgba(250, 250, 250, 0.92);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 1px 0 var(--color-border);
+}
+
+.navbar-inner {
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-brand {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity var(--transition);
+}
+
+.navbar.scrolled .navbar-brand {
+  opacity: 1;
+}
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+
+.navbar-links a:not(.navbar-icon) {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.navbar-links a:not(.navbar-icon):hover {
+  color: var(--color-text);
+}
+
+.navbar-icon {
+  color: var(--color-text-secondary);
+  transition: color var(--transition);
+  display: inline-flex;
+}
+
+.navbar-icon:hover {
+  color: var(--color-text);
+}
+
+@media (max-width: 640px) {
+  .navbar-links {
+    gap: 20px;
+  }
 }
 
 /* Hero */

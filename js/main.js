@@ -95,6 +95,12 @@ async function loadRepos() {
   }
 }
 
+// Navbar scroll effect
+const NAVBAR = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  NAVBAR.classList.toggle('scrolled', window.scrollY > 80);
+});
+
 // Scroll indicator
 SCROLL_INDICATOR.addEventListener('click', () => {
   document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
