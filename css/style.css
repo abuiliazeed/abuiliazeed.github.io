@@ -276,6 +276,110 @@ body {
   padding: 40px 0;
 }
 
+/* Apps */
+.apps {
+  padding: 80px 0;
+}
+
+.app-card {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 28px 32px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color var(--transition), box-shadow var(--transition), transform var(--transition);
+}
+
+.app-card:hover {
+  border-color: var(--color-accent);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+  transform: translateY(-2px);
+}
+
+.app-icon img {
+  width: 80px;
+  height: 80px;
+  border-radius: 18px;
+  flex-shrink: 0;
+}
+
+.app-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.app-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 2px;
+}
+
+.app-title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.app-badge {
+  font-size: 0.65rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-accent);
+  background: var(--color-lang-bg);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.app-tagline {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 8px;
+}
+
+.app-desc {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin-bottom: 8px;
+}
+
+.app-meta {
+  display: flex;
+  gap: 4px;
+  font-size: 0.7rem;
+  color: var(--color-text-secondary);
+}
+
+.app-store-arrow {
+  color: var(--color-text-secondary);
+  flex-shrink: 0;
+  transition: color var(--transition), transform var(--transition);
+}
+
+.app-card:hover .app-store-arrow {
+  color: var(--color-text);
+  transform: translate(2px, -2px);
+}
+
+@media (max-width: 640px) {
+  .app-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 24px;
+  }
+
+  .app-store-arrow {
+    display: none;
+  }
+}
+
 /* Books */
 .books {
   padding: 80px 0;
