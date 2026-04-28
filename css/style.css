@@ -137,11 +137,10 @@ body {
   letter-spacing: -0.03em;
   line-height: 1.1;
   color: var(--color-text);
-  display: flex;
-  flex-direction: column;
 }
 
 .hero-name-sub {
+  display: block;
   font-size: clamp(1rem, 3vw, 1.75rem);
   font-weight: 400;
   letter-spacing: -0.01em;
