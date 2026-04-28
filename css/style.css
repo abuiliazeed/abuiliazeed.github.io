@@ -139,7 +139,7 @@ body {
   color: var(--color-text);
 }
 
-.hero-name-sub {
+h1 .hero-name-sub {
   display: block;
   font-size: clamp(1rem, 3vw, 1.75rem);
   font-weight: 400;
