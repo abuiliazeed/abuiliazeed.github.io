@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Agent Framework Consolidation — Abuiliazeed</title>
+  <meta name="description" content="Eight agent SDKs, three protocols, and the uncomfortable truth: most of them will be gone in 18 months. A practical guide to what's worth betting on and what's worth ignoring.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/agent-framework-consolidation.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/agent-framework-consolidation.html">
+  <meta property="og:title" content="The Agent Framework Consolidation">
+  <meta property="og:description" content="Eight agent SDKs, three protocols, and the uncomfortable truth: most of them will be gone in 18 months. A practical guide to what's worth betting on and what's worth ignoring.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Agent Framework Consolidation">
+  <meta name="twitter:description" content="Eight agent SDKs, three protocols, and the uncomfortable truth: most of them will be gone in 18 months. A practical guide to what's worth betting on and what's worth ignoring.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-05-05">May 5, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>10 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Agent Framework Consolidation</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Six months ago, if you wanted to build an AI agent, you picked a model and wrote a while loop. Today there are eight production-grade agent SDKs, three competing interoperability protocols, and 120+ tools across 11 categories. The ecosystem went from zero to overwhelming in record time.</p>
+
+        <p>Here's the uncomfortable truth: most of these frameworks won't exist in 18 months. The agent space is repeating the same pattern as every infrastructure layer before it — an explosion of options followed by ruthless consolidation. Think JavaScript frameworks circa 2015, except the stakes are higher and the timeline is compressed.</p>
+
+        <p>I've spent the last three weeks building production agents across six of these frameworks. This is what I learned about what's real, what's hype, and where to place your bets.</p>
+
+        <h2>The Landscape Right Now</h2>
+
+        <p>The agent framework space splits cleanly into two camps: <strong>provider-native SDKs</strong> and <strong>independent frameworks</strong>.</p>
+
+        <p>The provider-native camp is crowded. Anthropic ships the Claude Agent SDK. OpenAI has the Agents SDK (the production successor to Swarm). Google launched ADK in four languages. Microsoft merged AutoGen and Semantic Kernel into a unified Agent Framework. Each is optimized for its own model family first, interoperability second.</p>
+
+        <p>The independent camp includes LangGraph (stateful graph workflows), CrewAI (role-based multi-agent crews), Smolagents (code-generating agents from HuggingFace), and Pydantic AI (type-safe structured output). These work across providers but lack the deep integration of the native SDKs.</p>
+
+        <p>Meanwhile, the protocol layer is consolidating fast. ACP merged into A2A under the Linux Foundation. MCP crossed 200 server implementations. The question isn't whether protocols will standardize — it's which standard wins and how quickly.</p>
+
+        <h2>What Actually Matters</h2>
+
+        <p>Most framework comparisons obsess over feature checklists. <em>Does it support multi-agent? MCP? A2A? Voice?</em> These are the wrong questions. The right questions are architectural, and they have uncomfortable answers.</p>
+
+        <h3>1. State management is the hard problem</h3>
+
+        <p>Every agent framework, without exception, pretends state management is someone else's problem. OpenAI's Agents SDK has no built-in state persistence — you manage checkpointing yourself. LangGraph is better (it's built on a state graph), but the persistence layer is still your responsibility in production. Claude Agent SDK delegates to your session management.</p>
+
+        <p>This matters because agents are <em>stateful by nature</em>. A coding agent that can't remember what it did five minutes ago is useless. A customer support agent that loses context mid-conversation is worse than useless — it's actively frustrating. The framework that solves state management elegantly wins. None of them have yet.</p>
+
+        <h3>2. Multi-agent coordination is undersolved</h3>
+
+        <p>OpenAI's handoff model is clean for simple cases: Agent A delegates to Agent B via a typed tool call. But real agent systems aren't linear chains. They're graphs with conditional routing, parallel execution, shared state, and error recovery. LangGraph handles this with explicit graph topologies, which works but requires you to design the entire graph upfront. Google ADK uses hierarchical agent trees — parent delegates to children — which is more flexible but harder to debug.</p>
+
+        <p>The honest assessment: if your multi-agent system has more than three agents with complex routing, <em>none of these frameworks make it easy</em>. You're going to write orchestration code. The question is how much boilerplate the framework saves you. Answer: less than you'd hope.</p>
+
+        <h3>3. MCP is the real standard to bet on</h3>
+
+        <p>The Model Context Protocol crossed 200 server implementations for a reason. It solves the boring, essential problem: <strong>giving agents access to tools and data sources without writing custom integrations for each one.</strong></p>
+
+        <p>Want your agent to search GitHub? There's an MCP server. Post to Slack? MCP server. Query your database? MCP server. Read files, run shell commands, browse the web — all MCP servers, all configurable with a single line.</p>
+
+        <p>Claude Agent SDK has the deepest MCP integration right now. That's not a coincidence — Anthropic created MCP. But OpenAI has adopted it, and the independent frameworks are adding adapter layers. Betting against MCP means betting against the entire tooling ecosystem. Don't.</p>
+
+        <h3>4. A2A is early but important</h3>
+
+        <p>Agent-to-Agent protocol (A2A), now hosting the merged ACP specification under the Linux Foundation, aims to solve cross-vendor agent communication. A Google ADK agent discovers and talks to a Claude Agent SDK agent without either side knowing the other's implementation.</p>
+
+        <p>In practice, A2A is still early. Auto-generated Agent Cards work in demos. Production deployments with authentication, error handling, and observability across vendor boundaries? That's still being figured out. But the direction is right. Agents that can't talk to agents built on other frameworks are agents that create vendor lock-in. The industry knows this. A2A is the emerging answer.</p>
+
+        <h2>My Picks (and Why)</h2>
+
+        <p>After building across six frameworks, here's what I'd use today, broken down by use case:</p>
+
+        <p><strong>For coding agents and OS-level automation:</strong> Claude Agent SDK. The built-in file system and shell access, combined with the deepest MCP integration, means less boilerplate than anything else. The hooks system gives you lifecycle control that matters in production. You're locked to Claude models, but Claude is excellent at code tasks, and the integration depth is worth the trade-off.</p>
+
+        <p><strong>For pipeline-style workflows with clear handoffs:</strong> OpenAI Agents SDK. The handoff model is the simplest mental model in the ecosystem. Customer service routing, triage pipelines, document processing chains — anywhere the flow is "Agent A decides, then hands to B or C." The guardrails system (input, output, tool validation running in parallel) is genuinely useful. Lightweight and fast to prototype.</p>
+
+        <p><strong>For enterprise multi-language teams:</strong> Google ADK. If you have Java and Go teams that need to build agents alongside your Python team, ADK is the only framework that treats non-Python as a first-class citizen. The native A2A support and Vertex AI deployment path make it the pragmatic choice for large organizations. The visual Agent Designer is surprisingly useful for non-developer stakeholders to prototype before engineering builds the real version.</p>
+
+        <p><strong>For complex stateful workflows:</strong> LangGraph. Nothing else handles state management as a first-class concept. If your agent system is genuinely a state machine — and many are, once you map them out — LangGraph's graph abstraction is the right mental model. The learning curve is steeper, but you're not fighting the framework to express complex control flow.</p>
+
+        <h2>What I'd Avoid</h2>
+
+        <p><strong>CrewAI</strong> for anything production-facing. The role-based crew metaphor is intuitive for demos, but the abstraction leaks badly when you need fine-grained control over agent behavior. Rapid prototyping? Sure. Production? The orchestration model is too rigid.</p>
+
+        <p><strong>Pydantic AI</strong> is excellent at what it does (type-safe structured output from LLM calls), but it's not really an agent framework. It's a structured output library. If that's all you need, use it. If you need agents with tools, memory, and multi-step reasoning, you'll outgrow it quickly.</p>
+
+        <h2>The Protocol Bet</h2>
+
+        <p>If you're building agent infrastructure, here's the protocol strategy I'd recommend:</p>
+
+        <ol>
+          <li><strong>MCP is your default for tool integration.</strong> Every tool your agent needs should be an MCP server if possible. This is the highest-ROI protocol decision you can make — it decouples your tool layer from your agent framework.</li>
+          <li><strong>A2A for cross-agent communication.</strong> Even if it's early, design your agent interfaces with A2A Agent Cards in mind. The refactoring cost later will be much higher than the implementation cost now.</li>
+          <li><strong>Ignore everything else.</strong> The protocol space is consolidating. ACP already merged into A2A. More consolidation is coming. Don't build on niche protocols that may not survive.</li>
+        </ol>
+
+        <h2>Where This Is Going</h2>
+
+        <p>Eight frameworks is unsustainable. The provider-native SDKs will survive because they're backed by the model providers who have every incentive to keep them alive. The independent frameworks will consolidate — probably down to one or two survivors that differentiate on workflow complexity (LangGraph) or model flexibility (a merged independent offering).</p>
+
+        <p>The real action is at the protocol layer. MCP for tools. A2A for inter-agent communication. These two protocols, combined, define the interoperability surface of the entire agent ecosystem. Everything else is implementation detail.</p>
+
+        <p>The pragmatic move: build on MCP today. Design for A2A tomorrow. Pick the framework that fits your immediate use case and don't over-invest in any of them. The code you write against the protocol layer will outlast any specific framework — the same way your HTTP code outlived every web framework you used in 2015.</p>
+
+        <p>The agents are real. The frameworks are temporary. Build accordingly.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
