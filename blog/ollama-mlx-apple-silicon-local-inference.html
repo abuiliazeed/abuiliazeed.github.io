@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ollama on MLX: Apple Silicon Finally Runs LLMs the Way It Should — Abuiliazeed</title>
+  <meta name="description" content="Ollama 0.19 switched to Apple's MLX framework and doubled decode speeds on Apple Silicon. Here's what actually changed, why it matters, and what the M5 Neural Accelerators mean for local agent workflows.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/ollama-mlx-apple-silicon-local-inference.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/ollama-mlx-apple-silicon-local-inference.html">
+  <meta property="og:title" content="Ollama on MLX: Apple Silicon Finally Runs LLMs the Way It Should">
+  <meta property="og:description" content="Ollama 0.19 switched to Apple's MLX framework and doubled decode speeds on Apple Silicon. Here's what actually changed, why it matters, and what the M5 Neural Accelerators mean for local agent workflows.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Ollama on MLX: Apple Silicon Finally Runs LLMs the Way It Should">
+  <meta name="twitter:description" content="Ollama 0.19 switched to Apple's MLX framework and doubled decode speeds on Apple Silicon. Here's what actually changed, why it matters, and what the M5 Neural Accelerators mean for local agent workflows.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-05-06">May 6, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">Ollama on MLX: Apple Silicon Finally Runs LLMs the Way It Should</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>For two years, running LLMs on a Mac felt like a party trick that almost worked. Apple Silicon had the raw compute — the unified memory architecture was clearly built for memory-bound workloads like transformer inference. But the software stack treated every Mac like a generic GPU. It worked. It just never felt like it was running on hardware designed for it.</p>
+
+        <p>Ollama 0.19, shipped March 31, changed that. The MLX backend is here, and the numbers aren't incremental — they're the kind that make you re-read the release notes to make sure you didn't misplace a decimal point.</p>
+
+        <h2>The Numbers</h2>
+
+        <p>Measured against the previous <code>llama.cpp</code> Metal backend, on the same hardware, running Qwen3.5-35B-A3B with int4 quantization:</p>
+
+        <ul>
+          <li><strong>~1.6x faster prefill</strong> (time to first token)</li>
+          <li><strong>~2x faster decode</strong> (tokens per second during generation)</li>
+        </ul>
+
+        <p>On an M5 Max, Ollama is reporting up to 1,851 tokens/s prefill and 134 tokens/s decode. Community benchmarks back this up — one developer measured a 93% improvement in decode speed on their machine, which lines up almost exactly with Ollama's "nearly doubles" claim. When marketing numbers match independent measurements, something real happened.</p>
+
+        <h2>Why MLX Is Actually Faster</h2>
+
+        <p>"We switched backends and got 2x" is usually a boring story about compiler flags. This isn't that. MLX is faster because it's the first mainstream inference framework that treats Apple Silicon as what it actually is, instead of what it approximates.</p>
+
+        <h3>No More Phantom Copies</h3>
+
+        <p>Every other architecture has separate CPU and GPU memory. When the GPU wants to process a tensor, you copy it from system RAM into VRAM. That's how GPU programming has worked forever. <code>llama.cpp</code>'s Metal backend — being portable across wildly different hardware — treats the Mac's GPU the same way. It copies data between address spaces that are, physically, the same pool of RAM.</p>
+
+        <p>MLX was built for Apple Silicon from day one. Tensors live in a single address space. The CPU and GPU operate on the same memory without copying. For LLM inference — which is almost entirely memory-bandwidth-bound at low batch sizes — eliminating those phantom copies translates directly into tokens per second. The M-series chips have always had the bandwidth. Now the software actually uses it.</p>
+
+        <h3>M5 Neural Accelerators</h3>
+
+        <p>Starting with the M5 chips, Apple added GPU Neural Accelerators — dedicated matrix-multiplication units inside the GPU, exposed through Metal 4's TensorOps. These are Apple's answer to Nvidia's tensor cores, and they matter enormously for LLM prefill, which is essentially one giant matrix multiplication.</p>
+
+        <p>Apple's own research paper on M5 and MLX shows up to 4x speedup on time-to-first-token versus an M4 baseline for workloads with large matrix multiplications. Ollama 0.20.4 added specific optimizations for these accelerators, and the improvement is visible in real-world use.</p>
+
+        <p>The nuance: older Apple Silicon (M1 through M4) still benefits from the unified memory improvements. You just don't get the Neural Accelerator boost. M4 Max owners are seeing the 1.6-2x gains purely from the memory architecture fix. M5 owners get another multiplier on top.</p>
+
+        <h2>The Catch (Because There's Always a Catch)</h2>
+
+        <p>The initial 0.19 release came with real limitations:</p>
+
+        <ul>
+          <li><strong>Only Qwen3.5-35B-A3B was accelerated.</strong> Other model architectures still fell back to the old <code>llama.cpp</code> Metal backend.</li>
+          <li><strong>Requires >32GB unified memory.</strong> This rules out every base-spec MacBook Air and most base-spec MacBook Pros. You need a Pro or Max configuration.</li>
+          <li><strong>Preview quality.</strong> Rough edges around caching and long-context sessions.</li>
+        </ul>
+
+        <p>Versions 0.20 and 0.21 have already broadened support — Gemma 4 is in, mixed-precision quantization landed, and the MLX backend picked up new operator wrappers for Conv2d, masked scaled dot-product attention, and RoPE-with-frequencies. The trajectory is clear even if the current release is still narrow.</p>
+
+        <h2>What This Means for Local Agent Workflows</h2>
+
+        <p>Here's why this matters beyond benchmark bragging rights: <strong>agent loops are latency-sensitive in ways that simple chat is not.</strong></p>
+
+        <p>A single agent task might involve 5-15 model calls — planning, tool selection, execution, verification, reflection. Each call needs to stream back fast enough that the agent doesn't feel sluggish. At old decode speeds, a complex agent task on local hardware took 2-3 minutes. At 2x decode, it takes 60-90 seconds. That's the difference between "I'll wait" and "I'll use something else."</p>
+
+        <p>The prefill improvement matters even more for agents. Agents tend to stuff enormous context windows — conversation history, tool outputs, retrieved documents, system prompts. The time to first token is dominated by how fast the model can ingest all that context. A 1.6x improvement on prefill means your agent starts thinking faster, which compounds across every call in the loop.</p>
+
+        <p>Combine this with the privacy story — no data leaving your machine, no API costs, no rate limits — and you have a genuine shift. Running a coding agent locally on a MacBook Pro is no longer a curiosity. It's a practical choice for developers who work with proprietary codebases, sensitive data, or just don't want to fund another AI lab's training budget.</p>
+
+        <h2>Apple Silicon as an Inference Platform</h2>
+
+        <p>Let's be honest about where things stand. Apple Silicon is not competing with an H100 on raw FLOPS. A single H100 delivers ~2,000 TFLOPS of FP16 compute. An M5 Max delivers roughly 180 TFLOPS of GPU compute with the Neural Accelerators. That's a 10x gap.</p>
+
+        <p>But LLM inference at small batch sizes — which is what you're doing on a laptop — is not FLOPS-bound. It's bandwidth-bound. And here Apple Silicon competes. The M5 Max delivers around 546 GB/s of memory bandwidth. An H100's HBM3 delivers 3,350 GB/s. A 6x gap, not 10x, and you're running at batch size 1 while the H100 is designed for batch sizes in the hundreds.</p>
+
+        <p>The economics are also tilting. A MacBook Pro with an M5 Pro and 48GB unified memory costs roughly $3,000. You get a machine that runs a 32B parameter model at interactive speeds, runs your IDE, compiles your code, and works on battery. A comparable cloud inference setup — reserving a GPU instance 24/7 — costs $1-3/hour. The MacBook pays for itself in 3-6 months if you're running agents continuously.</p>
+
+        <h2>What About Foundry Local?</h2>
+
+        <p>Microsoft shipped Foundry Local around the same time, their answer to on-device inference on Windows machines. It's competent — it uses ONNX Runtime with DirectML acceleration and supports a similar range of quantized models.</p>
+
+        <p>But Foundry Local is fighting a hardware problem, not a software one. Most Windows laptops still have discrete Nvidia GPUs with 6-8GB of VRAM, or integrated GPUs sharing system memory through a much less elegant architecture than Apple's unified memory. You can run a 7B model comfortably. A 32B model? Not on most hardware people actually own.</p>
+
+        <p>The Mac's advantage isn't the chip — it's the memory architecture. 48GB or 64GB or 128GB of unified memory means you can load model weights that simply don't fit in a typical laptop GPU. The MLX backend finally makes use of that advantage properly.</p>
+
+        <h2>The Real Takeaway</h2>
+
+        <p>What's happening here is bigger than Ollama or MLX. The local inference stack on Apple Silicon has gone through three phases:</p>
+
+        <ol>
+          <li><strong>The "it works" phase (2023-2024).</strong> <code>llama.cpp</code> with Metal. Slow but functional. Good enough to experiment, not good enough to rely on.</li>
+          <li><strong>The "it's usable" phase (2025).</strong> Better quantization, Ollama's UX, LM Studio. Local inference became a reasonable choice for simple tasks. Still noticeably slower than cloud APIs.</li>
+          <li><strong>The "it's competitive" phase (2026).</strong> MLX backend, M5 Neural Accelerators, 2x performance jumps. Local inference is now fast enough for agent loops, code completion, and real-time assistance.</li>
+        </ol>
+
+        <p>Phase 3 changes what you build. When inference is fast enough that agents don't feel sluggish, you stop reaching for cloud APIs as the default. You start designing workflows that assume local inference is available — offline-first, privacy-first, zero-cost-per-query. The architecture of your tools changes when the constraint loosens.</p>
+
+        <p>If you're on an M4 Pro or better, update Ollama and try the MLX backend. Run a 14B or 32B model through an agent loop — a coding task, a research task, anything that needs multiple model calls. Feel the difference. Then think about what you'd build if every developer's laptop could run a competent model at interactive speeds, without touching the internet.</p>
+
+        <p>That future is already here. Most people just haven't updated yet.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
