@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Agent Protocol Stack Has Settled — Abuiliazeed</title>
+  <meta name="description" content="A2A hit 150 organizations. MCP crossed 200 servers. ACP merged into A2A under the Linux Foundation. The protocol wars are over — and the answer isn't one protocol, it's a stack.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/protocol-stack-settled.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/protocol-stack-settled.html">
+  <meta property="og:title" content="The Agent Protocol Stack Has Settled">
+  <meta property="og:description" content="A2A hit 150 organizations. MCP crossed 200 servers. ACP merged into A2A under the Linux Foundation. The protocol wars are over — and the answer isn't one protocol, it's a stack.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Agent Protocol Stack Has Settled">
+  <meta name="twitter:description" content="A2A hit 150 organizations. MCP crossed 200 servers. ACP merged into A2A under the Linux Foundation. The protocol wars are over — and the answer isn't one protocol, it's a stack.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-05-07">May 7, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Agent Protocol Stack Has Settled</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>A year ago, if you asked "MCP or A2A?" you'd start a fight. Developers picked sides. Conference talks debated it. Hacker News threads ran hundreds of comments. Anthropic's Model Context Protocol had first-mover advantage and developer mindshare. Google's Agent-to-Agent protocol had enterprise backing and a broader vision. Each had a competitor trying to solve the same problem differently.</p>
+
+        <p>That debate is over. The answer isn't one protocol. It's a stack.</p>
+
+        <p>Here's where things landed, why it matters, and what you should actually build on today.</p>
+
+        <h2>The Numbers Don't Lie</h2>
+
+        <p>In April 2026, A2A hit its one-year anniversary. The milestone numbers tell a clear story:</p>
+
+        <ul>
+          <li><strong>150+ supporting organizations</strong> — triple the launch count, including Adobe, Microsoft, SAP, ServiceNow, Salesforce, and PayPal</li>
+          <li><strong>22,000+ GitHub stars</strong> on the core A2A repository</li>
+          <li><strong>Production-ready SDKs</strong> in five languages: Python, JavaScript, Java, Go, and .NET</li>
+          <li><strong>Native cloud integration</strong> across Azure AI Foundry, Amazon Bedrock, and Google Vertex AI</li>
+          <li><strong>v1.0 specification shipped</strong> with signed Agent Cards, enterprise multi-tenancy, and formal streaming support</li>
+        </ul>
+
+        <p>MCP, meanwhile, crossed 200 server implementations. Anthropic's Claude Agent SDK has the deepest MCP integration of any framework. The protocol is the de facto standard for connecting agents to tools and data sources.</p>
+
+        <p>And IBM's ACP — the third protocol nobody asked for but that had enterprise traction — quietly merged into A2A under the Linux Foundation in late 2025. The consolidation happened fast and with minimal drama. Three protocols became two, and the two don't compete — they complement.</p>
+
+        <h2>Why the Stack Metaphor Works</h2>
+
+        <p>Think of it like the HTTP/TCP/IP stack, because that's exactly what it is:</p>
+
+        <p><strong>MCP is the tool layer.</strong> It connects an agent to resources — databases, APIs, file systems, internal services. When your agent needs to query Postgres, read a Slack channel, or search your codebase, it goes through an MCP server. The protocol handles capability discovery, authentication, and structured input/output. It's narrow, well-scoped, and solves one problem extremely well: giving agents access to the world outside their context window.</p>
+
+        <p><strong>A2A is the agent layer.</strong> It handles communication <em>between agents</em>. When your research agent finishes gathering data and needs to hand off to a code generation agent, which then needs to send results to a review agent — that orchestration happens over A2A. It handles task delegation, capability negotiation, status updates, and result streaming across organizational boundaries.</p>
+
+        <p>These aren't competing for the same job. They're layers in a stack. Your agent uses MCP to access tools, and A2A to talk to other agents. The "MCP or A2A" debate was like arguing "TCP or IP?" — the answer is both, at different layers, because they solve different problems.</p>
+
+        <h2>The Governance Story That Matters</h2>
+
+        <p>Here's something most commentary misses: neither protocol is owned by its creator anymore.</p>
+
+        <p>In December 2025, Anthropic, Block, and OpenAI co-founded the <strong>Agentic AI Foundation</strong> under the Linux Foundation umbrella. Google contributed A2A to the same foundation. Anthropic contributed MCP. Both now live under multi-vendor governance with defined specification processes.</p>
+
+        <p>This is a big deal for enterprise adoption. A protocol owned by Google is a procurement risk. A protocol governed by the Linux Foundation with Anthropic, OpenAI, Google, Microsoft, and SAP on the steering committee is infrastructure. The same calculation that made Linux safe for enterprise — no single vendor can unilaterally change it — applies here.</p>
+
+        <p>The governance structure also explains why ACP merged into A2A rather than continuing independently. Three competing agent communication protocols under three different governance structures would have fragmented the market for years. Consolidation under one foundation with one agent-to-agent protocol and one tool-to-agent protocol gives enterprises exactly two things to evaluate instead of a fragmented landscape of five.</p>
+
+        <h2>What v1.0 Actually Changed</h2>
+
+        <p>The A2A v1.0 spec wasn't just a version bump. It addressed the specific blockers keeping enterprises in evaluation mode:</p>
+
+        <h3>Signed Agent Cards</h3>
+
+        <p>Every A2A-compliant agent publishes an Agent Card — a JSON metadata document describing its capabilities, endpoints, and authentication requirements. In v1.0, these gained cryptographic signing. Before this, there was no reliable way to verify agent identity before delegating tasks across organizational boundaries. After this, trust establishment happens before interaction begins, not after a credential exchange that could be spoofed.</p>
+
+        <p>If you're building multi-agent systems that cross team or company boundaries, this alone is worth the upgrade.</p>
+
+        <h3>Enterprise Multi-Tenancy</h3>
+
+        <p>Prior versions assumed a relatively flat agent topology. One agent, one environment. V1.0 formalized multi-tenancy support — the minimum viable feature for any organization running agents across multiple business units, each with different data access policies and compliance requirements.</p>
+
+        <h3>Streaming Task Updates</h3>
+
+        <p>Long-running agent tasks no longer require polling. V1.0 introduced server-sent events for real-time status updates, which matters when you're orchestrating agent chains that take minutes or hours to complete. Your orchestrator knows where every agent is in its task without hammering endpoints with status checks.</p>
+
+        <h2>The Framework Gap That Remains</h2>
+
+        <p>Here's where things aren't perfect. Native framework support for A2A remains uneven.</p>
+
+        <p>LangGraph — the most widely deployed open-source agent orchestration layer — still lacks a first-class A2A implementation. You can bridge it with adapters, but it's not native. CrewAI has gone all-in on both A2A and MCP, making it the easiest framework for multi-agent work across boundaries. Google's ADK ships with A2A support out of the box, naturally. Claude Agent SDK has the deepest MCP integration but no A2A. OpenAI's Agents SDK supports MCP but has been slow on A2A adoption.</p>
+
+        <p>The practical implication: if you're building multi-agent systems today, your framework choice still constrains your protocol options. CrewAI gives you both protocols with minimal friction. LangGraph locks you into adapter-based A2A. Provider-native SDKs give you deep integration with their creator's protocol and shallow support for the other.</p>
+
+        <p>This gap will close. The economic incentives are too strong — framework maintainers lose users when they don't support the standard protocols. But as of May 2026, it's still something you need to factor into architecture decisions.</p>
+
+        <h2>What I'd Build On Today</h2>
+
+        <p>If you're starting a new agent project this month, here's the pragmatic stack:</p>
+
+        <ol>
+          <li><strong>MCP for all tool access.</strong> Don't build custom integrations. Wrap every external service in an MCP server. The 200+ existing server implementations cover most databases, APIs, and SaaS tools you'd need. If one doesn't exist, the spec is simple enough to implement in an afternoon.</li>
+          <li><strong>A2A for inter-agent communication.</strong> If your agents need to talk to each other — especially across services or organizational boundaries — use A2A v1.0. The signed Agent Cards and multi-tenancy support make it production-ready.</li>
+          <li><strong>CrewAI or LangGraph for orchestration.</strong> CrewAI if you need both protocols working out of the box. LangGraph if you're building complex stateful workflows and can tolerate adapter-based A2A for now.</li>
+          <li><strong>Provider-native SDKs for single-agent depth.</strong> If you're building a single coding agent that doesn't need to coordinate with others, the Claude Agent SDK or OpenAI Agents SDK give you deeper integration with their respective models. Just know you're trading multi-agent flexibility for single-agent capability.</li>
+        </ol>
+
+        <h2>Why This Matters for Harness Engineering</h2>
+
+        <p>If you've read my <a href="harness-engineering.html">earlier post on harness engineering</a>, you know the thesis: the bottleneck in software development has moved from writing code to designing the environment in which code gets written. The protocol stack is a core piece of that environment.</p>
+
+        <p>When every agent in your system speaks MCP for tools and A2A for inter-agent communication, you've standardized the communication layer. That means your harness can focus on what's unique to your domain — constraints, context curation, verification — instead of reinventing how agents discover tools or hand off tasks.</p>
+
+        <p>The standardization also makes the Hashimoto principle more powerful. When an agent fails because it couldn't access the right tool, the fix goes into the MCP layer. When it fails because it misunderstood another agent's output, the fix goes into the A2A interaction contract. The protocol boundaries give you natural seams for debugging and improvement.</p>
+
+        <h2>The Cairo Angle</h2>
+
+        <p>One more thing worth noting: the enterprise adoption curve for these protocols is accelerating fastest outside Silicon Valley. The MENA region — and Cairo specifically — is seeing a wave of startups building agent-first products on top of A2A and MCP. Lower development costs, strong engineering talent from schools like Cairo University and Ain Shams, and a market that's underserved by existing SaaS products make it fertile ground for agent-native companies.</p>
+
+        <p>If you're building in Cairo's tech scene, the protocol stack settling is the best news you've gotten all year. You no longer need to bet on a protocol that might not exist in 18 months. Build on MCP and A2A, and your architecture works with every major model provider and cloud platform.</p>
+
+        <hr>
+
+        <p><em>The agent protocol stack is one of the core topics covered in <a href="../book.html">Harness Engineering: The Complete Guide to Agent-First Software Development</a> — along with context engineering, multi-agent orchestration, and the practical architecture patterns that make agent-first development work at production scale.</em></p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
