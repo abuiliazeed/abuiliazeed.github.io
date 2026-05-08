@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Agent Proliferation Problem — Abuiliazeed</title>
+  <meta name="description" content="Every startup now ships an AI agent. Most of them shouldn't exist. The real engineering challenge isn't building agents — it's deciding when not to.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/agent-proliferation-problem.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/agent-proliferation-problem.html">
+  <meta property="og:title" content="The Agent Proliferation Problem">
+  <meta property="og:description" content="Every startup now ships an AI agent. Most of them shouldn't exist. The real engineering challenge isn't building agents — it's deciding when not to.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Agent Proliferation Problem">
+  <meta name="twitter:description" content="Every startup now ships an AI agent. Most of them shouldn't exist. The real engineering challenge isn't building agents — it's deciding when not to.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-05-08">May 8, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>8 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Agent Proliferation Problem</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Open any startup's landing page right now and you'll see the same thing: "Powered by AI Agents." Pitch decks that used to say "machine learning" now say "agentic." Y Combinator's latest batch has more agent-wrapper companies than SaaS companies. Everyone is building agents.</p>
+
+        <p>Most of them shouldn't.</p>
+
+        <p>Not because agents are bad — they're the most important shift in software development since cloud computing. But the instinct to make <em>everything</em> an agent is the same instinct that made everything a microservice in 2016, everything a blockchain in 2018, and everything a "no-code" solution in 2021. The technology is real. The application discipline is missing.</p>
+
+        <p>After spending the last year building agent-first systems and studying how teams at OpenAI, Affirm, Wix, and others are deploying agents in production, I've developed a simple framework for when agents are the right call — and when they're expensive overkill disguised as innovation.</p>
+
+        <h2>The Spectrum of Agent Justification</h2>
+
+        <p>Not all tasks benefit from agents equally. There's a clear spectrum, and where your use case falls on it determines whether you should be building an agent or just writing a script.</p>
+
+        <h3>Tier 1: Obviously Agent-Appropriate</h3>
+
+        <p>Tasks that require <strong>multi-step reasoning with branching logic</strong>. The agent needs to observe, decide, act, observe again, and course-correct. Examples: code generation in unfamiliar codebases, research synthesis across multiple sources, customer support escalation where context accumulation matters.</p>
+
+        <p>The Wix AirBot system is the canonical example. Their agents maintain a live index of 4,200 internal flows, answer developer questions about system behavior, and resolve issues that would otherwise require a human to read logs, trace code paths, and cross-reference documentation. The branching logic is genuine — each answer depends on accumulated context from previous interactions in the session. At $0.30 per interaction and 675 engineering hours saved per month, the economics are unambiguous.</p>
+
+        <h3>Tier 2: Agent-Optional</h3>
+
+        <p>Tasks that <em>could</em> be solved with agents but also have straightforward deterministic solutions. The agent adds flexibility at the cost of reliability and observability. Examples: data pipeline orchestration (a DAG runner works fine), content generation with templates (a templating engine is faster and more predictable), API integration (a well-written client library beats an agent fumbling through OpenAPI specs).</p>
+
+        <p>The trap here is that the agent <em>demo</em> always looks impressive. You show your agent "figure out how to call this API" and it works in the demo. In production, the agent hallucinates a parameter name, sends malformed requests, and you spend three days debugging why the agent works 90% of the time and catastrophically fails 10% of the time. A 50-line client wrapper would have worked 100% of the time.</p>
+
+        <h3>Tier 3: Agent-Harmful</h3>
+
+        <p>Tasks where agents make things actively worse. Anything requiring <strong>guaranteed consistency</strong>, <strong>low latency</strong>, or <strong>regulatory compliance</strong> where non-determinism is a bug, not a feature. Financial calculations. Access control checks. Data validation. Audit logging.</p>
+
+        <p>I've seen teams wrap a simple CRUD API in an "agent" that "understands the data model." The agent occasionally misinterprets a field name and returns wrong data. The team then builds an elaborate verification layer — which is just a deterministic system that should have been the implementation in the first place. They've built a Rube Goldberg machine where the agent is the marble that occasionally takes the wrong ramp.</p>
+
+        <h2>The Real Cost of an Agent</h2>
+
+        <p>When you decide to build an agent, you're not just paying for the LLM API calls. You're signing up for a stack of hidden costs that most teams discover in production:</p>
+
+        <ul>
+          <li><strong>Harness engineering overhead.</strong> Every agent needs an environment designed for it — constraints, context, verification, correction loops. For the OpenAI team, the harness took more engineering effort than the product code the agents generated. The ratio varies, but the direction doesn't: harness investment always exceeds what you'd spend on the equivalent deterministic system.</li>
+          <li><strong>Observability debt.</strong> Agents make decisions you can't easily inspect. When a deterministic service fails, you look at the logs and trace the code path. When an agent fails, you need to reconstruct its reasoning chain — assuming you even logged it. Most teams don't, until the first production incident.</li>
+          <li><strong>Testing complexity.</strong> Unit tests for deterministic code are straightforward: input goes in, output comes out, assert. Testing agents requires handling non-deterministic outputs, mocking LLM responses, and building evaluation suites that measure behavior over distributions rather than exact matches. This is a fundamentally harder testing paradigm.</li>
+          <li><strong>Failure mode multiplication.</strong> A deterministic system has the failure modes you designed for. An agent has those <em>plus</em> every failure mode the LLM introduces — hallucinations, context window exhaustion, instruction misinterpretation, tool use errors. You're running two systems in parallel, and both can fail independently.</li>
+        </ul>
+
+        <p>The Affirm engineering team ran headfirst into this. After their January 2026 mandate to go agent-first across 800+ engineers, they discovered that agent-generated tests often confirmed agent-generated bugs. The misunderstanding was in the prompt, not the code, and both implementation and test faithfully reproduced the misunderstanding. They now cross-reference PR diffs against acceptance criteria using multiple independent models — a verification layer that costs real money and adds real latency.</p>
+
+        <h2>The Decision Framework</h2>
+
+        <p>Before building an agent for any task, run it through these four questions:</p>
+
+        <ol>
+          <li><strong>Does the task require branching logic that can't be expressed as a decision tree?</strong> If you can flowchart it, automate it. Agents are for ambiguity, not complexity.</li>
+          <li><strong>Is the cost of non-determinism acceptable?</strong> If a wrong answer 2% of the time is fine (content suggestions, search ranking), agents are viable. If it's catastrophic (financial transactions, access control), use deterministic code.</li>
+          <li><strong>Can you afford the harness?</strong> The minimum viable harness — AGENTS.md, three lint rules, CI pipeline, structured docs, plan template — is maybe a week of engineering time. A production-grade harness is months. Can your use case justify that investment?</li>
+          <li><strong>Is the agent adding knowledge or just adding steps?</strong> If the agent is doing something a well-written function could do but "more flexibly," you're paying for flexibility you don't need. If the agent is applying world knowledge or reasoning about unfamiliar contexts, that's genuine value.</li>
+        </ol>
+
+        <p>If you answered yes to all four, build the agent. If you answered no to any of them, think harder about whether you're solving a real problem or riding a hype cycle.</p>
+
+        <h2>The Product Discipline Gap</h2>
+
+        <p>Here's the uncomfortable truth about the current agent moment: the engineering challenges are significant but tractable. The real gap is product discipline.</p>
+
+        <p>Every framework comparison — Claude Agent SDK vs. OpenAI Agents SDK vs. Google ADK vs. LangGraph vs. CrewAI — is a valid engineering conversation. But the question that matters more is: <strong>should this be an agent at all?</strong></p>
+
+        <p>The teams succeeding with agents — OpenAI's million-line experiment, Wix's AirBot, Affirm's 58% PR increase — all share one trait: they started with a genuine problem that <em>required</em> non-deterministic reasoning, then built the agent to solve it. The teams struggling started with "we should use agents" and then went looking for problems to apply them to.</p>
+
+        <p>This is the same pattern that killed most microservices architectures. The companies that succeeded with microservices (Netflix, Amazon) had genuine scaling problems that monoliths couldn't solve. The companies that struggled adopted microservices because the blog posts said to, then spent years dealing with distributed system complexity they didn't need.</p>
+
+        <h2>What I'm Betting On</h2>
+
+        <p>My prediction: in 18 months, the agent landscape will look very different from today. The protocol layer is already consolidating — ACP merged into A2A under the Linux Foundation, MCP crossed 200 server implementations. The framework layer will consolidate next. Of the eight major agent SDKs competing today, three or four will have meaningful market share and the rest will be maintenance mode or abandoned.</p>
+
+        <p>But the teams that win won't be the ones who picked the "right" framework. They'll be the ones who were ruthlessly disciplined about <em>when</em> to use agents and when to write deterministic code. The best agent systems I've seen are mostly deterministic with carefully chosen agent-shaped holes where non-deterministic reasoning genuinely adds value.</p>
+
+        <p>The technology is extraordinary. The discipline to use it well is rare. Build agents where they matter. Write code where they don't. And for the love of all that is holy, stop wrapping your CRUD API in a chatbot and calling it innovation.</p>
+
+        <hr>
+
+        <p><em>Related: <a href="harness-engineering.html">What Is Harness Engineering?</a> — the deeper dive into building environments where agents succeed.</em></p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
