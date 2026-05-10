@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Open-Source Coding Gap Just Collapsed — Abuiliazeed</title>
+  <meta name="description" content="Eight points separate GPT-5.5 from the best open-weight models on SWE-bench Verified. A year ago, that gap was insurmountable. Now you can run a frontier-grade coding agent locally — and you probably should.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/open-source-coding-gap-collapsed.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/open-source-coding-gap-collapsed.html">
+  <meta property="og:title" content="The Open-Source Coding Gap Just Collapsed">
+  <meta property="og:description" content="Eight points separate GPT-5.5 from the best open-weight models on SWE-bench Verified. A year ago, that gap was insurmountable. Now you can run a frontier-grade coding agent locally — and you probably should.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Open-Source Coding Gap Just Collapsed">
+  <meta name="twitter:description" content="Eight points separate GPT-5.5 from the best open-weight models on SWE-bench Verified. A year ago, that gap was insurmountable. Now you can run a frontier-grade coding agent locally — and you probably should.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-05-10">May 10, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Open-Source Coding Gap Just Collapsed</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Here's a number that should rewire how you think about AI-assisted development: <strong>8.1 points.</strong></p>
+
+        <p>That's the gap between GPT-5.5 — OpenAI's most capable model, released April 23, running on proprietary infrastructure with effectively unlimited compute — and DeepSeek V4 Pro Max, an open-weight 1.6T mixture-of-experts model you can download right now. On SWE-bench Verified, the de facto benchmark for autonomous coding ability, GPT-5.5 scores 88.7%. DeepSeek V4 Pro Max scores 80.6%.</p>
+
+        <p>Eight points. A year ago, that gap was 30+. It was the difference between a coding agent that could ship real features and one that hallucinated imports and wrote tests for functions that didn't exist. Today, it's the difference between a model that costs you $15 per million output tokens and one that costs whatever your electricity bill looks like.</p>
+
+        <p>The open-source coding gap hasn't just narrowed. It has functionally collapsed. And the implications for how we build software are bigger than most people realize.</p>
+
+        <h2>The Numbers Don't Lie</h2>
+
+        <p>Let me lay out the SWE-bench Verified leaderboard as of May 2026, because the picture is stunning when you see it:</p>
+
+        <ul>
+          <li><strong>GPT-5.5</strong> — 88.7% (proprietary, OpenAI-reported)</li>
+          <li><strong>Claude Opus 4.7</strong> — 87.6% (proprietary, 1M context)</li>
+          <li><strong>GPT-5.3-Codex</strong> — 85.0% (proprietary)</li>
+          <li><strong>Claude Opus 4.5</strong> — 80.9% (proprietary)</li>
+          <li><strong>Claude Opus 4.6</strong> — 80.8% (proprietary)</li>
+          <li><strong>DeepSeek V4 Pro Max</strong> — 80.6% (open-weight, 1.6T MoE)</li>
+          <li><strong>Gemini 3.1 Pro</strong> — 80.6% (proprietary)</li>
+          <li><strong>Kimi K2.6</strong> — 80.2% (open-weight)</li>
+          <li><strong>MiniMax M2.5</strong> — 80.2% (open-weight)</li>
+          <li><strong>GPT-5.2</strong> — 80.0% (proprietary)</li>
+        </ul>
+
+        <p>Read that list again. Three of the top ten models on SWE-bench Verified are open-weight. DeepSeek V4 Pro Max ties Gemini 3.1 Pro — Google's flagship. MiniMax M2.5, from a Chinese startup most Western developers hadn't heard of six months ago, beats GPT-5.2.</p>
+
+        <p>On SWE-bench Pro, the harder benchmark with more realistic tasks, GLM-5.1 from Zhipu AI topped GPT-5.4 and Claude Opus 4.6. An open-weight model trained on Huawei chips. Let that sink in.</p>
+
+        <h2>The Efficiency Story Is Even Wilder</h2>
+
+        <p>Raw scores tell one story. Efficiency tells another — and it's the one that matters for developers building real systems.</p>
+
+        <p>Qwen3-Coder-Next hits 70.6% on SWE-bench Verified with <strong>3 billion active parameters</strong>. Three billion. That's the most parameter-efficient model in the top 25 by a wide margin. On Apple Silicon with MLX, a quantized Qwen3-Coder-Next runs comfortably on a 16 GB Mac at 25-35 tokens per second. You can carry a coding agent in your laptop bag that resolves 70% of real GitHub issues.</p>
+
+        <p>DeepSeek V3.2 scores 74.2% on Aider Polyglot at $1.30 per run — 22x cheaper than GPT-5. It's not the best model, but it's the best model per dollar by an enormous margin. If you're running an agent loop that makes 50 attempts to fix a bug, cost compounds fast. A model that's 10% less capable but 22x cheaper isn't a compromise — it's an enabler.</p>
+
+        <p>Claude Sonnet 4.6 is the sneaky good pick: 79.6% on SWE-bench Verified, only 1.2 points behind Claude Opus 4.6, at roughly 5x lower cost. Anthropic is clearly pricing it to capture volume, and for most agent workflows, it's the rational choice.</p>
+
+        <h2>Why Local Matters More Than You Think</h2>
+
+        <p>The standard argument for local inference is privacy: "I can't send my company's code to OpenAI." That's valid, but it undersells the case. The real advantage is <strong>latency, control, and iteration speed</strong>.</p>
+
+        <p>When your coding agent runs locally, the feedback loop tightens dramatically. No API timeouts. No rate limits. No pricing surprises when an agent gets stuck in a retry loop at 3 AM. You can run aggressive agent strategies — 20 parallel attempts, exhaustive test-and-retry loops, speculative edits across multiple files — without watching a billing dashboard.</p>
+
+        <p>On Apple Silicon, the MLX framework has matured to the point where it's genuinely competitive. Qwen 3.5 35B-A3B in 4-bit quantization uses ~19.5 GB of unified memory. On an M4 Pro with 48 GB, you run it alongside your IDE, browser, and Docker containers without breaking a sweat. The 9B variant fits on a base 16 GB Mac and still generates at 25-35 tok/s. That's not a demo. That's a workflow.</p>
+
+        <p>New tools are emerging that make this practical. <strong>oMLX</strong> is a specialized inference engine built directly on Apple's MLX framework with advanced memory management — not a wrapper around llama.cpp, but a native implementation designed for Apple Silicon from the ground up. <strong>macMLX</strong> gives you a native macOS app with a SwiftUI GUI, a Swift CLI, and an always-on OpenAI-compatible API server, all backed by MLX. Your agent scaffolding doesn't need to know it's talking to a local model.</p>
+
+        <p>This is the inflection point. When running a frontier-grade coding model locally requires zero configuration and produces sub-100ms first-token latency, the default switches. Cloud APIs become the opt-in choice. Local becomes the baseline.</p>
+
+        <h2>The MoE Revolution Changed Everything</h2>
+
+        <p>Understanding why the gap collapsed requires understanding mixture-of-experts architecture. DeepSeek V4 Pro Max is a 1.6 trillion parameter model. That sounds enormous — and it is. But it only activates roughly 40-60 billion parameters per token. The model is a panel of specialists, and each query routes to the relevant subset.</p>
+
+        <p>This architectural trick has two massive consequences:</p>
+
+        <p><strong>First, training efficiency.</strong> You get the expressiveness of a massive model without the training cost scaling linearly. Chinese labs — DeepSeek, MiniMax, Moonshot, Zhipu — exploited this aggressively. They couldn't match OpenAI's compute budget, so they found a compute-efficient architecture and pushed it harder than anyone expected.</p>
+
+        <p><strong>Second, inference efficiency.</strong> A 1.6T MoE model that activates 50B parameters per token is competitive to serve as a 70B dense model — and way more capable. When quantized, the memory footprint becomes manageable on high-end consumer hardware. An M3 Ultra with 512 GB of unified memory can run quantized DeepSeek V4 Pro Max locally. Two years ago, that would have required a server rack.</p>
+
+        <h2>What This Means for Your Workflow</h2>
+
+        <p>If you're still exclusively using GPT-5 or Claude through an API for code generation, you're overpaying for marginal gains. Here's how I'd think about the stack in May 2026:</p>
+
+        <p><strong>Day-to-day coding agent (local):</strong> Qwen3-Coder-Next or Qwen 3.5 9B on MLX. Free, fast, good enough for 70% of tasks. Runs on any Mac with 16 GB. Your default for PR reviews, test writing, refactoring, and documentation.</p>
+
+        <p><strong>Hard problems (API, but efficient):</strong> Claude Sonnet 4.6 at $3/M input tokens. Nearly Opus-level coding ability at a fraction of the cost. Reserve this for architecture decisions, complex bug investigations, and tasks where the extra 10% capability actually matters.</p>
+
+        <p><strong>Frontier tasks (API, heavy):</strong> GPT-5.5 or Claude Opus 4.7 for the truly gnarly problems — multi-file refactors with subtle dependency chains, performance-critical optimization, security-sensitive code review. The 8-point SWE-bench gap shows up here, in the long tail of hard problems where reasoning depth matters.</p>
+
+        <p>The point isn't that open-source models have won. They haven't — proprietary models still lead on raw capability. The point is that the gap is now small enough that <strong>the economic argument has flipped</strong>. Paying 22x more for 8% better performance is rational when you're a Fortune 500 company running 10,000 agents. It's not rational when you're a solo developer or a startup team.</p>
+
+        <h2>The Prediction</h2>
+
+        <p>Here's what I think happens next: by end of 2026, an open-weight model will match or exceed GPT-5.5 on SWE-bench Verified. The trajectory is that steep. DeepSeek went from irrelevant to 80.6% in under a year. MiniMax went from unknown to top-10 in six months. The rate of improvement in open-weight coding models is outpacing proprietary models for the first time.</p>
+
+        <p>When that happens, the question stops being "which API should I use?" and becomes "which local model should I download?" And the answer will depend on your hardware, your task, and your patience — not your budget.</p>
+
+        <p>If you haven't set up a local inference stack yet, now is the time. Install Ollama or macMLX. Pull Qwen3-Coder-Next. Wire it into your editor. Run it for a week on tasks you'd normally send to an API. You'll be surprised how rarely you notice the difference.</p>
+
+        <p>The coding agent revolution wasn't supposed to happen on your laptop. But the open-source community had other plans.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
