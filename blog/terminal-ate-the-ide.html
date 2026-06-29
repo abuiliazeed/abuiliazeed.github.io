@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Terminal Ate the IDE — Abuiliazeed</title>
+  <meta name="description" content="Seven terminal coding agents, zero IDE-only tools at the top of the benchmarks. The terminal didn't just win — it made the IDE optional. Here's why and what it means for agent infrastructure.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/terminal-ate-the-ide.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/terminal-ate-the-ide.html">
+  <meta property="og:title" content="The Terminal Ate the IDE">
+  <meta property="og:description" content="Seven terminal coding agents, zero IDE-only tools at the top of the benchmarks. The terminal didn't just win — it made the IDE optional. Here's why and what it means for agent infrastructure.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Terminal Ate the IDE">
+  <meta name="twitter:description" content="Seven terminal coding agents, zero IDE-only tools at the top of the benchmarks. The terminal didn't just win — it made the IDE optional. Here's why and what it means for agent infrastructure.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-06-29">June 29, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Terminal Ate the IDE</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>In 2024, the default surface for AI coding tools was the IDE. Cursor defined the market. Copilot lived in a VS Code panel. Continue.dev was a sidebar. Every major AI coding experience was a thin layer on top of an existing editor.</p>
+
+        <p>Then 2026 happened. Today, the top four entries on SWE-bench Verified are all terminal-based agents. OpenAI previewed GPT-5.6 Sol last week and led with <em>Terminal-Bench 2.1</em> as the headline metric — not an IDE benchmark. Claude Code has 135,000 GitHub stars and ships features weekly. Gemini CLI crossed 105,000 stars in its first year. JetBrains — the company that <em>is</em> an IDE — shipped Junie CLI in beta. Cursor, the IDE company that defined this market, released a standalone <code>cursor-agent</code> binary.</p>
+
+        <p>The terminal didn't just win the coding agent market. It made the IDE optional.</p>
+
+        <p>This wasn't supposed to happen. The IDE is objectively a better editing surface — syntax highlighting, inline diffs, project trees, debugger integration. Every developer experience metric favors it. And yet, when you look at where the best coding agents actually live, it's the terminal. Every. Single. One.</p>
+
+        <h2>Why the Terminal Won</h2>
+
+        <p>The explanation isn't about developer preference. It's about <strong>access</strong>.</p>
+
+        <p>An IDE extension runs inside a sandboxed process managed by the host application. It can access files the editor has open. It can call APIs the extension framework exposes. It can suggest diffs that the developer accepts or rejects one at a time. The IDE extension model is designed for <em>assistance</em> — the developer drives, the AI suggests.</p>
+
+        <p>A terminal agent runs as a process with the same access the developer has. It can read any file on the system. It can execute any shell command. It can manage git workflows, run tests, spin up processes, write output to disk, and chain operations across dozens of steps without asking permission each time. The terminal model is designed for <em>autonomy</em> — the agent drives, the developer supervises.</p>
+
+        <p>That distinction is everything. Coding agents in 2026 aren't autocomplete tools. They're autonomous workers that explore codebases, write implementations, run verification, and iterate until a task is done. That workflow requires unrestricted access to the system — and the terminal is the only surface that provides it without fighting the host application's extension API.</p>
+
+        <p>Consider what Claude Code does in a typical session. It reads files, runs <code>grep</code> to find patterns, executes tests, inspects build output, modifies multiple files in sequence, runs a linter, and commits changes. Every one of those operations is a natural shell command. Every one of them would require a custom API integration in an IDE extension — if the extension framework even supports it. The terminal doesn't have an extension API because the terminal <em>is</em> the API.</p>
+
+        <h2>The Benchmark Proof</h2>
+
+        <p>The shift isn't anecdotal. The benchmarks tell the same story.</p>
+
+        <p>As of June 2026, the SWE-bench Verified leaderboard — which tests whether an agent can solve real GitHub issues end-to-end — is dominated by terminal-based tools:</p>
+
+        <ul>
+          <li><strong>Claude Code / Fable 5:</strong> 95.0% (export-suspended as of June 12)</li>
+          <li><strong>OpenAI Codex CLI / GPT-5.5:</strong> 88.7%</li>
+          <li><strong>Claude Code / Opus 4.8:</strong> 88.6%</li>
+          <li><strong>Gemini CLI / Gemini 3.1 Pro:</strong> 80.6% — and it's free</li>
+        </ul>
+
+        <p>On Terminal-Bench 2.1, which specifically tests command-line workflows requiring planning, iteration, and tool coordination, Codex CLI leads at 83.4% with GPT-5.6 Sol previewing even higher. Claude Code / Fable 5 follows at 83.1%.</p>
+
+        <p>Zero IDE-only tools appear at the top of either leaderboard. The best IDE-based agent — GitHub Copilot with multi-model support — doesn't have a Terminal-Bench entry at all. That's not an oversight. It's because the benchmark measures the kind of autonomous, multi-step terminal workflows that IDE extensions architecturally can't perform.</p>
+
+        <h2>The Feature Gap Compounds</h2>
+
+        <p>Once the terminal won on access, it started winning on features too — because terminal agents iterate faster.</p>
+
+        <p>Claude Code's June 2026 release train shipped ten major features in three weeks: nested sub-agents up to five levels deep, fallback model chains for resilience, a community tool marketplace, per-agent cost attribution, scoped permissions, streaming agent logs, agent checkpointing with resume, inline cost budgets per agent, custom agent templates, and multi-repo orchestration. None of these would be possible inside an IDE extension framework — they all require process-level control over how agents spawn, communicate, and manage state.</p>
+
+        <p>IBM's Bob V2, released June 24, made the architecture explicit. It separates three components: the <strong>Agent</strong> (the agentic loop — all reasoning and code generation), the <strong>Harness</strong> (shared infrastructure: authentication, logging, feature flags, telemetry), and the <strong>Clients</strong> (IDE, shell, and more — with no duplicated logic). The key insight: the agent is client-agnostic. The IDE is just one client among many. It's not the center of the system.</p>
+
+        <p>Databricks went further. Their Omnigent project, open-sourced June 13 under Apache 2.0, wraps <em>any</em> terminal agent — Claude Code, Codex, others — in a uniform API. The pitch is direct: "messages and files in, text streams and tool calls out." They're building what they call a <strong>meta-harness</strong> — a layer above individual coding agents that handles sandboxing, policy enforcement, and live collaboration. Omnigent treats the terminal agent as a pluggable component, not a product.</p>
+
+        <p>This is the pattern: terminal agents are becoming composable infrastructure. IDE extensions are not.</p>
+
+        <h2>The IDE Didn't Die — It Became a View</h2>
+
+        <p>Here's the nuance most people miss: the IDE isn't going away. It's being demoted.</p>
+
+        <p>When Claude Code runs in a terminal and connects to VS Code via the VS Code extension, the IDE becomes a <em>rendering layer</em> — a place to view file changes, inspect diffs, and read code. But the agent's reasoning, tool calls, and execution happen in the terminal process. The IDE is a window into the agent's work, not the platform the agent runs on.</p>
+
+        <p>This maps to a broader architectural principle. The harness — the system that manages agent state, tool calls, permissions, and execution — lives at the process level. The UI is a client of the harness, not the other way around. When Bob V2 explicitly separates "the agent" from "the clients" and says the agent "behaves identically across every client," it's formalizing a pattern that Claude Code, Codex CLI, and Gemini CLI already implement implicitly.</p>
+
+        <p>The implication for IDE vendors is uncomfortable. If the agent's intelligence lives in the terminal, the IDE becomes interchangeable. A developer who runs Claude Code in the terminal with VS Code attached could switch to Neovim, Zed, or JetBrains with no change to the agent's capabilities. The value migrates from the editor to the harness.</p>
+
+        <p>This is why JetBrains shipped Junie CLI despite owning a suite of IDEs. They recognized that if the terminal becomes the default surface, an IDE company without a terminal agent is a phone manufacturer without an app store. The terminal isn't a threat to JetBrains' IDEs — it's a new layer they had to occupy to stay relevant.</p>
+
+        <h2>The Pricing Model Shifted Too</h2>
+
+        <p>The move to the terminal also changed how coding agents are priced — and who controls the relationship with the developer.</p>
+
+        <p>IDE-based tools typically charge a flat subscription. GitHub Copilot moved to usage-based AI credits on June 1 (1 credit = $0.01), retiring premium requests. Claude Code Pro costs $17/month with annual billing. Cursor Max starts at $100/month. These are the old models — predictable, but with hard ceilings.</p>
+
+        <p>The terminal agents introduced a different model: <strong>BYOK (Bring Your Own Key)</strong>. Cline, Aider, Continue.dev, and Junie CLI all let developers use their own API keys. The agent is free; you pay for inference. Gemini CLI gives you Gemini 3.1 Pro for free — 60 requests per minute, 1,000 per day — no subscription required.</p>
+
+        <p>This fundamentally changes the economics. A developer running Aider with an API key pays for actual token usage, which can be 10x cheaper than a $20/month subscription for light-to-moderate use. For heavy users, the calculus flips — but the point is that the developer chooses. The terminal agent doesn't lock you into a pricing model.</p>
+
+        <p>And then there's Gemini CLI, which is free. Not freemium. Not free-with-limits-that-actually-matter. Genuinely free for the vast majority of developers, backed by a frontier model with an 80.6% SWE-bench Verified score. That's not a pricing strategy — it's a distribution strategy. Google wants developers running Gemini in their terminals, building workflows around it, and eventually upgrading to paid API tiers or Vertex AI for production use. They're giving away the surface to capture the stack.</p>
+
+        <h2>The Verification Imperative</h2>
+
+        <p>Autonomy without verification is a liability. The terminal agents that lead the market all solved this — and it's a key reason IDE-based tools fell behind.</p>
+
+        <p>xAI's Grok Build shipped a <code>/goal</code> mode on June 22 that's instructive. You give the agent an objective, it builds a checklist, executes each item, and — critically — <em>verifies</em> its work before declaring success. Verification can mean reviewing code, inspecting a webpage to confirm behavior, or executing scripts to test results. The agent runs until the task is completed <em>and verified</em>. You can pause, resume, or clear at any point.</p>
+
+        <p>That verification loop is only possible in the terminal because verification requires executing code, running tests, and inspecting output — all of which need shell access. An IDE extension can suggest a fix, but it can't independently verify that the fix works. The terminal agent can, because it has the same access a developer has.</p>
+
+        <p>This is the verification gap I wrote about in <a href="../book.html">Harness Engineering</a>: the difference between an agent that produces output and an agent that produces verified output. The terminal solved it by giving the agent the tools to check its own work. The IDE couldn't — not because the models weren't smart enough, but because the runtime didn't allow it.</p>
+
+        <h2>What This Means for Your Infrastructure</h2>
+
+        <p>If you're building agent infrastructure for your team or company, the terminal's victory has concrete architectural implications:</p>
+
+        <p><strong>Treat the IDE as a client, not a platform.</strong> Design your agent harness as a standalone process that can run with or without an IDE attached. The IDE should connect to the harness, not the other way around. This gives you the flexibility to swap editors, run agents in CI/CD pipelines, or deploy agents on remote servers without re-architecting.</p>
+
+        <p><strong>Build your tool layer around shell access, not extension APIs.</strong> If your agent needs to interact with internal systems — databases, deployment pipelines, monitoring dashboards — expose them as CLI tools or MCP servers that a terminal agent can call directly. Don't build IDE-specific integrations. They'll be slower to ship, more constrained, and obsolete when your team switches editors.</p>
+
+        <p><strong>Standardize on MCP for tool integration.</strong> Every terminal agent worth using supports MCP. Claude Code, Codex CLI, Gemini CLI, and the open-source agents (Cline, Aider, dreb) all consume MCP servers natively. An MCP server you build today works across all of them. An IDE-specific integration works with exactly one editor.</p>
+
+        <p><strong>Design for multi-agent orchestration.</strong> The terminal isn't just where one agent runs — it's where multiple agents coordinate. Claude Code's nested sub-agents (up to 5 levels deep), Databricks' Omnigent meta-harness, and IBM Bob V2's background task model all point to the same pattern: production agent systems run multiple agents in parallel, and the terminal is the natural orchestration surface for that.</p>
+
+        <h2>The Contrarian View (And Its Limits)</h2>
+
+        <p>Most people still think the IDE is where AI coding happens. The marketing from Microsoft, JetBrains, and even Cursor reinforces this — their landing pages show screenshots of beautiful diffs in IDE panels. But the actual production workflows have moved. The developers spending $100-200/month on Claude Code Max aren't doing it for the IDE integration. They're doing it because the terminal agent can do things the IDE agent fundamentally can't.</p>
+
+        <p>That said, the terminal isn't universal. For specific workflows — rapid inline code completion, visual refactoring previews, pair-programming with tight feedback loops — the IDE still offers genuine value. The IDE isn't dead for <em>assisted</em> coding. It's dead for <em>agentic</em> coding. Those are increasingly different activities, and the gap between them is widening every month.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p>If you haven't already moved your primary coding workflow to a terminal agent, here's the pragmatic path:</p>
+
+        <ol>
+          <li><strong>Install two terminal agents and compare them on a real task.</strong> Claude Code and Codex CLI are the obvious choices. Gemini CLI is the free option if budget is a constraint. Give each one a non-trivial issue from your backlog — something that requires reading code across multiple files, writing tests, and running the build. The difference between terminal agents and IDE extensions becomes obvious within the first task.</li>
+          <li><strong>Write a GEMINI.md or CLAUDE.md or AGENTS.md for your project.</strong> These files — the equivalent of system prompts for terminal agents — define coding conventions, project structure, testing commands, and constraints. They're how you turn a generic terminal agent into one that understands your codebase. If you've been maintaining this context in your head or in scattered wiki pages, now's the time to codify it.</li>
+          <li><strong>Identify one MCP server your team needs and build it.</strong> If your agents need access to internal systems — a CI/CD pipeline, a monitoring dashboard, a feature flag service — wrap it as an MCP server. That investment works across every terminal agent you'll use for the next two years.</li>
+          <li><strong>Re-evaluate your IDE spend.</strong> If your team is paying for IDE-based AI subscriptions and using terminal agents for real work, you may be paying for two tools when one suffices. The terminal agent's capabilities have surpassed the IDE's for anything beyond inline completion.</li>
+        </ol>
+
+        <h2>The Pattern Beneath the Pattern</h2>
+
+        <p>The terminal's victory over the IDE is one instance of a broader trend in agent infrastructure: <strong>the runtime that gives agents the most access wins.</strong></p>
+
+        <p>The IDE constrained agents to what extension frameworks allowed. The terminal gave agents the same access developers have. The sandbox — projects like Tencent's Cube (open-sourced April 2026 with sub-60ms cold starts) and Google's Agent Substrate on Kubernetes — gives agents even more: isolated, reproducible, checkpointable environments that can be spawned and destroyed at will.</p>
+
+        <p>Each layer of the stack is being rebuilt around the assumption that agents need <em>real access to real systems</em> to do real work. The terminal was the first surface to deliver that. It won't be the last — but it was the one that broke the IDE's monopoly on AI-assisted development.</p>
+
+        <p>The terminal ate the IDE. Not because terminals are better editors. Because the terminal is where agents can actually be agents.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
