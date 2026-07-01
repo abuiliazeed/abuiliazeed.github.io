@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code Execution Is Eating the Tool Call — Abuiliazeed</title>
+  <meta name="description" content="Anthropic cut token usage by 98.7% by letting agents write code instead of calling tools one at a time. Cloudflare hit 99.9%. The tool-calling model is breaking at scale — and code execution is replacing it.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/code-execution-eating-tool-call.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/code-execution-eating-tool-call.html">
+  <meta property="og:title" content="Code Execution Is Eating the Tool Call">
+  <meta property="og:description" content="Anthropic cut token usage by 98.7% by letting agents write code instead of calling tools one at a time. Cloudflare hit 99.9%. The tool-calling model is breaking at scale — and code execution is replacing it.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Code Execution Is Eating the Tool Call">
+  <meta name="twitter:description" content="Anthropic cut token usage by 98.7% by letting agents write code instead of calling tools one at a time. Cloudflare hit 99.9%. The tool-calling model is breaking at scale — and code execution is replacing it.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-07-01">July 1, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">Code Execution Is Eating the Tool Call</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Anthropic took a workflow that consumed 150,000 tokens and rebuilt it to use 2,000. Same task, same tools, same result. The trick wasn't a bigger model or a longer context window. They just stopped loading tool definitions into the prompt and let the agent write code instead.</p>
+
+        <p>That's a 98.7% reduction. And it's not a lab experiment — Cloudflare independently arrived at the same pattern, called it "Code Mode," and measured 99.9% token savings on their own 2,500-endpoint API. An academic paper from February 2026 confirms the results hold across models and configurations.</p>
+
+        <p>The tool-calling model — the one every agent framework has been built on for two years — is breaking at scale. Not because the protocol is wrong, but because the way we wire tools to models is fundamentally inefficient. Code execution is replacing it, and the transition is already underway.</p>
+
+        <h2>How Tool Calling Actually Works (And Why It Breaks)</h2>
+
+        <p>Here's the standard agent loop that every framework implements. You connect your agent to a set of MCP servers. Each server exposes tools — functions with names, parameter schemas, and descriptions. At the start of every conversation, the agent loads all of those tool definitions into its system prompt. Then, for each step, the model selects a tool, the harness executes it, the result goes back into context, and the model selects the next tool.</p>
+
+        <p>This works fine with five tools. It falls apart with fifty.</p>
+
+        <p>The problem is arithmetic. A typical MCP server for a platform like Jira or Salesforce exposes 30–50 tools. Each tool definition — name, description, JSON schema for parameters — runs 200 to 500 tokens. Connect ten servers and you're loading 30,000 to 50,000 tokens of tool schemas into the system prompt before the user says a single word. That's not edge case. That's a standard enterprise agent.</p>
+
+        <p>One developer quantified it precisely: connecting Claude to 11 MCP servers with roughly 100 tools cost 30,000 tokens per query. At Claude's pricing, that's $0.09 before a single question is asked. Scale to 50 servers and you've exceeded the model's context window entirely.</p>
+
+        <p>But token cost isn't even the worst part. The worse problem is that task accuracy degrades as tool count grows. Research has confirmed that when you flood context with tool schemas, the model becomes worse at selecting the right tool and passing the right parameters. More tools doesn't mean more capability — it means more confusion.</p>
+
+        <h2>The Code Execution Pattern</h2>
+
+        <p>The fix is deceptively simple. Instead of loading every tool definition into context and letting the model choose tools one at a time, you present the MCP servers as a filesystem of code modules. The agent discovers tools by listing directories, reads only the definitions it needs for the current task, writes a short program that composes multiple tool calls, executes that program in a sandbox, and returns only the result.</p>
+
+        <p>Anthropic's framing: MCP servers become "a filesystem of code APIs." The agent lists the <code>./servers/</code> directory to find available servers — Google Drive, Salesforce, Slack — then reads specific tool files like <code>getDocument.ts</code> or <code>updateRecord.ts</code> only when needed. It writes TypeScript code that imports those modules and composes them into a workflow. The code runs in a sandboxed execution environment. Intermediate data stays in the sandbox. Only the final result returns to the model's context.</p>
+
+        <p>Cloudflare shipped essentially the same architecture under the name Code Mode. Their MCP server for the entire Cloudflare API — DNS, Workers, R2, Zero Trust, every product — exposes exactly two tools: <code>search()</code> and <code>execute()</code>. The agent uses <code>search()</code> to discover what's available, then <code>execute()</code> to run code that calls the API. Total context footprint: roughly 1,000 tokens, regardless of how many endpoints exist. An equivalent traditional MCP server would consume 1.17 million tokens — more than the context window of any model on the market.</p>
+
+        <h2>Two Companies, Same Conclusion</h2>
+
+        <p>Anthropic published their approach in November 2025. Cloudflare published Code Mode in February 2026. Neither coordinated with the other. They arrived at the same architecture from different starting points because the problem forced them there.</p>
+
+        <p>Anthropic's motivation was research agent efficiency. Their multi-agent research system — the one powering Claude's Research feature — connects to dozens of data sources. Loading all those tool definitions into context was burning tokens and degrading accuracy. Code execution was the fix.</p>
+
+        <p>Cloudflare's motivation was their own API. With 2,500 endpoints across dozens of products, a traditional MCP server was physically impossible. The tool definitions alone would exceed any model's context window. Code Mode wasn't an optimization — it was the only way to expose their full API to agents at all.</p>
+
+        <p>By February 2026, an academic paper appeared on arXiv formalizing the pattern. The researchers called it CE-MCP (Code Execution MCP) and ran the first systematic comparison against traditional tool calling. Their conclusion: CE-MCP consistently reduces execution time, token usage, and number of interaction turns while maintaining comparable task quality. The token savings increase with task complexity — particularly for workflows that span multiple servers.</p>
+
+        <h2>The Numbers From Multiple Sources</h2>
+
+        <p>The data is consistent across independent measurements:</p>
+
+        <ul>
+          <li><strong>Anthropic:</strong> 150,000 tokens → 2,000 tokens (98.7% reduction) on a Google Drive to Salesforce workflow</li>
+          <li><strong>Cloudflare:</strong> 1,170,000 tokens → ~1,000 tokens (99.9% reduction) on the full Cloudflare API (2,500 endpoints)</li>
+          <li><strong>AIMultiple (independent test):</strong> 78.5% input-token reduction with GPT-4.1 against a Bright Data MCP server. Net token savings of 77.4% (output tokens increase 2.2x because the model writes code, but input savings dominate cost)</li>
+          <li><strong>Bifrost (scaling test):</strong> Token savings scale with tool count — 58% at 96 tools, 84.5% at 251 tools, 92.8% at 508 tools</li>
+          <li><strong>Open-source implementation:</strong> 30,000 tokens → 200 tokens (99.3% reduction) when proxying 11 MCP servers</li>
+        </ul>
+
+        <p>The pattern in the data is clear: the more tools you have, the more you save. Small toolsets see modest gains. Enterprise-scale tool ecosystems see the headline numbers. And the savings aren't just tokens — they're latency and interaction turns too. Collapsing a five-step tool-calling sequence into a single program execution means five fewer model round-trips.</p>
+
+        <h2>Why It Works: The Model Is Better at Code Than at Selection</h2>
+
+        <p>The technical insight behind code execution is something practitioners have suspected for a while: models are better at writing code than at selecting tools from a list.</p>
+
+        <p>This shouldn't be surprising. Code generation is what large language models are best at. It's what they trained on most heavily. When you ask a model to "select the correct tool from these 47 options and provide the right parameters in JSON format," you're asking it to do something it's mediocre at — multi-way classification with structured output. When you ask a model to "write a function that reads a document from Google Drive, extracts the relevant fields, and creates a record in Salesforce," you're asking it to do what it does best.</p>
+
+        <p>Code execution also solves three problems that plague traditional tool calling:</p>
+
+        <p><strong>Context flooding.</strong> Tool schemas don't sit in the system prompt. The agent loads only what it needs, when it needs it. Bifrost's data confirms this: the savings grow as your tool count grows. At 508 tools, traditional MCP floods the context so badly that accuracy collapses. Code execution stays flat.</p>
+
+        <p><strong>Intermediate data bloat.</strong> In traditional tool calling, every intermediate result goes back through the model's context. Query a database, get 500 rows back, all 500 rows sit in context while the model decides what to do next. In code execution, the data stays in the sandbox. The code filters, aggregates, and returns a summary. The model sees the answer, not the raw data.</p>
+
+        <p><strong>Sequential latency.</strong> Traditional tool calling is inherently serial: call tool, wait for result, decide next step, call next tool, wait again. Code execution collapses this into a single round-trip. The model writes a program that does all five steps, the sandbox executes it, one result comes back.</p>
+
+        <h2>The Catch: You Need a Sandbox</h2>
+
+        <p>Code execution isn't free. You're now running model-generated code, which requires a secure execution environment with sandboxing, resource limits, and monitoring. That's real infrastructure.</p>
+
+        <p>Anthropic's approach runs TypeScript in a sandboxed runtime. Cloudflare uses V8 isolates — their Dynamic Worker Loader — which they already operate at planetary scale. The open-source implementations use Docker rootless containers or restricted Python environments with safe builtins and no network access.</p>
+
+        <p>There's also a latency tradeoff. Independent testing found that per-call latency rose roughly 7% in controlled comparisons. That's because code execution adds a sandbox layer. But this is more than offset by the reduction in interaction turns — you spend slightly more time per step, but you need far fewer steps.</p>
+
+        <p>The real cost is operational complexity. Running a code sandbox at production scale — with proper isolation, monitoring, and security — is non-trivial. Teams that already operate cloud infrastructure (Cloudflare, Anthropic) can absorb this easily. Teams building custom agent platforms need to take it seriously. But the alternative — loading 50,000 tokens of tool schemas into every prompt and watching accuracy collapse — is worse.</p>
+
+        <h2>What This Means for the Agent Stack</h2>
+
+        <p>Code execution is a harness-level innovation, not a model-level one. It doesn't require a new model. It doesn't require changes to the MCP protocol. It changes how the harness — the execution loop between the model and the tools — wires tools to the model.</p>
+
+        <p>This matters because it reinforces a pattern this blog has been tracking: the interesting work in agent engineering is moving to the harness layer. Model improvements are incremental. Protocol standardization is settling. The gains are in how you orchestrate the model's interaction with tools, context, and execution environments.</p>
+
+        <p>Code execution also changes the economics of agent deployment. When tool interactions cost 98% fewer tokens, the marginal cost of adding another tool to your agent drops to near zero. That removes the biggest barrier to building enterprise-grade agents: the fear that connecting to Salesforce, Jira, Slack, SAP, and your internal wiki will make the agent too expensive and too confused to function.</p>
+
+        <p>There's a second-order effect too. Code execution makes agent skills — the domain knowledge bundled with tools — more valuable, not less. When the agent writes code to interact with tools, it benefits even more from knowing <em>which</em> tools to discover and <em>how</em> to compose them. The skill provides the knowledge. Code execution provides the efficient execution path. They're complementary, not competitive.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p>If you're building agents with MCP — and at this point, you should be — here's how to act on this:</p>
+
+        <ol>
+          <li><strong>Audit your token usage.</strong> Count the tool definitions in your agent's system prompt. If you're above 10,000 tokens of tool schemas, code execution will pay for itself immediately. If you're above 30,000, you have an acute problem.</li>
+          <li><strong>Prototype the filesystem pattern.</strong> You don't need a full sandbox to test the concept. Structure your MCP servers as directories of tool files. Give the agent a <code>list_tools()</code> and <code>read_tool()</code> capability. Let it discover what it needs on demand. Even without full code execution, progressive disclosure alone will cut your token usage significantly.</li>
+          <li><strong>Evaluate sandboxing options.</strong> If you're on Cloudflare, Code Mode is built in. If you're building locally, look at the open-source implementations that use Docker rootless containers or restricted Python environments. The sandboxing requirements are real but well-understood — this is solved infrastructure, not research.</li>
+          <li><strong>Measure before and after.</strong> The numbers in this post are from Anthropic, Cloudflare, and independent testers. Your numbers will depend on your tool count, your workflow complexity, and your model. The pattern will hold — the magnitude will vary. Measure it.</li>
+        </ol>
+
+        <h2>The Inflection</h2>
+
+        <p>Two years ago, the agent building block was the tool call. You defined tools, loaded them into context, and the model picked from a list. That model worked — and for small toolsets, it still works. But it doesn't scale. The same way loading entire database tables into memory "worked" until your dataset got large enough to break everything, loading tool definitions into context works until your tool ecosystem gets large enough to degrade performance.</p>
+
+        <p>The fix — letting agents write code that calls tools — is the kind of shift that seems obvious in hindsight. Models are code generators. Tools are functions. Of course you should let the model write functions that call functions. The reason nobody did it sooner is that the agent ecosystem was too immature: you needed MCP to standardize tool interfaces, sandboxes to be cheap enough to run per-query, and harness engineering to mature enough to support code execution as a pattern.</p>
+
+        <p>Those prerequisites are now in place. The protocol is standardized. The sandboxes are commodity infrastructure. And the harness layer — the discipline this blog has been advocating since <em>Harness Engineering</em> — is mature enough to absorb the pattern.</p>
+
+        <p>Code execution isn't replacing MCP. It's making MCP work at the scale it was always designed for. The protocol is fine. The wiring just needed to change.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
