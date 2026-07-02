@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Per-Token Illusion — Abuiliazeed</title>
+  <meta name="description" content="Claude Sonnet 5 is cheaper per token than Opus 4.8 — yet costs more per task. The pricing model the AI industry runs on is broken for agents, and your budget is paying the difference.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/per-token-illusion.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/per-token-illusion.html">
+  <meta property="og:title" content="The Per-Token Illusion">
+  <meta property="og:description" content="Claude Sonnet 5 is cheaper per token than Opus 4.8 — yet costs more per task. The pricing model the AI industry runs on is broken for agents, and your budget is paying the difference.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Per-Token Illusion">
+  <meta name="twitter:description" content="Claude Sonnet 5 is cheaper per token than Opus 4.8 — yet costs more per task. The pricing model the AI industry runs on is broken for agents, and your budget is paying the difference.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-07-02">July 2, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Per-Token Illusion</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Claude Sonnet 5 launched on June 30 with introductory pricing of $2 per million input tokens and $10 per million output tokens. That is cheaper than Opus 4.8 ($5/$25), cheaper than GPT-5.5 ($5/$30), cheaper than Gemini 3.1 Pro ($2/$12). Anthropic called it "near Opus quality at a fraction of the cost." On the Artificial Analysis Intelligence Index, it scored 53 — a 6-point jump over Sonnet 4.6, tying with GPT-5.5 at high reasoning effort. By every metric on the launch page, it's a deal.</p>
+
+        <p>Then Artificial Analysis measured what it actually costs to run a task.</p>
+
+        <p><strong>$2.29 per task.</strong> Opus 4.8? <strong>$1.97 per task.</strong></p>
+
+        <p>The cheaper model costs 16% more to use. Not because the token price is wrong — but because per-token pricing is the wrong metric entirely, and it has been ever since agents became the dominant workload. The AI industry is selling compute by a unit that no longer reflects what you're actually buying.</p>
+
+        <h2>The Sonnet 5 Numbers</h2>
+
+        <p>Let's start with the benchmarks, because they're genuinely impressive. Anthropic published a comparison table against Sonnet 4.6 and Opus 4.8, and the jump is real:</p>
+
+        <ul>
+          <li><strong>SWE-bench Pro (agentic coding):</strong> 63.2% — up from Sonnet 4.6's 58.1%, closing hard on Opus 4.8's 69.2%</li>
+          <li><strong>Terminal-Bench 2.1:</strong> 80.4% — a 13.4-point jump from Sonnet 4.6's 67.0%</li>
+          <li><strong>OSWorld-Verified (computer use):</strong> 81.2% — up from 78.5%</li>
+          <li><strong>Humanity's Last Exam (with tools):</strong> 57.4% — a massive leap from Sonnet 4.6's 46.8%, landing within half a point of Opus 4.8's 57.9%</li>
+          <li><strong>GDPval-AA v2 (knowledge work):</strong> 1,618 — actually edging out Opus 4.8 at 1,615</li>
+        </ul>
+
+        <p>That Terminal-Bench jump alone — 13.4 points — signals a step change in real-world command-line and agent behavior. On knowledge work, Sonnet 5 beats Anthropic's own flagship. By the benchmark scoreboard, this is a mid-tier model that punches above its weight class.</p>
+
+        <p>But here's the number that reframes the entire launch: <strong>Sonnet 5 uses roughly 40% more output tokens per task than Sonnet 4.6, and roughly three times as many agentic turns</strong> on knowledge-work benchmarks like AA-Briefcase and GDPval-AA. At max effort, it runs about six times more turns than at low effort on the same benchmarks.</p>
+
+        <p>That behavior is what drives the per-task cost to $2.29 — nearly double Sonnet 4.6's $1.20 per task, and above Opus 4.8's $1.97. The model isn't broken. It's doing exactly what it was trained to do: reasoning harder, self-correcting more, running more tool calls before arriving at an answer. The intelligence you're paying for is paid for in tokens consumed, not tokens priced.</p>
+
+        <h2>Tokenmaxxing</h2>
+
+        <p>There's a name for this pattern, and it's going to define agent economics for the next two years: <strong>tokenmaxxing.</strong></p>
+
+        <p>When you give a model more reasoning latitude — higher effort settings, longer thinking budgets, more agentic autonomy — it uses that latitude. It generates longer chains of thought. It revisits its own outputs. It spins additional tool-call cycles before converging on an answer. Each of those behaviors is a sign of intelligence. Each of them is also a line item on your bill.</p>
+
+        <p>The problem is structural, not incidental. Anthropic's effort parameter (low, medium, high, max) directly controls how hard the model works, and the cost curve is steep. At max effort on GDPval-AA, Sonnet 5 generates about 6x more turns than at low effort. That means the same task costs six different amounts depending on a single configuration knob — and the per-token price tells you nothing about any of them.</p>
+
+        <p>This isn't unique to Anthropic. Every frontier model vendor is navigating the same tension as their models become more agentic. The difference is in transparency. Anthropic publishes effort curves and token usage data. Other vendors bury it behind aggregate benchmark scores and API rate cards.</p>
+
+        <h2>The Broader Pattern</h2>
+
+        <p>If tokenmaxxing were a one-off, it would be a footnote. It's not. It's the second time in recent months that a per-token price has concealed a per-task increase, and the pattern is becoming the default play for model launches.</p>
+
+        <p>When Opus 4.7 launched earlier this year, token prices stayed flat on paper. But the model shipped with a new tokenizer that chopped the same text into approximately 30% more tokens. Developer Abhishek Ray measured a 1.325x to 1.47x increase in token counts. A community analysis of over 483 submissions found a 37.4% jump in tokens per request. The price didn't change. The bill did.</p>
+
+        <p>Sonnet 5 compounds both vectors: a new tokenizer plus more agentic behavior. The result is a model that looks cheaper than Opus 4.8 on the rate card and costs more in production. Any team that built a budget forecast on token pricing alone is carrying a gap in their unit economics right now.</p>
+
+        <p>And this will keep happening. As models get smarter and more autonomous, their token consumption grows non-linearly. A 10% capability improvement can trigger a 40% token increase because the model takes on harder problems, runs more self-correction loops, and explores more solution paths. The relationship between intelligence and cost isn't linear — it's exponential, and per-token pricing masks that completely.</p>
+
+        <h2>Why This Breaks Agent Budgets</h2>
+
+        <p>For a human reading a chatbot response, token consumption is roughly proportional to response quality. You ask a question, the model answers, and a longer answer usually means a more thorough one. The cost scales with the output you see.</p>
+
+        <p>Agents don't work that way. An agent runs in a loop. It plans, executes, observes, adjusts, and repeats. Each iteration generates tokens you never read — intermediate reasoning, tool-call arguments, observation summaries, self-correction messages. A single task that produces a 200-token final answer might consume 50,000 tokens of internal processing across 15 turns.</p>
+
+        <p>Now compound that. If your agent loop runs 50 iterations to solve a hard problem — say, debugging a failing test suite across multiple files — and each iteration uses 3x more turns than the previous model generation, you're looking at a 150x increase in turn count. Not 3x. 150x. The per-token price could drop by 80% and you'd still be paying more.</p>
+
+        <p>This is why the Sonnet 5 cost data matters beyond Anthropic. It's the first widely documented case where a deliberately cheaper model from a top vendor costs more in practice than its premium sibling. The implication for anyone building agent infrastructure is straightforward: <strong>if you're tracking per-token cost, you're tracking the wrong number.</strong></p>
+
+        <h2>What to Do This Week</h2>
+
+        <p>If you're running agents in production, here's how to adapt before the next model launch catches you off guard:</p>
+
+        <p><strong>1. Track per-task cost, not per-token cost.</strong> Instrument your agent harness to record total token consumption per completed task, broken down by effort level. This is the number that maps to your actual spend. In <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>, the case for per-task telemetry is straightforward: you can't optimize what you don't measure at the unit of work.</p>
+
+        <p><strong>2. Tune the effort parameter aggressively.</strong> Sonnet 5 at max effort costs roughly 6x more per task than at low effort. Most tasks don't need max effort. Route simple operations — file reads, formatting, documentation generation — to low or medium. Reserve high and max for genuinely hard problems where the reasoning depth pays for itself. This single change can cut your agent budget by 60-70% without changing models.</p>
+
+        <p><strong>3. Set turn budgets per task.</strong> Don't let an agent run unbounded loops. Cap turns at a number appropriate to the task complexity — 10 for simple operations, 50 for multi-step engineering work, 200 for deep debugging sessions. When the agent hits the cap, checkpoint its state and escalate to a human or a higher-tier model. This prevents runaway token consumption on tasks where the model is stuck.</p>
+
+        <p><strong>4. Use a hybrid model strategy.</strong> The per-task cost inversion means the cheapest path isn't always the cheapest model. For knowledge work where Sonnet 5 actually beats Opus 4.8 on quality (GDPval-AA: 1,618 vs 1,615), the premium might be worth it — if you can afford the token volume. For coding tasks where Opus 4.8 leads on SWE-bench Pro (69.2% vs 63.2%), the more expensive token price might produce a lower per-task cost because the model converges in fewer turns. You won't know until you measure both.</p>
+
+        <p><strong>5. Build cost-aware routing into your harness.</strong> A mature agent harness doesn't just pick one model and send everything to it. It routes tasks based on estimated difficulty, historical cost data, and budget constraints. A well-engineered harness can reduce total spend by 40-50% compared to a single-model approach — but only if it has accurate per-task cost data to route on.</p>
+
+        <h2>The Industry Will Catch Up Eventually</h2>
+
+        <p>The per-token pricing model made sense when LLM usage was dominated by single-turn chat. You sent a prompt, got a response, and the cost was proportional to the text exchanged. Simple, transparent, fair.</p>
+
+        <p>Agents broke that model. When the bulk of token consumption happens inside an autonomous loop — invisible to the user, uncontrollable without harness-level instrumentation — per-token pricing becomes a measure of model behavior, not a measure of value delivered. It's like paying for electricity by the ampere when what you care about is the cost per load of laundry.</p>
+
+        <p>The industry will move to per-task pricing eventually. Some infrastructure companies are already building toward it — Rubrik's Agent Cloud, launched June 30 for Claude Code, treats agents as production workloads with auditable actions and recoverable state, which implies cost-per-task tracking as a first-class metric. Perforce's Agentic Gateway, also launched this week, sits in front of MCP to govern agent behavior and reduce token consumption — another signal that the market is shifting from "how much do tokens cost" to "how much does a completed task cost."</p>
+
+        <p>Until then, the burden falls on engineering teams. Every model launch will come with a per-token price that tells you the best-case scenario. The real cost — the one your budget will actually bear — is hidden in the token volume the model consumes when it's doing its hardest work. Sonnet 5 proved that the gap between those two numbers can be wide enough to invert your assumptions about which model to pick.</p>
+
+        <p>The cheapest model on the rate card is not the cheapest model in production. Track per-task cost. Tune effort. Set turn budgets. And when the next model launch promises Opus-level quality at Sonnet prices, look past the token rate to the turn count. That's where the real bill lives.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
