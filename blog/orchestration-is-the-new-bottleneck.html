@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Orchestration Is the New Bottleneck — Abuiliazeed</title>
+  <meta name="description" content="A single developer ported 960,000 lines of Zig to Rust in six days using 1,000 parallel agents on a $20/month plan. The bottleneck isn't model capability anymore — it's decomposition.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/orchestration-is-the-new-bottleneck.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/orchestration-is-the-new-bottleneck.html">
+  <meta property="og:title" content="Orchestration Is the New Bottleneck">
+  <meta property="og:description" content="A single developer ported 960,000 lines of Zig to Rust in six days using 1,000 parallel agents on a $20/month plan. The bottleneck isn't model capability anymore — it's decomposition.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Orchestration Is the New Bottleneck">
+  <meta name="twitter:description" content="A single developer ported 960,000 lines of Zig to Rust in six days using 1,000 parallel agents on a $20/month plan. The bottleneck isn't model capability anymore — it's decomposition.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-07-03">July 3, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">Orchestration Is the New Bottleneck</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>960,000 lines of Zig. Ported to Rust. In six days. With 99.8% of the existing test suite passing.</p>
+
+        <p>That's what Jarred Sumner — the creator of Bun — did with Claude Code's Dynamic Workflows. He fed roughly one million lines of Zig source code into a system of 1,000 parallel subagents running on a single Claude Code session, and they produced a Rust port that compiled clean and passed the test suite. On July 2, 2026, Anthropic moved Dynamic Workflows from research preview to general availability — and quietly extended it to the $20-per-month Pro plan. The feature that ported a JavaScript runtime in six days now runs on every paid Claude Code subscription.</p>
+
+        <p>Most commentary has focused on the speed: six days for work that would take a team of engineers months. But that's the wrong lesson. The right lesson is about where the bottleneck has moved. It's no longer the model's ability to write code. It's your ability to decompose the problem.</p>
+
+        <h2>What Dynamic Workflows Actually Does</h2>
+
+        <p>Here's the architecture, stripped of marketing. When you trigger a Dynamic Workflow — by including the keyword <code>ultracode</code> in your prompt, or by asking Claude to "create a workflow" — Claude Code writes a JavaScript orchestration script. That script plans the work, breaks it into subtasks, and fans them out across subagents running in parallel. Each subagent works independently. Results are cross-checked before they're folded into the final output. The run iterates until the answers converge.</p>
+
+        <p>The orchestration script is a real artifact. It's a <code>.workflow.js</code> file that you can read, modify, and rerun. This is not a natural-language plan that lives in the model's context and evaporates when the session ends. It's code that coordinates code.</p>
+
+        <p>The Bun port's workflow decomposition reveals the granularity. The work was sharded by crate, then by file, then by line range — the same way you'd divide work among human engineers, except at machine scale. One workflow mapped the correct Rust lifetime for every struct field in the Zig codebase. A second wrote every <code>.rs</code> file as a behavior-identical port of its <code>.zig</code> counterpart, with two reviewer agents per file. A fix loop then drove the build and test suite until both ran clean — resolving 16,000-plus compiler errors over six days. Coordination was <code>git pull -X ours</code>, not a distributed lock service.</p>
+
+        <p>Verification was multi-vote with default-deny. Phase-A required a single vote with mandatory fix. Later phases required two votes plus a third-agent tiebreak, with the literal prompt: "Default confirmed=false unless you verify against .zig." The verified-claims corpus — a structured document of 1,300-plus lines containing 200+ individually reviewed facts — survived three-vote review against the original source.</p>
+
+        <h2>The Model Was Never the Bottleneck</h2>
+
+        <p>The conventional framing of AI coding goes like this: the model writes code, and when it's good enough, it replaces a human developer. Every benchmark improvement — SWE-Bench, Terminal-Bench, LiveCodeBench — is interpreted as progress toward that single-agent replacement threshold.</p>
+
+        <p>The Bun port breaks that frame entirely. No single Claude session, regardless of model quality, could write 960,000 lines of Rust in six days. The bottleneck wasn't the model's ability to produce correct Rust — though that mattered. It was the orchestration layer's ability to decompose a million-line codebase into parallel work units, coordinate verification across hundreds of agents, and merge results without catastrophic conflicts.</p>
+
+        <p>This is the pattern across the entire industry right now. Google's ADK 2.0 — released July 1, 2026 — is built on the same insight. Its headline feature is graph-based workflows that separate execution routing from language processing. You can compose deterministic steps (tool calls, human-in-the-loop gates) with open-ended LLM steps in a single execution graph. Programmatic routing replaces LLM-based routing decisions. Token consumption drops because you're not asking the model to decide what comes next — you're telling it.</p>
+
+        <p>Vercel's AI SDK 7, shipped June 25, introduced <code>WorkflowAgent</code> with durable execution and harness adapters that wrap Claude Code, Codex, and OpenCode behind a unified agent interface. Microsoft's Agent Framework at BUILD 2026 centered on "agent harness" as a first-class concept. Every major platform is converging on the same architecture: orchestration as the primary layer, models as swappable compute.</p>
+
+        <h2>The Decomposition Problem</h2>
+
+        <p>Here's where the $20/month Pro plan matters. When Dynamic Workflows required a Max subscription at $100/month, the feature was gated behind high-volume professional users — people who already had the engineering judgment to design good decompositions. Extending it to Pro means it's now available to every developer who pays for a coding assistant. That's a different population with a different skill profile.</p>
+
+        <p>The Bun port succeeded because Jarred Sumner is one of the most capable systems programmers working today. He designed a strangler-fig migration strategy where both Zig and Rust are linked into the same binary throughout, with each class flipped via a flag. He pre-classified every Zig pointer field into a 2,253-row mapping of Rust ownership classes. He defined verification rituals — multi-vote, default-deny, with explicit cross-checking prompts. The agents executed. He orchestrated.</p>
+
+        <p>Most developers have never decomposed a problem at this level of granularity. And here's the uncomfortable truth: Dynamic Workflows doesn't help you decompose. It helps you execute a decomposition you've already designed. If your workflow plan is vague — "port this codebase" — the agents will produce vaguely correct code. If your plan is precise — "map lifetimes for every struct field, port each file with two reviewers, resolve compiler errors in a loop until the build is clean" — the results are dramatically different.</p>
+
+        <p>The skill that determines whether 1,000 parallel agents produce a working port or a pile of plausible-looking garbage is decomposition. It's the ability to look at a large problem, identify the independent work units, define verification criteria for each, and specify how results merge. That's not a coding skill. It's a systems architecture skill.</p>
+
+        <h2>What the Numbers Actually Say</h2>
+
+        <p>The headline numbers from the Bun port are worth examining carefully, because they reveal both what's possible and what's not yet solved:</p>
+
+        <ul>
+          <li><strong>960,000 lines ported</strong> — but this is a structural translation, not a redesign. The Rust output mirrors the Zig source file-by-file. The agents didn't reimagine Bun's architecture; they translated it. Creative architectural work — deciding to replace a garbage collector, restructure a module system, or change a public API — still requires human judgment.</li>
+          <li><strong>99.8% test pass rate</strong> — but only on Linux x64 glibc. macOS, Windows, and ARM targets were not certified. The test suite was the sole correctness oracle, which means the 0.2% gap represents known test failures, but any behavior not covered by tests is uncertified.</li>
+          <li><strong>16,000+ compiler errors resolved</strong> — the fix loop is the unsung hero. The initial Rust output didn't compile. It took a six-day iterative loop of consume-diagnostics, apply-fixes, recompile to drive that count to zero. This is where the orchestration design shines: a tightly scoped error-correction agent that handles one compiler error at a time, billions of times if necessary.</li>
+          <li><strong>One known escape</strong> — of 23 proven miscompiles identified during audit, 22 got fixes. One method (<code>handle_reading</code>) escaped the fix pipeline. The audit identified it as the same bug family as three sibling methods that were fixed, but the fix was never applied to it. 1,000 parallel agents are fast. They are not perfect.</li>
+        </ul>
+
+        <p>The lesson is not "AI can port any codebase in a week." The lesson is "a well-designed orchestration pipeline can produce a high-fidelity structural translation of a large codebase in a week — if a domain expert designs the decomposition, the verification, and the merge strategy."</p>
+
+        <h2>The Orchestration Skill Gap</h2>
+
+        <p>Here's the contrarian read. Most of the discourse around "AI replacing developers" assumes the constraint is model intelligence — that once models are smart enough, they'll handle everything. But the Bun port demonstrates the opposite. The model was plenty smart enough to write correct Rust months ago. What was missing was the orchestration infrastructure to coordinate a thousand copies of it on a single task.</p>
+
+        <p>That infrastructure now exists. What doesn't exist is the skill to use it well.</p>
+
+        <p>Consider the three hardest problems in the Bun port, and notice that none of them are about writing code:</p>
+
+        <p><strong>Task decomposition.</strong> How do you shard a million-line codebase so that agents don't step on each other? Sumner's answer was three-dimensional: by crate, by file, by line range. That's a partitioning strategy that minimizes merge conflicts. Getting it wrong means agents overwrite each other's work, and the merge produces a tangled mess. Getting it right requires understanding the codebase's dependency graph.</p>
+
+        <p><strong>Verification design.</strong> How do you know the port is correct? You can't review 960,000 lines by hand. Sumner's answer was multi-vote verification with default-deny prompts — agents must prove correctness against the original source, not assert it. But the verification prompts themselves were engineered: "Default confirmed=false unless you verify against .zig." That's not a generic instruction. It's a specific anti-hallucination mechanism designed by someone who understood how agents fail.</p>
+
+        <p><strong>Convergence criteria.</strong> When does the workflow stop? The fix loop ran until compiler errors hit zero and tests passed at 99.8%. But that's a specific convergence target for a specific task type. For a security audit, the convergence criteria would be different — all findings cross-checked, false positives filtered, severity scored. For a migration, it might be zero behavioral regressions across a shadow-diff suite. Designing convergence criteria is the meta-level skill that determines whether the workflow produces a trustworthy result or runs until your token budget evaporates.</p>
+
+        <p>These three skills — decomposition, verification design, convergence criteria — are the new frontier. They're not model capabilities. They're harness engineering capabilities. And they're in critically short supply.</p>
+
+        <h2>The Platform Layer Is Consolidating Around This</h2>
+
+        <p>The pace of orchestration infrastructure investment in the last 30 days tells you where the industry thinks the value is:</p>
+
+        <ul>
+          <li><strong>Anthropic</strong> (July 2): Dynamic Workflows GA, up to 1,000 parallel subagents, Pro plan access at $20/month.</li>
+          <li><strong>Google</strong> (July 1): ADK 2.0 with graph-based workflow engine, programmatic routing, dynamic orchestration in Go and Python. Agent modes (Chat, Task, SingleTurn) for specialized delegation.</li>
+          <li><strong>Vercel</strong> (June 25): AI SDK 7 with <code>WorkflowAgent</code>, durable execution, harness adapters for Claude Code, Codex, Deep Agents, and OpenCode.</li>
+          <li><strong>Cloudflare</strong> (June 26): Agents SDK v0.17 with background sub-agents, unified turn entry point, and recovery machinery that keeps chat agents working through deploys and evictions.</li>
+          <li><strong>Microsoft</strong> (June 1): Agent Framework with Claw agent harness patterns, hosted agents, and CodeAct execution model.</li>
+        </ul>
+
+        <p>Five platforms. Five orchestration frameworks. One thesis: the model is a commodity compute unit, and orchestration is where the platform competition happens.</p>
+
+        <p>But notice the divergence in approaches. Anthropic's Dynamic Workflows has the model write the orchestration script. Google's ADK 2.0 has the developer write it in native Python or Go control flow. Cloudflare's approach focuses on reliability — keeping long-running agent sessions alive through infrastructure disruptions. These aren't minor UX differences. They reflect fundamentally different philosophies about who designs the workflow: the model, the developer, or the platform.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p>Three concrete actions if you're building agent-driven systems:</p>
+
+        <p><strong>Stop benchmarking models in isolation.</strong> SWE-Bench Verified measures single-agent task completion. It tells you nothing about how a model performs inside a 100-agent orchestration pipeline. The Bun port didn't succeed because Claude Opus is good at writing Rust. It succeeded because the orchestration design compensated for individual agent failure modes through multi-vote verification and fix loops. When you evaluate a model, evaluate it inside the harness you'll actually deploy — not in a benchmark harness that measures a different thing.</p>
+
+        <p><strong>Invest in decomposition skills before tooling.</strong> The most valuable skill in your engineering org is no longer "can write correct code fast." It's "can decompose a large problem into parallel work units with clear interfaces, verification criteria, and merge strategies." This is closer to technical program management than to individual contribution. If your team doesn't have this skill, no amount of orchestration tooling will help. Start by having your best engineers practice decomposition on real problems — break a migration into shards, define what "done" means for each shard, and specify how shards merge.</p>
+
+        <p><strong>Build your own workflow patterns now.</strong> Dynamic Workflows produces JavaScript orchestration scripts. ADK 2.0 workflows are Python or Go code. These are version-controlled, reviewable, reusable artifacts — not ephemeral prompts. Start building a library of workflow patterns for your domain: migration templates, audit templates, refactoring templates. The teams that accumulate tested workflow patterns will move dramatically faster than teams starting from scratch each time. The discipline of harness engineering — designing, building, and evolving the scaffolding between model and environment — now extends from single-agent harnesses to multi-agent orchestration topologies. The principles are the same. The scale is different.</p>
+
+        <h2>The Real Lesson</h2>
+
+        <p>The Bun port is not a story about AI getting better. Claude Opus 4.8 — the model that powered it — was already available. The code generation capability was already there. What changed is that Anthropic built the orchestration layer that makes that capability useful at codebase scale.</p>
+
+        <p>This is the pattern that will define the next two years of agent engineering. The models are good enough. The orchestration infrastructure is arriving — fast, from multiple vendors, with increasingly sophisticated primitives. The bottleneck is moving from "can the model do it?" to "can you design the system that makes the model do it?"</p>
+
+        <p>For the practitioners who have been doing harness engineering — designing tool interfaces, building verification loops, managing context, creating reward functions for agent training — this is validation. The skills transfer directly. Decomposition, verification, convergence criteria, merge strategy: these are all harness engineering problems applied at the orchestration layer instead of the single-agent layer.</p>
+
+        <p>For everyone else: the model is no longer your constraint. Your orchestration design is. A developer with a $20/month plan and a well-designed workflow can now do what used to require a team of engineers and a quarter of calendar time. A developer with a $20/month plan and a poorly designed workflow will get plausible-looking output that fails in subtle ways.</p>
+
+        <p>The difference between those two outcomes is not the model. It's not the tool. It's the decomposition.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
