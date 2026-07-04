@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The MCP Marketplace Has Arrived — Abuiliazeed</title>
+  <meta name="description" content="Amplitude doubled retention by adding UI to their MCP server. 15% of traffic at major platforms now flows through MCP. The protocol became a distribution channel — and most MCP servers won't survive it.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/mcp-marketplace.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/mcp-marketplace.html">
+  <meta property="og:title" content="The MCP Marketplace Has Arrived">
+  <meta property="og:description" content="Amplitude doubled retention by adding UI to their MCP server. 15% of traffic at major platforms now flows through MCP. The protocol became a distribution channel — and most MCP servers won't survive it.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The MCP Marketplace Has Arrived">
+  <meta name="twitter:description" content="Amplitude doubled retention by adding UI to their MCP server. 15% of traffic at major platforms now flows through MCP. The protocol became a distribution channel — and most MCP servers won't survive it.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-07-04">July 4, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The MCP Marketplace Has Arrived</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>When Amplitude added interactive UI to their MCP server, retention doubled. Not incrementally improved. Doubled. An engineer at the analytics company reported that users who could see charts, filter tables, and interact with visualizations directly inside Claude or ChatGPT — instead of receiving raw JSON — were twice as likely to keep using the integration.</p>
+
+        <p>That number should reframe how you think about MCP. Most companies shipping MCP servers today are treating them as protocol compliance checkboxes: expose the API as tool definitions, ship the server, check the box. But the data says the servers that survive are the ones designed as <em>application surfaces</em>, not API wrappers.</p>
+
+        <p>On July 2, 2026, Manufact — a Y Combinator S25 company — launched what it calls "MCP Cloud," positioning itself as Vercel for MCP servers. The launch post contains a detail that everyone glossed over but shouldn't have: major tech companies with MCP servers are already reporting that <strong>15% or more of their total usage flows through MCP</strong>. Not 15% of API calls. Fifteen percent of product usage. If that number is even directionally accurate, MCP has crossed a threshold that most protocols never reach. It stopped being infrastructure that developers configure. It became a distribution channel that users discover organically.</p>
+
+        <h2>From Protocol to Platform: The Nine-Month Sprint</h2>
+
+        <p>The pace at which MCP transformed from a specification into a marketplace is worth mapping, because it happened faster than anyone predicted:</p>
+
+        <ul>
+          <li><strong>October 2025.</strong> OpenAI shipped the ChatGPT Apps SDK, bringing app UIs into ChatGPT built on top of MCP. This was the first signal that MCP wouldn't stay confined to tool-calling.</li>
+          <li><strong>Late 2025.</strong> The stores opened. ChatGPT began accepting app submissions. Claude expanded its connector directory beyond selected partners.</li>
+          <li><strong>January 2026.</strong> MCP Apps became official. Proposal SEP-1865 merged as the first MCP extension — <code>io.modelcontextprotocol/ui</code> — defining a single UI standard that any MCP host can render.</li>
+          <li><strong>June–July 2026.</strong> All major clients — Claude, ChatGPT, Cursor — fully support MCP and operate reviewed marketplaces where servers can be one-click installed. Manufact launches as the deployment and monitoring infrastructure layer.</li>
+        </ul>
+
+        <p>Nine months. That's how long it took MCP to go from "Anthropic's open protocol for tool calling" to "a marketplace economy where companies compete for discovery inside the most-used AI products on the planet." For context, the iPhone App Store launched in July 2008 — fifteen months after the SDK. MCP's marketplace layer materialized faster.</p>
+
+        <h2>The UI Extension Is the Real Inflection</h2>
+
+        <p>Here's what most teams missed about SEP-1865. The original MCP specification defined tools, resources, and prompts. It was designed for machines — the model calls a function, gets structured data back, processes it. Humans were an afterthought. The user never saw the tool call. They saw the model's interpretation of the result.</p>
+
+        <p>The UI extension changed that. MCP servers can now return fully interactive user interfaces — charts, tables, forms, buttons, branded layouts — that render natively inside ChatGPT, Claude, and any compliant host. This means an MCP server isn't just a tool definition anymore. It's an application that runs inside someone else's product.</p>
+
+        <p>Think about what that means for distribution. A company that ships an MCP server with UI support gets their branded experience rendered inside ChatGPT — which has hundreds of millions of users. They don't need to drive traffic to their own website. They don't need to win an SEO battle. They need to be the server that Claude or ChatGPT dynamically discovers when a user expresses relevant intent.</p>
+
+        <p>And that dynamic discovery is already happening. Clients are starting to present MCP servers and apps to users based on contextual intent, not manual installation. A user asks about their project analytics, and Claude surfaces the Amplitude MCP server. A user asks about a customer ticket, and ChatGPT surfaces the Zendesk app. This is the search-engine dynamic applied to agent integrations — and the same winner-take-all economics apply.</p>
+
+        <h2>The Abandonment Problem</h2>
+
+        <p>But here's the part the marketplace boosters aren't talking about. The Manufact founders included an uncomfortable observation in their launch post: most MCP servers are dead on arrival. They're built as 1:1 proxies of existing APIs — every endpoint mapped to a tool, every tool returning raw JSON. The user connects the server, asks one question, gets a wall of unstructured data, and never opens it again.</p>
+
+        <p>This is the "one-shot" problem. An MCP server that wraps an API without adding intelligence, formatting, or domain knowledge gets used once. The model calls the tool, gets back 500 rows of raw JSON, tries to summarize it, and produces a mediocre answer. The user concludes the integration is useless. They don't come back.</p>
+
+        <p>This mirrors the early App Store. In 2008–2009, thousands of companies shipped iPhone apps that were just their website rendered in a webview. They were slow, they were ugly, they didn't use any native capabilities. They got buried. The apps that survived were the ones designed for the platform — touch-first, offline-capable, using the camera and location services. The same shakeout is coming for MCP servers. The API wrappers will die. The MCP-native applications will thrive.</p>
+
+        <h2>What Makes an MCP Server Survive</h2>
+
+        <p>The servers that will capture marketplace attention share three characteristics. None of them are about the protocol. All of them are about product design.</p>
+
+        <p><strong>Interactive UI, not raw data.</strong> The Amplitude data point is the proof. When users can see visualizations, interact with filters, and explore results inside the chat surface, retention doubles. Raw JSON is a developer experience. Interactive UI is a user experience. The servers that treat MCP as an application surface — with thoughtfully designed views, not just tool definitions — will win the retention battle.</p>
+
+        <p><strong>Domain knowledge embedded in the server, not delegated to the model.</strong> A server that returns raw Salesforce records is relying on the model to interpret them. A server that returns "these three accounts have a 40% churn risk based on usage decline over 30 days" is doing the interpretation itself. The second is more reliable, more consistent, and more useful. This is the MCP equivalent of the skills concept: bundling expertise with capability. The server should know things the model doesn't.</p>
+
+        <p><strong>Designed for multi-step workflows, not single queries.</strong> The one-shot problem kills servers that expose a single tool. The servers that survive expose composed workflows: "analyze this project, identify blocked tasks, and draft a status update" is three tool calls coordinated server-side. The user asks once. The server orchestrates. This is where the boundary between MCP server and agent becomes blurry — and that blurriness is the point. The best MCP servers will look more like embedded agents than API proxies.</p>
+
+        <h2>The Distribution Land Grab</h2>
+
+        <p>Paul Graham posted recently that if AI apps are the new browsers, then MCP servers are the new websites. That framing is directionally right but undersells the dynamic. Websites competed for search ranking. MCP servers compete for intent-based discovery inside a handful of dominant AI clients. There are far fewer discovery surfaces (ChatGPT, Claude, Gemini, Copilot) than there were search engines in the web era. The concentration is higher. The lock-in potential is greater.</p>
+
+        <p>Here's what that means in practice. When ChatGPT dynamically surfaces MCP servers based on user intent, the first server to claim a category wins disproportionate traffic. If the Zendesk MCP server is the one ChatGPT discovers when a user mentions support tickets, every competitor faces an uphill battle. Not because their server is worse — but because discovery is contextual, not searched. Users don't browse a directory. The client picks for them.</p>
+
+        <p>This creates urgency that most companies haven't internalized. The MCP marketplace is not a "nice to have" integration you'll get to eventually. It's a distribution channel where early movers capture disproportionate share. Every quarter you wait, a competitor's server gets more usage data, more marketplace reviews, more signal to the ranking algorithm. The cost of being late compounds.</p>
+
+        <h2>The Infrastructure Layer Is Materializing</h2>
+
+        <p>The Manufact launch signals something broader: the MCP ecosystem is developing its own infrastructure stack. Just as the web ecosystem produced hosting platforms (Vercel, Netlify), monitoring tools (Datadog, Sentry), and testing frameworks (Playwright, Cypress), the MCP ecosystem is building the same layers:</p>
+
+        <ul>
+          <li><strong>Deployment:</strong> Manufact Cloud handles hosting, auto-deploy from GitHub, preview environments per branch, and custom domains — the same workflow Vercel normalized for web apps.</li>
+          <li><strong>Cross-client testing:</strong> Automated tests that install your MCP server in ChatGPT, Claude, and other clients to verify it works where users actually encounter it. This is the MCP equivalent of cross-browser testing.</li>
+          <li><strong>Observability:</strong> Session replay, tool-call analytics, latency tracking, and error monitoring designed specifically for MCP traffic patterns.</li>
+          <li><strong>Marketplace readiness:</strong> Automated checks against ChatGPT Apps Store and Claude Connectors submission requirements, with generated submission assets.</li>
+        </ul>
+
+        <p>This infrastructure layer matters because it lowers the barrier to building production-grade MCP servers. Right now, most MCP servers are prototypes — local processes started manually, tested by connecting to a chat client and hoping it works. The tooling to build, deploy, and monitor them at production scale barely existed six months ago. It exists now, and the teams that adopt it will ship better servers faster.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p>Three actions, prioritized by urgency:</p>
+
+        <p><strong>1. Audit your MCP server against the marketplace bar.</strong> If your server returns raw JSON with no UI, it will be one-shotted. If it delegates all interpretation to the model, it will produce inconsistent results. If it exposes individual API endpoints rather than composed workflows, it's an API wrapper pretending to be a product. Score yourself honestly. The servers that win marketplaces look like applications, not tool definitions.</p>
+
+        <p><strong>2. Implement the UI extension.</strong> SEP-1865 is live. The <code>io.modelcontextprotocol/ui</code> standard lets you return interactive components from any MCP server. Start with your highest-traffic tool and add a visual view. Measure retention before and after. The Amplitude data suggests you'll see a significant lift — potentially the kind that changes the economics of the integration.</p>
+
+        <p><strong>3. Submit to the marketplaces now, not later.</strong> The submission process is still manual and time-consuming. But being in the ChatGPT Apps Store and Claude Connectors directory is how you get dynamically discovered. Every day you're not listed is a day a competitor collects the intent-based traffic for your category. The ranking signals — usage volume, retention, reviews — compound over time. Being early is a structural advantage, not a convenience.</p>
+
+        <h2>The Inflection We'll Remember</h2>
+
+        <p>Protocol adoption is slow. Marketplace dynamics are fast. MCP spent 2025 convincing developers that a standard tool interface was worth adopting. It spent the first half of 2026 convincing companies that exposing their products through that interface was worth the engineering effort. The second half of 2026 will be about something different: competition for attention inside the marketplace.</p>
+
+        <p>The teams that recognize this shift — that MCP is no longer a protocol you implement but a distribution channel you compete in — will treat their MCP server the way the best companies treated their iPhone app in 2009: as a first-class product surface, designed for the platform, optimized for retention, and shipped before the competition claims the category.</p>
+
+        <p>The teams that don't will ship API wrappers, get one-shotted, and wonder why their MCP server has 15 users while a competitor's has 15,000. The protocol didn't fail them. The marketplace did what marketplaces do: it rewarded the best products and buried the rest.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
