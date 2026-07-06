@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Sandbox Default — Abuiliazeed</title>
+  <meta name="description" content="On July 1, VS Code 1.127 quietly turned on kernel-level sandboxing for every terminal command your AI agent runs — by default. It's the most important agent infrastructure change of the month, and almost nobody noticed.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-sandbox-default.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-sandbox-default.html">
+  <meta property="og:title" content="The Sandbox Default">
+  <meta property="og:description" content="On July 1, VS Code 1.127 quietly turned on kernel-level sandboxing for every terminal command your AI agent runs — by default. It's the most important agent infrastructure change of the month, and almost nobody noticed.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Sandbox Default">
+  <meta name="twitter:description" content="On July 1, VS Code 1.127 quietly turned on kernel-level sandboxing for every terminal command your AI agent runs — by default. It's the most important agent infrastructure change of the month, and almost nobody noticed.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-07-06">July 6, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Sandbox Default</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>On July 1, 2026, the world's most popular code editor quietly turned on kernel-level sandboxing for every command your AI agent runs in the terminal. No keynote. No product blog post about it. Just a line buried in the VS Code 1.127 release notes: terminal commands on macOS and Linux now execute in an OS-level sandbox by default.</p>
+
+        <p>Browser tools for agents reached GA in the same release, and that got the headlines. The Agents window got groups and cost visibility, and that got the screenshots. The sandbox? It's the one that will break your workflows — and the one that matters most for the future of agent infrastructure.</p>
+
+        <p>Here's why: seven days earlier, I argued that the terminal ate the IDE because it gave AI agents unrestricted access to the system. The terminal won because it's the only surface where an agent can read any file, execute any shell command, and chain operations across dozens of steps without asking permission. That unrestricted access was the competitive advantage. It was the reason Claude Code, Codex CLI, and Gemini CLI displaced IDE extensions at the top of every benchmark.</p>
+
+        <p>VS Code 1.127 walks that back — not by removing terminal access, but by fencing it in. Every agent-run terminal command now executes inside a kernel-enforced sandbox with network access blocked and filesystem access restricted. Not a permission prompt. Actual isolation at the OS layer.</p>
+
+        <p>The terminal won. Now it's being contained.</p>
+
+        <h2>What Actually Changed</h2>
+
+        <p>Three things shipped in VS Code 1.127. Two got the press coverage. One will break things.</p>
+
+        <p><strong>Browser tools for agents reached general availability.</strong> Agents can now open pages in VS Code's integrated browser, take screenshots, read console errors, click through UI, type, and navigate — all without an external MCP server. Per-site permissions work the way a browser should: when a page requests camera, location, or clipboard access, VS Code prompts once and remembers. Browser tools are enabled by default. No configuration needed.</p>
+
+        <p><strong>The Agents window got organizational features.</strong> Agent groups for managing concurrent sessions, and real cost visibility — per-agent token spend, not just aggregate. This matters for teams, but it's incremental.</p>
+
+        <p><strong>Terminal sandboxing flipped on by default for macOS and Linux.</strong> This is the change that most release roundups undersold. Starting with 1.127, agent-run terminal commands execute inside an OS-level sandbox with network access blocked and filesystem access restricted. It's kernel-enforced — not a prompt asking for permission, but actual isolation at the OS layer.</p>
+
+        <p>The setting is <code>chat.agent.sandbox.enabled</code> on macOS and Linux. Windows uses a separate setting (<code>chat.agent.sandbox.enabledWindows</code>) and a different runtime (MXC). And critically: sandboxing only applies in Default Approvals mode. If you've changed your approval mode to something more permissive, the sandbox is bypassed entirely.</p>
+
+        <p>That last detail is important. The sandbox is a default, not a mandate. But defaults shape behavior — and this default reframes the relationship between agents and the systems they run on.</p>
+
+        <h2>The Retry Pattern Is the Real Innovation</h2>
+
+        <p>Naive sandboxing would be a disaster. You can't run <code>npm install</code> with network access blocked. You can't <code>git fetch</code> without reaching a remote. A blanket sandbox would break every standard development workflow on the first attempt.</p>
+
+        <p>VS Code's solution is a three-tier retry cascade, and the design is worth studying because it's a blueprint for production agent security:</p>
+
+        <ol>
+          <li><strong>First attempt: fully sandboxed.</strong> The command runs with network blocked and filesystem restricted. If it succeeds, you're done. If the command only touches local files — a linter, a test suite, a build — this works transparently.</li>
+          <li><strong>Second attempt: sandboxed with network enabled.</strong> If the first attempt fails due to network restrictions — <code>git fetch</code>, <code>npm install</code>, <code>curl</code> — VS Code retries the command inside the sandbox but with network access enabled. The filesystem is still contained.</li>
+          <li><strong>Third attempt: unsandboxed with user approval.</strong> If the sandboxed-with-network attempt also fails — because the command writes to system paths or hits unusual external endpoints — VS Code falls back to unsandboxed execution and prompts the user for approval.</li>
+        </ol>
+
+        <p>Standard developer workflows survive this transparently. <code>npm install</code> succeeds on the second attempt. <code>git push</code> succeeds on the second attempt. <code>npm test</code> succeeds on the first. The developer never sees the retry logic unless something unusual happens.</p>
+
+        <p>Custom scripts are a different story. If your agent workflow runs shell commands against unusual external endpoints or writes to system paths, the retry logic may not cover it. The sandbox wall will hit on the first attempt, the network-enabled retry will fail, and you'll get an approval prompt. Test before you assume the defaults work for non-standard tooling.</p>
+
+        <p>This cascade — try contained, try contained-with-network, then escalate with human approval — is the right pattern. It treats the sandbox as the default execution environment and unsandboxed access as a deliberate, logged, human-authorized exception. That's the inversion. Unrestricted access used to be the default. Now containment is.</p>
+
+        <h2>The Access-Control Inversion</h2>
+
+        <p>Here's the contrarian read: the terminal didn't win because unrestricted access is good. It won because unrestricted access was available. Now that the terminal is the default agent surface, the infrastructure layer is reasserting control.</p>
+
+        <p>Think about what happened in the first half of 2026. Claude Code shipped nested sub-agents up to five levels deep. Codex CLI gained multi-agent coordination in Ultra mode. Terminal agents could spawn background processes, manage git workflows, run arbitrary shell commands, and chain operations without asking. The access model was: the agent has the same privileges as the developer. Full stop.</p>
+
+        <p>That model is a liability at production scale. An agent with unrestricted terminal access can exfiltrate source code, modify system configurations, install packages globally, or execute a destructive command — <code>rm -rf</code> with a typo'd path — that a human developer would catch but an autonomous loop won't. The terminal won the coding agent market because it enabled autonomy. But autonomy without containment is a security incident waiting to happen.</p>
+
+        <p>VS Code's sandbox default is the first major platform to formalize the correction. It doesn't eliminate terminal access — agents still run shell commands. But it establishes a principle: agent-run commands should be contained by default and escalated by exception. The unrestricted terminal was a phase. The sandboxed terminal is the destination.</p>
+
+        <p>This maps to a pattern from the server infrastructure world that most frontend and ML engineers haven't encountered: the principle of least privilege. Every production system — every Kubernetes pod, every Lambda function, every cloud VM — runs with the minimum permissions it needs. Network policies restrict egress. Filesystem access is scoped to a volume. The agent world has been operating without this principle. VS Code 1.127 imports it.</p>
+
+        <h2>The July 1 Infrastructure Trifecta</h2>
+
+        <p>The sandbox wasn't the only production default that landed on July 1. Two other releases hit the same day, and together they mark the moment agent infrastructure got its defaults.</p>
+
+        <p><strong>Claude Code 2.1.198 shipped background agents by default.</strong> Subagents in Claude Code flipped from foreground to background execution: the main conversation keeps running while a subagent works, and Claude gets notified when it finishes so it can pick up the result mid-turn. More importantly, background agents in git worktrees now auto-commit, push the branch, and open a GitHub draft PR when they finish code work — no prompt, no pause. The draft flag is the safety boundary; merge authority stays with humans.</p>
+
+        <p>Two new Notification hook events — <code>agent_needs_input</code> and <code>agent_completed</code> — let you wire Slack or desktop alerts to the background agent lifecycle. The Explore agent, previously locked to Haiku, now inherits the main session's model (capped at Opus 4.8).</p>
+
+        <p>That's a production default for autonomy. Background execution, auto-commit, draft PRs, lifecycle hooks. The pattern you'd build by hand over three sprints is now <code>npm install -g @anthropic-ai/claude-code</code>.</p>
+
+        <p><strong>Microsoft Foundry Agent Service reached general availability.</strong> Write your agent in whatever framework you want — Microsoft Agent Framework, LangChain, CrewAI — run <code>azd deploy</code>, and the infrastructure disappears. One command provisions a Foundry project, a model deployment, a container registry, Application Insights, and a managed identity. Your agent gets its own Entra ID, a dedicated endpoint, and scale-to-zero pricing.</p>
+
+        <p>That's a production default for deployment. No Kubernetes configs. No container registry management. No session state plumbing. The hosted agent wrapper handles identity, isolation, observability, and scaling.</p>
+
+        <p>Three releases, three layers, three defaults:</p>
+
+        <ul>
+          <li><strong>Safety:</strong> VS Code sandboxing terminal commands by default</li>
+          <li><strong>Autonomy:</strong> Claude Code running background agents with auto-commit by default</li>
+          <li><strong>Deployment:</strong> Foundry deploying agents to managed infrastructure with one command</li>
+        </ul>
+
+        <p>The era of "configure everything yourself" is ending. Agent infrastructure is getting opinions.</p>
+
+        <h2>What This Means for Your Harness</h2>
+
+        <p>If you've been building agent infrastructure — and the readers of <em>Harness Engineering</em> know this is the layer that matters — the sandbox default changes three things about how you design your system.</p>
+
+        <p><strong>Design your harness for sandboxed execution.</strong> Your agent's tools need to work inside a restricted environment. This means: prefer local file operations over network calls. If a tool needs network access, design it so the sandbox retry logic covers it — standard HTTP, standard package managers, standard git operations. Don't build tools that require writing to system paths or hitting unusual endpoints. If you do, document the escalation path and make sure the user knows they'll see an approval prompt.</p>
+
+        <p><strong>Treat sandbox failures as first-class events.</strong> Your harness should detect when a command hits the sandbox wall and handle it gracefully — either by retrying with the appropriate permissions or by informing the user that the operation requires escalation. Don't let sandbox failures surface as generic errors. They're a specific, recoverable condition, and your harness should treat them as such.</p>
+
+        <p><strong>Stop assuming full system access.</strong> This is the hardest mental shift. For two years, the assumption has been that an agent with terminal access can do anything a developer can do. That's still technically true — the sandbox has escalation paths. But the default is now restricted access, and your harness should be designed to work within that default. If your agent can only function with unrestricted access, you've built a tool that fights the platform instead of working with it.</p>
+
+        <h2>The Platform Choke Point</h2>
+
+        <p>There's a strategic dimension here that's worth naming. VS Code is the most widely used code editor in the world — over 15 million monthly active developers. When VS Code makes sandboxing the default, it's not just a feature decision. It's a platform decision that shapes what every agent built on VS Code can do.</p>
+
+        <p>This creates a tension. The terminal agents that won the coding market — Claude Code, Codex CLI, Gemini CLI — are standalone tools. They run as independent processes and aren't subject to VS Code's sandbox. But they integrate with VS Code through extensions, and the terminal commands they run <em>through</em> VS Code's integrated terminal are subject to the sandbox.</p>
+
+        <p>The result is a split execution model. Commands the agent runs directly in its own process: unrestricted. Commands that flow through VS Code's terminal: sandboxed. For most workflows this is fine — the agent runs in its own process and uses VS Code as a rendering layer. But for workflows that depend on the integrated terminal, the sandbox is now in the loop.</p>
+
+        <p>Expect this pattern to spread. JetBrains shipped Junie CLI as a standalone terminal agent, but their IDEs will likely follow VS Code's lead on sandboxing. Cloud-based agent platforms — Replit, GitHub Codespaces, Google Cloud Workstations — already run agents in containers with network policies. The local IDE sandbox is the last surface where agents had unrestricted access to the developer's machine. That surface is closing.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p>If you're building or running agent workflows, three concrete steps:</p>
+
+        <p><strong>Audit your agent's terminal commands for sandbox compatibility.</strong> Go through the shell commands your agent runs and classify each one: does it need network access? Does it write outside the workspace? Does it hit system paths? For each command that might break, verify the retry logic covers it. <code>npm install</code>, <code>git fetch</code>, <code>curl</code> — these are handled. Custom scripts that write to <code>/usr/local</code> or hit internal endpoints on non-standard ports are not. Fix those before your team updates to 1.127.</p>
+
+        <p><strong>Update VS Code and test in Default Approvals mode.</strong> The sandbox only applies when you're in Default Approvals mode. If you've switched to a more permissive approval setting, the sandbox is bypassed — which means you're not getting the safety benefit. Update to 1.127, keep Default Approvals mode on, and run a typical agent workflow. Note which commands trigger approval prompts. Those are your sandbox compatibility gaps.</p>
+
+        <p><strong>Review your enterprise agent policy.</strong> VS Code 1.127 ships a new JSON settings file that's the fastest path to policy delivery on non-MDM machines. If you're managing a team of developers using AI agents, this is how you enforce sandbox defaults across the org. The setting <code>chat.agent.sandbox.enabled</code> should be <code>true</code> in your policy. Document the escalation path so developers know when and how to request unsandboxed execution for legitimate use cases.</p>
+
+        <h2>The Bigger Picture</h2>
+
+        <p>The first half of 2026 was defined by access. Agents got terminal access, browser access, file system access, multi-agent orchestration access. The story was about removing constraints — giving models the tools to act autonomously on real systems. The terminal ate the IDE because the IDE constrained agents and the terminal didn't.</p>
+
+        <p>The second half of 2026 is being defined by containment. Not restriction — containment. The sandbox default doesn't prevent agents from doing their work. It ensures that the work happens inside a boundary, with a defined escalation path, and that exceptions are logged and human-approved. That's not a step backward. It's the maturation of the agent infrastructure layer.</p>
+
+        <p>The open-source Kite framework, released June 30 by beevr-labs, made this explicit in their design philosophy: production agents need circuit breakers, kill switches, and idempotency keyed on operation IDs so a retried action doesn't charge a customer twice. Their argument — that the model is about 10% of the work and the other 90% is tools, retries, guardrails, and evaluation — is the same argument VS Code 1.127 makes with its sandbox default. The infrastructure matters more than the model.</p>
+
+        <p>The teams that win the next phase of agent development won't be the ones with the most powerful models or the most unrestricted access. They'll be the ones who design harnesses that work inside boundaries — that treat the sandbox as a feature, not a constraint, and that build escalation paths that are transparent, logged, and safe.</p>
+
+        <p>The terminal won because it gave agents access. The sandbox default says: now let's make that access survivable.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
