@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>A Food Delivery Company Built the #1 Coding Model — Abuiliazeed</title>
+  <meta name="description" content="For two months, the most-used coding model on OpenRouter was anonymous. Then Meituan — a food delivery company — revealed they built it. Trained on Chinese chips, MIT-licensed, and beating GPT-5.5 on SWE-bench Pro.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/food-delivery-company-built-best-coding-model.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/food-delivery-company-built-best-coding-model.html">
+  <meta property="og:title" content="A Food Delivery Company Built the #1 Coding Model">
+  <meta property="og:description" content="For two months, the most-used coding model on OpenRouter was anonymous. Then Meituan — a food delivery company — revealed they built it. Trained on Chinese chips, MIT-licensed, and beating GPT-5.5 on SWE-bench Pro.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="A Food Delivery Company Built the #1 Coding Model">
+  <meta name="twitter:description" content="For two months, the most-used coding model on OpenRouter was anonymous. Then Meituan — a food delivery company — revealed they built it. Trained on Chinese chips, MIT-licensed, and beating GPT-5.5 on SWE-bench Pro.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-07-07">July 7, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">A Food Delivery Company Built the #1 Coding Model</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>For two straight months, the most-used coding model on OpenRouter had no company name attached to it. Developers routing their agents through the platform selected "Owl Alpha" more than any other model — more than Claude, more than GPT-5.5, more than Gemini. They chose it based on output quality alone. No marketing. No benchmark press releases. No founder on X explaining the vision. Just a model that wrote better code than the alternatives, token after token, day after day.</p>
+
+        <p>On June 30, the model got a real name: <strong>LongCat-2.0</strong>. And the company behind it was revealed: <strong>Meituan</strong>.</p>
+
+        <p>If you don't know Meituan, that's understandable. They are a Beijing-based food delivery and local services platform. Their core business is dispatching riders to bring you noodles, groceries, and movie tickets. They are not an AI lab. They have no AI products. And yet they built the coding model that developers independently selected as the best available — beating GPT-5.5 on SWE-bench Pro (59.5 vs. 58.6), supporting a native 1-million-token context window, and shipping under an MIT license. Trained entirely on Chinese chips, without a single NVIDIA GPU in the pipeline.</p>
+
+        <p>This is the moment to stop thinking about the AI model race as a contest between a handful of frontier labs. It isn't. The frontier is fragmenting — and fragmenting fast.</p>
+
+        <h2>The Owl Alpha Experiment</h2>
+
+        <p>The most revealing data point isn't the benchmark score. It's the adoption pattern. Owl Alpha spent roughly eight weeks at or near the top of OpenRouter's coding model usage charts, and nobody knew who made it. This matters because OpenRouter is a routing layer where developers pay per token and switch models freely. There's no lock-in. No bundle discount. No enterprise deal that explains volume. Developers used Owl Alpha because it produced results — and they discovered this empirically, by running the same agent tasks through multiple models and comparing outputs.</p>
+
+        <p>In other words, this was a blind taste test that ran for two months, conducted by tens of thousands of developers, on real workloads. And the winner was a model from a food delivery company.</p>
+
+        <p>If you want to understand what this means for the model layer, consider what would have been true six months ago. A new model appearing on OpenRouter from an unknown source would have been treated with suspicion. Developers default to Anthropic, OpenAI, Google — the brands they trust for production workloads. The assumption was that model quality correlates with lab reputation, compute budget, and research pedigree. Owl Alpha shattered that assumption. When the model is good enough, brand evaporates as a selection criterion.</p>
+
+        <h2>The Specs: Why It Won</h2>
+
+        <p>LongCat-2.0 is a 1.6-trillion-parameter mixture-of-experts model with roughly 48 billion active parameters per token (dynamic range of 33B to 56B depending on the query). The architecture decision that enables the 1M context window is called <strong>LongCat Sparse Attention</strong>, which reduces long-context compute cost from quadratic to linear. This is the same category of innovation that DeepSeek V4 pioneered with its Compressed Sparse Attention — the recognition that the bottleneck for agent workflows isn't raw intelligence, it's context economics.</p>
+
+        <p>Here are the numbers that matter:</p>
+
+        <ul>
+          <li><strong>SWE-bench Pro: 59.5</strong> — ahead of GPT-5.5's 58.6. This is the benchmark that uses realistic, complex software engineering tasks. It's the hardest public coding benchmark, and an open-weight model is on top.</li>
+          <li><strong>Terminal-Bench 2.1: 70.8</strong> — measures execution and error recovery in shell environments. This is where you separate models that can write code from models that can <em>operate</em> as agents. LongCat-2.0 excels here.</li>
+          <li><strong>SWE-bench Multilingual: 77.3</strong> — cross-language repository tasks. Strong across codebases regardless of primary language.</li>
+          <li><strong>1M token context window (native)</strong> — not a stretched window with degradation at the edges. Native, meaning the attention mechanism was designed for it from the architecture level.</li>
+          <li><strong>MIT license</strong> — commercial use, modification, redistribution. No restrictions. No regional clauses.</li>
+          <li><strong>Pricing: $0.75/M input, $2.95/M output</strong> on OpenRouter. For comparison, GPT-5.5 runs $5/M input and $30/M output. LongCat-2.0 is roughly 10x cheaper on output.</li>
+        </ul>
+
+        <p>Put together, this is a model that matches or exceeds frontier coding capability, costs a tenth of the proprietary alternatives, has no usage restrictions, and supports context windows long enough to hold entire repositories. Is it any surprise developers chose it?</p>
+
+        <h2>Trained on Chips You Can't Buy</h2>
+
+        <p>The hardware story is arguably more significant than the benchmark story. Meituan trained LongCat-2.0 on a cluster of <strong>50,000 domestic Chinese AI ASICs</strong> — not NVIDIA H100s, not H200s, not Blackwells. Chinese-designed accelerators from companies under export control restrictions. Zero CUDA in the training pipeline.</p>
+
+        <p>This is the clearest evidence yet that the NVIDIA moat is narrowing. For years, the assumption was that frontier models required NVIDIA's hardware and software ecosystem — CUDA was the lock-in, and the chips were the bottleneck. US export controls were designed to maintain that gap by denying China access to the most advanced NVIDIA silicon. The strategy had a flaw: it assumed Chinese labs couldn't build competitive alternatives. LongCat-2.0 is evidence they can — and not just for smaller models. This is a 1.6-trillion-parameter training run that produced a frontier-adjacent coding model. The chips work. The training infrastructure works. The scaling laws hold on non-NVIDIA hardware.</p>
+
+        <p>Meituan isn't alone. Zhipu AI's GLM-5.2 (744B params, the current SWE-bench Verified leader at 84.2%) was similarly trained on domestic compute. Tencent's Hunyuan Hy3, released the same week as LongCat-2.0's weights, was trained on Huawei Ascend clusters. The pattern is consistent across the Chinese AI ecosystem: domestic hardware is sufficient for frontier-scale training, and the gap to NVIDIA is closing, not widening.</p>
+
+        <h2>The Same Week: Tencent's Hy3 and the Regulatory Squeeze</h2>
+
+        <p>The LongCat-2.0 weight release on July 4 wasn't even the only major open-model event of the week. Tencent's Hunyuan team shipped the full version of <strong>Hy3</strong> — a 295-billion-parameter MoE model with 21 billion active parameters — and in a reversal from their April preview, released it under Apache 2.0.</p>
+
+        <p>Hy3 tells a complementary story. Where LongCat-2.0 is the coding specialist, Hy3 is the agent specialist. Its genuine wins sit in search and tool orchestration: <strong>84.2 on BrowseComp</strong> and <strong>91.0 on DeepSearchQA</strong> — ahead of every open model in Tencent's evaluation table and competitive with Claude Opus 4.8 and GPT-5.5. It leads the open field on tool orchestration at 79.1 on the public MCP-Atlas benchmark set, and on agent-harness evaluations. Meanwhile, on the agentic coding suite, it trails GLM-5.2: SWE-bench Verified at 78.0 versus 84.2, and DeepSWE by a wide margin (46.2 vs. 28.0).</p>
+
+        <p>Read together, the landscape is clear: GLM-5.2 owns repository-scale coding, LongCat-2.0 owns agentic coding workflows, and Hy3 owns search-and-tool-heavy agent workloads. Three different Chinese models, three different specializations, all open-weight, all trained without NVIDIA, all released within weeks of each other.</p>
+
+        <p>But there's a darker backdrop. The same week these models launched, ByteDance's Doubao agent feature went offline (July 15 shutdown), and Alibaba's Qwen is sunsetting its consumer agent features by October 15. Beijing is enforcing new rules on humanlike AI interaction services — consumer-facing agents that mimic human conversation are being regulated out of existence. Tencent's Hy3 launch appears to be a calculated bet: <strong>pivot to enterprise agent use cases where regulatory risk is lower</strong>, and do it with an Apache-licensed model that Western enterprises can actually adopt.</p>
+
+        <p>The Chinese AI strategy is becoming legible. Consumer agents: regulated, restricted, wound down. Enterprise and infrastructure models: open-sourced aggressively, priced to undercut, distributed globally. They're not competing for the consumer chatbot market. They're competing for the model layer that every agent system will run on.</p>
+
+        <h2>Why the Infrastructure Matters More Than the Lab</h2>
+
+        <p>Here's where this connects to harness engineering and the broader thesis of agent-first development. Most teams building agent systems obsess over which model to use. They benchmark Claude versus GPT versus Gemini and treat the model selection as a strategic decision with long-term consequences.</p>
+
+        <p>LongCat-2.0 proves that framing is obsolete. The model you're using today will not be the best model in 30 days. The model that's best for coding won't be best for agent tool-use. The model from the prestigious lab will be matched by a model from a company that delivers food. The half-life of model superiority is collapsing.</p>
+
+        <p>What survives model churn is the infrastructure you build around the model: the harness, the context engineering, the tool definitions, the verification loops, the memory systems. The model is a swappable component. The harness is the product. This is the central argument I develop in <a href="../book.html">Harness Engineering</a> — treat the model as an implementation detail, and invest in the abstraction layer that makes swapping a one-line change.</p>
+
+        <p>Owl Alpha's anonymous dominance on OpenRouter is the proof. Developers didn't need to know who made the model. They didn't need a brand to trust. They needed a model that produced good code through their existing harness — and when they found one, they routed to it. The harness was the constant. The model was the variable.</p>
+
+        <h2>The Memory Footprint Problem</h2>
+
+        <p>One important caveat about LongCat-2.0: at 1.6 trillion total parameters, this is not a model you run on a laptop. Even in INT8 quantization (the 141-shard checkpoint Meituan uploaded to Hugging Face), the weights consume roughly 1.6 terabytes of storage. In FP8, the footprint is still massive. This is a data center model — or, more precisely, a cloud API model. You'll access it through OpenRouter or a hosted endpoint, not a local inference server.</p>
+
+        <p>Contrast with Hy3: at 295B total parameters with 21B active, its FP8 footprint is under 300GB. That's still server-grade, but it's less than half the memory of GLM-5.2 (744B total, ~744GB in FP8, requiring an 8x H200 node as the practical minimum). For organizations deciding what to self-host, Hy3 makes a credible case as the best open-weight model for agent workloads that don't require frontier coding — at a fraction of the infrastructure cost.</p>
+
+        <p>For local and edge deployment, the story remains the smaller models. Qwen3-Coder-Next at 3B active parameters, Gemma 4's 26B A4B MoE activating 3.8B per token, or the E2B/E4B edge variants — these are the models that run on your hardware. LongCat-2.0 is for the API layer of your agent stack, not the local layer.</p>
+
+        <h2>What This Means for You</h2>
+
+        <p>If you're building agent systems, three things changed this week:</p>
+
+        <p><strong>Stop treating model selection as strategic.</strong> The best coding model was built by a food delivery company and was anonymous for two months. The next one might come from a ride-hailing platform. Your harness should treat models as interchangeable. If switching from Claude to LongCat-2.0 to Hy3 requires more than changing a configuration value, your architecture is wrong.</p>
+
+        <p><strong>Test on OpenRouter's usage data, not leaderboards.</strong> Benchmarks are gameable and increasingly disconnected from real agent performance. OpenRouter's actual usage patterns are the closest thing to a blind test the industry has. When developers paying per token converge on a model, that's signal. LongCat-2.0's anonymous dominance was more trustworthy than any SWE-bench score.</p>
+
+        <p><strong>Plan for the Chinese open-weight wave.</strong> GLM-5.2, LongCat-2.0, Hy3, DeepSeek V4, Kimi K2.7, MiniMax M2.5 — the open-weight frontier is now predominantly Chinese. The licensing is permissive (MIT, Apache 2.0). The pricing is aggressive. The hardware independence is real. Western enterprises need to make a procurement decision: do they adopt these models, or do they pay 10x more for marginal capability gains from US labs? The answer will increasingly be adoption — regulatory anxiety notwithstanding.</p>
+
+        <h2>The Real Lesson</h2>
+
+        <p>The LongCat-2.0 story isn't really about Meituan. It's about what happens when a capability diffuses beyond the institutions that created it. Training a frontier-scale model used to require a dedicated AI lab, billions in compute budget, and years of specialized research. Now it requires a company with enough cash flow to fund a GPU cluster (or its domestic equivalent), a team smart enough to execute a known architecture, and the willingness to open-source the result.</p>
+
+        <p>The capability hasn't disappeared. It has spread. A food delivery company can build the best coding model. A gaming conglomerate can build the best agent model. The question isn't who will build the next frontier model — it's whether your infrastructure is ready to use whichever one wins next month.</p>
+
+        <p>Build the harness. Make the model a plug. Everything else is noise.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
