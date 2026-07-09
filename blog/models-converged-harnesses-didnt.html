@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Models Converged. Harnesses Didn't. — Abuiliazeed</title>
+  <meta name="description" content="On July 8, 2026, three independent announcements proved the same thing: model capability has converged, and the harness now determines whether your agent costs $1.28 or $43.48 per task.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/models-converged-harnesses-didnt.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/models-converged-harnesses-didnt.html">
+  <meta property="og:title" content="Models Converged. Harnesses Didn't.">
+  <meta property="og:description" content="On July 8, 2026, three independent announcements proved the same thing: model capability has converged, and the harness now determines whether your agent costs $1.28 or $43.48 per task.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Models Converged. Harnesses Didn't.">
+  <meta name="twitter:description" content="On July 8, 2026, three independent announcements proved the same thing: model capability has converged, and the harness now determines whether your agent costs $1.28 or $43.48 per task.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-07-09">July 9, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">Models Converged. Harnesses Didn't.</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Three announcements landed on July 8, 2026. They came from different companies, targeted different markets, and weren't coordinated. But they all proved the same thing: the gap between frontier models has compressed to statistical noise, while the gap between harnesses has widened to a 10x cost differential. If you're still choosing agents by model benchmarks, you're optimizing the wrong variable.</p>
+
+        <p>Here's what happened, what the numbers say, and why the harness — not the model — is now the dominant lever in agent economics.</p>
+
+        <h2>Three Data Points, One Conclusion</h2>
+
+        <p><strong>Data point one: Databricks benchmarked coding agents on their own multi-million line codebase</strong> and found that GLM 5.2 — an open model from Z.ai — scored statistically tied with Anthropic's Opus 4.8 on task quality. The cost difference: GLM 5.2 at $1.28 per task. Opus 4.8 at $1.94 per task. Same quality tier, 34% cheaper. But the more striking finding was what happened when they ran the <em>same model</em> through different harnesses. Claude Code/Codex versus Pi — same model, same thinking effort, same tasks. The cost per task differed by more than 2x. Pi sent roughly 3x less context per turn. Quality stayed the same. The harness, not the model, determined the cost.</p>
+
+        <p><strong>Data point two: SpaceXAI released Grok 4.5</strong>, trained alongside Cursor. On SWE Bench Pro, Grok 4.5 resolved tasks using an average of 15,954 output tokens. Opus 4.8 (max) used 67,020 on the same benchmark. That's a 4.2x difference in token consumption — not because Grok is 4.2x smarter, but because it was co-trained with the harness it runs in. The model learned to work within Cursor's execution loop, context window, and tool-calling patterns. Priced at $2 per million input tokens and $6 per million output tokens — compared to Opus 4.8's $5/$25 — the effective cost per task is dramatically lower. Musk called it "Opus-class but faster, more token-efficient, and lower cost." The benchmark chart tells a more nuanced story — Fable (max) still leads on most coding benchmarks — but on token efficiency, the gap is real and it's structural.</p>
+
+        <p><strong>Data point three: LangChain and NVIDIA launched the NemoClaw Deep Agents blueprint</strong>, combining NVIDIA Nemotron 3 Ultra (open-weight model), LangChain Deep Agents (harness layer), and NVIDIA OpenShell (runtime). In LangChain's agent evaluation suite, Nemotron 3 Ultra achieved an aggregate score of 0.86 at a cost of $4.48. The next closest performing model cost $43.48. Same benchmark, same task set, 10x cost difference. The blueprint isn't a single product — it's a reference architecture for a three-layer open stack where each layer is independently swappable.</p>
+
+        <p>Three announcements. Three different entry points. One conclusion: <strong>model capability has converged. Harness efficiency hasn't.</strong></p>
+
+        <h2>The Convergence Is Real</h2>
+
+        <p>Let's be precise about what "converged" means. It doesn't mean every model is identical. It means the gap between the best model and the fifth-best model — measured on real engineering tasks, not synthetic benchmarks — has compressed to a range where the harness swamps the difference.</p>
+
+        <p>Databricks' internal benchmark made this explicit. They evaluated agents on actual pull requests from their own codebase — a multi-million line monorepo spanning Python, Go, TypeScript, Scala, Rust, and Java. The tasks were real engineering work: feature implementation, bug fixes, config changes. They found three capability tiers, but the top tier included models from OpenAI, Anthropic, <em>and</em> open-source (GLM 5.2). The quality spread within the top tier was small enough that cost — not capability — became the deciding factor.</p>
+
+        <p>This is a structural shift. Six months ago, the top tier was Anthropic and OpenAI, with open models trailing by 10-15 points. Now GLM 5.2 — a Chinese open-source MoE model — is statistically tied with Opus 4.8 on a real-world enterprise codebase. The Databricks team noted that qualitative feedback from their own developers corroborated the benchmark: GLM was already being piloted as a daily driver and holding up.</p>
+
+        <p>Grok 4.5's positioning reinforces the same trend. SpaceXAI's own benchmark chart shows Fable (max) leading on all four coding benchmarks they published. Grok 4.5 is close but not first. Yet the pitch isn't "we're #1 on benchmarks." It's "we're competitive, and we cost less." When a company led by Elon Musk — not known for modesty — leads with pricing and token efficiency rather than raw benchmark scores, the implication is clear: the benchmark race is flattening, and everyone knows it.</p>
+
+        <h2>Why Harnesses Diverged</h2>
+
+        <p>If models converged, why did harnesses diverge? Because nobody was watching.</p>
+
+        <p>For the last two years, the industry treated the harness as plumbing. The model was the product. Teams compared Claude versus GPT versus Gemini on SWE-bench, Terminal-Bench, and Humanity's Last Exam. The harness — the execution loop that manages context, calls tools, handles errors, and decides when to stop — was an implementation detail. Everyone built their own, optimized for their own model, and nobody benchmarked the harness layer independently.</p>
+
+        <p>Databricks finally did. And the results are damning for anyone who invested in model selection but not harness engineering.</p>
+
+        <p>The key finding: <strong>when the same model runs through different harnesses, the cost per task varies by more than 2x, while quality stays constant.</strong> The difference comes down to context management. Claude Code and Codex feed the model a large context window on every turn — full conversation history, open files, tool results, system instructions. Pi sends roughly 3x less context per turn. It maintains a tighter working set, finishes tasks in fewer rounds, and arrives at the same answer. The model does the same quality of work. You just pay for less of it.</p>
+
+        <p>This isn't a Pi-versus-Claude-Code story. It's a structural finding: <strong>the harness determines how many tokens the model consumes, and token consumption — not token price — is what drives cost.</strong> I covered this dynamic in <a href="per-token-illusion.html">The Per-Token Illusion</a>, where Sonnet 5 cost more per task than Opus 4.8 despite being cheaper per token. The Databricks data extends that finding: it's not just the model's token efficiency that matters. It's the harness's context strategy.</p>
+
+        <p>Grok 4.5 takes this one step further. By training alongside Cursor, SpaceXAI baked harness-aware behavior into the model weights themselves. The model learned to operate within Cursor's context window, tool-calling conventions, and execution loop. The result: 4.2x fewer output tokens on SWE Bench Pro compared to Opus 4.8 (max), which was trained as a general-purpose model. This is model-harness co-optimization — a new pattern where the model is tuned for the specific harness it will run in, collapsing the gap between "what the model wants to do" and "what the harness allows it to do efficiently."</p>
+
+        <h2>The Open Stack Arrives</h2>
+
+        <p>The NemoClaw blueprint matters for a different reason. It's the first time the three layers of the agent stack — model, harness, and runtime — have been combined into a single reference architecture where <em>every layer is open and independently swappable</em>.</p>
+
+        <p>Consider what each layer does:</p>
+
+        <ul>
+          <li><strong>Model layer:</strong> NVIDIA Nemotron 3 Ultra. Open weights. Customizable. Teams can fine-tune for their domain without asking permission.</li>
+          <li><strong>Harness layer:</strong> LangChain Deep Agents. Provides planning, tool use, memory, and task execution. The harness profile is tuned specifically for Nemotron 3 Ultra — which is the same model-harness co-optimization pattern Grok 4.5 used, just applied to open-source components.</li>
+          <li><strong>Runtime layer:</strong> NVIDIA OpenShell. Secure, governed deployment. Controls how agents interact with tools, systems, and data. This is the sandbox and execution environment.</li>
+        </ul>
+
+        <p>The 10x cost advantage ($4.48 vs $43.48) isn't because Nemotron 3 Ultra is 10x smarter than the competition. It's because the entire stack — model, harness, and runtime — was designed to work together, and the open-weight model eliminates the per-token markup that proprietary providers charge. The blueprint also includes partners like Baseten, Fireworks, Nebius, Crusoe, DeepInfra, and Together AI for serving, which means you're not locked into NVIDIA's infrastructure either.</p>
+
+        <p>EY is already building an implementation practice around this stack. That's an enterprise signal: the open-source agent stack isn't a research project anymore. It's a procurement option.</p>
+
+        <h2>Why This Changes Your Strategy</h2>
+
+        <p>If you're building agent-based systems, the implications are direct:</p>
+
+        <p><strong>Stop optimizing model selection.</strong> The Databricks data shows that within the top capability tier, model choice moves the quality needle by a few points. Harness choice moves the cost needle by 2x or more. If you're spending engineering hours benchmarking Claude versus GPT versus GLM, you're solving a problem that's nearly solved. The models are close enough. Spend that time benchmarking harnesses instead.</p>
+
+        <p><strong>Benchmark on your own codebase.</strong> Databricks built their own benchmark because SWE-bench and Terminal-Bench don't represent their multi-language, multi-service monorepo. Public benchmarks leak into training data and don't reflect real task distributions. The Databricks team found that about 25% of their engineering tasks were low-complexity (flag flips, config updates) and 60% were medium-complexity — work that doesn't require frontier models at all. If you're running Opus 4.8 on config changes, you're burning money. Build a benchmark from your own PRs, categorize by complexity, and route to the cheapest model that passes.</p>
+
+        <p><strong>Audit your harness's context strategy.</strong> The Databricks finding that Pi sends 3x less context per turn than Claude Code is the single most actionable insight in this data. How much context does your harness feed the model on each turn? If the answer is "everything," you're paying for tokens the model doesn't need. Context curation — deciding what stays in the working set and what gets evicted — is the highest-leverage optimization in agent economics right now. It's also the core thesis of <a href="harness-engineering.html">harness engineering</a>: the bottleneck moved from writing code to designing the environment in which code gets written.</p>
+
+        <p><strong>Consider model-harness co-training.</strong> Grok 4.5's 4.2x token efficiency didn't come from a better architecture. It came from training the model alongside the harness it would run in. If you're fine-tuning models for your domain — and the open-weight options (Nemotron, GLM, Qwen) make this increasingly viable — train with the harness's tool-calling patterns, context window constraints, and execution loop baked into the training data. The model learns to work <em>with</em> your harness instead of against it.</p>
+
+        <p><strong>Evaluate the open stack seriously.</strong> The NemoClaw blueprint's 10x cost advantage is not a marketing claim — it's a benchmark result from LangChain's own evaluation suite. The open-weight model eliminates per-token markup. The open harness eliminates vendor lock-in. The open runtime eliminates infrastructure dependency. If you're paying $40+ per agent task with a proprietary stack, the math is straightforward. Even if the open stack delivers 80% of the quality at 10% of the cost, the ROI is obvious for the majority of engineering tasks that don't require frontier intelligence.</p>
+
+        <h2>The Tiered Future</h2>
+
+        <p>Databricks' finding about capability tiers points to where this is heading. Not every task needs Opus 4.8. Most don't. The rational strategy is tiered routing: cheap models (Haiku-class, GPT 5.4 Mini-class) for the 25% of tasks that are low-complexity. Mid-tier models (GLM 5.2, Sonnet 5, Grok 4.5) for the 60% that are medium-complexity. Frontier models (Opus 4.8, Fable max) for the 15% that actually require maximum reasoning. Databricks is already implementing this internally — they found their engineers were defaulting to the most expensive model for everything, and the benchmark gave them the data to push more work down the tiers.</p>
+
+        <p>But here's the catch: tiered routing only works if your harness supports it. If your harness is hard-coded to one model, you can't route by complexity. If your harness feeds the same context regardless of model tier, you lose the cost savings. The harness has to be model-agnostic, context-aware, and configurable enough to route intelligently. This is exactly what Databricks built with Omnigent — their open-source meta-harness that wraps Claude Code, Codex, Pi, and custom agents behind a common interface.</p>
+
+        <p>The three-layer stack — platform, harness, meta-orchestration — that I described in <a href="harness-platform-primitive.html">The Harness Became a Platform Primitive</a> is now backed by hard data. The platform handles persistence. The harness handles execution. The meta-orchestration layer handles routing. And the economics prove that the harness layer is where the engineering investment pays off.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <ol>
+          <li><strong>Measure per-task cost, not per-token cost.</strong> Pull your agent logs. Divide total spend by number of completed tasks. That's your real cost. If you don't have this number, you're flying blind.</li>
+          <li><strong>Run the same task through two harnesses.</strong> Pick ten representative PRs from your repo. Run them through Claude Code and through a lighter harness (Pi, OpenCode, or a custom loop). Compare quality and cost. The Databricks data suggests you'll see a 2x cost difference with minimal quality impact.</li>
+          <li><strong>Check your context per turn.</strong> How many tokens does your harness send to the model on each turn? If it's growing linearly with conversation length, you have a context management problem. Implement summarization, eviction, or subagent isolation.</li>
+          <li><strong>Pilot an open model.</strong> GLM 5.2 is available on most inference providers. Run it on your benchmark alongside Opus 4.8. The Databricks data says you'll be surprised.</li>
+        </ol>
+
+        <h2>The Bottom Line</h2>
+
+        <p>July 8, 2026 wasn't a launch day. It was an inflection point. Three separate teams — a data platform, an AI lab, and a GPU company — independently demonstrated that model capability has compressed to a range where harness efficiency is the dominant variable in agent economics. The spread between the best and worst model in the top tier is now smaller than the spread between the best and worst harness.</p>
+
+        <p>Most people think the model is the product. The data says the model is a commodity. The harness is the product.</p>
+
+        <p>If your engineering team is spending more time evaluating models than optimizing harnesses, you're optimizing the wrong layer. The teams that win the next phase of agent-first development will be the ones who treat harness engineering as a first-class discipline — not plumbing, not an implementation detail, but the primary lever for cost, quality, and velocity.</p>
+
+        <hr>
+
+        <p><em>The principles of harness engineering — context curation, model-harness co-optimization, tiered routing, and the three-layer agent stack — are covered in depth in <a href="../book.html">Harness Engineering: The Complete Guide to Agent-First Software Development</a>.</em></p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
