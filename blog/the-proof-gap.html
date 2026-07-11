@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Proof Gap: When Agents Produce What You Can't Test — Abuiliazeed</title>
+  <meta name="description" content="GPT-5.6 Sol Ultra produced a proof of the Cycle Double Cover Conjecture — a problem open since the 1970s. The proof can't be verified by running it. That exposes a gap your agent pipeline has no answer for.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-proof-gap.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-proof-gap.html">
+  <meta property="og:title" content="The Proof Gap: When Agents Produce What You Can't Test">
+  <meta property="og:description" content="GPT-5.6 Sol Ultra produced a proof of the Cycle Double Cover Conjecture — a problem open since the 1970s. The proof can't be verified by running it. That exposes a gap your agent pipeline has no answer for.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Proof Gap: When Agents Produce What You Can't Test">
+  <meta name="twitter:description" content="GPT-5.6 Sol Ultra produced a proof of the Cycle Double Cover Conjecture — a problem open since the 1970s. The proof can't be verified by running it. That exposes a gap your agent pipeline has no answer for.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-07-11">July 11, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Proof Gap: When Agents Produce What You Can't Test</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>A three-page PDF appeared on OpenAI's content delivery network on July 10. It's titled "A Proof of the Cycle Double Cover Conjecture." The conjecture has been open since the 1970s — posed independently by four mathematicians: Tutte, Itai and Rodeh, Szekeres, and Seymour. It asserts that every bridgeless graph can be covered by a collection of cycles such that every edge appears exactly twice. For five decades, nobody could prove it.</p>
+
+        <p>The PDF includes a sentence that should stop you cold: <em>"The proof in this note is entirely due to GPT 5.6 Sol Ultra and the writeup with Codex (with GPT 5.6 Sol)."</em></p>
+
+        <p>A model conceived the mathematical argument. A second model typeset the writeup. No human mathematician is credited. And at the time of this writing, the mathematical community is still checking whether every step holds.</p>
+
+        <p>This is not a coding benchmark. This is not an agent completing a SWE-bench task. This is a frontier model producing original mathematical research on a problem that has resisted human effort for half a century. And it exposes a problem that every agent engineering team has been pretending doesn't exist: what happens when your model produces an output that you can't verify by running it?</p>
+
+        <h2>Why This Is Different From Code Generation</h2>
+
+        <p>The agent world has spent two years optimizing for a specific verification model: the model writes code, you run the code, the tests pass or they don't. SWE-bench, ABC-Bench, CoderCup — every coding benchmark in the industry relies on the same primitive. You can execute the output. The output is deterministic. Either the test suite passes or it doesn't.</p>
+
+        <p>This is why the harness layer works. Your agent writes a function, the harness runs <code>npm test</code>, the linter catches style violations, the type checker catches interface errors, and CI gates the merge. The verification loop is tight, automated, and trustworthy. Code is executable, and executability is the foundation of automated verification.</p>
+
+        <p>Mathematical proofs are not executable.</p>
+
+        <p>You cannot run <code>pytest</code> on a graph theory proof. You cannot deploy a conjecture to staging and watch its integration tests pass. A proof is a logical argument — a sequence of deductions from axioms to conclusions — and verifying it requires either a human expert who understands the field or a formal proof assistant that can mechanically check every inference step. Neither of those lives in your CI pipeline.</p>
+
+        <p>The Cycle Double Cover proof is three pages of algebraic graph theory. It uses a nowhere-zero flow over <code>Γ = F₃²</code>, a set-assignment reduction, and a linear algebra argument to bridge local consistency to global coverage. The argument is elegant — if it's correct. But "if it's correct" is doing enormous work in that sentence, and the process of determining correctness is fundamentally different from the process of determining whether your agent's pull request passes the build.</p>
+
+        <h2>The Verification Landscape for Non-Executable Output</h2>
+
+        <p>There are two ways to verify a mathematical proof. Both are broken for agent workflows.</p>
+
+        <p><strong>Human expert review.</strong> A mathematician reads the proof, checks each step, looks for gaps or hidden assumptions, and either confirms or refutes. For the Cycle Double Cover Conjecture, this means finding a graph theorist who understands nowhere-zero flows, snark theory, and the specific reduction used. The global pool of mathematicians qualified to review this proof in detail is small. The review process takes days to weeks. And unlike code review, where a second pair of eyes catches most issues, mathematical proof review has no margin for "close enough" — a single invalid step invalidates everything downstream.</p>
+
+        <p><strong>Formal proof assistants.</strong> Tools like Lean, Coq, and Isabelle can mechanically verify proofs by checking every inference against formal axioms. This is the gold standard — a proof accepted by Lean is mathematically certain. But formalizing a three-page proof into Lean is itself a significant project. The proof uses concepts — nowhere-zero flows, cycle covers, edge-colourings — that may or may not have existing Lean mathlib definitions. The formalization effort could take days for an experienced Lean user, and there aren't many experienced Lean users. The formal verification tooling exists, but the pipeline from "model generates LaTeX proof" to "proof is mechanically verified in Lean" is entirely manual.</p>
+
+        <p>Contrast this with code. When Claude Code writes a function, your harness can verify it in seconds: run the tests, check the types, lint the style. When GPT-5.6 writes a proof, your harness has nothing. No automated check. No CI gate. No regression suite. The output sits in a PDF, waiting for a human to read it.</p>
+
+        <h2>The Bigger Class: Non-Executable Agent Output</h2>
+
+        <p>Here is the part that should worry you even if you don't care about graph theory.</p>
+
+        <p>Mathematical proofs are the extreme case of a much broader category: <strong>non-executable agent output</strong>. Any model output that cannot be verified by running it falls into this category. And that category is growing fast.</p>
+
+        <p>When your agent writes code, you run it. When your agent writes a proof, you can't. But the same gap applies when your agent:</p>
+
+        <ul>
+          <li><strong>Produces a security analysis.</strong> "This authentication flow is vulnerable to a timing attack." You can't run a test to confirm the reasoning is sound. You need a security expert to evaluate the argument — or you accept the risk.</li>
+          <li><strong>Generates an architectural recommendation.</strong> "Use event sourcing instead of CRUD for this service." There's no test suite that evaluates whether the tradeoff analysis is correct. The output is a recommendation, not an artifact.</li>
+          <li><strong>Drafts a compliance assessment.</strong> "This data pipeline satisfies GDPR Article 25 requirements." The correctness of this statement depends on legal interpretation, not execution.</li>
+          <li><strong>Produces a proof of correctness for a concurrent algorithm.</strong> Like the Cycle Double Cover, this is mathematical reasoning. Your test suite can show the algorithm works on tested inputs. It cannot prove it works on all inputs.</li>
+        </ul>
+
+        <p>The agent engineering community has been optimizing for the case where the output is code — because that's where the benchmarks are and that's where the money is. But as models get more capable, they're producing more non-executable output. Security analyses, architectural arguments, mathematical proofs, compliance assessments, strategic recommendations. These outputs are higher-stakes than code. And they have no verification pipeline.</p>
+
+        <p>The GPT-5.6 proof is a wake-up call not because graph theory matters to your product, but because it's the most visible example of a model producing output that falls outside the executable verification paradigm. If a model can prove the Cycle Double Cover Conjecture, it can produce a security analysis that sounds authoritative, an architectural argument that sounds rigorous, and a compliance assessment that sounds thorough. And your harness has no way to check any of it.</p>
+
+        <h2>Why Formal Verification Hasn't Solved This Yet</h2>
+
+        <p>The obvious response is: use formal verification tools. If Lean can verify proofs, wire it into your agent pipeline. Problem solved.</p>
+
+        <p>This is directionally correct but practically incomplete, and understanding why matters for anyone building agent infrastructure.</p>
+
+        <p>Formal proof assistants work on formal representations — not natural language or even LaTeX. You can't feed Lean a PDF and ask it to check the argument. You need to translate the proof into Lean's formal language, with every concept defined in terms of Lean's type theory. This translation is where errors creep in. If you formalize the proof incorrectly — if you misrepresent a concept or skip a step during translation — Lean will verify the wrong thing. The formalization is itself an error-prone human process.</p>
+
+        <p>The Lean mathlib — the library of formalized mathematical definitions and theorems — is extensive but incomplete. Graph theory concepts like nowhere-zero flows and cycle double covers may not have existing definitions. Creating those definitions requires mathematical expertise and Lean expertise simultaneously. This is a narrow intersection of skills.</p>
+
+        <p>There's promising work on autoformalization — using models to translate mathematical proofs into formal representations. But autoformalization is in its infancy. The success rates on non-trivial proofs are low enough that you still need human review of the formalization itself. You've moved the verification bottleneck, not eliminated it.</p>
+
+        <p>The result is a gap. Formal verification exists as a concept and as tooling. But the pipeline from "model generates mathematical output" to "output is formally verified" is not built. There is no <code>lean-check</code> step in your agent's harness. There is no MCP server that accepts a proof and returns a verification result. The infrastructure layer hasn't caught up to the capability layer.</p>
+
+        <h2>What the Proof Tells Us About Model Trajectory</h2>
+
+        <p>Stepping back from verification for a moment: the fact that GPT-5.6 Sol Ultra produced this proof at all is significant for a different reason.</p>
+
+        <p>For two years, the industry narrative has been that models are converging. Benchmark scores on SWE-bench, MMLU, and human evaluations have compressed to single-digit gaps between frontier models. The argument — one this blog has made — is that model capability is commoditizing and the harness layer is where differentiation happens.</p>
+
+        <p>But mathematical research isn't a benchmark. There's no training distribution of Cycle Double Cover proofs for the model to memorize. The conjecture is open — no known proof exists in the training data. If GPT-5.6's proof is correct, the model synthesized a novel mathematical argument by composing known techniques (nowhere-zero flows, set assignments, linear algebra) in a way no human had published.</p>
+
+        <p>This is qualitatively different from scoring 84% on SWE-bench. Benchmarks measure performance on known distributions. Novel proofs measure the ability to generalize beyond training data. If the proof holds, it suggests the model capability frontier hasn't converged as much as compressed benchmarks imply — and that the right way to measure frontier capability isn't another coding benchmark but tasks where the answer isn't in the training data.</p>
+
+        <p>If the proof is wrong — and that's a real possibility; models have produced convincing-looking but flawed proofs before — it's still instructive. The proof's structure follows a legitimate mathematical approach. The model identified the right tools (8-flow theorem, snark theory, the cubic reduction) and composed them into a plausible argument. Getting the approach right but the execution wrong is different from not understanding the problem at all. It's the difference between a graduate student who makes an algebra error and one who doesn't know where to start.</p>
+
+        <h2>What This Means for Your Harness</h2>
+
+        <p>Whether or not this specific proof is correct, the category of problem it exposes is real and growing. Here's what to do about it.</p>
+
+        <p><strong>Classify your agent outputs by verifiability.</strong> Go through the outputs your agents produce and tag each one: executable (code, configs, scripts — verifiable by running), checkable (analyses, reviews, recommendations — verifiable by a human expert), or formal (proofs, correctness arguments — verifiable by a formal tool). Most teams have excellent pipelines for executable outputs and nothing for the other two categories. Knowing which bucket your outputs fall into is the first step.</p>
+
+        <p><strong>Build a human-in-the-loop path for non-executable outputs.</strong> If your agent produces a security analysis, route it to a security engineer before it informs a decision. If it produces an architectural recommendation, route it to a senior engineer before it shapes a sprint. The harness should treat non-executable outputs as draft opinions requiring expert review, not as verified results. This is not a regression from autonomy — it's the right boundary for outputs that can't be self-verified.</p>
+
+        <p><strong>Investigate formal verification for correctness-critical paths.</strong> If your agents produce outputs where correctness is non-negotiable — concurrent algorithm designs, security protocol analyses, cryptographic argument proofs — start building a formal verification pipeline. Lean 4 and Coq are the leading tools. The effort is real, but the alternative is trusting model-generated correctness arguments that nobody has checked. For systems where a bug means a security vulnerability or a data loss event, "the model said it was correct" is not an acceptable verification.</p>
+
+        <p><strong>Track the autoformalization space.</strong> The gap between "model generates proof in natural language" and "proof is formally verified" is the same gap that existed between "model generates code" and "code is tested" three years ago. Autoformalization is where automated test generation was in 2023 — promising but immature. The teams that build the first reliable agent-to-Lean pipeline will have a verification advantage that compounds as models produce more mathematical output.</p>
+
+        <h2>The Stakes</h2>
+
+        <p>The GPT-5.6 proof is a three-page PDF about graph theory. It may be correct. It may contain a subtle error that a careful reviewer will catch next week. The mathematical community will resolve that question, as it always does.</p>
+
+        <p>But the structural problem it exposes isn't going away. Models are crossing into domains where their output can't be verified by execution. Mathematical proofs are the frontier today. Tomorrow it will be security arguments, protocol designs, formal specifications, and audit reports. The verification pipeline for these outputs doesn't exist in your harness. It doesn't exist in any commercial agent framework. The teams that build it first will be the ones who can safely deploy agents in high-stakes, non-executable domains.</p>
+
+        <p>The harness engineering discipline — the one this blog has been tracking and that <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em> systematizes — was built for executable output. Write code, run tests, gate the merge. That model works because executability is a universal verification primitive. The next phase of harness engineering needs to handle outputs that aren't executable, can't be tested, and require either expert review or formal verification to trust.</p>
+
+        <p>The model wrote a proof. Your test suite can't check it. That's the gap.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
