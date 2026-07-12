@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Egress Gap — Abuiliazeed</title>
+  <meta name="description" content="An xAI Grok Build CLI uploaded 5.1 GiB of a repository the agent was told not to read. The 'Improve the model' toggle was off. The upload continued anyway. Every terminal agent has this problem — and no agent framework has solved it.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-egress-gap.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-egress-gap.html">
+  <meta property="og:title" content="The Egress Gap">
+  <meta property="og:description" content="An xAI Grok Build CLI uploaded 5.1 GiB of a repository the agent was told not to read. The 'Improve the model' toggle was off. The upload continued anyway. Every terminal agent has this problem — and no agent framework has solved it.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Egress Gap">
+  <meta name="twitter:description" content="An xAI Grok Build CLI uploaded 5.1 GiB of a repository the agent was told not to read. The 'Improve the model' toggle was off. The upload continued anyway. Every terminal agent has this problem — and no agent framework has solved it.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-07-12">July 12, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Egress Gap</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>A developer ran a simple experiment. They pointed xAI's Grok Build CLI at a 12 GB repository, typed <em>"Reply exactly OK, do not read any files,"</em> and watched the wire.</p>
+
+        <p>5.1 GiB left the machine. Eighty-two storage upload requests, all returning HTTP 200. Zero failures. The agent never read a single file — the model-turn channel moved only 192 KB total, a 27,800x ratio against the storage channel. And the entire repository, including a file the agent was explicitly told not to open, arrived at a Google Cloud Storage bucket named <code>grok-code-session-traces</code>.</p>
+
+        <p>The "Improve the model" privacy toggle was turned off. The server still reported <code>trace_upload_enabled: true</code>. The upload continued anyway.</p>
+
+        <p>This isn't a hypothetical security concern anymore. It's a measured, reproduced, artifact-backed wire-level analysis published July 2026 — and it exposes a gap that every team running terminal coding agents has been pretending doesn't exist. Your agent can read every file on your system. What it sends to the cloud is entirely between the binary and its server.</p>
+
+        <h2>The Terminal Won. Now Live With the Consequences.</h2>
+
+        <p>Two weeks ago, this blog argued that the terminal ate the IDE because terminal agents have unrestricted system access. An IDE extension runs in a sandboxed process managed by the host editor. A terminal agent runs as a first-class process with the same filesystem, network, and shell access as the developer. That's why terminal agents lead every benchmark: they can do more.</p>
+
+        <p>That same access is the egress gap. When Claude Code reads your source files, it sends them to Anthropic's API — that's the point. When Codex CLI executes commands, it streams context to OpenAI — that's how it works. Every terminal agent is, by design, a process that reads your codebase and sends it to a remote server. The question was never <em>whether</em> your code leaves the machine. The question is: how much, to where, under what consent, and can you control it?</p>
+
+        <p>The Grok Build analysis answers that question for one major agent, and the answer is: more than you think, to a named cloud storage bucket, under a consent model that doesn't work.</p>
+
+        <h2>What the Wire Capture Proved</h2>
+
+        <p>The analysis — published as a reproducible GitHub Gist with SHA-256 hashes for every artifact — is methodologically rigorous. The researcher used mitmproxy to intercept traffic from Grok Build CLI version 0.2.93, planted canary values in files, and captured the exact bytes leaving the machine. Here's what they found.</p>
+
+        <p><strong>Finding 1: Secrets transmitted verbatim and unredacted.</strong> When Grok read a <code>.env</code> file containing fake API keys and database passwords, those secrets appeared in two channels: the live model-turn request body (<code>POST /v1/responses</code>) and a <code>session_state</code> archive uploaded via <code>POST /v1/storage</code>. No redaction. No filtering. The secrets file was treated like any other source file.</p>
+
+        <p><strong>Finding 2: The entire repository uploaded as a git bundle, regardless of what the agent read.</strong> This is the headline finding. On a real codebase with the prompt <em>"Reply with exactly: OK. Do not read or open any files,"</em> Grok uploaded the complete repository — every tracked file plus full git history — as a git bundle via <code>POST /v1/storage</code>, returning 200. The researcher cloned the captured bundle and recovered a canary file (<code>src/_probe/never_read_canary.txt</code>) with its unique marker intact. The agent was told not to read files. The agent didn't read files. The files were uploaded anyway.</p>
+
+        <p>This was replicated on a second, unrelated codebase with the same result.</p>
+
+        <p>At scale, the upload mechanism has no storage ceiling in the tested range. On a 12 GB repository of random files the agent never read, 73 chunks of approximately 75 MB each (totaling 5.1 GiB) uploaded successfully before the capture was stopped mid-stream. Every single storage request returned 200. The only failures were model-quota errors (402/429) on the inference endpoint — storage uploads continued successfully even after the model was rate-limited.</p>
+
+        <p><strong>Finding 3: The destination is a named GCS bucket, not documented in CLI materials.</strong> Binary string analysis revealed internal Rust crate paths (<code>xai-data-collector/src/gcs.rs</code>, <code>storage_client.rs</code>, <code>file_access_tracker.rs</code>) and the literal bucket name <code>grok-code-session-traces</code>. A staged <code>metadata.json</code> assigned each file a destination path of the form <code>gs://grok-code-session-traces/repo_changes_dedup/v2/.../sha256_...</code>. The upload pipeline is on by default for standard consumer logins and was not described in the CLI's install script or quickstart materials the researcher reviewed.</p>
+
+        <p><strong>Finding 4: Third-party analytics also active.</strong> Beyond xAI's own endpoints, the binary sends telemetry to Mixpanel (<code>POST api.mixpanel.com/track</code>) and xAI's event collector (<code>POST grok.com/_data/v1/events</code>). All returned 200.</p>
+
+        <h2>The Consent Theater</h2>
+
+        <p>Here's the finding that should make every security team pay attention. The researcher turned off "Improve the model" in Grok's settings and re-ran the experiment. The result: Grok still uploaded the entire repository as a git bundle. The server's <code>/v1/settings</code> response still returned <code>trace_upload_enabled: true</code>, <code>upload_enabled: true</code>, and <code>session_registry_enabled: true</code>.</p>
+
+        <p>The toggle governs whether xAI can train on your data. It does not govern whether your data is uploaded or stored. Those are different operations, and the privacy control covers only one of them.</p>
+
+        <p>This is what I call <strong>consent theater</strong>: a user-facing toggle that gives the impression of control while not actually controlling the thing the user cares about. A developer who sees "Improve the model: Off" reasonably assumes their code isn't being sent anywhere for purposes they didn't authorize. They're wrong. The code is uploaded regardless. The toggle only affects downstream training policy — and even that is a policy claim, not a technical guarantee.</p>
+
+        <p>xAI's consumer Terms of Service broadly disclose data use for model improvement with an opt-out. But broad disclosure of a category is not documentation of a specific mechanism. A user reading the privacy policy learns that xAI <em>may</em> use their data. They do not learn that the CLI uploads their entire repository — including git history — to a named cloud storage bucket on every session, regardless of privacy settings. The mechanism and the disclosure are on different levels.</p>
+
+        <p>The researcher was careful about what they did and didn't prove. They proved transmission, acceptance (HTTP 200), and storage. They did not prove xAI trains on the data. They did not claim the mechanism is undocumented in every possible help-center article. The intellectual honesty of the analysis — including a "What we did NOT prove" section and a retracted earlier claim — makes the proven findings more credible, not less.</p>
+
+        <h2>This Isn't Just xAI</h2>
+
+        <p>It would be convenient to treat this as an xAI problem. It isn't. It's an architecture problem that affects every terminal coding agent.</p>
+
+        <p>Consider what every major terminal agent does during a session: it reads files, sends them to an inference API, receives model output, and executes commands. The agent binary is a trusted process running with your filesystem credentials. There is no technical barrier preventing any of these agents from uploading your codebase to their servers. The only barrier is the vendor's own code and their stated policies.</p>
+
+        <p>Claude Code sends file contents to Anthropic's API as part of its model context — that's how it works. Codex CLI does the same with OpenAI. Gemini CLI routes through Google. These are all cloud agents that fundamentally require sending your code to their inference servers. The question isn't whether code leaves your machine. It's whether the agent sends <em>only</em> what the model needs for the current task — or whether it also quietly snapshots your entire repository to a storage bucket.</p>
+
+        <p>The Grok Build analysis is significant because it proved the worst case: a vendor whose agent uploads everything, regardless of what the model needs, regardless of what the user asked, regardless of privacy settings. But the architecture that enables this — a trusted binary with unrestricted filesystem access sending data to vendor-controlled endpoints — is identical across every terminal agent.</p>
+
+        <p>The difference between agents is not architectural. It's policy and implementation. And policies change.</p>
+
+        <h2>The Missing Layer: Egress Control</h2>
+
+        <p>The agent infrastructure stack has solved sandboxing. VS Code 1.127 turned on kernel-level sandboxing for terminal commands by default. Projects like Tencent's Cube provide isolated execution environments with sub-60ms cold starts. Google's Agent Substrate runs agents on Kubernetes with reproducible, checkpointable sandboxes. The sandbox layer — controlling what an agent can <em>execute</em> on your system — is maturing rapidly.</p>
+
+        <p>The egress layer — controlling what an agent can <em>send</em> from your system — doesn't exist.</p>
+
+        <p>This is the egress gap. Your sandbox prevents an agent from running <code>rm -rf /</code>. It does not prevent the agent binary from reading your <code>.env</code> file and uploading it to a cloud storage bucket. Those are different security domains. The sandbox governs local execution. Egress governs network transmission. Every agent framework has invested in the former. None have invested in the latter.</p>
+
+        <p>What would an egress control layer look like? Three components:</p>
+
+        <p><strong>Network policy enforcement.</strong> The agent binary should not have unrestricted network access. It should be allowed to talk to specific, allowlisted endpoints — the inference API, and nothing else. Storage uploads, telemetry calls, and any other outbound connections should require explicit user approval per-session or per-policy. This is standard practice for containerized services in production environments. It is not standard practice for developer machines running agent binaries.</p>
+
+        <p><strong>Content-aware filtering.</strong> Even on allowlisted endpoints, the content of outbound requests should be inspected. Secrets — API keys, database passwords, private keys — should be detected and redacted before transmission. This isn't exotic technology; secret-scanning tools exist in every CI/CD pipeline. The fact that Grok Build transmitted <code>.env</code> contents verbatim and unredacted is not a sophisticated failure. It's the absence of a basic filter that every version control system has had for a decade.</p>
+
+        <p><strong>Transparency and audit.</strong> Every outbound transfer should be logged with sufficient detail for an audit: endpoint, byte count, timestamp, and the files included. The Grok Build researcher had to use mitmproxy to discover what the binary was sending. In a properly architected agent system, this information should be available in a local log by default — not buried in the binary's internal upload queue.</p>
+
+        <h2>The Operational Reality</h2>
+
+        <p>Beyond the security implications, there's a practical problem. The Grok Build CLI's upload queue (<code>~/.grok/upload_queue</code>) stages approximately 3 GB snapshots per turn. Under load, it can grow to tens of GB and exhaust the disk. This is a separate bug from the privacy concern, but it illustrates the same underlying issue: the agent binary is doing things the user didn't ask for, can't easily see, and can't control.</p>
+
+        <p>For teams evaluating coding agents, this changes the procurement criteria. The relevant question isn't just "which agent scores highest on SWE-bench" or "which agent has the best context handling." It's: "what does this binary do that isn't in the prompt?"</p>
+
+        <p>The answer, for most agents today, is: you don't know. And the vendor's privacy policy doesn't tell you.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p>If your team is using terminal coding agents — and at this point, most engineering teams are — here's how to close the egress gap:</p>
+
+        <ol>
+          <li><strong>Run your own wire capture on every agent you use.</strong> The Grok Build analysis used mitmproxy, which is free and takes 15 minutes to set up. Route your agent through a local proxy and watch what it sends. You will likely be surprised. The analysis template — canary values, controlled prompts, wire-level byte counting — is reproducible for any agent binary.</li>
+          <li><strong>Implement network-level egress filtering for development machines running agents.</strong> Tools like <code>little snitch</code> on macOS or network policies in your MDM solution can restrict which domains a process can contact. At minimum, block outbound connections to cloud storage endpoints that your agent shouldn't need. The inference API is necessary. A storage bucket named <code>session-traces</code> is not.</li>
+          <li><strong>Audit your <code>.env</code> and secrets management.</strong> If your <code>.env</code> file sits in your repository root and your agent binary can read it, assume it has been transmitted. Move secrets to environment variables injected at runtime, use a secrets manager, or add <code>.env</code> to a directory the agent can't access. This is basic hygiene that the Grok Build analysis proves isn't being practiced.</li>
+          <li><strong>Demand egress controls from your agent vendor.</strong> The harness engineering discipline — the one systematized in <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em> — has focused on the agent loop: how the model interacts with tools, context, and execution. It needs to expand to cover the network boundary. Ask your vendor: does your agent upload repository snapshots? Does the privacy toggle disable uploads or just training? Can you provide an audit log of outbound transfers? If they can't answer these questions clearly, treat the agent as untrusted.</li>
+          <li><strong>Evaluate open-source agents with local models for sensitive codebases.</strong> The open-source coding gap has collapsed — open-weight models are within single digits of frontier models on coding benchmarks. Agents like Aider and Cline with local models through Ollama or MLX keep your code on your machine. For codebases with proprietary IP, compliance requirements, or sensitive customer data, the local inference path isn't a performance tradeoff anymore. It's a risk mitigation strategy.</li>
+        </ol>
+
+        <h2>The Pattern Beneath the Pattern</h2>
+
+        <p>The egress gap is the dark mirror of the terminal's victory. The terminal won because it gives agents unrestricted access. That unrestricted access is also the mechanism by which an agent can upload your entire repository to a vendor's cloud storage without your knowledge or meaningful consent.</p>
+
+        <p>The sandbox layer solved the problem of agents executing malicious commands. The egress layer — the one that would solve the problem of agents exfiltrating your data — hasn't been built. Not by xAI, not by Anthropic, not by OpenAI, not by the open-source community. The infrastructure investment has gone entirely to the execution boundary. The network boundary is a blank.</p>
+
+        <p>The Grok Build analysis is the first detailed, reproducible proof of what happens in that blank space. It won't be the last. Every terminal agent has the same architecture. Every terminal agent has the same capability. The only question is which vendor's binary you trust — and trust, as the "Improve the model" toggle demonstrates, is not the same as control.</p>
+
+        <p>Your agent can read your code. That's the feature. Who else it sends it to is the bug. And right now, you have no way to know.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
