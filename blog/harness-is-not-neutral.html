@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Harness Is Not Neutral — Abuiliazeed</title>
+  <meta name="description" content="Claude Code sends 33,000 tokens before reading your prompt. OpenCode sends 7,000. Nobody knows what their harness actually sends — and that opacity is the real cost driver in agent economics.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/harness-is-not-neutral.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/harness-is-not-neutral.html">
+  <meta property="og:title" content="The Harness Is Not Neutral">
+  <meta property="og:description" content="Claude Code sends 33,000 tokens before reading your prompt. OpenCode sends 7,000. Nobody knows what their harness actually sends — and that opacity is the real cost driver in agent economics.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Harness Is Not Neutral">
+  <meta name="twitter:description" content="Claude Code sends 33,000 tokens before reading your prompt. OpenCode sends 7,000. Nobody knows what their harness actually sends — and that opacity is the real cost driver in agent economics.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-07-13">July 13, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Harness Is Not Neutral</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>33,000 tokens. That is what Claude Code 2.1 sends to the model API before it reads a single character of your prompt — system blocks, tool schemas, injected scaffolding. The task was 22 characters: "Reply with exactly: OK." The harness payload was 1,500 times larger than the task itself.</p>
+
+        <p>OpenCode, running the same model on the same machine, sent 7,000 tokens for the same task. Same result. One sixth the overhead.</p>
+
+        <p>These numbers come from a wire-level analysis published on July 12 by Systima, an applied AI research team that spliced a logging proxy between two coding harnesses and a model endpoint to capture exactly what each one transmits. They are not estimates. They are metered API usage from captured request payloads. And they reveal something the agent industry has been quietly avoiding: <strong>the harness is not neutral infrastructure. It is an opinionated middleware layer that silently shapes cost, latency, context budget, and model portability — and almost nobody can see what it does.</strong></p>
+
+        <h2>The Floor</h2>
+
+        <p>Systima's experimental design was simple. Take Claude Code and OpenCode, pin both to Claude Sonnet 4.5, strip all configuration to a bare workspace with no instruction files, no MCP servers, no user settings. Ask each to reply with "OK." Measure everything the harness sends before the model processes the prompt.</p>
+
+        <p>The breakdown:</p>
+
+        <ul>
+          <li><strong>System prompt:</strong> Claude Code — 27,344 chars across 3 blocks. OpenCode — 9,324 chars in 1 block.</li>
+          <li><strong>Tool schemas:</strong> Claude Code — 27 tools, 99,778 chars. OpenCode — 10 tools, 20,856 chars.</li>
+          <li><strong>First-message scaffolding:</strong> Claude Code — 7,997 chars of injected <code>&lt;system-reminder&gt;</code> blocks (agent catalogues, skill listings, user context). OpenCode — none.</li>
+          <li><strong>Calibrated first-turn payload:</strong> Claude Code ~32,800 tokens. OpenCode ~6,900 tokens.</li>
+        </ul>
+
+        <p>Tool schemas are the dominant term for both harnesses. Roughly 24,000 of Claude Code's 33,000 tokens are tool definitions — including background agents, cron scheduling, worktree management, and push notifications. Tools the user will never invoke in a "reply OK" task are nonetheless serialized into every single request.</p>
+
+        <p>Stripping tools entirely isolates the system prompt. Even with zero tools, Claude Code's instruction set weighs 6,500 tokens. OpenCode's is 2,000. The residual is behavioural doctrine: tone rules, safety guidance, task-management instructions, environment description. The harness has opinions about how the model should behave, and those opinions cost tokens on every turn.</p>
+
+        <h2>The Model-Conditional Prompt</h2>
+
+        <p>Here is a finding that should unsettle anyone building agent infrastructure. Systima re-ran the baseline test on Claude Fable 5 — Anthropic's newer, larger model. The gap narrowed from 4.7x to 3.3x. Not because OpenCode changed. OpenCode's payload was byte-identical across both models.</p>
+
+        <p>Claude Code's system prompt is <strong>model-conditional</strong>. It sent 27,787 characters of instructions to Sonnet 4.5 but only 10,526 to Fable 5. Tool schemas were also trimmed — from 99,778 to 82,283 characters. Same 27 tools, less doctrine.</p>
+
+        <p>Think about what this means. The harness is making decisions about what instructions to send based on which model it detects. It is adapting its behaviour to the model — which means it has a model-specific opinion about what the model needs to hear. Your harness is not a pipe. It is a translator with its own agenda, and the translation changes depending on who it's talking to.</p>
+
+        <h2>The Configuration Multiplier</h2>
+
+        <p>The floor is the best case — an empty workspace with no configuration. Real sessions do not look like this. Systima measured each layer that production usage stacks on top.</p>
+
+        <p><strong>The instruction file.</strong> A real 72KB <code>AGENTS.md</code> from a production repository added roughly 20,000 tokens to every single request in both harnesses. Claude Code's metered total jumped from 39,005 to 59,243 tokens. OpenCode's went from 13,152 to 33,336. One file nearly quadruples a lean harness's baseline.</p>
+
+        <p>One operational footnote worth noting: Claude Code 2.1.207 ignored <code>AGENTS.md</code> entirely and only ingested the file when it was renamed to <code>CLAUDE.md</code>. An ignored instruction file is silent. You think your agent is following your guidelines. It isn't even reading them.</p>
+
+        <p><strong>MCP servers.</strong> Five modest, credential-free MCP servers added 5,000 to 7,000 tokens per request, growing Claude Code's tool count from 27 to 69 and OpenCode's from 10 to 52. Production servers with rich APIs ship schemas several times larger.</p>
+
+        <p><strong>The "everything" number.</strong> When Systima ran a real working configuration — instruction file, MCP servers, installed plugins — Claude Code's first request carried roughly 75,000 tokens with 118 tools. OpenCode's carried 90,817 tokens with 179 tools. Before the user has typed a word, the session is 40% of the way through a 200K context window.</p>
+
+        <p>That number is the one that matters. Context-window consumption is immune to prompt caching. An 85K-token bootstrap occupies the same space whether you paid 1x for a cache write or 0.1x for a cache read. It shrinks the room for actual code, forces earlier compaction, and spends yet more tokens summarizing what was there before.</p>
+
+        <h2>The Cache Stability Problem</h2>
+
+        <p>Prompt caching is the mechanism that makes large payloads economically survivable. Write the prefix once at a 1.25x premium, read it back at a tenth of the price thereafter. In theory, a 33K-token system prompt costs $0.16 to write and $0.013 to read — manageable if the prefix stays stable.</p>
+
+        <p>Systima hashed the tools array and system blocks of every request in their dataset to measure cache stability. The results were stark.</p>
+
+        <p>OpenCode emitted byte-identical prefixes across every request and every run. Three separate sessions produced the same tools bytes, the same system bytes, the same message bytes. Repeat runs wrote zero cache tokens and read everything. The prefix was a fixed, stable artifact.</p>
+
+        <p>Claude Code emitted three distinct request classes per session: a warmup probe, the main conversation, and subagent calls — each with its own prefix and therefore its own cache entry. Its system bytes also <em>varied between sessions</em> in the same workspace. Its first-message scaffolding varied between runs. On the identical file-summarise task, Claude Code wrote up to 54x more cache tokens than OpenCode.</p>
+
+        <p>Cache writes are billed at a premium. A harness that rewrites its prefix mid-session is not just paying for the write — it is invalidating the cache entry that subsequent requests would have read from. The cost compounds across every turn in the session.</p>
+
+        <h2>The Subagent Multiplier</h2>
+
+        <p>Subagent delegation is where token consumption explodes. Systima asked each harness to fan a small task out to two parallel subagents.</p>
+
+        <p>The same task that cost 121,000 tokens done directly cost <strong>513,000 tokens</strong> when fanned out — a 4.2x multiplier. Every subagent pays its own bootstrap: its own system prompt, its own tool schemas, its own first-message scaffolding. Then the parent agent ingests each subagent's full transcript, which means the parent's context window grows by the entire subagent conversation.</p>
+
+        <p>Delegation is powerful. It is also the single largest token multiplier measured in the study. If your heavy sessions are surprising you on the billing dashboard, this is the first place to look.</p>
+
+        <p>There is one caveat that tempers the story. On multi-step tasks, Claude Code's total converged with OpenCode's. Claude Code batched tool calls into fewer requests — 3 requests for a write-run-test-fix loop, versus OpenCode's 9. Because the baseline is re-sent on every request, request count multiplies baseline. OpenCode paid its 7K baseline nine times. Claude Code paid its 33K three times. The totals landed in the same neighbourhood.</p>
+
+        <p>This means the harness's tool-calling strategy — parallel batching versus serial execution — is a co-equal variable with baseline payload size. A large-baseline harness that batches aggressively and a small-baseline harness that serializes can converge on the same total cost. The question is which failure mode you prefer: paying more per turn, or paying for more turns.</p>
+
+        <h2>What Happens When You Switch Models</h2>
+
+        <p>The Systima analysis shows what harnesses send. A separate account published the same day by Ploy, an AI website builder, shows what happens when you try to change what they send to.</p>
+
+        <p>Ploy migrated their production agent from Claude Opus 4.8 to GPT-5.6 Sol — released by OpenAI on July 12. The headline numbers were compelling: builds finishing in 3m42s versus 8m00s, at $2.22 per build versus $3.06, with a visual quality score of 0.970 versus 0.936. Two times faster, 27% cheaper, better output.</p>
+
+        <p>Getting there took weeks of engineering. Because the harness was not neutral.</p>
+
+        <p>The first discovery: <strong>tool-call behaviour is provider-specific and silently destructive.</strong> Ploy's code tool has 25 parameters — one required, 24 optional. Claude sends the two or three it's using and omits the rest. GPT-5.6 sends all 25, every time, inventing plausible values for the ones it doesn't need: <code>offset: 0</code>, <code>timeout: 120000</code>, <code>siteId: "00000000-0000-0000-0000-000000000000"</code>.</p>
+
+        <p>Those invented values are indistinguishable from intended ones. Ploy's file-read implementation treated <code>offset: 0</code> as a real argument. The result: 52% to 64% of GPT-5.6's file reads came back empty. The tool returned <code>success: true</code> either way, so the model had no signal that it was reading blank files. It just did the work worse, with more calls.</p>
+
+        <p>Prompting did not fix this. A tool-description directive to "omit unused parameters": still 25/25. Per-property "OPTIONAL, omit if unused" hints: still 25/25. OpenAI's strict mode: identical behaviour. This is baked into how the model emits function calls. The fix that worked was a schema transform at the provider boundary — rewriting every optional property to <code>anyOf: [T, null]</code> for OpenAI-family models only, then stripping nulls before validation. After the fix: empty reads went from 52% to 0%, and the agent needed roughly 30% fewer tool calls for the same work.</p>
+
+        <p>The second discovery: <strong>prompt caching is architecturally different between providers.</strong> Ploy's agent opens with a static prefix of roughly 29K tokens — tool schemas plus system prompt. On Anthropic, marking cache breakpoints is sufficient; the cache is org-scoped without key partitioning. Any conversation, any workspace, one shared entry. Cache hit rates ran 92% to 96%.</p>
+
+        <p>GPT-5.6 dropped partial-prefix matching entirely. Implicit caching now only creates whole-prompt entries keyed on the latest message. A new conversation sharing the 29K static prefix cached 0% of it. Every conversation re-billed the full prefix at the uncached rate, plus a 1.25x cache-write surcharge that GPT-5.6 applies whether or not you use caching.</p>
+
+        <p>The intended mechanism is explicit: <code>prompt_cache_breakpoint</code> markers plus a mandatory <code>prompt_cache_key</code>. And the key is part of cache identity. Identical prompt, different key: zero cache hits. Each key maps to a cache node that sustains roughly 15 requests per minute before traffic fans to other nodes with independent, cold caches.</p>
+
+        <p>Ploy's per-conversation key: 0% first-call hits. One global key: production traffic obliterated the 15 rpm budget; requests spilled to cold nodes. Per-workspace key — all conversations in a customer workspace share entries, per-key traffic stays low: 83.7% first-call hits. Total uncached input dropped 28%, and GPT-5.6's per-suite cost landed below Opus's.</p>
+
+        <p>Every dollar of the cost gap they had been staring at was cache misconfiguration, not model pricing. As the Ploy team put it: <em>"If you're cost-comparing models and one of them has a cold cache, you are comparing your config, not the models."</em></p>
+
+        <p>The third discovery: <strong>reasoning replay is provider-specific.</strong> GPT-5.6's Responses API replays prior-turn reasoning as server-side item references by default. Ploy's conversations started intermittently failing mid-session with <code>Item 'rs_...' not found</code>. The fix was <code>store: false</code>, which makes the SDK request encrypted reasoning content as self-contained blobs instead of pointers to server state. With server-side reasoning state in the loop, the effective prompt can change upstream of you even when the bytes you send are append-only.</p>
+
+        <p>Three engineering discoveries. Three places where the harness was silently specialized around one provider's conventions. None of them were documented. None of them were obvious. All of them had to be discovered, one eval failure at a time.</p>
+
+        <h2>The Opacity Problem</h2>
+
+        <p>Both of these analyses required building custom instrumentation. Systima spliced a logging proxy between harness and endpoint. Ploy built a provider-boundary schema transform after triaging hundreds of eval traces. Neither harness — Claude Code, OpenCode, or any other widely used coding agent — provides wire-level visibility into what it sends. There is no <code>--dry-run</code> that shows you the full request payload. There is no dashboard that breaks down token consumption by component: system prompt, tool schemas, instruction file, MCP schemas, conversation history.</p>
+
+        <p>You are paying for tokens you cannot see, consumed by a harness you cannot inspect, tuned to a model you may not be running next quarter. This is the opacity problem, and it is the structural issue that both of these analyses expose from different angles.</p>
+
+        <p>The agent industry has spent two years optimizing for model selection. Benchmarks, leaderboards, pricing comparisons — all focused on the model. The harness was treated as plumbing: something you install, configure once, and forget. The data says otherwise. The harness is where the tokens go. The harness is where the cost lives. The harness is where model portability breaks. And it is the one layer in the stack with zero observability.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p>Three concrete actions, drawn from what these analyses revealed:</p>
+
+        <p><strong>Instrument your harness.</strong> You cannot manage what you cannot measure. Build or install a logging proxy between your harness and the model endpoint. Capture the full request payload — not just the usage block, but the actual JSON body. Break down token consumption by component: system prompt, tool schemas, instruction files, MCP schemas, conversation history. The first time you see the breakdown, you will find at least one thing that surprises you.</p>
+
+        <p><strong>Audit your instruction file weight.</strong> A 72KB <code>AGENTS.md</code> adds 20,000 tokens to every request. If your instruction file has accumulated cruft — deprecated guidelines, framework-specific notes that no longer apply, verbose style guides — trim it. Every token in that file rides on every turn of every session. Also: verify your harness is actually reading it. Systima discovered Claude Code 2.1 ignores <code>AGENTS.md</code> and only reads <code>CLAUDE.md</code>. An instruction file that isn't loaded is worse than no instruction file, because you think the agent is following rules it has never seen.</p>
+
+        <p><strong>Build provider-boundary abstractions before you need them.</strong> The Ploy migration took weeks because their harness was silently specialized around Claude's conventions — tool-call style, caching model, reasoning replay. If you might ever switch models — and you will — build the seam now. Wrap tool schemas in a provider-aware layer that handles parameter omission differently for Claude-family versus OpenAI-family models. Abstract caching configuration behind an interface that can express both Anthropic's breakpoint model and OpenAI's key-partitioned model. The cost of building these abstractions upfront is a fraction of the cost of discovering them through production failures.</p>
+
+        <p>The harness is not neutral. It never was. The question is whether you treat it as the opinionated middleware layer it actually is — or keep pretending it's a pipe.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
