@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The 24% Problem — Abuiliazeed</title>
+  <meta name="description" content="Microsoft studied tens of thousands of engineers using Claude Code and Copilot CLI. Adopters merged 24% more PRs. That number is everywhere — and it might be measuring the wrong thing entirely.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-24-percent-problem.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-24-percent-problem.html">
+  <meta property="og:title" content="The 24% Problem">
+  <meta property="og:description" content="Microsoft studied tens of thousands of engineers using Claude Code and Copilot CLI. Adopters merged 24% more PRs. That number is everywhere — and it might be measuring the wrong thing entirely.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The 24% Problem">
+  <meta name="twitter:description" content="Microsoft studied tens of thousands of engineers using Claude Code and Copilot CLI. Adopters merged 24% more PRs. That number is everywhere — and it might be measuring the wrong thing entirely.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-07-14">July 14, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The 24% Problem</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>24%. That's the number now circulating through engineering leadership decks everywhere. Microsoft studied tens of thousands of its own engineers during their early-2026 rollout of Claude Code and GitHub Copilot CLI, and found that adopters merged roughly 24% more pull requests than they would have otherwise. The lift persisted across a four-month window.</p>
+
+        <p>The paper — published July 1 on arXiv by Emerson Murphy-Hill, Jenna Butler, and Alexandra Savelieva — is the first large-scale empirical study of command-line AI coding agents inside a major enterprise. It's rigorous, it's honest about its limitations, and it contains data points the vendor marketing will never surface.</p>
+
+        <p>Here's what nobody is telling you: 24% more merged PRs might not mean 24% more productivity. It might not mean any productivity at all. And the study's own data — if you read past the headline — reveals why measuring agent impact is the hardest unsolved problem in the field.</p>
+
+        <h2>What the Study Actually Found</h2>
+
+        <p>The paper, titled "Adoption and Impact of Command-Line AI Coding Agents: A Study of Microsoft's Early 2026 Rollout of Claude Code and GitHub Copilot CLI," covers Microsoft's rollout across tens of thousands of engineers. Three findings matter:</p>
+
+        <p><strong>Adoption spread through social networks, not mandates.</strong> Engineers didn't start using Claude Code because their VP sent an email. They started because the engineer sitting next to them was using it. First use correlated with team proximity and peer influence — the same dynamics that spread any tool adoption inside large organizations. This is consistent with every developer tool adoption study going back decades, but it's the first confirmation that AI coding agents follow the same pattern.</p>
+
+        <p><strong>Retention correlated with coding activity, not demographics.</strong> The engineers who kept using the tools weren't distinguished by age, role, team size, or seniority. They were distinguished by how much code they already wrote. High-activity developers adopted and retained at higher rates than low-activity developers. This flips a common assumption — that AI tools disproportionately help less experienced developers — on its head. The people who write the most code are the ones most motivated to offload it.</p>
+
+        <p><strong>Adopters merged 24% more pull requests.</strong> This is the headline. The authors use merged PRs as a proxy for output and explicitly acknowledge the limitation: "a merged PR is not the same as the value it delivers." The 24% lift was measured over a four-month window and persisted throughout.</p>
+
+        <p>That qualifier — "a merged PR is not the same as the value it delivers" — is doing a lot of heavy lifting. It's the difference between a study that says "agents make developers more productive" and a study that says "agents make developers merge more pull requests." Those aren't the same claim.</p>
+
+        <h2>Why PR Count Is a Broken Metric</h2>
+
+        <p>The software engineering community has known for decades that counting lines of code is a terrible productivity metric. Frederick Brooks warned about it in <em>The Mythical Man-Month</em> in 1975. The industry collectively agreed: measuring output volume incentivizes output volume, not output quality.</p>
+
+        <p>Merged PR count is lines-of-code counting wearing a trench coat.</p>
+
+        <p>Here's the mechanism by which AI coding agents inflate PR count without inflating productivity. When a developer uses Claude Code or Copilot CLI, they tend to break work into smaller increments. A task that previously resulted in one 500-line PR now results in three 150-line PRs. The agent writes each one faster, the developer reviews and merges each one faster, and the PR count triples. The actual feature shipped is identical. The calendar time is similar. But the metric screams "200% productivity gain."</p>
+
+        <p>Multiple developers in the Hacker News discussion of the study confirmed this pattern from their own experience. One put it bluntly: "I've also seen an increase in merged PRs, but it coincided with developers opening smaller PRs. There's no actual increase in coding productivity, and it means the context-switching burden from review work went up."</p>
+
+        <p>That last point is the hidden cost. More PRs means more review cycles. More review cycles means more context switches for every reviewer on the team. If a team of ten engineers each merge 24% more PRs, that's 24% more review work distributed across the same ten people — unless the reviewers are also 24% faster at reviewing, which is a different claim entirely. The study measures the PR author's output. It doesn't measure the reviewer's burden.</p>
+
+        <h2>The Token Economics Nobody Talks About</h2>
+
+        <p>Buried in the paper's data is a figure that should make every CFO's eyes water. The study references token consumption at organizational scale — and one data point from the discussion reveals the magnitude. A single high-volume user consumed 281 billion tokens. At Claude Opus 4.6's listed pricing of $5 per million tokens, that one user's API spend could exceed $1.4 million.</p>
+
+        <p>Now, enterprise pricing is negotiated below list, and the study covers a rollout where Microsoft likely has favorable terms. But even at a fraction of list price, the token economics of organizational-scale coding agents are staggering. The paper explicitly notes: "At organizational scale, token spend can run into millions of dollars annually, so misreading adoption, retention, or impact can make a rollout expensive without changing engineering velocity."</p>
+
+        <p>This is the real finding of the study, and it's not in the headline. The question isn't "do coding agents make developers 24% more productive?" The question is "does a 24% increase in merged PR count justify millions of dollars in annual token spend?" And the study can't answer that — because merged PR count isn't a measure of economic value.</p>
+
+        <p>An engineer on the Hacker News thread made the point precisely: "more features doesn't mean anything if they don't translate into economic value. Refactoring PRs and dependency updates are easily automated now and it saves a lot of productivity, but if you compare the costs and economic value gained it might not actually justify enterprise token spending."</p>
+
+        <h2>The METR Contradiction</h2>
+
+        <p>If the Microsoft study weren't complicated enough, there's a prior study that paints a different picture entirely. In 2025, METR (Model Evaluation and Threat Research) ran a controlled experiment where developers estimated how long a task would take before knowing whether AI would be used. Tasks were then randomly assigned to "with AI" or "without AI" conditions, and actual completion times were compared against estimates.</p>
+
+        <p>The result: participants self-rated themselves as 20% more productive when using AI. Objective measurement showed they were 19% <em>less</em> productive.</p>
+
+        <p>A 39-percentage-point gap between perceived and measured productivity. Developers felt faster. They weren't. The tasks took longer.</p>
+
+        <p>The METR study and the Microsoft study aren't directly comparable — different methodologies, different populations, different timeframes. METR used controlled task assignments with experienced developers working on unfamiliar codebases. Microsoft measured organic adoption across tens of thousands of engineers on their own codebases. But together, they frame the range of uncertainty: somewhere between 19% slower and 24% more PRs, depending on how you measure and who you measure.</p>
+
+        <p>That range is enormous. And it exists because we don't have a reliable productivity metric for AI-assisted development. Not merged PRs. Not lines of code. Not self-reported satisfaction. Not task completion time. The field is measuring a phenomenon it can't define.</p>
+
+        <h2>What the Adoption Pattern Actually Reveals</h2>
+
+        <p>Here's the finding I find most strategically important, and it's not the 24% number. It's the adoption mechanism.</p>
+
+        <p>First use spread through social networks. Engineers adopted because peers adopted. This means that coding agent rollout is not a procurement problem — it's a culture problem. You can buy enterprise Claude Code licenses for every engineer on your team. That won't make them use it. What makes them use it is seeing a respected colleague ship faster with it.</p>
+
+        <p>This has a concrete operational implication. If you're rolling out coding agents across an organization, your highest-leverage investment isn't licensing or training — it's identifying your highest-activity developers (the study shows they adopt and retain at the highest rates) and making their success visible. Internal demos, shared workflows, MCP servers they've built — these are the vectors that spread adoption. Mandates and top-down training programs are the wrong tool.</p>
+
+        <p>The retention finding reinforces this. The engineers who stick with coding agents are the ones who already write a lot of code. They're not the ones who need the most help — they're the ones who have the most to offload. If your rollout strategy targets junior developers or low-activity contributors first, expecting the biggest gains, the data says you're betting against the pattern.</p>
+
+        <h2>The Measurement Problem Is the Infrastructure Problem</h2>
+
+        <p>The deeper issue — and the reason this matters for agent infrastructure specifically — is that our measurement tooling hasn't caught up with our agent tooling.</p>
+
+        <p>When an engineer uses Claude Code to implement a feature, the activity generates data: tokens consumed, files modified, tests run, build cycles, review iterations. That data exists. It's logged in the agent's telemetry, in the CI pipeline, in the git history. But nobody is correlating it. The agent harness knows how many tokens were spent. The CI system knows whether the build passed. The project management system knows when the feature shipped to production. The incident management system knows whether it caused an outage.</p>
+
+        <p>These data silos exist because the harness, the CI pipeline, the project tracker, and the incident system were built by different vendors at different times for different purposes. But the measurement gap in agent productivity exists precisely because nobody has built the integration layer that connects them.</p>
+
+        <p>This is a harness-engineering problem. The discipline of building the infrastructure that makes agent activity observable, attributable, and measurable — that's where the real work needs to happen. The model will get better. The agent will get smarter. But if we can't measure whether the output is actually valuable, we're flying blind at million-dollar altitudes.</p>
+
+        <p>Microsoft itself recognizes this. One of the study's authors presented Microsoft's internal framework for measuring developer productivity at BUILD 2026, and the ACM Queue published a detailed writeup of their approach. Their model goes beyond PR count — it attempts to tie engineering activity to customer-facing outcomes. It's a start, but it's Microsoft-internal. The industry needs an open standard.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p>If you're rolling out coding agents at your organization — or already have — here's how to act on this data without falling into the measurement trap:</p>
+
+        <ol>
+          <li><strong>Stop using merged PR count as your north star metric.</strong> Track it if you want, but don't make decisions based on it. It's too easy to game and too disconnected from value. The number will go up. That doesn't mean productivity went up.</li>
+          <li><strong>Define what "productive" means for your team before you measure it.</strong> Is it features shipped to customers? Is it cycle time from issue to production? Is it defect rate? Is it customer satisfaction? Pick the metric that actually correlates with business outcomes — not the one that's easiest to collect from git.</li>
+          <li><strong>Track token spend per engineer and correlate it with output quality, not output volume.</strong> If one engineer is spending $50,000 in tokens and another is spending $5,000, and their feature output is comparable, you have an efficiency problem — not a productivity problem. Token attribution is a harness feature. If your agent doesn't expose it, you're operating without cost controls.</li>
+          <li><strong>Instrument your review pipeline.</strong> If PR count goes up 24% but review cycle time also goes up, you've shifted work from authors to reviewers — not eliminated it. Measure review turnaround time, review iteration count, and reviewer load distribution. The productivity gain has to be net-positive across the team, not just for the PR author.</li>
+          <li><strong>Identify your highest-activity developers and make their agent workflows visible to the rest of the team.</strong> The data says adoption spreads through peer influence. Your best adopters are your best distribution channel. Give them a platform to share what works.</li>
+        </ol>
+
+        <h2>The Real Headline</h2>
+
+        <p>The Microsoft study is valuable. It's the first real dataset on organizational-scale coding agent adoption, and it confirms things practitioners already suspected: adoption is social, retention is driven by coding volume, and the output proxy goes up. These are genuine insights.</p>
+
+        <p>But the 24% number — the one that will appear in every vendor pitch deck and every engineering leadership presentation for the next year — is not the finding. The finding is that we still can't measure whether coding agents make organizations more productive. We can measure that they make organizations merge more pull requests. We can measure that they consume millions of dollars in tokens. We can measure that developers feel faster.</p>
+
+        <p>What we can't measure is whether any of that translates into shipping better software faster. And until we can, every productivity claim about AI coding agents — including the ones in this post — is a hypothesis dressed up as a data point.</p>
+
+        <p>The hardest part of agent-first development isn't building the infrastructure. It's knowing whether the infrastructure is working. That's the discipline I explored at length in <a href="../book.html">Harness Engineering</a>, and it's the gap the industry most urgently needs to close. Not with better models. With better measurement.</p>
+
+        <p>The 24% will be quoted. The measurement gap will be ignored. And that's exactly backwards.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
