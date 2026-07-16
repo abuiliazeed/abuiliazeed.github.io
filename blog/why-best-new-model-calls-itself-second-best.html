@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Why the Best New Model Calls Itself Second-Best — Abuiliazeed</title>
+  <meta name="description" content="Thinking Machines released a 975-billion-parameter open-weights model and immediately said it's not the strongest available. That's not a failure — it's the smartest positioning in AI this year.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/why-best-new-model-calls-itself-second-best.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/why-best-new-model-calls-itself-second-best.html">
+  <meta property="og:title" content="Why the Best New Model Calls Itself Second-Best">
+  <meta property="og:description" content="Thinking Machines released a 975-billion-parameter open-weights model and immediately said it's not the strongest available. That's not a failure — it's the smartest positioning in AI this year.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Why the Best New Model Calls Itself Second-Best">
+  <meta name="twitter:description" content="Thinking Machines released a 975-billion-parameter open-weights model and immediately said it's not the strongest available. That's not a failure — it's the smartest positioning in AI this year.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-07-16">July 16, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">Why the Best New Model Calls Itself Second-Best</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>975 billion parameters. 41 billion active. 1 million token context window. Trained on 45 trillion tokens of text, images, audio, and video. Fully open weights. And in the announcement's third paragraph, the company that built it says this: <em>"Inkling is not the strongest overall model available today, open or closed."</em></p>
+
+        <p>That sentence, from Thinking Machines Lab's July 15 release of Inkling, is the most strategically important thing published in AI this month. Not because it's humble — because it signals that the open-weights race has fundamentally shifted. The question is no longer "who has the best model." It's "who has the best model <em>to build on.</em>"</p>
+
+        <p>Thinking Machines chose to lose the benchmark battle to win the customization war. If you're building agent infrastructure, you should understand why that's the right call — and why it changes how you should pick your base model.</p>
+
+        <h2>The Deliberate Non-Winner</h2>
+
+        <p>Let's be precise about what Inkling is. It's a Mixture-of-Experts transformer — 975 billion total parameters with only 41 billion active per forward pass. That's roughly the same MoE ratio as DeepSeek V3's architecture, but scaled up significantly. The 1-million-token context window puts it in the same range as Gemini 2.5 Pro. It was pretrained on 45 trillion tokens across four modalities: text, images, audio, and video. The weights are on Hugging Face. You can download them today.</p>
+
+        <p>Thinking Machines also previewed Inkling-Small: 12 billion active parameters, trained with the same recipe, designed for lower cost and latency. That's the agent-runtime play — a model small enough to serve at inference-optimized speeds while retaining the architectural advantages of the family.</p>
+
+        <p>But here's what makes Inkling different from every other frontier model release of 2026: it wasn't positioned as a benchmark winner. Thinking Machines didn't cherry-pick categories where it beats GPT-5 or Claude Opus 4.5. They explicitly ceded that ground. Instead, they highlighted three properties that matter for a <em>base model</em>: multimodal capabilities, controllable reasoning effort, and availability on Tinker for fine-tuning.</p>
+
+        <p>This is not a model trying to replace your chatbot subscription. It's a model trying to become the foundation you build your agents on.</p>
+
+        <h2>Controllable Reasoning Is the Real MoE Story</h2>
+
+        <p>Most coverage of Mixture-of-Experts focuses on the efficiency angle: 41B active out of 975B total means you get near-frontier quality at a fraction of the inference cost. That's true but it's the boring part. The interesting part is <strong>controllable reasoning effort.</strong></p>
+
+        <p>Inkling lets you dial how much it thinks. This isn't just a temperature slider or a "thinking mode" toggle. It's a graduated control over compute-per-token that maps directly to agent task complexity. A simple tool-call dispatch can run at minimum thinking effort. A complex code refactoring can run at maximum. The same model handles both, and you control the cost-quality tradeoff per invocation.</p>
+
+        <p>This matters more than people realize. In agent-first development, you don't have one task — you have dozens of tasks with wildly different complexity profiles running in the same system. An agent that needs to extract a field from a JSON response shouldn't burn 10,000 reasoning tokens. An agent that needs to debug a race condition in distributed systems code should think as long as necessary.</p>
+
+        <p>Today, most agent harnesses handle this by routing to different models: a small model for simple tasks, a frontier model for hard ones. That creates model sprawl — different prompt formats, different tool-calling conventions, different context window limits, different failure modes. Controllable reasoning effort collapses that into a single model with a single prompt format and a single set of failure characteristics. You adjust one parameter instead of switching inference backends.</p>
+
+        <p>This is the kind of design decision that reveals a team thinking about agents as the primary use case, not as an afterthought.</p>
+
+        <h2>Why "Not the Best" Is the Best Position</h2>
+
+        <p>Here's the contrarian argument: <strong>being the strongest base model is worth less than being the most customizable one.</strong></p>
+
+        <p>Consider the economics. A frontier model that wins benchmarks commands premium API pricing. But it also faces the fastest commoditization curve — there's always another lab six months away from matching it. GPT-5 was the undisputed leader in late 2025; by mid-2026, Claude Opus 4.5, Gemini 2.5, and Inkling are all within striking distance across different benchmarks. The half-life of "best model" is shrinking.</p>
+
+        <p>Now consider the customization thesis. If you're an enterprise building production agents — coding assistants, customer support, document analysis, research workflows — you don't want the strongest general model. You want the strongest <em>adaptable</em> model. The model that takes fine-tuning cleanly, that doesn't lose its core capabilities when you specialize it, that comes with the infrastructure to actually customize it at scale.</p>
+
+        <p>This is what Tinker is really about. Thinking Machines didn't just release weights — they released a fine-tuning platform. The demo they shipped was striking: they had Inkling fine-tune itself. The model wrote its own fine-tuning job, ran it, and evaluated the result. That's not a parlor trick. It's a statement that customization should be self-service, not a consulting engagement.</p>
+
+        <p>The strategic implication: if you're picking a base model for your agent stack, benchmark scores tell you less than you think. What matters is the fine-tuning surface — how cleanly the model adapts, how much data you need, how much capability you lose when you specialize, and whether the tooling exists to do it without a research team.</p>
+
+        <h2>The Convergence Signal</h2>
+
+        <p>Inkling doesn't exist in isolation. The same week, two other developments reinforced the same trajectory.</p>
+
+        <p>First, SpaceXAI (xAI) open-sourced Grok Build — their terminal-based coding agent, written in Rust, under Apache 2.0. It's a full-screen TUI that understands codebases, edits files, runs shell commands, and manages long-running tasks. It supports MCP servers, the Agent Client Protocol, skills, plugins, and hooks. It runs interactively, headlessly for CI, or embedded in editors.</p>
+
+        <p>The codebase reveals the architecture: separate crates for the TUI layer, the agent runtime, tool implementations, workspace management, and MCP integration. The <code>xai-grok-tools</code> crate ports tool implementations from OpenAI's Codex and SST's OpenCode — which tells you the agent tooling layer is already converging on shared patterns. When companies are porting each other's tool implementations rather than building from scratch, the differentiation has moved elsewhere.</p>
+
+        <p>Second, PrismML released Bonsai 27B — a ternary-quantized model that runs a 27-billion-parameter-class model on a phone. That's not a typo. Ternary quantization (weights stored as -1, 0, +1) compresses the model aggressively enough to fit in mobile memory while retaining meaningful capability. It's the logical extension of the local-inference thesis: if your agent runtime can run a 27B model locally, the cloud-inference dependency shrinks dramatically.</p>
+
+        <p>Put these together and the pattern is clear. The model layer is fragmenting into specialized tiers: frontier generalists for hard reasoning, customizable mid-size models for production agents, and aggressively compressed models for edge deployment. The agent harness layer is consolidating: everyone supports MCP, everyone implements similar tool patterns, and the infrastructure is increasingly shared.</p>
+
+        <h2>What Base Model Selection Actually Means Now</h2>
+
+        <p>For the last two years, model selection for agent stacks was straightforward: pick the model with the highest SWE-Bench or Terminal-Bench score, route everything through it, and swap when something better ships. That worked when the gap between models was large and the harness layer was immature.</p>
+
+        <p>That approach is now leaving performance on the table. Here's what a more sophisticated selection process looks like in the second half of 2026:</p>
+
+        <p><strong>Base capability matters less than adaptation surface.</strong> A model that scores 5% lower on benchmarks but fine-tunes cleanly to your domain will outperform a stronger model used zero-shot in production. The gap between general-purpose and domain-specialized performance is larger than the gap between frontier models.</p>
+
+        <p><strong>Controllable reasoning changes your routing architecture.</strong> Instead of maintaining multiple model endpoints for different task complexities, you can use a single model with adjustable thinking effort. This simplifies your harness, reduces prompt-format fragmentation, and makes failure modes more predictable.</p>
+
+        <p><strong>Multimodality eliminates pipeline complexity.</strong> Inkling reasons natively over text, images, and audio. That means an agent can read a screenshot, process a voice instruction, and analyze a code file without three separate models stitched together with fragile inter-model translation layers. Each pipeline junction is a failure point. Native multimodality removes them.</p>
+
+        <p><strong>The fine-tuning platform is part of the model.</strong> Open weights without fine-tuning tooling is like open-sourcing a database engine without SQL. Tinker isn't a convenience layer — it's what makes the weights usable. When evaluating base models, evaluate the customization infrastructure with the same rigor you evaluate the benchmark scores.</p>
+
+        <h2>The Bigger Picture: Models as Raw Material</h2>
+
+        <p>Armin Ronacher — the creator of Flask — published a piece this week called "The Tower Keeps Rising" that captured something important about the agent era. His argument: AI-assisted programming removes the friction that previously synchronized understanding between developers. Before agents, if you wanted to change someone else's module, you had to read their code, ask questions, and coordinate. That friction was annoying, but it was also how shared understanding was maintained.</p>
+
+        <p>Agents remove that friction. Every developer gets a tireless translator. Changes keep landing. But the architectural language that lets humans reason about the system together can disappear — and because construction doesn't stop, nobody notices what was lost.</p>
+
+        <p>This connects to Inkling more directly than it might seem. If models are becoming raw material — something you customize, specialize, and deploy in dozens of domain-specific variants — then the shared understanding problem gets harder, not easier. Each fine-tuned model is a slightly different interpreter. Each one has its own strengths, its own blind spots, its own way of reading instructions.</p>
+
+        <p>The harness layer — the system that manages prompts, routes tasks, evaluates outputs, and coordinates between specialized models — becomes the place where coherence is maintained. It's where you enforce the shared language across your model fleet. This is exactly the territory covered in <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>: the harness is not just execution infrastructure, it's the cognitive contract between your agents and your codebase.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p>If you're building agent infrastructure, three things are worth doing now:</p>
+
+        <p><strong>Stop optimizing for model swaps.</strong> The era of "swap in the newest model when it ships" is ending. Start optimizing for model customization. Evaluate base models on their fine-tuning surface, not just their zero-shot benchmarks. The teams that win will be the ones that can specialize models to their domains fastest.</p>
+
+        <p><strong>Audit your reasoning-cost profile.</strong> If you're routing every agent task through a frontier model at maximum reasoning depth, you're overpaying. Map your task distribution by complexity. The long tail of simple tasks — tool dispatches, format conversions, field extraction — should run at minimum thinking effort. Controllable reasoning models like Inkling make this a parameter, not an architecture change.</p>
+
+        <p><strong>Test Inkling-Small as an agent runtime.</strong> 12 billion active parameters with the same training recipe as the full model is the sweet spot for cost-sensitive agent workloads. If you're currently running a 7B or 8B model for local inference, the jump to 12B active with a larger knowledge base is worth benchmarking. PrismML's Bonsai family is also worth evaluating if you need even more aggressive compression for edge deployment.</p>
+
+        <h2>The Real Race</h2>
+
+        <p>The open-weights race in 2024 was about proving you could match proprietary models. DeepSeek did it. Then Llama. Then Mistral. The point was proven.</p>
+
+        <p>The open-weights race in 2025 was about pushing past them. DeepSeek V3 and V4 showed open models could lead on specific benchmarks. The frontier became contested territory.</p>
+
+        <p>The open-weights race in 2026 is about something different: <strong>becoming the default base layer that everyone customizes.</strong> The winner isn't the model with the highest score. It's the model that ends up inside the most production agents — fine-tuned, specialized, and running tasks that nobody benchmarks because they're too specific to appear on a leaderboard.</p>
+
+        <p>Inkling's decision to call itself second-best while betting on customization is the clearest articulation of this shift yet. Whether it works depends on execution — Tinker's fine-tuning quality, Inkling-Small's real-world performance, and whether the developer ecosystem actually builds on it rather than just benchmarking it.</p>
+
+        <p>But the strategic logic is sound. In a world where models commoditize every six months, the defensible position isn't being the smartest model. It's being the most useful one to build on.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
