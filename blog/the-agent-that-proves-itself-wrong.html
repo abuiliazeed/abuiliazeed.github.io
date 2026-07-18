@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Agent That Tries to Prove Itself Wrong — Abuiliazeed</title>
+  <meta name="description" content="Capital One open-sourced VulnHunter — an agentic security tool built on Claude Code skills. Its core innovation isn't the scanning. It's a falsification engine that actively tries to disprove every finding before showing it to a developer.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-agent-that-proves-itself-wrong.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-agent-that-proves-itself-wrong.html">
+  <meta property="og:title" content="The Agent That Tries to Prove Itself Wrong">
+  <meta property="og:description" content="Capital One open-sourced VulnHunter — an agentic security tool built on Claude Code skills. Its core innovation isn't the scanning. It's a falsification engine that actively tries to disprove every finding before showing it to a developer.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Agent That Tries to Prove Itself Wrong">
+  <meta name="twitter:description" content="Capital One open-sourced VulnHunter — an agentic security tool built on Claude Code skills. Its core innovation isn't the scanning. It's a falsification engine that actively tries to disprove every finding before showing it to a developer.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-07-18">July 18, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Agent That Tries to Prove Itself Wrong</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Capital One is the 10th largest bank in America by assets — roughly $480 billion on the balance sheet, heavily regulated, historically conservative about open-source releases. On July 16, 2026, they open-sourced VulnHunter: an agentic AI security tool that hunts vulnerabilities in source code. Not a policy framework. Not a governance document. An autonomous agent that scans codebases for exploitable defects, writes exploit proofs, generates fixes, and verifies the fixes work — all without a human in the loop.</p>
+
+        <p>It runs on Claude Opus inside Claude Code. It is distributed as three Claude Code skills. And its core architectural innovation is something the agent industry has been conspicuously avoiding: a falsification engine that actively tries to disprove every finding before it reaches a developer.</p>
+
+        <p>In a year where the dominant narrative has been about making agents more confident, more autonomous, more aggressive in taking action, VulnHunter is the opposite bet. The agent's job isn't to generate findings. It's to survive an internal challenge that tries to kill them.</p>
+
+        <h2>The Architectural Shift: From Sink-First to Attacker-First</h2>
+
+        <p>Traditional static analysis tools (SAST) — the category VulnHunter aims to replace — use what's called <em>sink-first</em> analysis. They find dangerous code patterns (a SQL query, an <code>eval()</code>, a file write), then work backward to ask: could an attacker reach this? The model assumes the attacker and reasons about the path.</p>
+
+        <p>This approach floods engineering teams with false positives because it starts from the dangerous code, not the attacker. Most "dangerous" code is unreachable from any external input. But the scanner doesn't know that — it doesn't model the attacker's actual capabilities, only the code's theoretical exposure. The result is the experience every developer knows: thousands of alerts, most of them irrelevant, a compliance checkbox rather than a security tool.</p>
+
+        <p>VulnHunter inverts the direction. It begins at attacker-accessible entry points — APIs, network messages, file uploads, command-line arguments — and reasons <em>forward</em> through the application's logic, data transformations, and security checkpoints. The question isn't "is this code dangerous?" but "can an attacker actually get here, given the controls in the way?" This is how a human penetration tester thinks. The agent just does it at machine speed across an entire codebase.</p>
+
+        <p>The direction of analysis determines the false-positive rate. Sink-first asks the tool to prove a negative (that no attacker could reach the code). Attacker-first asks the tool to prove a positive (that a specific attacker can reach a specific outcome). Proving the positive is harder, but when it succeeds, the finding is real by construction. The exploit path isn't hypothetical. It's traced.</p>
+
+        <h2>The Falsification Engine</h2>
+
+        <p>Here is where VulnHunter diverges from every other agentic security tool I've seen, and where it offers a lesson that extends well past security.</p>
+
+        <p>After the forward analysis surfaces a potential vulnerability, VulnHunter does not report it. Instead, it runs a structured reasoning workflow specifically designed to <em>disprove its own argument</em>. The pipeline — documented in the repository — has four phases: Recon, Parallel Hunt, Adversarial Disprove, and Capability Filter. The Adversarial Disprove phase actively searches for assumptions that don't hold, logical gaps in the exploit path, and security controls that would block the attack mid-execution.</p>
+
+        <p>Only findings that survive the falsification attempt are surfaced to the developer. The framing in Capital One's own documentation is precise: "Every flagged vulnerability is one the tool has tried and failed to rule out."</p>
+
+        <p>Think about what that means for the agent architecture. Most agent systems today operate on a generate-then-trust model. The model produces an output — a code change, an analysis, a recommendation — and the system acts on it. Verification, when it exists, is a separate step performed by a human or a different system. The producing agent has no incentive structure that pushes it to challenge its own conclusions.</p>
+
+        <p>VulnHunter embeds falsification into the agent's own loop. The agent is not just the analyst; it is also the adversary. The same model that constructs the exploit argument is tasked with demolishing it. This is not a confidence score. It is not a "review your output" instruction appended to a prompt. It is a structural pipeline phase with its own reasoning budget, designed to fail findings rather than confirm them.</p>
+
+        <p>The principle generalizes. Any agent system that produces claims — code that should work, analyses that should be accurate, recommendations that should be sound — could benefit from an internal falsification phase. The current pattern is to make agents more assertive. VulnHunter suggests the opposite: make agents earn their assertions by surviving a dedicated attempt to invalidate them.</p>
+
+        <h2>The Closed Loop: Hunt, Fix, Verify</h2>
+
+        <p>VulnHunter ships as three composable Claude Code skills, and the composition reveals something about how serious agent systems are being structured.</p>
+
+        <p>The first skill, <code>/vulnhunt</code>, is the scanner. It maps entry points to dangerous sinks, runs the falsification pipeline, and emits verified findings with executable exploit proofs and proposed fixes.</p>
+
+        <p>The second skill, <code>/vulnhunter-fix</code>, is the remediation agent. It follows a test-driven discipline: write an exploit demo, create a failing security test (the RED phase), implement the fix (GREEN), verify the exploit is blocked without regressions, and cut a reviewable pull request. This is not "generate a patch." It is a structured engineering workflow that produces evidence the fix works.</p>
+
+        <p>The third skill, <code>/vulhunt-fix-verify</code>, is the one that deserves the most attention. It is a completely separate, read-only agent that independently validates whether a finding was actually remediated. It emits a per-finding verdict. And it operates under a deliberately constrained tool envelope: Read, Write, Edit, Glob, Grep, and Agent — <strong>no Bash execution, no network access</strong>.</p>
+
+        <p>That constraint is the entire point. The verifier cannot run arbitrary code. It cannot reach the internet. It can only inspect the repository state and reason about whether the fix addressed the finding. The verification is provably contained because the tool surface is provably contained.</p>
+
+        <p>This is the three-agent pattern done correctly. Most multi-agent systems I see in production are either a single agent pretending to be multiple agents, or a flat delegation tree where every subagent has the same capabilities. VulnHunter's three skills have <em>different capabilities by design</em>. The scanner needs broad access to read code. The fixer needs shell access to run tests and create commits. The verifier needs neither — and is explicitly denied both. The principle of least privilege, applied at the agent boundary.</p>
+
+        <h2>Claude Code Skills as a Deployment Platform</h2>
+
+        <p>Beyond the security domain, VulnHunter is a data point about where agent deployment is heading. A Fortune 500 bank chose to ship a production-grade tool as Claude Code skills — not as a standalone application, not as an MCP server, not as a SaaS product. A set of prompt files dropped into <code>~/.claude/skills/</code> with an install script.</p>
+
+        <p>This is significant because it validates the skill model as a serious deployment substrate. Claude Code skills are essentially structured prompt packages with access to the harness's tool surface. They are not applications in the traditional sense — there is no binary, no server, no database. They are reasoning workflows that execute inside an existing agent runtime. The complexity lives in the prompt design and the phase decomposition, not in infrastructure.</p>
+
+        <p>For an enterprise like Capital One, this has real advantages. The tool requires no separate deployment pipeline. It runs wherever Claude Code runs. It inherits the authentication, the model access, and the execution environment from the host. Updates are a git pull and a re-run of <code>install.sh</code>. The operational overhead is near zero.</p>
+
+        <p>There is also a constraint worth noting. VulnHunter is explicitly built for Claude Opus and requires frontier Opus-class reasoning. The README is blunt about this: "The framework depends on deep, multi-step reasoning and requires frontier Opus-class models." The falsification engine does not work with smaller models. The forward analysis does not work with smaller models. This is a tool that only functions at the frontier — and that fact tells you something about where the capability cliff is. Multi-step adversarial reasoning over a real codebase is not a task you can delegate to an 8B model. It requires the kind of sustained, self-critical reasoning that only the current frontier models can provide.</p>
+
+        <p>This creates a dependency that would have been unthinkable for a bank a year ago: a critical internal security tool built on a single vendor's model, accessed through a single vendor's harness. Capital One accepted that dependency and open-sourced the result. That is either confidence in the architecture's portability — the skills are prompt files that could theoretically run on other harnesses — or a bet that Anthropic's lead in agentic reasoning is durable enough to build production systems on.</p>
+
+        <h2>The Cyber Verification Wrinkle</h2>
+
+        <p>One detail in the VulnHunter documentation deserves more attention than it has received. The repository carries a warning: if you run VulnHunter against an Anthropic account that is not enrolled in the <a href="https://support.claude.com/en/articles/14604842-real-time-cyber-safeguards-on-claude">Cyber Verification Program</a>, the real-time cyber safeguards may block requests and flag the account for abuse.</p>
+
+        <p>This is a glimpse at a problem the agent ecosystem has not fully reckoned with: dual-use capability management. VulnHunter is a defensive tool, but its operation — reasoning about exploit paths, generating proof-of-concept code, mapping attack surfaces — is indistinguishable from offensive work at the model interaction level. The model cannot tell whether you are hardening your own code or probing someone else's. The safeguard fires on the pattern, not the intent.</p>
+
+        <p>Anthropic's Cyber Verification Program is the coordination mechanism: a trusted-party enrollment that relaxes the safeguards for verified defensive use. It is, effectively, a KYC (know-your-customer) layer for agentic security tooling. Expect to see more of this. As agents become capable enough to perform genuinely dangerous analytical work, the interface between the model's safety training and the legitimate professional use cases will require structured identity and verification. VulnHunter is an early example of a tool that cannot function without that infrastructure existing.</p>
+
+        <h2>What This Means for Agent Architecture</h2>
+
+        <p>Three takeaways that extend beyond security tooling.</p>
+
+        <p><strong>Falsification is a missing primitive.</strong> The dominant agent design pattern is generate-then-verify-externally. VulnHunter demonstrates that embedding a falsification phase inside the agent's own loop — structurally, with its own reasoning budget — produces materially better output quality. This is not domain-specific. Code review agents, analysis agents, research agents, any system where false positives are costly would benefit from an internal adversarial phase. The pattern is: generate the claim, then dedicate a pipeline stage to trying to destroy it, then surface only what survives.</p>
+
+        <p><strong>Capability differentiation between subagents is load-bearing.</strong> The verifier agent's restricted tool envelope (no Bash, no network) is not a limitation — it is the design. When multiple agents collaborate, they should not all have the same capabilities. The scanner needs read access. The fixer needs write and shell access. The verifier needs neither. The capability boundaries are the security model. Flat capability delegation, where every subagent inherits the full tool surface, discards the most powerful containment mechanism available in agent systems.</p>
+
+        <p><strong>Skills are becoming a real deployment tier.</strong> The choice to ship VulnHunter as Claude Code skills rather than a standalone product signals where enterprise agent distribution is going. The skill format — structured prompt packages with access to a host harness's tools — offers near-zero operational overhead and instant portability. For internal tools, proof-of-concept systems, and domain-specific agent workflows, skills are competing with (and in many cases winning against) the heavier deployment models of standalone applications and MCP servers.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p>If you are building agent systems, here is how to act on this.</p>
+
+        <ol>
+          <li><strong>Read the VulnHunter skill source.</strong> Clone <a href="https://github.com/capitalone/vulnhunter">github.com/capitalone/vulnhunter</a> and inspect the phase decomposition — particularly the Adversarial Disprove phase in <code>vulnhunt/</code> and the tool constraints in <code>vulnhunt-fix-verify/</code>. This is one of the most thoughtfully structured agent workflows available as open source right now. Even if you never use it for security, the architecture transfers.</li>
+          <li><strong>Add a falsification phase to your own agents.</strong> If you have an agent that produces claims — code, analysis, recommendations — insert a dedicated reasoning stage whose sole purpose is to attack the output. Give it its own token budget. Frame it adversarially. Only surface outputs that survive. This is cheap to implement and the quality improvement is measurable.</li>
+          <li><strong>Audit your subagent capability boundaries.</strong> If you run multi-agent systems, check whether your subagents have differentiated tool access or whether they all share the same surface. Every subagent that has Bash access but doesn't need it is a containment failure waiting to happen. The principle of least privilege applies at the agent level, not just the process level — as the harness engineering discipline makes clear.</li>
+          <li><strong>Test the skill deployment model on an internal workflow.</strong> Take one agent workflow you currently ship as a script or a service and repackage it as a Claude Code skill (or the equivalent in your harness of choice). Measure the operational difference. You may find that the skill format eliminates more infrastructure overhead than you expect.</li>
+        </ol>
+
+        <h2>The Broader Signal</h2>
+
+        <p>A bank open-sourcing an agentic security tool would have been unimaginable two years ago. Banks do not ship security tooling — they buy it, they classify it, and they certainly do not hand it to competitors. Capital One did, because the strategic calculation shifted. The defensive value of distributing this capability across the industry — making every organization better at finding and fixing vulnerabilities before adversaries can — outweighs the competitive value of keeping it internal.</p>
+
+        <p>That calculation will repeat. Agent capability in specialized domains — security, compliance, testing, documentation — is becoming infrastructure, not differentiation. The organizations that build the best agents for these domains will open-source them, because the alternative is letting the adversary ecosystem outpace the defensive one. VulnHunter is one of the first. It will not be the last.</p>
+
+        <p>But the lasting contribution is not the tool. It is the proof that an agent designed to doubt itself — structurally, with a pipeline phase dedicated to invalidating its own conclusions — produces better results than an agent designed to be confident. In a field obsessed with making agents more autonomous and more assertive, that is a contrarian data point worth taking seriously.</p>
+
+        <p>The most useful agent might be the one that works hardest to prove itself wrong.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
