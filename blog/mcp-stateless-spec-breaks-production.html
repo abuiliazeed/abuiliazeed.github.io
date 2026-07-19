@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The MCP Rewrite Nobody Is Ready For — Abuiliazeed</title>
+  <meta name="description" content="On July 28, MCP ships its largest revision ever: a stateless core that breaks sessions, deprecates three features, and turns every 2025 deployment into legacy code. Most teams will find out in August.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/mcp-stateless-spec-breaks-production.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/mcp-stateless-spec-breaks-production.html">
+  <meta property="og:title" content="The MCP Rewrite Nobody Is Ready For">
+  <meta property="og:description" content="On July 28, MCP ships its largest revision ever: a stateless core that breaks sessions, deprecates three features, and turns every 2025 deployment into legacy code. Most teams will find out in August.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The MCP Rewrite Nobody Is Ready For">
+  <meta name="twitter:description" content="On July 28, MCP ships its largest revision ever: a stateless core that breaks sessions, deprecates three features, and turns every 2025 deployment into legacy code. Most teams will find out in August.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-07-19">July 19, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>10 min read</span>
+        </div>
+        <h1 class="blog-post-title">The MCP Rewrite Nobody Is Ready For</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>On July 28, 2026, the Model Context Protocol publishes its largest revision since launch. Sixteen months ago MCP was a spec doc and a reference implementation. Today it carries 110 million monthly SDK downloads, 10,000+ tracked public servers, and 500+ clients across Claude, ChatGPT, Cursor, VS Code, and Replit. On July 28, the protocol that all of that runs on gets rewritten at the transport layer.</p>
+
+        <p>The release candidate has been locked since May 21. The beta SDKs shipped in late June. Most of the coverage frames this as an upgrade that makes MCP "easier to scale." That framing is dangerously incomplete. The 2026-07-28 specification removes the <code>initialize</code> handshake, deletes the <code>Mcp-Session-Id</code> header, and deprecates three features that production servers actively depend on. Any MCP server built against the 2025-11-25 spec will break the day a client upgrades — and the spec offers no backward-compatibility bridge at the transport layer. This is not an upgrade. It is a forced migration dressed as one.</p>
+
+        <p>Here is what actually changes, why the framing matters, and what to do before August.</p>
+
+        <h2>What Dies on July 28</h2>
+
+        <p>Three things leave the request path. None of them are vestigial.</p>
+
+        <p><strong>The <code>initialize</code>/<code>initialized</code> handshake is gone (SEP-2575).</strong> In the 2025 spec, every MCP connection opened with a two-step dance: the client sent <code>initialize</code> with its protocol version and capabilities, the server responded with its own, and the client confirmed with <code>initialized</code>. That exchange negotiated the contract for the entire session. In <code>2026-07-28</code>, the handshake is removed entirely. Protocol version, client identity, and capabilities now travel inside a <code>_meta</code> envelope on <em>every</em> request. A new <code>server/discover</code> method lets clients fetch server capabilities on demand rather than up front.</p>
+
+        <p><strong>The <code>Mcp-Session-Id</code> header is gone (SEP-2567).</strong> This is the change with the largest operational footprint. In the old spec, every request after the handshake carried a session ID that pinned the client to one server instance. Remote MCP servers needed sticky routing, a shared session store, and deep packet inspection at the gateway to keep requests landing on the right replica. With the header removed, any server instance can handle any request. The working group's one-liner is blunt: <em>any MCP request can land on any server instance.</em></p>
+
+        <p><strong>Roots, Sampling, and Logging are deprecated (SEP-2577).</strong> These are not unused leftovers. Roots, in particular, is embedded in tool-discovery patterns at companies that built on MCP in 2025 — it is how a client tells a server which filesystem paths or resource roots are in scope. Sampling is how servers call back into the client's model. Logging is how servers emit structured logs. All three keep working for at least twelve months from publication. But the clock starts on July 28, not on the day your team discovers the dependency.</p>
+
+        <p>Read those four changes together. The protocol that 110 million monthly downloads depend on is, after July 28, a different protocol at the wire level. Servers that treated the session as a first-class object — caching client capabilities keyed by session, storing per-connection state in process memory, branching on session ID — now hold dead code. The fixes are mechanical, but the discovery is not. Finding every implicit session dependency in a production MCP server is the part that consumes engineering time.</p>
+
+        <h2>Why Stateless Looks Like an Upgrade and Acts Like a Rewrite</h2>
+
+        <p>The selling point of the stateless core is real and worth stating fairly. A pre-2026-07-28 remote MCP server was a stateful, WebSocket-shaped thing: handshake, session ID, per-connection memory, sticky routing at the load balancer, a shared Redis store if you wanted more than one replica. Scaling it meant fighting affinity. The 2026-07-28 server is an ordinary stateless HTTP service. You put it behind an Application Load Balancer, scale to N replicas, recycle pods without a second thought. If you have ever maintained a shared session store just to run two MCP replicas, this is genuinely the fix.</p>
+
+        <p>But the framing that this is "just easier to scale" obscures the migration cost. Stateless does not eliminate complexity. It pushes complexity <em>down</em> — from the connection to the shared store. Anything your server genuinely needs to remember across requests (task state, idempotency keys, audit trails, long-running operation handles) now must live in Redis or Postgres, because the protocol no longer lets you stash it in a connection. The Tasks extension, which graduated from an experimental core feature to a first-class extension in this release, exists precisely to give servers a standard place to put durable work that used to hide inside sessions.</p>
+
+        <p>The honest summary: statelessness trades connection-scoped state for shared-store state. That is a good trade for most teams. It is still a trade, and the teams that treat it as a free upgrade will ship servers with silent data loss the first time a request lands on a cold replica that has no idea what the previous request did.</p>
+
+        <h2>The Pattern That Breaks Silently</h2>
+
+        <p>Here is the failure mode that will generate production incidents in August and September.</p>
+
+        <p>Consider a server that, in the 2025 spec, opened a database connection during <code>initialize</code> and kept it in the session for the lifetime of the connection. Every subsequent <code>tools/call</code> reused that connection. The code worked because the protocol guaranteed request affinity: the same client always hit the same server instance, which always held the same connection.</p>
+
+        <p>In <code>2026-07-28</code>, that guarantee is gone. The client's next request after a server failure routes to a different instance — one that never ran <code>initialize</code>, never opened the connection, and has no idea what the previous request was doing. If the failure is local (one pod restarted), the new instance serves the request fine. If the dependency is systemic (the database is down, the downstream API is rate-limited), every instance fails and every request cascades. In a stateful world, the failure surfaced as a session drop the client could detect. In a stateless world, the failure surfaces as a 500 the client retries — and the retry hits another failing instance.</p>
+
+        <p>This is why circuit breakers become non-negotiable in the new model. The resilience pattern that mattered in 2025 was session-affinity-aware retry. The resilience pattern that matters in 2026 is per-tool circuit breaking, because a single flaky tool should not take down access to all tools on the same server. Teams running 40 tool calls across 6 MCP servers in a single agent execution — a real number from the MCP Dev Summit — have learned to wrap each tool call individually. That is not a protocol concern. It is a harness concern. But the protocol change is what makes it mandatory.</p>
+
+        <h2>Routing Headers: The Underrated Win</h2>
+
+        <p>Buried under the stateless headline is a change that gateway vendors have been waiting for since the protocol launched. Every Streamable HTTP request in <code>2026-07-28</code> must carry two headers: <code>Mcp-Method</code> (the JSON-RPC method, like <code>tools/call</code>) and <code>Mcp-Name</code> (the tool or resource name). Servers reject requests where the headers disagree with the body.</p>
+
+        <p>This sounds minor. It is not. In the old spec, an L7 gateway that wanted to route MCP traffic — to send <code>tools/call</code> to one fleet and <code>resources/read</code> to another, or to rate-limit a specific tool — had to parse the JSON-RPC body. That meant buffering the entire request, decoding it, and teaching the proxy the protocol schema. Fragile, slow, and a new attack surface. At the April 2026 MCP Dev Summit, every gateway vendor — Kong, Docker, Solo.io, Uber's internal platform — was reverse-engineering tool names out of request bodies because the protocol gave them nothing else to route on.</p>
+
+        <p>With <code>Mcp-Method</code> and <code>Mcp-Name</code> on the HTTP request line, an Envoy, NGINX, or ALB rule routes on a header match the same way it routes any other HTTP traffic. No body parsing. No JSON buffering. The gateway tier and the routing tier become fully decoupled from MCP's internals. For anyone operating MCP behind a corporate proxy — which is most enterprise deployments — this is the change that makes the protocol behave like the rest of their infrastructure.</p>
+
+        <p>It also makes per-tool policy enforceable at the edge. Want to require human approval for <code>tools/call</code> against a payments tool but allow it freely against a read-only search tool? In <code>2025-11-25</code>, that policy lived in application code. In <code>2026-07-28</code>, it can live in a gateway rule. The authorization hardening — six SEPs aligning MCP with OAuth 2.0 and OpenID Connect, including mandatory <code>iss</code> validation per RFC 9207 and Resource Indicators per RFC 8707 — builds on this. Scoped, per-agent credentials become simpler when token validation happens once per request without session context, and when different tool calls route through different authorization policies at the gateway before they ever reach server code.</p>
+
+        <h2>The Caching Fix That Makes Stateless Cheap</h2>
+
+        <p>One objection to statelessness is obvious: without a handshake, how does the client avoid re-listing tools on every cold request? In the old spec, the <code>initialize</code> exchange amortized capability discovery. You paid the cost once per session. Remove the session and you pay it on every request.</p>
+
+        <p>The spec answers this directly. List and resource-read results now carry <code>ttlMs</code> and <code>cacheScope</code> fields (SEP-2549), modeled on HTTP <code>Cache-Control</code>. Clients know exactly how long a <code>tools/list</code> response is fresh and whether it is safe to share across users. A long-lived SSE stream is no longer the only way to learn that a list changed. The caching hints make a stateless client cheap in the same way HTTP caching makes a stateless web client cheap.</p>
+
+        <p>This matters more than it sounds because of a number from the Dev Summit: before Claude Code implemented tool search, MCP tools consumed 22% of a 200K-token context window. After, essentially zero. Cloudflare reported that its Code Mode cut token usage from roughly 9,400 tokens for four servers and 52 tools down to about 600 — a 94% reduction. The combination of <code>ttlMs</code> caching and code-mode tool access is what makes the stateless model viable at scale. Without both, every cold connection would re-inject the full tool surface into context, and the token economics of multi-server agent workflows would break.</p>
+
+        <h2>Shadow MCP: The Governance Problem the Spec Cannot Solve</h2>
+
+        <p>Here is the part of the story that the specification cannot fix, and it is the part that should worry enterprise operators more than any transport change.</p>
+
+        <p>At the MCP Dev Summit in April, 23 of the sessions were devoted to security. The standing-room crowds were not at the transport talks. They were at the Shadow MCP talks. Shadow MCP is the new Shadow IT: MCP servers configured directly in Cursor, Claude Desktop, and VS Code by individual developers, without IT oversight, connecting to internal databases, production APIs, and source control. Digital Applied's Dev Summit readout reports that Shadow MCP operates at 3 to 10 times the scale that security teams expect. Most organizations have far more MCP servers in their environment than they know about.</p>
+
+        <p>The 2026-07-28 spec does not address this. It cannot. Shadow MCP is a client-side configuration problem, not a protocol problem. But the stateless rewrite makes it subtly worse before it gets better. In the old spec, a rogue MCP server pinned to a session was at least observable: the session was a unit of traffic that a network monitor could flag. In the new spec, every request is independent, stateless, and indistinguishable from any other HTTP POST at the network layer unless the gateway is reading <code>Mcp-Method</code> headers. The same property that makes MCP scale — ordinary HTTP traffic — also makes it invisible to tooling that was never taught to look for it.</p>
+
+        <p>The market is already responding. Qualys TotalAI and Darktrace SECURE AI shipped MCP detection capabilities in early 2026. Expect CrowdStrike, Palo Alto, and Wiz to follow. The signal from the Dev Summit was clear: a 3-10x discovery gap is an enterprise sales motion, and the category of "MCP discovery and governance" will exist by the end of the year. If you operate MCP in an enterprise, the question is not whether your security team knows about your MCP servers. It is whether they know about the ones your developers configured last Tuesday.</p>
+
+        <p>One more data point from the same summit: the MCPwned disclosure. A vulnerability in a Google-published MCP server with 800K+ weekly installs was disclosed at the event. Google left it unpatched for over 90 days. The server was a dependency in production agent stacks at companies that had no idea they were running it. The supply-chain risk in MCP is not theoretical. The <code>2026-07-28</code> authorization hardening makes servers safer to authenticate against. It does nothing about the trustworthiness of the server code itself.</p>
+
+        <h2>What the Good Teams Are Doing Differently</h2>
+
+        <p>The organizations getting MCP right — Uber, Cloudflare, the teams presenting case studies at the summit — share one trait. They run a gateway layer the protocol does not require and most teams have not built.</p>
+
+        <p>Uber runs 60,000+ weekly agent executions. Their MCP traffic goes through an internal gateway that enforces per-tool circuit breakers, emits OpenTelemetry traces (now standardized in the spec via W3C Trace Context propagation in <code>_meta</code>), and applies authorization policy at the edge. Cloudflare's Code Mode is a gateway feature. Neither of these is a protocol feature. Both are infrastructure that sits in front of the protocol.</p>
+
+        <p>The lesson is that MCP is following the same maturation curve as every other integration protocol that reached ubiquity. HTTP needed CDNs, WAFs, and API gateways to become enterprise-grade — none of which were in the HTTP spec. MCP is at the stage where the protocol is settling but the operational layer around it is still being built. The teams that build that layer now will absorb the July 28 migration as a routine upgrade. The teams that treat the protocol as sufficient will absorb it as a series of August production incidents.</p>
+
+        <h2>The Migration Checklist</h2>
+
+        <p>If you operate MCP servers in production, the window between now and July 28 is your migration timeline. The work is mechanical, but the discovery is the hard part.</p>
+
+        <ol>
+          <li><strong>Audit for session dependencies.</strong> Find every place your server reads or writes <code>Mcp-Session-Id</code>, caches client capabilities keyed by session, or stores per-connection state in process memory. Each one is a migration item.</li>
+          <li><strong>Move connection-scoped state to per-request reads.</strong> Client name, version, and capabilities now arrive in <code>_meta</code> on every call. Read them there. Delete the session cache. Anything genuinely durable — task state, idempotency keys, audit logs — moves to Redis or Postgres, not process memory.</li>
+          <li><strong>Stand up two replicas behind a non-sticky load balancer in staging.</strong> Run your full tool battery. Anything that depended on session affinity will fail here, in staging, instead of in production in August.</li>
+          <li><strong>Emit <code>Mcp-Method</code> and <code>Mcp-Name</code> on responses and accept them on requests.</strong> Keep them consistent with the JSON-RPC body. A mismatch is a routing bug.</li>
+          <li><strong>Propagate <code>traceparent</code> from <code>_meta</code> into your spans.</strong> Verify traces render end-to-end across a multi-replica fleet before you scale out.</li>
+          <li><strong>Add <code>ttlMs</code> and <code>cacheScope</code> to your <code>tools/list</code> response.</strong> Stateless clients will re-list on every cold connection without it.</li>
+          <li><strong>Catalog Roots, Sampling, and Logging usage.</strong> None break today. All are deprecated with a twelve-month clock. Schedule the migration to their replacements now rather than at month eleven.</li>
+          <li><strong>Adopt JSON Schema 2020-12 for tool schemas.</strong> Optional, but it unlocks <code>$ref</code> composition, conditionals, and richer validation the old subset could not express.</li>
+          <li><strong>Wrap every tool call in a circuit breaker.</strong> Per-tool, not per-server. A single flaky tool should not take down access to all tools on the same server. This is harness discipline — covered in detail in <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em> — but the stateless migration is the forcing function.</li>
+          <li><strong>Run a Shadow MCP audit.</strong> Before the migration, find every MCP server your developers have configured in their local clients. You will find more than you expect. The 3-10x gap is real.</li>
+        </ol>
+
+        <h2>The Broader Signal</h2>
+
+        <p>Most coverage of the July 28 spec will focus on what was added: MCP Apps for server-rendered UIs, the Tasks extension for long-running work, the Extensions framework that lets capabilities ship on their own timeline. Those are good additions. They are not the story.</p>
+
+        <p>The story is that the most widely adopted agent integration protocol in the world — 110 million monthly downloads, 16 months from launch to ubiquity — just did a clean break at the transport layer and gave the ecosystem twelve months to absorb it. The deprecation policy is real and the lifecycle rules are written down. But the breaking change in session handling is immediate for any mixed-version deployment, and the spec offers no bridge.</p>
+
+        <p>The teams that treat this as infrastructure maturity — the way HTTP grew up, the way TLS grew up — will come out of it with MCP deployments that scale like ordinary HTTP services. The teams that treat it as a version bump will spend August explaining to their incident channel why a tool that worked yesterday is returning 500s today.</p>
+
+        <p>The protocol grew up on July 28. The question is whether the deployments did.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
