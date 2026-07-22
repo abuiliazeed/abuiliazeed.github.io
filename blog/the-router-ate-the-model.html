@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Router Ate the Model — Abuiliazeed</title>
+  <meta name="description" content="Fireworks benchmarked Kimi K3 against Fable 5 on 1,030 agentic tasks. Neither model won. But routing between them hit 93% accuracy — higher than either alone — at up to 50x lower cost. Model selection is obsolete. Routing is the new harness layer.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-router-ate-the-model.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-router-ate-the-model.html">
+  <meta property="og:title" content="The Router Ate the Model">
+  <meta property="og:description" content="Fireworks benchmarked Kimi K3 against Fable 5 on 1,030 agentic tasks. Neither model won. But routing between them hit 93% accuracy — higher than either alone — at up to 50x lower cost. Model selection is obsolete. Routing is the new harness layer.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Router Ate the Model">
+  <meta name="twitter:description" content="Fireworks benchmarked Kimi K3 against Fable 5 on 1,030 agentic tasks. Neither model won. But routing between them hit 93% accuracy — higher than either alone — at up to 50x lower cost. Model selection is obsolete. Routing is the new harness layer.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-07-22">July 22, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Router Ate the Model</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>93%. That's the task-completion rate Fireworks AI measured by routing between Kimi K3 and Fable 5 across 1,030 real agentic tasks. Neither model alone reached that number. The combination beat both — and cost up to 50x less than running Fable solo on the same workload.</p>
+
+        <p>This isn't a story about Kimi K3 being good, or Fable 5 being overpriced. It's a story about a structural shift in how agent infrastructure works: the question "which model should we use?" has a new answer. <em>Don't pick one. Route between several.</em></p>
+
+        <p>On July 21, Fireworks published benchmark results comparing K3 — an open-weights model from Moonshot AI — against Fable 5, one of the most capable closed models on the market. They ran ~1,030 tasks across five categories: 460 real-world software engineering tasks, 89 long-horizon terminal operations (security, crypto, reverse engineering), 100 algorithmic problems, 225 multi-language implementations, and 120 lawyer-graded legal tasks. Then they asked a simple question: what if you didn't commit to a single model?</p>
+
+        <p>The oracle router — which ran each task through both models and picked the cheapest correct answer — chose K3 for 72–96% of tasks depending on category. When it did pick Fable, it was for tasks where K3 genuinely struggled. The result: 93% aggregate accuracy. Higher than Fable alone. Higher than K3 alone. At a fraction of the cost.</p>
+
+        <h2>Neither Model Won</h2>
+
+        <p>Look at the headline benchmark — SWE, the one everyone quotes — and it's a dead heat. K3 scored 92.4%. Fable scored 92.6%. Statistical noise. Game over, right?</p>
+
+        <p>Wrong. That aggregate number hides a divergence that only appears when you slice by task type. On symbolic math and developer tooling tasks, K3 was clearly sharper. On web and data visualization work, Fable pulled ahead. On multi-language implementations, Fable's breadth carried Java, Python, and C++, while K3 drew even on JavaScript and Rust.</p>
+
+        <p>The terminal tasks told the most interesting story. These were long-horizon operations: drive a shell, poke at systems across dozens of turns, do security analysis and cryptanalysis. K3 cleared a batch of tasks Fable never cracked — a 7z hash, FEAL cryptanalysis, leaked secrets detection, a live vulnerability, runaway async jobs. But on other terminal tasks, Fable was the one that succeeded where K3 stalled.</p>
+
+        <p>Of the 89 terminal tasks, K3 had 11 solo wins to Fable's 7. Neither dominated. They won on different things. And the things they won on were predictable enough that a router could learn to exploit the pattern.</p>
+
+        <h2>Tokens Are Not Fungible. Intelligence Is.</h2>
+
+        <p>The cost story is counterintuitive, and it's worth understanding because it upends the way most teams think about model economics.</p>
+
+        <p>K3 is cheaper per token: $3 per million input tokens and $15 per million output tokens. Fable is more expensive. But token price alone is misleading. K3 is more verbose — it takes more turns and generates more tokens to reach the same answer. On SWE tasks, K3 averaged roughly 55 turns and 1.3 million tokens per task. Fable did the same work in 21 turns and 130,000 tokens. Ten times fewer tokens. So shouldn't Fable be cheaper?</p>
+
+        <p>No — because of prompt caching. When K3 reads ten times the tokens, most of those tokens are cache hits. The system prompt, tool definitions, conversation history — all cached. You pay a fraction of the per-token price for cached tokens. So even though K3's raw token volume is enormous, its effective cost per task is lower than Fable's. Fireworks measured up to 50x cost advantage on certain workloads.</p>
+
+        <p>But flip to terminal tasks, and the pattern inverts. There, Fable is the one that spirals — running up 64 turns and 1.5 million tokens, sometimes straight into a timeout. K3 handles those tasks more efficiently. Neither model is leaner across the board. The cost advantage shifts depending on what you're asking it to do.</p>
+
+        <p>This is the key insight that Ben Thompson laid out in Stratechery on July 20: tokens are not a commodity. A token from one model is not the same as a token from another. What's fungible is <em>intelligence</em> — the correct answer. The cost of producing that intelligence is a function of model footprint, inference efficiency, token count, and per-token price. When you optimize for intelligence rather than tokens, routing becomes obvious: send each task to the model that produces the right answer at the lowest total cost.</p>
+
+        <h2>The Broader Pattern: Everyone Is Optimizing Tokens Now</h2>
+
+        <p>The same day Fireworks published their routing data, Google released Gemini 3.6 Flash — and the pitch was almost identical in spirit. Not "we're the smartest." Instead: "we use 17% fewer output tokens than our previous model." On DeepSWE, they measured up to 65% fewer tokens. On MLE Bench, the quality jumped from 49.7% to 63.9%. But the headline was efficiency, not raw capability.</p>
+
+        <p>Google also shipped 3.5 Flash-Lite, their fastest model in the 3.5 series, running at 350 output tokens per second. Priced at $0.30 per million input tokens and $2.50 per million output tokens. The pitch: use Flash-Lite for high-volume tasks, route complex multi-step work to 3.6 Flash. They're describing a routing architecture as a product lineup.</p>
+
+        <p>Three months ago, model launches led with benchmark scores. Now they lead with token efficiency and cost-per-task. The industry has internalized what the Fireworks data proves: the model layer has commoditized on quality. The differentiator is cost-per-unit-of-intelligence, and that's a function of how efficiently the model uses tokens — not how many parameters it has.</p>
+
+        <h2>Why Routing Beats Selection</h2>
+
+        <p>The argument for committing to a single model has always been simplicity. One model, one API, one set of behaviors to tune your harness around. That argument is collapsing for three reasons.</p>
+
+        <p><strong>First, the quality gap between models is now smaller than the quality gap between task types.</strong> The difference between K3 and Fable on a given SWE task is a fraction of a point. The difference between a model's performance on symbolic math versus web data visualization is 10–15 points. If you pick one model, you're accepting its weaknesses on entire categories of tasks — weaknesses that another model handles better.</p>
+
+        <p><strong>Second, the cost gap between models is now larger than the quality gap.</strong> K3 costs a fraction of what Fable costs per task. If K3 handles 72–96% of your tasks correctly, routing the easy ones to K3 and the hard ones to Fable gives you near-frontier quality at a fraction of frontier cost. The math is brutal for single-model strategies: you're paying Fable prices for tasks K3 would have solved.</p>
+
+        <p><strong>Third, models specialize in ways that are learnable.</strong> The Fireworks oracle router didn't need to be perfect. It needed to identify — based on task features — which model was likely to succeed at lower cost. The fact that oracle routing selected K3 72–96% of the time means the signal is strong. A practical router won't be perfect, but it doesn't need to be. It needs to be better than committing to one model. And the bar is low, because no single model is best at everything.</p>
+
+        <h2>Routing Is a Harness Concern</h2>
+
+        <p>Here's where this connects to harness engineering. A router is not a separate product you buy. It's a layer inside your harness — the orchestration layer that decides which model to invoke for each step of a multi-step task.</p>
+
+        <p>Think about what a modern agent harness already does. It manages context windows. It handles tool execution. It implements retry logic. It tracks token spend. The router is simply the next responsibility: given the current task, which model should handle it?</p>
+
+        <p>This isn't theoretical. The tools to build it already exist. OpenRouter has been offering model routing as a service. Fireworks is building routing into their inference platform. LangChain's model routing capabilities let you define fallback chains. The infrastructure is there. What's missing is the operational knowledge: which models are good at which tasks, how to detect task types at runtime, and how to handle the edge cases where the router guesses wrong.</p>
+
+        <p>The teams that figure this out first will have a structural cost advantage. Not because they picked the right model — but because they stopped picking.</p>
+
+        <h2>The Kimi Factor: Open Weights as Routing Fuel</h2>
+
+        <p>There's a geopolitical dimension to this that's worth noting. Kimi K3 is an open-weights model from a Chinese company. Fable 5 is a closed model from a Western lab. The routing architecture doesn't care about borders — it cares about cost-per-correct-answer. And right now, Chinese open-weights models are dramatically cheaper while approaching or matching frontier quality on many task types.</p>
+
+        <p>a16z partner Martin Casado noted that there's an estimated 80% chance any given startup is already using Chinese models. Stratechery argued that China's open-weights strategy turns a compute disadvantage into a distribution advantage — they can't serve global-scale centralized services like OpenAI, but they can flood the ecosystem with downloadable models that are cheap to self-host.</p>
+
+        <p>For routing architectures, this is pure upside. Open-weights models like K3 can be self-hosted at marginal cost. They become the cheap tier in a router that escalates to a premium closed model only when needed. The router doesn't need to be political. It needs to be economic. And the economics favor mixing open and closed models based on task fit.</p>
+
+        <h2>What This Means for You</h2>
+
+        <p>If you're building agent infrastructure, three things changed this week:</p>
+
+        <p><strong>1. Stop standardizing on one model.</strong> The era of "we're an Anthropic shop" or "we're an OpenAI shop" is ending. Your harness should be model-agnostic at the API level. If it isn't, that's the first thing to fix. The cost of model lock-in is no longer just missing out on better models — it's paying premium prices for tasks a cheaper model would have solved.</p>
+
+        <p><strong>2. Start instrumenting task types.</strong> A router needs to know what kind of task it's looking at. Is this a coding task? A terminal operation? A document analysis? A data transformation? Build task classification into your harness now, even if you're still using a single model. The data you collect will tell you which models win on which task types — and that's the training data for your router.</p>
+
+        <p><strong>3. Track cost-per-correct-answer, not cost-per-token.</strong> Token price is a red herring. A model that costs $15 per million output tokens but solves a task in 2,000 tokens is cheaper than a model that costs $3 per million but needs 50,000. Measure total cost per completed task, and optimize for that. Prompt caching makes this even more important — a verbose model with good cache hit rates can be dramatically cheaper than a concise model with poor caching.</p>
+
+        <p>The harness engineering practices in <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em> cover the orchestration patterns that make multi-model routing practical. The point is the same: the harness is where leverage lives, and routing is the next harness capability that separates efficient agent systems from expensive ones.</p>
+
+        <h2>The Default Architecture</h2>
+
+        <p>Here's the prediction. Within twelve months, model routing will be the default architecture for production agent systems — not an optimization, not an advanced technique, but the baseline. Single-model agents will look like single-core processors: technically functional, economically irrational.</p>
+
+        <p>The evidence is already here. Fireworks measured 93% accuracy with routing at up to 50x cost savings. Google is shipping model lineups designed for tiered routing. Chinese open-weights models are flooding the cheap tier. The question isn't whether routing will become standard. It's whether your harness will be ready when it does.</p>
+
+        <p>Stop picking models. Start routing. The router ate the model — and it's about to eat your model selection process too.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
