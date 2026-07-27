@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Agent Became the Server — Abuiliazeed</title>
+  <meta name="description" content="Microsoft's Agent Framework Harness ships with MCP hosting — a feature that lets your agent expose itself as a callable server. Combined with persistent memory and the MCP stateless core, the agent topology is inverting.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-agent-became-the-server.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-agent-became-the-server.html">
+  <meta property="og:title" content="The Agent Became the Server">
+  <meta property="og:description" content="Microsoft's Agent Framework Harness ships with MCP hosting — a feature that lets your agent expose itself as a callable server. Combined with persistent memory and the MCP stateless core, the agent topology is inverting.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Agent Became the Server">
+  <meta name="twitter:description" content="Microsoft's Agent Framework Harness ships with MCP hosting — a feature that lets your agent expose itself as a callable server. Combined with persistent memory and the MCP stateless core, the agent topology is inverting.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-07-27">July 27, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Agent Became the Server</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>For two years, agents have been clients. They call tools. They call APIs. They call other models. They call MCP servers. The arrow has always pointed outward — the agent initiates, the tool responds, the session ends, and the agent forgets everything. That architecture made sense when agents were experimental. It stops making sense when agents become production infrastructure that other systems need to reach.</p>
+
+        <p>Last week, four independent releases quietly inverted the arrow. Microsoft shipped its Agent Framework Harness with a feature called MCP hosting — your agent can now expose itself as a callable MCP server. agentproto reached runtime 1.0 with a model catalog that agents serve over MCP. Cloudflare's Code Mode SDK added direct host APIs that let MCP servers execute code without adapting to an AI SDK tool format. And the MCP specification itself is preparing its stateless core release candidate for July 28, which decouples state from connections and moves it into explicit stores.</p>
+
+        <p>None of these teams coordinated. All of them arrived at the same conclusion: the agent is no longer just a caller. It is becoming a service that other agents, IDEs, and systems call.</p>
+
+        <h2>What Microsoft Actually Shipped</h2>
+
+        <p>The headline from Microsoft's July 22 announcement was the Harness — a "batteries-included" agent configuration that wraps a chat client with a complete operational pipeline. The components read like a table of contents for agent infrastructure: function invocation (the tool-calling loop), per-service-call history persistence, context compaction, a todo provider for multi-step planning, agent modes (plan and execute), file memory, skills with progressive discovery, web search, tool approval with standing rules, and OpenTelemetry.</p>
+
+        <p>Microsoft's own framing is telling. Internally, they say, the harness is "just a standard Python <code>Agent</code> or .NET <code>ChatClientAgent</code> with a selected collection of framework capabilities attached." That's technically true the way a car is "just an engine with wheels attached." The value isn't in any single component. It's in the curation — the fact that someone tested these ten capabilities together, tuned their interactions, and shipped defaults that work out of the box.</p>
+
+        <p>Microsoft also introduced new vocabulary. In their documentation series, they call the combination of model plus harness a <strong>"claw"</strong> — a complete agent unit with tools, planning, memory, approvals, observability, and deployment infrastructure. The word is deliberately informal, and it codifies something practitioners have been describing awkwardly for a year. A model is not an agent. A model plus a harness is. Now there's a word for that.</p>
+
+        <h2>The Arrow That Flipped</h2>
+
+        <p>Here is where it gets interesting. Two days before the Harness announcement, on July 21, Microsoft shipped Agent Framework 1.12 for Python and 1.14 for .NET. Buried in the release notes, between declarative workflow stabilization and a Telegram channel host, was a feature called <strong>app-owned MCP hosting helpers</strong>.</p>
+
+        <p>Until now, the Microsoft Agent Framework — like every other agent framework — treated the agent as an MCP client. The agent discovers tools on remote servers, calls them, and uses the results. The arrow points one way: agent calls server.</p>
+
+        <p>Version 1.12 adds the reverse direction. Your agent can now expose its own capabilities as native MCP tools. Any MCP client — Claude, another agent runtime, an IDE, a custom application — can discover and call your agent the same way it calls any other MCP server. The arrow now points both ways.</p>
+
+        <p>This is not a minor feature. It changes the topology of agent systems. Previously, if you wanted two agents to collaborate, you built an orchestration layer that managed both — a central controller that dispatches tasks. With MCP hosting, your agent is directly addressable. Another agent doesn't need to go through your orchestrator. It calls your agent's MCP endpoint, receives a tool schema, and invokes it. The agent becomes a network service with a well-defined interface.</p>
+
+        <p>The implication for composition is significant. If every agent can be an MCP server, then agents compose the same way microservices compose — through discovered interfaces, not through hardcoded orchestration. Your research agent exposes a <code>search_literature</code> tool. Your coding agent exposes a <code>implement_feature</code> tool. Your deployment agent exposes a <code>ship_service</code> tool. Any other agent — or any human using any MCP-compatible client — can call any of these without knowing or caring what framework, model, or harness sits underneath.</p>
+
+        <h2>Memory Stops Dying</h2>
+
+        <p>The second headline from the 1.12 release is an alpha Azure Cosmos DB semantic-memory context provider. The description sounds dry: "fact extraction and user profiles." The implication is not.</p>
+
+        <p>Agent memory today is session-scoped. The agent remembers what happened during a conversation. When the session ends — when the process restarts, when the connection drops, when the cron job finishes — the memory dies. Everything the agent learned about your preferences, your codebase, your recurring problems, your deployment patterns evaporates. The next session starts from scratch. You spend the first three turns re-establishing context the agent already had.</p>
+
+        <p>The Cosmos provider changes that model. Instead of memory that lives and dies inside a run, the agent can extract durable facts from a conversation and write them to a Cosmos-backed profile that persists across sessions and machines. The agent learns who you are, what you're building, and what patterns you follow — and it remembers next time, even if "next time" is a different process on a different server.</p>
+
+        <p>The word to hold onto is <em>alpha</em>. Microsoft is explicit about this: pin the version, expect the API to move, don't wire it into load-bearing paths. But the direction is unmistakable, and it aligns with a broader shift happening across the ecosystem.</p>
+
+        <p>The MCP specification's stateless core — arriving as a release candidate on July 28 — encodes the same principle at the protocol level. State stops being tied to a connection. It moves into an explicit store that any instance can read. When you combine MCP hosting (your agent is addressable) with stateless state (your agent's memory lives in a store, not in a session), you get something that looks very different from the agents of six months ago. You get a stateful, persistent, callable service — not a stateless, ephemeral, call-making client.</p>
+
+        <h2>The Convergence Nobody Coordinated</h2>
+
+        <p>Microsoft's releases are the most visible data point, but they're not isolated. Look at what else shipped in the same week.</p>
+
+        <p><strong>agentproto runtime 1.0</strong> (July 19) added a <code>catalog_models</code> MCP tool and a <code>GET /catalog/models</code> REST endpoint. Agents and orchestrators can now enumerate the models the daemon knows about — pricing, context windows, route information — through the same MCP protocol they use for tool calls. The model catalog itself is being served over MCP. The infrastructure that manages agents is becoming MCP-addressable.</p>
+
+        <p><strong>Cloudflare's Agents SDK</strong> (July 22) added <code>execute()</code>, <code>search()</code>, and <code>describe()</code> methods to the durable Code Mode runtime handle. MCP servers and non-AI-SDK hosts can now invoke code execution directly, without adapting the runtime to an AI SDK tool format. The runtime is exposing itself as a callable service — the same inversion, applied to code execution.</p>
+
+        <p><strong>OpenAI Presence</strong> (July 22) — while not an MCP play — is the enterprise expression of the same pattern. Presence agents are deployed systems that other applications interact with. They receive specific jobs, connect to company systems, take approved actions, and escalate when needed. Presence is not self-serve. It is deployed by Forward Deployed Engineers. The fact that OpenAI chose a deployed-service model over a self-serve API tells you something about where they think the value is: not in the model, not in the framework, but in the running, managed, addressable agent system.</p>
+
+        <p>Four teams. Four different entry points. One architectural conclusion: <strong>agents are becoming services that are called, not just clients that call.</strong></p>
+
+        <h2>What Changes When Agents Are Servers</h2>
+
+        <p>If you're building agent systems, this inversion has concrete implications that should reshape your architecture decisions.</p>
+
+        <p><strong>Agent composition becomes interface-driven, not orchestration-driven.</strong> Today, most multi-agent systems use a central orchestrator that manages subagents through internal APIs — function calls within a single process or framework. When agents expose themselves as MCP servers, composition shifts to discovered interfaces. You don't need to know how the research agent works internally. You need its MCP endpoint and its tool schema. This is the microservices principle applied to agents: loose coupling through well-defined contracts.</p>
+
+        <p>The trade-off is the same one microservices introduced. You gain independent deployment, language heterogeneity, and horizontal scaling. You lose the simplicity of in-process calls, add network latency, and now need to handle service discovery, failure modes, and distributed state. The harness engineering discipline that has focused on single-agent context management now needs to address inter-agent communication patterns.</p>
+
+        <p><strong>Memory architecture becomes a distributed systems problem.</strong> When memory moves from session-scoped scratchpads to persistent stores, the agent's state is no longer local. Multiple agent instances may need to read and write the same user profile. Conflicts arise. Consistency models matter. The Cosmos memory provider is alpha because these problems are hard, and Microsoft knows it. But the direction is clear: memory is becoming a first-class data layer, not an ephemeral side effect of the conversation.</p>
+
+        <p><strong>Security boundaries shift from tool calls to service calls.</strong> When your agent was a client, the security question was: what tools can it call? When your agent is a server, the security question becomes: who can call it, and what can they ask it to do? Authentication, authorization, rate limiting, and audit logging — the standard API security toolkit — become agent concerns. Your agent's MCP endpoint needs the same protection as any other API. The tool approval middleware that gates outbound actions now needs a counterpart for inbound requests.</p>
+
+        <p><strong>Observability gets harder — and more important.</strong> A single-agent system with a tool loop is already difficult to debug. When agents call other agents across MCP boundaries, the call chain spans processes, machines, and frameworks. OpenTelemetry — which Microsoft baked into the harness by default — becomes essential, not optional. You need distributed tracing that follows a request across agent boundaries. Without it, debugging a multi-agent workflow is like debugging microservices without distributed tracing: theoretically possible, practically hopeless.</p>
+
+        <h2>The Harness Standardized</h2>
+
+        <p>Step back from the MCP hosting feature for a moment and look at what the harness itself represents. Microsoft listed ten capabilities: function invocation, history persistence, context compaction, todo planning, agent modes, file memory, skills, web search, tool approval, and telemetry. These are not arbitrary. They are the exact components that every production agent system needs, assembled and tested together.</p>
+
+        <p>This matters because it confirms a pattern the industry has been converging on for months. When Microsoft's harness, agentproto's runtime, LangChain's DeepAgents, and Cloudflare's Agents SDK all independently arrive at the same component list, the harness has effectively been standardized. The debate about what an agent needs — planning? memory? approvals? context management? telemetry? — is over. Everyone agrees. The only remaining question is implementation quality and how well the pieces fit together.</p>
+
+        <p>That standardization has a second-order effect. When the harness components are agreed upon, the differentiator shifts from "what does your agent do?" to "how well does your harness execute each component?" Context compaction quality. Memory retrieval relevance. Tool approval precision. Planning accuracy. These are the engineering variables that now determine whether your agent is production-grade or a prototype.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p>Three actions if you're building or deploying agent systems.</p>
+
+        <p><strong>Expose one agent capability as an MCP server.</strong> You don't need to rewrite your architecture. Pick one agent — or one agent capability — that other systems or teams would benefit from calling. Wrap it as an MCP tool using the hosting helpers in your framework of choice. Register it in your internal MCP directory. The exercise will immediately surface the questions you haven't answered: Who can call it? What happens when it fails? How do you version the tool schema? Better to discover these now, with one capability, than during a broader rollout.</p>
+
+        <p><strong>Audit your memory architecture.</strong> Where does your agent's state live? If the answer is "in the session" or "in the context window," you have a durability problem. Design your memory layer as if it needs to survive process restarts and serve multiple agent instances. Even if you're not using the Cosmos provider yet, architect for persistent, queryable memory from the start. Retrofitting persistence onto a session-bound agent is significantly harder than building it in from day one.</p>
+
+        <p><strong>Design your security model for inbound calls.</strong> If you're moving toward agent-as-server, start with the security model before the feature. Who authenticates to your agent's endpoint? What authorization scopes exist? How are calls rate-limited and logged? These questions are well-understood for traditional APIs but almost entirely absent from agent infrastructure today. The teams that build inbound security into their agent architecture now will avoid the scramble when MCP-hosted agents become the default composition pattern.</p>
+
+        <p>The agent's relationship to the network changed this week. It stopped being only a caller and started being an answerer. The infrastructure decisions you make in the next few months — how your agents expose themselves, how they persist state, how they authenticate callers — will determine whether you're building on the old topology or the new one.</p>
+
+        <p>Most people think the next phase of agent development is about smarter models. The evidence says it's about agents that are addressable, persistent, and composable as network services. The harness turned the model into an agent. MCP hosting turns the agent into infrastructure.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
