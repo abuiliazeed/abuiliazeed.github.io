@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Layer No Agent Framework Will Build — Abuiliazeed</title>
+  <meta name="description" content="When a long-running agent crashes at step 47, it forgets everything — every tool call, every intermediate result, every token burned. Diagrid Catalyst 2.0 just made durability framework-agnostic. Here's why no framework will build this layer themselves.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/durable-execution-agent-layer.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/durable-execution-agent-layer.html">
+  <meta property="og:title" content="The Layer No Agent Framework Will Build">
+  <meta property="og:description" content="When a long-running agent crashes at step 47, it forgets everything — every tool call, every intermediate result, every token burned. Diagrid Catalyst 2.0 just made durability framework-agnostic. Here's why no framework will build this layer themselves.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Layer No Agent Framework Will Build">
+  <meta name="twitter:description" content="When a long-running agent crashes at step 47, it forgets everything — every tool call, every intermediate result, every token burned. Diagrid Catalyst 2.0 just made durability framework-agnostic. Here's why no framework will build this layer themselves.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-07-29">July 29, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Layer No Agent Framework Will Build</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>When a long-running agent crashes at step 47, it doesn't just fail. It forgets. Every tool call it made, every file it read, every intermediate result it computed — gone. You restart from step zero. You pay for the same tokens twice. And unless you built your own checkpointing system, you have no record of what the agent decided before it died.</p>
+
+        <p>This is the dirty secret of the agent ecosystem in mid-2026: we've solved how to build agents. We have not solved how to keep them running. Every framework — LangGraph, Microsoft Agent Framework, Google ADK, OpenAI Agents SDK, CrewAI, Pydantic AI — can spin up an agent that performs impressive multi-step reasoning. None of them guarantees that the agent will recover and finish if something breaks midway.</p>
+
+        <p>On July 28, a company called Diagrid shipped Catalyst 2.0, which adds durable execution — automatic crash recovery that resumes from the exact point of failure — to more than ten agent frameworks simultaneously. The pitch is that you add a code package to whatever framework you already use, and your existing agents gain production-grade durability without rewriting a single line.</p>
+
+        <p>Here's the part most people will miss: the reason Diagrid can add this to <em>every</em> framework is the same reason no framework will ever build it properly themselves. Durability isn't a framework feature. It's infrastructure. And the agent ecosystem just hit the wall where that distinction matters.</p>
+
+        <h2>The Problem Everyone Has and Nobody Talks About</h2>
+
+        <p>Consider what happens during a typical agent run. A coding agent receives a task: refactor the authentication module. It reads 30 files, writes 12, runs the test suite, fixes three failures, runs tests again, and commits. That's a 15-minute, multi-thousand-token operation. Now imagine the container restarts at minute 12 — an OOM kill, a node eviction, a network blip that drops the API connection.</p>
+
+        <p>In the current state of the art, the agent process dies. The session is gone. The context window is empty. When you restart, the agent has no idea what it already did. It starts reading those 30 files again. It may overwrite the changes it already made. It burns tokens on work that was already completed. If you're running on a frontier model at scale, a single crash in a complex workflow can waste $5–15 in API costs — not catastrophic for one run, devastating at the scale of thousands of concurrent agents.</p>
+
+        <p>LangGraph, the most widely used orchestration framework for agents, provides checkpointing. But Diagrid's analysis is blunt: LangGraph offers "strong orchestration but only basic checkpointing for recovery," leaving "detection and recovery logic to developers." Translation: you get a save button, but you have to build the retry loop, the failure detector, and the state restoration yourself. Most teams don't.</p>
+
+        <p>Microsoft Agent Framework's harness — shipped July 22 — includes "per-service-call history persistence" for "crash recovery and mid-run inspection." That's better: every model call is saved after it completes, so you can inspect what happened. But per-call persistence is not the same as workflow-level durability. If a multi-tool-call sequence completes 40 steps, crashes on step 41, and you restart, per-call history tells you what happened. It doesn't replay and resume from step 41.</p>
+
+        <p>Google's Managed Agents in the Gemini API added budget controls on July 28 — when an agent hits its <code>max_total_tokens</code> limit, execution pauses with <code>status: "incomplete"</code> and you can continue by passing <code>previous_interaction_id</code> with a fresh budget. This is Google solving the <em>cost</em> dimension of the same problem: controlled interruption and resumption. But it only works inside Google's managed sandbox. If you're running LangGraph on AWS, Gemini's resume mechanism is irrelevant.</p>
+
+        <p>Every framework is solving a piece of this problem inside its own boundary. None of them can solve it completely because complete durability requires coordination that crosses framework boundaries — process lifecycle, state persistence, failure detection, replay logic. That's not application-layer code. That's the runtime.</p>
+
+        <h2>Why This Can't Be a Framework Feature</h2>
+
+        <p>Here's the structural argument, and it's worth understanding because it predicts where the agent infrastructure stack will crystallize over the next 12 months.</p>
+
+        <p>A framework's job is to define <em>what</em> the agent does: which tools it calls, how it reasons, what it produces. Durability is about <em>whether the agent survives</em>: what happens when the process dies, the network drops, the API returns a 503, the Kubernetes pod gets evicted mid-step. These are different concerns that operate at different layers of the stack.</p>
+
+        <p>Consider why no web framework ships its own database. Express.js doesn't bundle Postgres. Django doesn't ship a distributed consensus protocol. The web framework defines the request-response lifecycle; the database handles durability. This separation exists because durability is a cross-cutting infrastructure concern — it needs to survive framework restarts, version upgrades, and complete rewrites of the application layer. If durability lived inside the framework, you'd lose all your data every time you switched from Express to Fastify.</p>
+
+        <p>Agent frameworks are at the same inflection point. LangGraph's checkpointing is the equivalent of a web framework trying to bundle a database — it works for simple cases, but it doesn't survive the framework being swapped out, and it doesn't coordinate across multiple agents built on different frameworks.</p>
+
+        <p>This is why Diagrid's approach is structurally correct. Catalyst 2.0 doesn't compete with any framework. It sits <em>underneath</em> all of them. You bring your framework — any of the ten supported ones — and Catalyst adds the durable execution layer that the framework itself can't provide. The agent code doesn't change. The workflow definitions don't change. What changes is that when a process dies, the workflow resumes from the exact point of failure, with full state intact, automatically.</p>
+
+        <h2>The Verification Piece: Why It Matters More Than Recovery</h2>
+
+        <p>Durable execution solves the "will it finish?" problem. But Catalyst 2.0 ships a second capability that may matter more for production adoption: verifiable execution.</p>
+
+        <p>Based on Dapr 1.18 — released in June by the Cloud Native Computing Foundation project that Diagrid's founders created — the verification layer provides three things:</p>
+
+        <ul>
+          <li><strong>Cryptographic history signing:</strong> Every step in an agent workflow is cryptographically signed. You can verify that a specific step was executed, when it ran, and what it produced.</li>
+          <li><strong>Execution lineage propagation:</strong> Each step carries a signed reference to its predecessor. You get a tamper-evident chain of custody from the first tool call to the final output.</li>
+          <li><strong>Workflow attestation:</strong> The entire workflow's execution history can be attested — confirmed complete, traceable, and unaltered.</li>
+        </ul>
+
+        <p>For teams building agents in regulated industries — finance, healthcare, defense — this is the difference between "we think the agent did the right thing" and "we can cryptographically prove what the agent did, step by step." The first statement gets you through a demo. The second gets you through an audit.</p>
+
+        <p>This connects to a broader pattern. The agent ecosystem spent 2025 and early 2026 racing to make agents smarter. The race now is to make them <em>trustworthy</em> — not in the AI safety sense, but in the engineering sense. Can you prove what the agent did? Can you replay its execution? Can you detect if something went wrong mid-run? Mark Fussell, Diagrid's CEO and co-founder, framed it precisely: "Every AI agent framework released in the past two years has made it easier to build agents, but none have made it easier to trust them in production."</p>
+
+        <p>That's not marketing. It's the gap that every team building production agents hits within their first month.</p>
+
+        <h2>The Framework List Tells the Story</h2>
+
+        <p>Look at which frameworks Catalyst 2.0 supports, because the list is a map of where the agent ecosystem actually is:</p>
+
+        <ul>
+          <li>LangGraph and LangGraph Deep Agents</li>
+          <li>Microsoft Agent Framework</li>
+          <li>Google Agent Development Kit</li>
+          <li>AWS Strands</li>
+          <li>OpenAI Agents SDK</li>
+          <li>Claude Managed Agents</li>
+          <li>CrewAI</li>
+          <li>Pydantic AI Agents</li>
+          <li>Dapr Agents</li>
+        </ul>
+
+        <p>That's not a vendor list. That's the agent framework market. Every major player is represented — the three cloud providers (Google, AWS, Microsoft), the two foundation model companies with agent SDKs (OpenAI, Anthropic), and the leading open-source frameworks (LangGraph, CrewAI, Pydantic AI). The fact that a single durability layer can wrap all of them tells you something: these frameworks have converged on similar execution models despite different APIs.</p>
+
+        <p>It also tells you that none of them will build this themselves. Microsoft won't build a durability layer that also supports Google's ADK. Google won't build one that supports AWS Strands. OpenAI won't build one that supports Claude. The competitive dynamics of the framework market make a cross-framework durability layer structurally impossible as a framework feature. It has to come from outside.</p>
+
+        <p>Diagrid is betting $24.2 million in venture capital — most of it from a 2022 Series A led by Norwest Venture Partners — that this outside layer becomes as fundamental to agent infrastructure as a database is to web infrastructure. The company was founded by the creators of Dapr and KEDA, two of the most widely deployed cloud-native projects in the CNCF ecosystem. They built distributed systems infrastructure for traditional microservices. Now they're applying the same patterns to agent workflows.</p>
+
+        <p>Diagrid claims Catalyst 2.0 improves on open-source Dapr performance by up to 10x, enough to support millions of concurrent agent workflows. It runs in the cloud, on-premises, and in fully air-gapped environments — the last detail matters because defense and intelligence agencies are building agent systems that can't touch the public internet.</p>
+
+        <h2>What This Means for the Stack</h2>
+
+        <p>The agent infrastructure stack is crystallizing into something that looks increasingly familiar to anyone who has built distributed systems before:</p>
+
+        <ul>
+          <li><strong>Model layer:</strong> GPT-5.6, Claude 5, Gemini 3.6, Kimi K3, DeepSeek V4 — the compute engine. Swappable. Increasingly commoditized.</li>
+          <li><strong>Framework layer:</strong> LangGraph, Microsoft Agent Framework, Google ADK, OpenAI Agents SDK — the orchestration logic. Defines what the agent does.</li>
+          <li><strong>Harness layer:</strong> The execution loop, tool management, context window management, planning. Increasingly bundled into frameworks.</li>
+          <li><strong>Durability layer:</strong> Crash recovery, state persistence, execution replay, cryptographic verification. Cross-framework. Infrastructure, not application.</li>
+          <li><strong>Sandbox layer:</strong> Firecracker microVMs (AgentENV, E2B), Hyperlight, cloud sandboxes — the isolation boundary.</li>
+        </ul>
+
+        <p>The durability layer is the newest entry, and it's the one that separates prototypes from production. Every team that has tried to run agents beyond a demo has felt this gap. Most have built hacky workarounds: checkpointing to Redis, wrapping agent calls in retry loops, storing intermediate state in S3. Those workarounds work for single-agent workflows on a single machine. They fall apart the moment you need multi-agent coordination, cross-framework orchestration, or audit-grade traceability.</p>
+
+        <p>ZEISS Group — the German optics manufacturer and an early Catalyst user — is deploying it for exactly this reason. Their head of end-to-end core application engineering, Wendelin Niesl, described the need as a "stable foundation for building a durable platform for both AI and traditional workloads as models and frameworks keep shifting." That last phrase — "as models and frameworks keep shifting" — is the real argument. You don't want your durability layer coupled to a framework you might abandon in six months.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p>If you're running agents in production — or planning to — here's the practical takeaway:</p>
+
+        <p><strong>Audit your failure path.</strong> Take your most complex agent workflow and kill the process mid-run. What happens? If the answer is "it starts over from scratch," you have a durability gap. Quantify the cost: how many tokens does a full restart burn? How long does it take? Multiply by your daily agent volume. That number is your durability debt.</p>
+
+        <p><strong>Stop building checkpointing by hand.</strong> If your team has built custom retry logic, state serialization, or recovery scripts around your agent framework, you're building infrastructure that should be bought, not built. Every hour spent on recovery code is an hour not spent on the actual agent logic that differentiates your product.</p>
+
+        <p><strong>Separate the framework decision from the durability decision.</strong> These are independent choices. Pick the framework that best fits your agent's reasoning patterns. Pick the durability layer that fits your operational and compliance requirements. Don't let framework lock-in determine your crash recovery strategy.</p>
+
+        <p><strong>Think about verification before you need it.</strong> If you operate in a regulated environment, the question "can you prove what this agent did?" is coming. It may come from an auditor, a compliance team, or a customer due diligence questionnaire. Cryptographic execution lineage is dramatically easier to implement during development than to retrofit after a compliance failure.</p>
+
+        <h2>The Bigger Picture</h2>
+
+        <p>The agent ecosystem has been obsessed with benchmarks — SWE-Bench scores, Terminal-Bench results, token efficiency metrics. Those matter. But benchmarks measure what an agent can do in a single, uninterrupted run. Production is about what happens when things break. And things always break.</p>
+
+        <p>The frameworks that dominated the conversation in 2025 and early 2026 — LangGraph, Microsoft Agent Framework, CrewAI — won because they made it easy to <em>build</em> agents. The infrastructure that will dominate the conversation in late 2026 and 2027 will be the stuff that makes it possible to <em>trust</em> agents. Durability, verification, observability, governance. The unsexy layer underneath the flashy demos.</p>
+
+        <p>If you've spent time with the principles in <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>, this won't surprise you. The harness is where production reality lives. The model is the easy part. The infrastructure that keeps the agent running — that's the hard part, and it's where the next phase of the agent economy will be won.</p>
+
+        <p>Diagrid didn't invent durable execution. Dapr has been doing this for traditional microservices since 2019. What Catalyst 2.0 does is recognize that agents are just the newest class of distributed workload that needs the same guarantees: crash recovery, state persistence, execution verification. The frameworks won't build it. The cloud providers can't agree on it. So it emerges as an independent layer — the same way databases, message queues, and service meshes did before it.</p>
+
+        <p>The layer no agent framework will build is becoming the layer no agent system can ship without.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
