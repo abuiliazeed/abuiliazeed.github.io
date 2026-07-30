@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Harness Is Shrinking — Abuiliazeed</title>
+  <meta name="description" content="LangChain cut 65% of Deep Agents' base input tokens by deleting its system prompt, trimming tool descriptions, and removing planning — with zero performance loss. Anthropic did the same. The best harness improvement is now subtraction.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/harness-is-shrinking.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/harness-is-shrinking.html">
+  <meta property="og:title" content="The Harness Is Shrinking">
+  <meta property="og:description" content="LangChain cut 65% of Deep Agents' base input tokens by deleting its system prompt, trimming tool descriptions, and removing planning — with zero performance loss. Anthropic did the same. The best harness improvement is now subtraction.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Harness Is Shrinking">
+  <meta name="twitter:description" content="LangChain cut 65% of Deep Agents' base input tokens by deleting its system prompt, trimming tool descriptions, and removing planning — with zero performance loss.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-07-30">July 30, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>8 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Harness Is Shrinking</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Sixty-five percent. That is how much of the base input token payload LangChain just cut from Deep Agents — its open-source agent harness used by thousands of production systems — in version 0.7, released July 29. The harness went from roughly 6,000 tokens of system prompt, tool descriptions, and middleware overhead down to roughly 2,000. And the performance didn't drop. In some cases, it went up.</p>
+
+        <p>Three days earlier, Anthropic published its own version of the same finding: it had deleted over 80% of Claude Code's system prompt for its Claude 5 generation models, with no measurable loss on coding evaluations. Two of the most sophisticated agent harness teams on the planet independently arrived at the same conclusion within the same week. The best harness improvement they could ship was not a new capability. It was subtraction.</p>
+
+        <p>For two years, the agent engineering playbook has been additive: add more middleware, add more system prompt rules, add more planning steps, add more tools, add more skills. The instinct is understandable — when models were fragile, every guardrail helped. But the models stopped being fragile somewhere between GPT-4 and the current generation, and the harnesses haven't caught up. The scaffolding that made GPT-4-era models useful is now the scaffolding that taxes every inference with redundant instructions the model has already internalized.</p>
+
+        <p>The data is now clear enough to state plainly: the frontier of harness engineering has shifted from addition to subtraction. If your agent's system prompt still reads like a legal contract, you are paying for tokens that are actively working against you.</p>
+
+        <h2>Three Deletions That Changed Nothing</h2>
+
+        <p>Deep Agents v0.7 made three specific cuts. Each one challenged a practice that was considered best-in-class twelve months ago.</p>
+
+        <p><strong>The entire base system prompt was removed.</strong> Deep Agents previously shipped an authored system prompt containing general agent guidelines and tool-usage prose — the kind of carefully engineered instructions that harness teams spend weeks refining. LangChain's evaluation found no configuration where keeping the prompt was statistically distinguishable from removing it. The PR that implemented this change states the reasoning with characteristic bluntness: since no experimental arm was distinguishable, "parsimony argues for the leanest agent." The authored prompt is preserved as an export that developers can restore, but it is no longer the default.</p>
+
+        <p><strong>Tool descriptions were trimmed by 43%.</strong> This is the detail that should make every harness engineer uncomfortable. We have spent years writing verbose, carefully worded tool descriptions — explaining what each parameter does, when to use the tool, what to avoid. Deep Agents cut nearly half of that prose and measured no performance impact. The finding aligns with Anthropic's parallel discovery: well-designed tool schemas teach usage better than descriptive text. An enum of <code>pending</code>, <code>in_progress</code>, and <code>completed</code> communicates more about expected behavior than a paragraph explaining what those states mean. The parameter schema is the documentation.</p>
+
+        <p><strong>TodoListMiddleware was made opt-in.</strong> The planning component — which maintained a persistent task list and gave the agent a <code>write_todos</code> tool — was removed from the default harness. LangChain's evals across three benchmark categories and three models showed <em>slightly better rewards and lower cost</em> with todos disabled. The planning middleware that was supposed to keep agents on track was, for modern models, pure overhead. Every turn spent writing and reading a todo list was a turn not spent doing the actual work.</p>
+
+        <p>Together, these three changes dropped the base token payload by 65%. On GPT-5.6 Luna specifically, the result was a 34% reduction in total tokens and a 15% cost reduction per agent run — with reward up 4%. The confidence intervals span zero for every model tested, meaning the performance change is statistically indistinguishable from the baseline. The agent does the same work, at the same quality, for dramatically less.</p>
+
+        <h2>Why Less Harness Works Now</h2>
+
+        <p>The structural reason is simple and uncomfortable: models outgrew their scaffolding faster than the scaffolding was removed.</p>
+
+        <p>Consider what a system prompt did for a GPT-4-class model. It told the model to be concise. It told it to verify its work. It told it to use tools in a specific order. It told it not to hallucinate file paths. Each of these instructions corrected a real failure mode — but each failure mode existed because the model lacked the capability to avoid it internally. The system prompt was a crutch for missing competence.</p>
+
+        <p>The current generation of models — Claude Opus 5, GPT-5.6, Gemini 3.6 — does not lack that competence. When Anthropic examined Claude Code transcripts, it found something worse than missing capability: it found <em>conflicting instructions</em>. The system prompt said to leave documentation as appropriate. A skill said to never write comments. The user's request implied something else entirely. Claude could resolve the conflict, but it burned reasoning cycles doing so — cycles spent navigating contradictory scaffolding rather than solving the actual problem.</p>
+
+        <p>LangChain saw the same pattern. When it trimmed tool descriptions, it was removing prose that duplicated what the tool schemas already communicated. When it removed the base system prompt, it was removing instructions that repeated what the model already knew from its training data and the tool interfaces. Repetition does not reinforce. It taxes. Every duplicated instruction is a token the model processes on every inference, and sometimes it creates contradictory guidance that the model must reconcile before it can act.</p>
+
+        <p>This is why the subtraction improved performance in some cases rather than just holding steady. Removing conflicting and redundant instructions didn't just save tokens — it removed cognitive drag. The model stopped spending reasoning cycles deciding which instruction to follow and started spending them on the task.</p>
+
+        <h2>The Economics of Subtraction</h2>
+
+        <p>The performance story is compelling, but the economic story is what will drive adoption. Base input tokens are paid on every single request, and agent workloads are request-intensive by definition.</p>
+
+        <p>The OpenAI Codex usage data — published last month as a large-scale study of agentic AI adoption — quantifies the scale. In the first half of 2026, weekly active Codex users grew more than fivefold. Within OpenAI, Codex now accounts for 99.8% of output tokens across Codex and ChatGPT combined. The median OpenAI employee in a legal role generates 13 times more monthly output tokens than they did in November 2025; the median researcher generates more than 50 times as much.</p>
+
+        <p>Now multiply that by the 6,000 tokens of harness overhead that Deep Agents just eliminated. If an agent makes 50 tool calls in a session — a realistic number for a coding task — and the system prompt and tool descriptions are sent on every call, a 4,000-token reduction in base payload saves 200,000 tokens per session. At frontier model pricing, that is real money per session, multiplied by millions of sessions.</p>
+
+        <p>Prompt caching mitigates this — LangChain's own data showed 49-80% token cost reductions from caching across providers — but caching has limits. Every time the harness updates a memory, compacts context, or loads a new skill, the cache can bust. A leaner base prompt means a smaller cache footprint to lose, and faster recovery from cache misses. Subtraction compounds with caching; it doesn't compete with it.</p>
+
+        <h2>The Framework That's Adding While Everyone Subtracts</h2>
+
+        <p>Here is the interesting tension. On July 22, Microsoft shipped its Agent Framework Harness — a "batteries-included" configuration that bundles ten capabilities into a default agent pipeline: function invocation, history persistence, context compaction, a todo provider, agent modes, file memory, skills, web search, tool approval, and telemetry. By every signal, Microsoft is adding components to the default.</p>
+
+        <p>Does this contradict the subtraction thesis? Not exactly — but it reveals the distinction between two different problems. Microsoft is solving the <em>assembly</em> problem: most teams building agents don't have the engineering capacity to wire up ten capabilities correctly. The harness gives them a tested, curated default. That is a distribution win, not a prompt-engineering claim.</p>
+
+        <p>LangChain and Anthropic are solving the <em>optimization</em> problem: once the harness exists, how much of it does the model actually need? Microsoft's harness ships a todo provider. LangChain's evals say modern models don't need it. Both can be right — Microsoft is shipping the capability for teams that want it; LangChain is telling you the data on whether you should enable it by default.</p>
+
+        <p>The prediction is straightforward. Microsoft's harness, and every other "batteries-included" system, will follow the same arc. Version one adds everything. Version two measures what actually helps. Version three trims what doesn't. The harness that shipped with ten capabilities this month will ship with six in a year — not because features were cut, but because evals proved the model didn't need them.</p>
+
+        <h2>When to Add vs. When to Subtract</h2>
+
+        <p>The nuance matters, because subtraction is not universal. LangChain was explicit about the cases where the components it removed still earn their keep.</p>
+
+        <p><strong>TodoListMiddleware still helps in three situations.</strong> First, long multi-step tasks where the agent benefits from an explicit plan to stay on track across many turns. Second, less capable models that need more scaffolding to avoid dropping steps. Third, UI-facing use cases where a visible plan and progress matter as much as execution quality. If you are running a smaller open-source model on a complex workflow with user-facing progress, the todo list is not overhead — it is a feature.</p>
+
+        <p>Tool descriptions still matter when the tool's purpose is genuinely ambiguous from its schema. An internal API with opaque parameter names benefits from explanation. A well-named public API does not. The test is simple: if a competent developer could infer correct usage from the schema alone, the description is probably overhead.</p>
+
+        <p>System prompts still matter for behavioral constraints that the model cannot infer — domain-specific rules, compliance requirements, organizational conventions. What does not matter is generic guidance the model has already internalized from training data. "Be helpful and accurate" is not an instruction. It is a token.</p>
+
+        <p>The framework for deciding: <strong>subtract by default, add by evidence.</strong> Start with the leanest harness that can plausibly work. Run evals. Add a component only when the evals show it improves outcomes. This is the inversion of the 2025 playbook, which added everything defensively and kept what felt safe.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p><strong>Measure your base token payload.</strong> How many tokens does your agent send before the first character of user input? If the number is above 3,000, you likely have subtraction headroom. If it is above 5,000, you almost certainly do. The measurement is the first step — most teams have never quantified this.</p>
+
+        <p><strong>Run the deletion experiment.</strong> Take your system prompt and remove half of it — specifically the generic guidance, the tool-usage prose, and any instruction that duplicates what your tool schemas already communicate. Run your eval suite. The most likely outcome, based on the evidence from both LangChain and Anthropic, is that performance holds steady or improves. If it drops, you have found the instructions that are actually load-bearing — and you now know exactly which ones to keep.</p>
+
+        <p><strong>Audit your planning overhead.</strong> If your agent spends turns writing and reading a todo list, measure whether those turns improve task outcomes. For simple tasks and capable models, planning middleware is often pure latency and token cost. For complex, multi-hour tasks with weaker models, it may be essential. The answer depends on your workload — but you should have the data, not the assumption.</p>
+
+        <p><strong>Design tool schemas as interfaces, not as prose containers.</strong> The finding that a 43% reduction in tool descriptions had no performance impact is a design lesson. Your tool's parameter names, types, and enums should communicate intent. If they don't, fix the schema. Do not fix it by adding description text that the model has to parse on every call.</p>
+
+        <h2>The Inversion</h2>
+
+        <p>The agent engineering community spent 2025 building harnesses up. The assumption was that more scaffolding produces better agents. The evidence from the last week — from two of the most data-driven harness teams in the industry — says the assumption has expired. The models got smarter. The scaffolding didn't get leaner. The gap between what the model needs and what the harness provides has inverted: harnesses are now over-providing, and the excess is costing performance, not just tokens.</p>
+
+        <p>This is the discipline of harness engineering at its most counterintuitive. The work is not always building. Sometimes it is the unglamorous, eval-driven process of figuring out what you can remove without breaking anything — and discovering that removal itself is the improvement. The principles of context engineering haven't changed. But the optimal amount of context has, and it is less than you think.</p>
+
+        <p>Most people think the next leap in agent quality comes from adding new capabilities — more tools, better planning, richer prompts. The evidence says the next leap comes from having the discipline to subtract. The harness is shrinking. The agents aren't getting worse. They're getting leaner.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
