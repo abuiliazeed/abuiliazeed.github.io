@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Agent With One Tool — Abuiliazeed</title>
+  <meta name="description" content="Prime Agent has exactly one tool: a persistent IPython kernel. It beat the human expert baseline on ARC-AGI 3 and outperforms Claude Code on long-context tasks. The harness with the fewest tools is winning.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-agent-with-one-tool.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-agent-with-one-tool.html">
+  <meta property="og:title" content="The Agent With One Tool">
+  <meta property="og:description" content="Prime Agent has exactly one tool: a persistent IPython kernel. It beat the human expert baseline on ARC-AGI 3 and outperforms Claude Code on long-context tasks. The harness with the fewest tools is winning.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Agent With One Tool">
+  <meta name="twitter:description" content="Prime Agent has exactly one tool: a persistent IPython kernel. It beat the human expert baseline on ARC-AGI 3 and outperforms Claude Code on long-context tasks. The harness with the fewest tools is winning.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-08-07">August 7, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Agent With One Tool</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>95.5%. That's the score Prime Agent — running Opus 5 — achieved on ARC-AGI 3, the benchmark that measures whether an agent can learn the rules of simulated worlds through symbolic reasoning. The reported human expert baseline is 95.4%. A coding harness, built around a single tool, beat the human ceiling on a benchmark designed to be hard for language models.</p>
+
+        <p>Here's what makes that number strange: Prime Agent has exactly one tool. Not ten. Not the eleven that Harness's redesigned MCP server uses. Not the 130 that most bloated MCP servers expose before someone refactors them. One. A persistent IPython kernel.</p>
+
+        <p>Every other harness in the agent ecosystem has been racing in the opposite direction — more tools, more sub-agent types, more orchestration primitives, richer tool schemas. The prevailing theory has been that capability comes from surface area: give the model more verbs, and it can do more things. Prime Intellect, the decentralized AI startup that open-sourced Prime Agent on August 5, 2026, bet on the inverse. Strip the tool surface to a single REPL, make everything else a function call inside it, and let the model program its way out of problems instead of picking from a menu.</p>
+
+        <p>The result isn't just a benchmark win. It's a proof point for a different theory of how agent harnesses should work — one where the model's ability to <em>write code</em> is the universal tool, and everything else (sub-agents, memory, skills, even the harness's own configuration) is just data the code manipulates.</p>
+
+        <h2>One Tool, Infinite Actions</h2>
+
+        <p>The core architectural decision in Prime Agent sounds reductive until you trace its implications. The model's only tool is a persistent IPython kernel — a Python REPL that stays alive across the entire agent session. Every capability that a traditional harness exposes as a separate tool — reading files, running shell commands, calling APIs, spawning sub-agents, managing memory — is instead a Python function the model calls from inside the kernel.</p>
+
+        <p>This is the logical endpoint of a pattern that's been building all year. Anthropic reported a 98.7% token reduction when they let agents write code instead of calling tools one at a time. Cloudflare hit 99.9% with the same approach. The Harness MCP server redesign cut from 130 tools to 11 by moving to a registry-based dispatch model. NVIDIA's NOOA framework hit 82.2% on SWE-Bench Verified by treating the agent as a Python class. Each of these was a step toward fewer, more general tools. Prime Agent took the step to its conclusion.</p>
+
+        <p>The persistent kernel matters as much as the singularity of the tool. In a conventional harness, each tool call is stateless. The model calls <code>read_file</code>, gets the contents, and the harness moves on. The next tool call starts fresh. If the model needs to reference something from a previous call, it has to keep it in context — burning tokens to carry information that a variable could hold for free.</p>
+
+        <p>A persistent IPython kernel changes this. The model can assign the result of one operation to a variable, reference it twenty turns later, build data structures that span the entire session, and compose operations programmatically. Context becomes a variable, not a scrollback buffer. The agent doesn't lose access to its own past because its past is stored in memory it controls, not in a context window the harness manages.</p>
+
+        <p>Prime Intellect calls this the <strong>Recursive Language Model</strong> (RLM): the model treats its own context as a programmable variable and uses the REPL to manipulate it. Sub-agent delegation becomes a function call, not a protocol exchange. When the model needs to spawn a sub-agent to explore a codebase, it calls a function that returns another <code>prime-agent</code> instance. That instance runs in the same kernel space. No message passing. No serialization. No context window duplication. The sub-agent is a Python object.</p>
+
+        <h2>Sub-Agents as Function Calls</h2>
+
+        <p>The way Prime Agent handles sub-agents is where the architecture diverges most sharply from the mainstream — and where the efficiency gains become concrete.</p>
+
+        <p>In Claude Code, Codex, and most multi-agent harnesses, spawning a sub-agent is an expensive operation. The parent agent writes a prompt describing the task. The harness spins up a new context window. The sub-agent loads its system prompt, its tool schemas, its instructions. It does the work. It writes a summary. The summary returns to the parent's context window. The total token cost includes the sub-agent's full system prompt overhead, its tool catalog, every intermediate step, and the summary — all to answer a question the parent could have phrased as a function call.</p>
+
+        <p>Prime Agent collapses this. A sub-agent is a function call inside the kernel that returns a result. The sub-agent's context is isolated in its own <code>prime-agent</code> instance, but the interface between parent and child is a function return, not a message exchange. The parent passes arguments. The child returns a value. No prompt engineering for delegation. No summary compression. No context window overhead for coordination.</p>
+
+        <p>The token implications are significant. Prime Intellect's own benchmarks show that running Opus 5 in Prime Agent achieves higher scores than Opus 5 in Claude Code on long-context tasks — <em>at lower overall token usage</em>. The mechanism is straightforward: running functions over data programmatically costs fewer tokens than reading data through tool-call protocols. Every tool call in a conventional harness serializes the request, routes it through the harness's dispatch layer, executes it, serializes the response, and appends it to context. A function call in a kernel is a memory operation.</p>
+
+        <p>This matters most for long-horizon work — exactly the kind of task where agents are supposed to deliver the most value. On the OOLONG long-context benchmark (128K tokens), Prime Agent with GLM-5.2 scored 0.700, compared to 0.420 for Pi-mono with sub-agents using the same model. On EmulatorBench, a preview benchmark for building emulators in Rust from scratch, Prime Agent with GPT-5.6 Sol scored 0.275 — ahead of Codex (0.228) and far ahead of Claude Code (0.062). The harness with the simplest tool surface produced the most capable long-horizon agent.</p>
+
+        <h2>The Harness That Rewrites Itself</h2>
+
+        <p>The second abstraction Prime Intellect introduced — <strong>Continual Harness</strong> — is more radical than the single-tool design, and it points at where harness engineering is heading.</p>
+
+        <p>Every other harness in production today is static at design time. A human engineer writes the system prompt, defines the tool schemas, configures the sub-agent roles, sets up the memory strategy, and locks it in. The agent runs within that configuration. If the configuration is wrong — if the system prompt is too verbose, if a tool description is misleading, if the memory strategy loses important context — the agent has to work around its own scaffolding. It can't fix it. Only a human can.</p>
+
+        <p>Continual Harness treats the harness's own state as something the agent can create, read, update, and delete from its own execution trajectory. The system prompt, the skills, the memory, the sub-agent definitions — these are not immutable configuration. They are data the agent can modify while running. If the agent discovers that a particular phrasing in its system prompt causes it to make errors on a class of tasks, it can rewrite the prompt. If a skill isn't helping, it can delete it. If the agent needs a new sub-agent role it didn't have before, it can create one.</p>
+
+        <p>This is a category shift. The harness stops being infrastructure the agent runs inside and becomes a program the agent maintains. The distinction between "using the harness" and "improving the harness" dissolves. Every session becomes a potential improvement to the harness's configuration, captured in the same trajectory that produced the work.</p>
+
+        <p>Combined with agent-to-agent communication, this enables something that no static harness can do: persistent sub-agents that survive across sessions. Prime Agent can spawn a sub-agent, message it later in the trajectory, and communicate directly with a different Prime Agent session entirely. The sub-agent accumulates state, learns from its interactions, and becomes more specialized over time — without any human reconfiguration.</p>
+
+        <p>This is the direction the field has been circling. When Ornith 1.0 — a 35-billion-parameter model — learned to build its own scaffolding and outscored a 397B model by 10 points, the boundary between model and harness started to blur. Prime Agent makes the boundary explicit and programmable. The model doesn't just write code that solves the task. It writes code that modifies the harness solving the task.</p>
+
+        <h2>Why Fewer Tools Wins</h2>
+
+        <p>The instinct in harness engineering has been to add tools when the agent struggles. The model can't read a specific file format? Add a tool. The model can't interact with a specific API? Add a tool. The model fails at a multi-step workflow? Add a planning tool, a memory tool, a reflection tool. This is additive harness design, and it's been the dominant pattern since 2024.</p>
+
+        <p>The problem with additive design is that every tool costs tokens — permanently. The tool schema lives in the system prompt, injected on every turn, cached or not. The GitHub MCP server's 28 read-only tools consume 4,781 tokens before the model does any work. A real-world Claude Code setup with Playwright, Context7, Azure, Postgres, and Firecrawl MCPs reported 83,300 tokens consumed by tool definitions immediately after clearing context — 41.6% of a 200K window. The model has to navigate this menu on every turn, selecting the right tool from an increasingly crowded surface, and the cognitive overhead of selection degrades performance.</p>
+
+        <p>Prime Agent's single-tool design eliminates this entirely. There is no tool menu. There is no schema catalog. The model doesn't select from a list of verbs — it writes code that does what it needs. The IPython kernel is a universal interface: anything that can be expressed as Python (which is, practically, anything) is available without a schema definition. The context cost of the tool surface is effectively zero because the tool surface is one function.</p>
+
+        <p>The Harness MCP server team arrived at a scaled-down version of this insight independently. Their v2 redesign used 11 generic verbs with a registry-based dispatch model, keeping tool vocabulary constant while capabilities scaled through data. Prime Agent takes the same principle further: the vocabulary is one verb, and the registry is Python itself.</p>
+
+        <p>This is why the benchmark results are not a fluke. The ARC-AGI 3 score of 95.5% — beating the human expert baseline — wasn't achieved by a better model. Prime Agent ran Opus 5, the same model available in Claude Code. The model was identical. The harness was different. And the harness with one tool beat the harness with dozens.</p>
+
+        <h2>The Open-Source Accelerant</h2>
+
+        <p>Prime Agent is fully open-source, released under a permissive license on GitHub, installable with a single command. This matters beyond accessibility — it matters because of the co-design problem.</p>
+
+        <p>The most efficient agent systems of 2026 are models trained alongside their harnesses. Grok 4.5, co-trained with Cursor, used 4.2x fewer output tokens than competitors on SWE Bench Pro. Muse Spark was trained with Muse Code's orchestration protocol baked into the weights. The model internalizes the harness's tool-calling conventions, context structure, and execution patterns. Token efficiency at this level doesn't come from prompt engineering. It comes from training data shaped by the harness.</p>
+
+        <p>Prime Intellect explicitly notes that no model has been trained around Prime Agent yet. The ARC-AGI 3 results, the long-context wins, the EmulatorBench scores — all were achieved with unmodified frontier models dropped into a novel harness. The harness alone produced the gains. Once models are trained around the persistent-kernel pattern, around sub-agents-as-function-calls, around programmatic context manipulation, the efficiency gains should compound.</p>
+
+        <p>An open-source harness accelerates this. Any lab can train against Prime Agent's interface. Any researcher can study how the persistent kernel changes the optimal training distribution. Any team can fork it, modify the Continual Harness abstraction, and test whether self-modifying harnesses produce better trajectories for reinforcement learning. The closed harnesses — Claude Code, Codex — don't offer this surface. Their internal architecture is opaque. Prime Agent's is a codebase you can read, modify, and train against.</p>
+
+        <h2>What This Means for Harness Engineering</h2>
+
+        <p>Prime Agent doesn't invalidate every other harness architecture. Claude Code, Codex, and Muse Code solve real problems for millions of developers, and their multi-tool designs are tuned for the interactive coding workflows that dominate production today. But Prime Agent exposes three assumptions that the harness engineering field should re-examine.</p>
+
+        <p><strong>Assumption one: more tools mean more capability.</strong> They don't. They mean more token overhead, more selection errors, and more context pollution. The correlation between tool count and agent capability is negative once you pass a threshold — and that threshold is much lower than most harness teams assume. Prime Agent's single-tool design, Harness's 11-tool registry, and Anthropic's 98.7% token reduction from code execution all point at the same conclusion: the optimal tool surface is smaller than you think, and code is the universal tool that subsumes the rest.</p>
+
+        <p><strong>Assumption two: the harness is static at design time.</strong> It shouldn't be. If the agent can observe its own performance and modify its configuration, the harness becomes a living system that adapts to the work it's doing. Continual Harness is an early implementation of this idea, and the results suggest it works. The harnesses that win the next phase will be the ones that improve themselves, not the ones frozen by their designers' best guesses.</p>
+
+        <p><strong>Assumption three: context is a scrollback buffer.</strong> It's not — or it shouldn't be. Treating context as an append-only log of messages forces the agent to re-read, re-parse, and re-reason over information it already processed. A persistent kernel with variable state lets the agent store computed results, reference them directly, and build abstractions over its own history. Context becomes memory, not transcript.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <ol>
+          <li><strong>Audit your tool count.</strong> List every tool your agent harness exposes. For each one, ask: could this be a Python function? If the answer is yes — and for most tools, it is — you're paying token overhead for a capability the model already has through code execution. Start with the most token-expensive tools (the ones with verbose schemas) and prototype replacing them with kernel function calls.</li>
+          <li><strong>Install Prime Agent and run one real task.</strong> It's a single command: <code>curl -fsSL https://app.primeintellect.ai/prime-agent/install.sh | sh</code>. Hand it a task from your backlog — something multi-step that exercises file reading, code writing, and tool use. Watch how the persistent kernel changes the interaction pattern. The model assigns variables, references them later, composes operations. It's a different experience from conventional tool-calling agents, and seeing it once changes how you think about your own harness.</li>
+          <li><strong>Experiment with self-modifying prompts.</strong> You don't need Continual Harness to test the idea. Add a mechanism to your existing harness that lets the agent propose edits to its own system prompt based on task outcomes. Log the proposals. Review them weekly. You'll learn which parts of your prompt are load-bearing and which are cargo-culted boilerplate the agent correctly wants to delete.</li>
+          <li><strong>Measure tokens per task, not per turn.</strong> Prime Agent's advantage shows up in aggregate token consumption across long sessions, not in single-turn metrics. If your evaluation only looks at per-turn cost, you'll miss the efficiency gains from persistent state and programmatic context manipulation. Add session-level token tracking and compare across harness configurations on the same workload.</li>
+        </ol>
+
+        <h2>The Pattern Beneath the Release</h2>
+
+        <p>Prime Agent is not going to replace Claude Code next quarter. The interactive coding workflow — developer types a prompt, agent edits files, developer reviews — is well-served by existing tools, and Prime Agent's strengths (long-horizon autonomy, programmatic context manipulation, self-modifying configuration) are most visible on the kind of work that conventional harnesses struggle with: multi-day projects, deep research, complex refactoring across large codebases.</p>
+
+        <p>But the architectural thesis is the important part. The harness with the fewest tools beat the human baseline on a reasoning benchmark. It outperformed purpose-built harnesses on long-context tasks using the same models. It demonstrated that an agent can productively modify its own runtime configuration. Each of these was supposed to be hard. Prime Agent made them look straightforward by removing complexity instead of adding it.</p>
+
+        <p>The harness engineering field has spent two years adding — more tools, more orchestration layers, more prompt engineering, more context management strategies. Prime Agent is the strongest evidence yet that the next phase of improvement comes from subtraction. Remove the tool menu. Remove the static configuration. Remove the boundary between using the harness and improving it. What's left is a kernel, a model, and the ability to program.</p>
+
+        <p>One tool. 95.5%. That's the new floor for what a minimal harness can achieve — and it's higher than what most maximal harnesses deliver.</p>
+
+        <hr>
+
+        <p><em>The trade-off between tool surface area and agent capability is a central topic in <a href="../book.html">Harness Engineering: The Complete Guide to Agent-First Software Development</a>.</em></p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
