@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Browser Was Built for Humans — Abuiliazeed</title>
+  <meta name="description" content="Cloudflare shipped Kitesurf, a browser built from scratch for AI agents — not humans. It passes 215,000+ web platform tests and uses 3-7x less memory and CPU than Chromium. The agent stack is being rebuilt one runtime at a time, and the browser is next.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-browser-was-built-for-humans.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-browser-was-built-for-humans.html">
+  <meta property="og:title" content="The Browser Was Built for Humans">
+  <meta property="og:description" content="Cloudflare shipped Kitesurf, a browser built from scratch for AI agents — not humans. It passes 215,000+ web platform tests and uses 3-7x less memory and CPU than Chromium. The agent stack is being rebuilt one runtime at a time, and the browser is next.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Browser Was Built for Humans">
+  <meta name="twitter:description" content="Cloudflare shipped Kitesurf, a browser built from scratch for AI agents — not humans. It passes 215,000+ web platform tests and uses 3-7x less memory and CPU than Chromium.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-08-09">August 9, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Browser Was Built for Humans</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>215,000. That's how many Web Platform Tests a browser built in twelve weeks already passes — a browser that doesn't have a tab bar, doesn't support extensions, can't play video, and has no address bar you can type into. It's not a browser you'd ever use. It's a browser your agent uses. And it uses 3 to 7 times less memory and CPU than Chromium doing the same work.</p>
+
+        <p>On August 7, 2026, Cloudflare announced <strong>Kitesurf</strong> — a browser runtime built from scratch specifically for AI agents, running entirely on Cloudflare Workers inside V8 isolates. The first commit was in May. It was shipped to production beta ninety days later. And it represents something more significant than another headless-browser product: the first serious attempt to rebuild the web's most important runtime for a non-human consumer.</p>
+
+        <p>Most people building agent browser automation today do something straightforward and fundamentally wrong. They spin up a headless Chromium instance, point Puppeteer or Playwright at it, and let the agent drive a full browser engine designed to render 60-frames-per-second interactive pages for a human staring at a screen. Every screenshot costs megabytes of memory. Every page load spins up a JIT compiler, a GPU compositor, an audio subsystem, and a networking stack tuned for human latency tolerance. The agent extracts a few hundred tokens of structured content and throws the rest away. You're heating a house to boil a cup of water.</p>
+
+        <p>Cloudflare looked at that equation and asked the contrarian question: what if you just deleted everything the agent doesn't need?</p>
+
+        <h2>What an Agent Actually Needs From a Browser</h2>
+
+        <p>The Kitesurf design doc, published in full on the Cloudflare blog, is unusually candid about the trade-offs. The team laid out the premise before writing a line of production code: a browser built for agents should optimize for what AI models care about and be ruthlessly indifferent to everything else.</p>
+
+        <p>Here's their list, paraphrased:</p>
+
+        <ul>
+          <li><strong>Token count and context windows matter.</strong> Tabs, themes, browser extensions, cross-device sync — irrelevant. The agent doesn't have preferences. It has a context budget.</li>
+          <li><strong>Structured, machine-readable content matters.</strong> Visual perfection and smooth scrolling don't. An agent will tolerate CSS parsing that's slightly off or rendering that isn't pixel-perfect. It reads the DOM, not the pixels.</li>
+          <li><strong>The threat model is different.</strong> Prompt injection and tool safety are top priorities. The browser is pointed at arbitrary, untrusted code from arbitrary origins — not your bookmarks.</li>
+        </ul>
+
+        <p>That last point is where most teams building agent browser tooling get the architecture backwards. The default assumption in headless-Chromium setups is that the browser is a trusted environment the agent operates within. Kitesurf inverts it: every page load is untrusted input, every session starts fresh, and every component is isolated with access only to the resources it strictly needs. That's not a browser security model. That's a sandbox model. The browser stopped being an application and became a containment boundary.</p>
+
+        <h2>3-7x Cheaper Is Not an Incremental Win</h2>
+
+        <p>Let's talk about the numbers, because they're the part that should make every team running browser-based agents at scale pay attention.</p>
+
+        <p>Cloudflare benchmarked Kitesurf against Chromium across a 14-URL corpus using Browser Run quick actions. The results: Chromium is about 1.7x faster on raw wall-clock time, because a JIT that has already seen the page always beats a cold software renderer. Kitesurf concedes the stopwatch.</p>
+
+        <p>But Kitesurf wins on memory and CPU by 3 to 7x. And memory and CPU are what drive your bill. Less memory means more concurrent sessions per host. Lower CPU means cheaper inference-adjacent compute. The metric that matters for agent infrastructure isn't latency per page — it's cost per task, and cost per task is dominated by how many sessions you can pack onto a machine and how long each one runs.</p>
+
+        <p>Here's why this is structurally important rather than just a nice optimization. Browser-based agent tasks are the most expensive thing most agent systems do. A coding agent reading a file costs near-zero compute. A coding agent browsing documentation, scraping a dashboard, or interacting with a web app spins up a full browser session — the heaviest single runtime in the entire agent stack. If you can reduce the per-session footprint of that runtime by 5x, you haven't optimized a component. You've changed the unit economics of an entire class of agent capability.</p>
+
+        <p>The teams running thousands of browser-based agent sessions per day — and there are more of them every week — are paying a Chromium tax on every single one. Kitesurf is the first credible alternative that says: the tax is optional.</p>
+
+        <h2>The Architecture: A Browser That Isn't One</h2>
+
+        <p>The most interesting thing about Kitesurf isn't the performance. It's the architecture, because the architecture reveals what happens when you stop thinking of the browser as an application and start thinking of it as a distributed system.</p>
+
+        <p>Kitesurf has three components, and only one of them holds state.</p>
+
+        <p>The <strong>Engine</strong> is the only public-facing component. It speaks the Chrome DevTools Protocol (CDP) over WebSocket and exposes a REST API. This is the compatibility masterstroke: Puppeteer, Playwright, chrome-remote-interface, and any MCP-based agent that speaks CDP can point at Kitesurf by adding a single <code>browser=kitesurf</code> parameter. No SDK rewrite. No protocol migration. The agent doesn't know it's not talking to Chromium.</p>
+
+        <p><strong>PageScript</strong> handles the actual page session — parsing HTML, executing JavaScript, building the DOM. Each page or out-of-process iframe gets its own Dynamic Worker isolate with a clean global scope. HTML and CSS parsing use Blitz (a modular Rust rendering engine) and Stylo (Firefox's CSS parser, also Rust). JavaScript runs natively in the isolate; <code>eval</code> — which Workers don't support natively yet — falls back to Boa, an ECMAScript engine written in Rust. It's a runtime on top of a runtime, and Cloudflare openly admits it isn't optimal. But it handles the edge cases until native eval support lands.</p>
+
+        <p><strong>PageRenderer</strong> rasterizes the computed page into an image buffer — JPEG, PNG, or PDF — and returns it to the Engine. It holds no page state, only a disposable cache. When an RPC call fails or stalls, the Engine kills the renderer and starts a new one. Every render request is self-contained, retryable, and throwaway.</p>
+
+        <p>Then there's the <strong>SandboxOutbound</strong> worker — the single component allowed to touch the network. Nothing else fetches anything directly, and that constraint is enforced by Dynamic Workers at the platform level, not by application code hoping developers remember the rule. SandboxOutbound enforces CORS, injects browser-shaped headers, filters responses, and keeps each page's cookies in isolated jars. Anything that fails policy gets a 403.</p>
+
+        <p>Read that architecture carefully and you'll notice something: it's a microservices design for a browser. The monolithic browser process — the thing Chromium has been trying to decompose for a decade with multi-process architecture — is here fully disaggregated into isolated, stateless components connected by RPC. State lives in exactly one place. Failure degrades to a blank frame, never a dead session. Components are disposable and parallel by nature.</p>
+
+        <p>Cloudflare's own summary of the design principle is the most important sentence in the entire post: <em>"wherever a component can be stateless, it should be."</em> That's not a browser engineering maxim. That's a distributed systems maxim applied to a problem most people still solve with a single fat process.</p>
+
+        <h2>Twelve Weeks, Mostly by Agents</h2>
+
+        <p>The timeline deserves attention. First commit: May 2026. Public beta: August 7, 2026. That's ninety days to build a browser — not a toy, but a runtime passing 215,000+ conformance tests and rendering real sites like Wikipedia, Hacker News, TodoMVC (across five frameworks), and the Cloudflare dashboard.</p>
+
+        <p>Cloudflare is explicit that AI agents built most of it. The workflow is worth studying because it's a working example of harness engineering on a hard problem:</p>
+
+        <ul>
+          <li><strong>Web Platform Tests as the goalpost.</strong> WPT is an enormous suite of success criteria for web standards conformance. Instead of writing tests from scratch, the team curated which WPT features to assign to agents and in what order. The agents had objective, machine-checkable definitions of done.</li>
+          <li><strong>Humans on architecture, agents on implementation.</strong> The team focused on architectural decisions — component boundaries, isolation model, statelessness — and let agents iterate on feature conformance against the test suite.</li>
+          <li><strong>Integration and visual regression testing on top.</strong> WPT only measures standards conformance, not real-world rendering. So the team added Puppeteer-based integration tests comparing Kitesurf and Chromium against real websites, rendering outputs at every step to catch divergences.</li>
+        </ul>
+
+        <p>This is the pattern. You don't get a browser in twelve weeks by letting an agent freeform a codebase. You get it by building a harness — a system of tests, clear success criteria, curated task ordering, and human checkpointing on the decisions that matter — and letting the agent loop inside it. The harness is what made the velocity possible. The model did the typing.</p>
+
+        <h2>The CDP Compatibility Bet</h2>
+
+        <p>The single smartest decision in Kitesurf's design is committing to the Chrome DevTools Protocol as its interface. CDP is the de facto standard for browser automation. Every major automation library — Puppeteer, Playwright, chrome-remote-interface, the chrome-devtools-mcp server — speaks it. By implementing a CDP-compatible WebSocket endpoint, Cloudflare made Kitesurf a drop-in replacement for any agent or automation tool already targeting Chromium.</p>
+
+        <p>The MCP integration is where this gets interesting for agent-first development. The documented setup for using Kitesurf with an MCP client like Opencode is a local chrome-devtools-mcp server pointed at Kitesurf's WebSocket endpoint. The agent doesn't learn a new tool. It uses the same browser tool it always has. The runtime underneath changes. This is protocol-driven substitution — the same principle that makes MCP powerful for tool interoperability, applied at the runtime layer.</p>
+
+        <p>The implication for agent infrastructure teams: if your browser tool is abstracted behind a clean interface — whether that's MCP, CDP, or an internal abstraction — you can swap the runtime without touching the agent. Start with Chromium for correctness. Route to Kitesurf for cost. The same routing logic that applies to models applies to runtimes.</p>
+
+        <h2>The Pattern: The Agent Stack Is Being Rebuilt for Machines</h2>
+
+        <p>Step back and Kitesurf fits a pattern that's now unmistakable. The agent stack is being rebuilt, component by component, for machine consumers instead of human consumers. Terminals got rebuilt as agent shells with structured output and sandboxed execution. Filesystems got rebuilt as context engines and AST-aware code memory. Now the browser is getting rebuilt as a stateless rendering service optimized for token efficiency and isolation cost.</p>
+
+        <p>Every one of these rebuilds follows the same logic. Take a runtime built for humans — rich, interactive, stateful, forgiving — and ask what an agent actually needs from it. Strip the human-facing overhead. Optimize for the machine-facing metrics: token count, memory footprint, isolation strength, cost per task. Ship it behind a compatible protocol so adoption is frictionless.</p>
+
+        <p>The pattern is contrarian because the dominant approach in agent tooling has been <em>additive</em>: take the human tool, wrap it in an API, bolt on an agent interface. Kitesurf is <em>subtractive</em>: take the human tool, delete what the agent doesn't need, recompute the cost. Subtractive design is harder and more valuable. It changes the economics of the capability, not just its accessibility.</p>
+
+        <h2>The Honest Limitations</h2>
+
+        <p>Kitesurf is twelve weeks old and Cloudflare is admirably direct about what it can't do. It can't play video. It can't render WebGL. It can't negotiate bot-challenge handshakes with real TLS fingerprints. It can't maintain a ten-minute authenticated session requiring persistent state. If you need any of those, use Chromium — that's still Browser Run's default.</p>
+
+        <p>This is the right framing. Kitesurf isn't trying to replace Chromium. It's trying to handle the 80% of agent browser tasks — screenshots, content extraction, PDF generation, DOM inspection, form interaction on compatible sites — at a fraction of the cost. The remaining 20% stays on Chromium. Over time, as WPT coverage grows and rendering fidelity improves, that ratio shifts. But the architecture doesn't need to win everywhere. It needs to win on the tasks that dominate agent browser workloads, and those tasks are overwhelmingly the cheap ones: fetch, parse, extract, screenshot.</p>
+
+        <p>There's a parallel here to the model routing argument. You don't run your frontier model on every task — you route the cheap tasks to the cheap model and escalate the hard ones. The same logic now applies to browser runtimes. Route the extraction tasks to Kitesurf. Escalate the interactive sessions to Chromium. The browser becomes a tier in a routing layer, not a single runtime you commit to.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p>If you're running browser-based agents, three concrete moves.</p>
+
+        <p><strong>Audit your browser session costs.</strong> Most teams running headless Chromium for agents have no idea what it actually costs per session. Memory footprint, CPU time, cold-start latency, host density — these are the numbers that determine whether your browser-based agent capability is economically viable at scale. Measure them before you optimize them. You'll likely find that browser sessions are the single most expensive component in your agent stack, and that most of that cost is rendering work the agent never consumes.</p>
+
+        <p><strong>Abstract your browser interface.</strong> If your agents talk directly to Puppeteer or Playwright calls hardcoded in your harness, you've coupled yourself to Chromium. Wrap your browser interaction behind a clean interface — ideally CDP-compatible, so you can swap runtimes underneath. This is the same model-agnostic principle applied to runtimes: don't lock yourself into the most expensive option for tasks a cheaper runtime can handle.</p>
+
+        <p><strong>Pilot Kitesurf on extraction tasks.</strong> The tasks where Kitesurf shines today — screenshots, HTML extraction, content parsing on compatible sites — are exactly the tasks that dominate agent browser workloads and where Chromium's overhead is most wasteful. Route those tasks to Kitesurf behind your abstraction layer. Measure cost per task against Chromium. The 3-7x memory and CPU advantage Cloudflare reports should show up directly in your infrastructure bill. If it does, you've just validated runtime routing for browsers the same way model routing works for inference.</p>
+
+        <h2>The Bigger Picture</h2>
+
+        <p>Cloudflare built a browser in twelve weeks, mostly with AI agents, and shipped it to production. Each of those facts matters independently. Together, they describe where agent infrastructure is heading.</p>
+
+        <p>The browser was the last major human-facing runtime that agents still borrowed wholesale. Terminals, filesystems, and IDEs have all been re-engineered for agent consumers over the past two years. The browser was the holdout — too complex, too entrenched, too critical to rebuild. Cloudflare proved it's rebuildable, and that the rebuild is worth it: 3-7x cheaper, fully isolated, stateless by design, and compatible with the tools agents already use.</p>
+
+        <p>The agent stack is converging on a clear shape: every runtime optimized for the consumer that actually uses it. Not the human. The agent. The runtimes that get rebuilt first — the ones that strip the human tax aggressively — will define the cost structure of agent infrastructure for the next phase. Kitesurf is an early data point. It won't be the last.</p>
+
+        <p>The browser was built for humans. That assumption just stopped being free.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
