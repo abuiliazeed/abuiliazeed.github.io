@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Agent Stack Got Its Docker Moment — Abuiliazeed</title>
+  <meta name="description" content="Five companies spending billions to beat each other on model benchmarks just agreed on one thing: how to package an agent extension. Agent Plugins 1.0 unites OpenAI, Amazon, Microsoft, Cursor, Vercel, and Google behind a single portable format — and it's the packaging layer, not the model layer, where the agent stack is consolidating.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-agent-stack-got-its-docker-moment.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-agent-stack-got-its-docker-moment.html">
+  <meta property="og:title" content="The Agent Stack Got Its Docker Moment">
+  <meta property="og:description" content="Five companies spending billions to beat each other on model benchmarks just agreed on one thing: how to package an agent extension. Agent Plugins 1.0 unites OpenAI, Amazon, Microsoft, Cursor, Vercel, and Google behind a single portable format.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Agent Stack Got Its Docker Moment">
+  <meta name="twitter:description" content="Five companies spending billions to beat each other on model benchmarks just agreed on one thing: how to package an agent extension. Agent Plugins 1.0 unites OpenAI, Amazon, Microsoft, Cursor, Vercel, and Google behind a single portable format.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-08-10">August 10, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Agent Stack Got Its Docker Moment</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Five companies that collectively spend tens of billions of dollars a year trying to beat each other on model benchmarks just agreed on one thing. Not on a model. Not on a benchmark. Not on a safety framework. On a <strong>folder layout</strong>.</p>
+
+        <p>On August 6, 2026, OpenAI, Amazon, Microsoft, Cursor, and Vercel published <strong>Agent Plugins 1.0</strong> — an open, vendor-neutral specification for packaging agent capabilities into a single portable format. By the end of the same day, Google joined the technical steering committee as a core maintainer. ChatGPT, Codex, Cursor, GitHub Copilot, Kiro, and VS Code all supported the format at launch. The Linux Foundation's Agentic AI Foundation (AAIF) adopted it.</p>
+
+        <p>That sentence is easy to read past. Don't. Every major company building an AI coding agent or agent platform — the five biggest hyperscalers and AI labs plus the two most-used third-party coding tools — aligned behind a single packaging standard in the same week. The agent stack has been missing this layer since MCP shipped. Now it has it. And the layer that consolidated first wasn't the model, the protocol, or the runtime. It was the <em>package format</em>.</p>
+
+        <p>If you've watched infrastructure waves before, you know what this is. It's the Docker moment. Not because Agent Plugins is technically comparable to a container runtime — it's a JSON manifest and a directory structure. It's the Docker moment because the industry just agreed on <strong>the unit of portability</strong>, and that agreement is worth more than any single model release this year.</p>
+
+        <h2>What Agent Plugins Actually Standardizes</h2>
+
+        <p>Strip away the launch announcements and the spec is deliberately, almost aggressively minimal. An Agent Plugin is a directory with a <code>plugin.json</code> manifest at its root and two fixed subdirectories: one for <strong>Agent Skills</strong> (reusable instruction sets, the standard Anthropic introduced in 2025) and one for <strong>MCP server configurations</strong> (the Model Context Protocol, now stewarded by the AAIF).</p>
+
+        <p>That's it. The 1.0 scope standardizes exactly two component types and deliberately leaves everything else — installation, permissions, user experience, execution model — to individual clients. There's a namespaced directory for client-specific extensions, so Cursor can keep whatever Cursor-specific hooks it wants and VS Code can keep its own. The common contract is the manifest and the folder layout.</p>
+
+        <p>This is the move that makes the whole thing work. Most interoperability standards fail because they try to standardize too much — the runtime, the permission model, the execution semantics. Those are where vendors differentiate and where agreement collapses. Agent Plugins standardizes the one thing that has zero competitive value on its own and massive value once it's shared: <strong>where the files live</strong>.</p>
+
+        <p>Before this week, an SRE who wanted to package a deployment-assistant skill for their team had to write a different manifest for every target. A Cursor rule file here. A Claude Code skill there. A Codex plugin somewhere else. An MCP server config in a fourth format. The components were portable in theory — MCP servers speak a standard protocol, Agent Skills are just markdown — but the <em>packaging</em> wasn't. Every client expected a different folder layout, a different manifest schema, a different install path. You rebuilt the same capability five times to reach five audiences.</p>
+
+        <p>Agent Plugins collapses that to one. Write the skill, configure the MCP server, drop a <code>plugin.json</code> at the root, and the same directory loads in ChatGPT, Cursor, Copilot, Codex, Kiro, and VS Code without rearranging a single file. That's the entire pitch. It's boring. It's also the most important infrastructure announcement of August.</p>
+
+        <h2>Why Packaging Beat the Model Layer to Consensus</h2>
+
+        <p>Here's the contrarian read most of the coverage missed: the fact that packaging consolidated before models, runtimes, or even protocols tells you where the actual competitive pressure is in the agent stack. It's not at the model layer. Models converged — I've documented this repeatedly, from the Databricks internal benchmark showing statistical ties across frontier models on real codebase tasks to the SWE-bench leaderboard compressing into a few points of noise. The model layer is a commodity market now, and commodity markets don't generate the kind of strategic urgency that drives standardization.</p>
+
+        <p>The urgency is at the <strong>distribution layer</strong>. Cursor has 7 million users. ChatGPT has hundreds of millions. GitHub Copilot is embedded in the editor most enterprises already pay for. The fight isn't over whose model is best — it's over whose client becomes the default execution environment for agent work. And the way you win that fight is by having the richest ecosystem of extensions, skills, and tools that work natively in your client.</p>
+
+        <p>That creates a collective action problem. If every vendor has a proprietary plugin format, the ecosystem fragments. Developers build for the biggest client and ignore the rest. The smaller clients starve. The bigger client wins by default — but even the winner pays a tax, because developers who built for the winner's format can't easily port elsewhere, which means the winner has to keep overpaying to keep them. Everyone loses except the incumbent.</p>
+
+        <p>Open standards solve this. A shared package format means the same developer can target every client with one artifact. The ecosystem grows for everyone. The clients compete on execution quality, on permission models, on the harness — the things that actually differentiate — rather than on lock-in via manifest schema. The five companies that signed onto Agent Plugins 1.0 didn't do it out of altruism. They did it because a fragmented plugin ecosystem hurts all of them, and the vendor with the most to lose from fragmentation (the one without the biggest installed base) has enough leverage to force the issue. Vercel initiated the proposal. That's not a coincidence.</p>
+
+        <h2>The Three-Layer Stack Is Now Real</h2>
+
+        <p>Zoom out and the agent infrastructure stack now has three clearly defined, independently standardized layers — and for the first time, all three have a shipping specification and a governance home.</p>
+
+        <p><strong>Layer 1: Transport.</strong> The Model Context Protocol, now under the AAIF, just shipped its 2026-07-28 release candidate — the stateless core that removes session management entirely and lets MCP servers run behind ordinary HTTP load balancers. I covered the implications of that rewrite in detail; the short version is that MCP went from a promising local integration layer to production-grade, horizontally scalable infrastructure. Google drove that change because it needed a protocol that could handle global scale, and the result benefits everyone.</p>
+
+        <p><strong>Layer 2: Discovery and inter-agent communication.</strong> Google's Agent2Agent protocol folded into the AAIF, and Google is separately building Agentic Resource Discovery — a spec for finding tools on the web. The AAIF also maintains Skills Over MCP, a complementary approach that bundles skills directly into MCP servers, described by AAIF VP Angie Jones as "shipping the manual with the product."</p>
+
+        <p><strong>Layer 3: Packaging and distribution.</strong> Agent Plugins 1.0, the layer that just consolidated. It sits on top of MCP and Agent Skills without modifying either, and defines how capabilities get bundled, discovered, and loaded into clients.</p>
+
+        <p>Each layer is governed independently, openly licensed (Agent Plugins is CC-BY-4.0; MCP and the skills standard have their own AAIF stewardship), and designed to compose without coupling. You can swap the transport, change the discovery mechanism, or redistribute the package — without touching the other layers. That's what a mature infrastructure stack looks like. The web had HTML, HTTP, and URLs. Container infrastructure had OCI image specs, runtimes, and registries. The agent stack now has MCP, A2A/ARD, and Agent Plugins.</p>
+
+        <h2>The Quiet Genius of Standardizing Almost Nothing</h2>
+
+        <p>The most instructive design decision in Agent Plugins 1.0 is what it <em>doesn't</em> standardize. The spec explicitly leaves installation, permissions, user experience, and execution to individual clients. It standardizes only two component types — Agent Skills and MCP servers — and pushes everything experimental into a namespaced directory that the core spec ignores.</p>
+
+        <p>This is the pattern that successful standards follow and failed ones don't. Container standards won because OCI specified the image format and left the runtime open — Docker, containerd, and CRI-O all compete on execution. Bluetooth won because it standardized the protocol and left device implementation open. The failures are the standards that try to specify the whole stack: CORBA, WS-*, and every enterprise integration framework that tried to standardize semantics rather than syntax.</p>
+
+        <p>Agent Plugins learned that lesson. By defining a focused packaging contract that composes existing technologies — MCP servers and Agent Skills — without attempting to standardize how clients run them, it achieves meaningful interoperability while respecting the diversity of agent implementations. An SRE packages a deployment assistant once. Cursor loads it with Cursor's permission model. VS Code loads it with VS Code's. The plugin doesn't know or care. That's the right abstraction boundary.</p>
+
+        <p>The BotBeat analysis of the launch called this "disciplined API design" and noted that it "avoids the over-specification trap that has stalled similar standards." That's accurate but understates the strategic calculation. The reason the 1.0 scope is narrow isn't modesty — it's survival. If the spec had tried to standardize permissions or execution, at least one of the five steering committee members would have walked. Every one of them has a different permission model, a different sandbox strategy, a different opinion on how much autonomy an agent extension should get. Standardizing that would have produced a spec with no implementers. Standardizing the folder layout produced a spec with six launch implementers and three hyperscalers on the steering committee before the end of day one.</p>
+
+        <h2>What This Means for the Agent Economy</h2>
+
+        <p>If you're building agent capabilities — skills, MCP servers, tools — the implications are immediate.</p>
+
+        <p><strong>Your addressable market just multiplied by six.</strong> A plugin written to the Agent Plugins spec loads in ChatGPT, Codex, Cursor, GitHub Copilot, Kiro, and VS Code. Before this week, reaching all six meant maintaining six packaging variants. Now it means maintaining one directory. The economics of building agent extensions just shifted from "build for the biggest platform" to "build once, reach the whole market." That's the same shift the App Store created for mobile, and the same shift OCI created for container images.</p>
+
+        <p><strong>The distribution layer is now the competitive battleground.</strong> With packaging commoditized, clients compete on the quality of their plugin discovery, installation flow, permission UX, and harness performance. Google's announcement made this explicit: its Agents CLI and Data Agent Kit already support the format, turning "any AI coding agent — Antigravity, Gemini CLI, Claude Code, or Cursor — into an expert at agent building and agent ops." The pitch is no longer "our format" — it's "our curation and our runtime on top of a shared format."</p>
+
+        <p><strong>Internal tooling becomes distributable.</strong> The spec's own example — an SRE packaging a deployment assistant and sharing it across multiple compatible clients — is the enterprise use case. Teams that have been building bespoke agent skills for internal use can now package them once and distribute them across whatever clients their engineers actually use, without maintaining forks per tool. The friction that kept internal agent tooling siloed just dropped to near zero.</p>
+
+        <h2>The Risk: Governance and the Incumbent Advantage</h2>
+
+        <p>Two risks are worth naming honestly.</p>
+
+        <p>First, governance. The technical steering committee has five core maintainers — Amazon, Cursor, Microsoft, OpenAI, and Vercel — with Google joining. These are the companies with the most installed base and the most to gain or lose from the spec's evolution. The spec is openly licensed and the contribution process is public, but the same five-to-six companies that dominate the agent client market also dominate the spec's governance. That's not unusual — OCI was driven by Docker, Google, and CoreOS — but it means the spec will evolve in directions that serve the incumbents' clients first. Teams building plugins should track the spec repository and participate in comment periods, because the defaults will be set by the companies whose clients have the most users.</p>
+
+        <p>Second, the portability is real but not magic. A plugin that loads in six clients still behaves differently in each one, because the execution environment — the harness, the sandbox, the permission model, the context window — varies. An MCP server that works smoothly in Cursor might hit permission prompts in VS Code or timeout in Copilot. Agent Plugins solves the packaging problem. It does not solve the runtime-compatibility problem. You'll still need to test your plugin in each target client. The format gets you in the door; the harness determines whether you stay.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <ol>
+          <li><strong>Audit your agent extensions against the format.</strong> If you maintain Agent Skills or MCP servers for your team, read the <a href="https://agent-plugins.org/" target="_blank" rel="noopener noreferrer">Agent Plugins 1.0 specification</a> and map your current packaging to the plugin directory structure. The migration for most skills is a manifest file and a directory rename — an afternoon's work.</li>
+          <li><strong>Publish one plugin.</strong> Take your most useful internal skill, package it to the spec, and load it in two different clients — your primary tool and one you don't normally use. The point isn't adoption. It's to find the runtime-compatibility gaps the spec doesn't cover, before they surprise you in production.</li>
+          <li><strong>Watch the spec repository.</strong> The 1.0 scope is narrow by design, and the namespaced extension directories are where experimental hooks and rules are accumulating. The features that graduate from namespaced to standardized will define the next competitive layer. If you're building agent infrastructure, you want to be in that conversation, not reacting to it.</li>
+          <li><strong>Rethink your build-vs-buy calculus for harness features.</strong> If the packaging layer is shared, the harness is where your differentiation lives. The teams that win the next phase are the ones who stop spending engineering time on plugin packaging — because the spec handles that — and redirect it to the execution loop, the permission model, and the context strategy.</li>
+        </ol>
+
+        <h2>The Bottom Line</h2>
+
+        <p>The headlines this week will focus on the model releases — Qwen3.8-Max posting 86.1 on OSWorld, Muse Spark 1.2 trailing Opus 5 on every coding chart, the usual leaderboard shuffle. Those stories matter. But they're noise compared to what happened at the infrastructure layer: six companies that compete for the same developers agreed on a shared packaging format, shipped it with same-day support across every major client, and placed it under open governance.</p>
+
+        <p>The agent stack has been assembling itself in pieces for eighteen months — MCP for transport, Agent Skills for instructions, A2A for inter-agent communication. Each piece mattered. But the pieces didn't compose into a portable ecosystem until someone defined how they're packaged and distributed together. That's what Agent Plugins 1.0 does. It's the connective tissue that turns a collection of protocols into a stack developers can actually target.</p>
+
+        <p>Docker didn't invent containers. It standardized the image format — the packaging layer — and the ecosystem exploded because suddenly the same artifact ran everywhere. Agent Plugins 1.0 is that move for agents. The format is minimal, the governance is open, and every major client supports it on day one. The teams that treat this as infrastructure noise will spend the next year rebuilding capabilities five times for five clients. The teams that recognize the Docker moment will package once, ship everywhere, and compete where it actually matters: in the harness.</p>
+
+        <hr>
+
+        <p><em>The packaging layer is one of the least-discussed but most consequential parts of the agent stack — a topic covered in depth in <a href="../book.html">Harness Engineering: The Complete Guide to Agent-First Software Development</a>.</em></p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
