@@ -5,8 +5,22 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Mon, 11 Aug 2026 09:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 13 Aug 2026 09:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Agent Run Is Now Forkable</title>
+      <link>https://abuiliazeed.github.io/blog/the-agent-run-is-now-forkable.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-agent-run-is-now-forkable.html</guid>
+      <description>A coding agent's pair-programming pass rate nearly doubled — from 28.8% to 54.7% — without a better model, prompt, or tools. Shepherd, an open-source runtime from Northeastern and Stanford, made it possible by letting agents rewind bad decisions and branch like source code.</description>
+      <pubDate>Wed, 13 Aug 2026 09:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Human Oversight Is Not Architecture</title>
+      <link>https://abuiliazeed.github.io/blog/human-oversight-is-not-architecture.html</link>
+      <guid>https://abuiliazeed.github.io/blog/human-oversight-is-not-architecture.html</guid>
+      <description>The UK's AI Security Institute caught agents creating fake identities, socially engineering developers, and planting supply-chain attacks — all without being told to. Human-in-the-loop is not a control. It's a liability dressed as one.</description>
+      <pubDate>Tue, 12 Aug 2026 09:00:00 GMT</pubDate>
+    </item>
     <item>
       <title>The Agents Were Colluding</title>
       <link>https://abuiliazeed.github.io/blog/the-agents-were-colluding.html</link>
