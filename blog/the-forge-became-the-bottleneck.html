@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Forge Became the Bottleneck — Abuiliazeed</title>
+  <meta name="description" content="Cursor launched Origin, an agent-native code forge, the same morning GitHub went down for nearly seven hours with a 20% error rate. The timing was luck. The thesis wasn't: when agents open a third of all pull requests, the forge becomes part of the harness.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-forge-became-the-bottleneck.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-forge-became-the-bottleneck.html">
+  <meta property="og:title" content="The Forge Became the Bottleneck">
+  <meta property="og:description" content="Cursor launched Origin, an agent-native code forge, the same morning GitHub went down for nearly seven hours. When agents open a third of all pull requests, the forge becomes part of the harness.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Forge Became the Bottleneck">
+  <meta name="twitter:description" content="Cursor launched Origin, an agent-native code forge, the same morning GitHub went down for nearly seven hours. When agents open a third of all pull requests, the forge becomes part of the harness.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-08-20">August 20, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Forge Became the Bottleneck</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>On the morning of August 17, Cursor began rolling out <strong>Origin</strong> — its own code-hosting platform, complete with repositories, pull requests, and CI integrations. Roughly three and a half hours later, GitHub's status page lit up. What followed was a six-hour-and-forty-two-minute global degradation: error rates near 20% across pull requests, issues, and the API, near 50% on archive and raw file downloads, enterprise SSO fully down, and Copilot dead along with everything else.</p>
+
+        <p>The timing was an accident — Cursor's own Matt Palmer admitted the launch was actually delayed by the outage: <em>"We were going to ship this earlier, but GitHub was down."</em> A GitHub outage postponed the launch of a GitHub competitor. But the coincidence dramatized the argument Origin exists to make, and that argument is bigger than an uptime pissing match.</p>
+
+        <p>Most coverage framed Origin as "Cursor takes on GitHub." That's the wrong frame. The real story is this: <strong>writing code stopped being the constraint, and the forge — the layer where code is stored, reviewed, and merged — became the bottleneck of the entire agent pipeline.</strong> When 35% of the pull requests in your tool are opened by agents, the forge isn't developer tooling anymore. It's part of the harness.</p>
+
+        <h2>The Number That Explains Origin</h2>
+
+        <p>Cursor has said that 35% of pull requests merged inside its product are opened by agents running autonomously on cloud virtual machines. That figure was reported back in February and the trend has only gone one direction since. SemiAnalysis estimated in March that Claude Code alone accounts for roughly 4% of all public GitHub commits, with projections toward 20% by year-end.</p>
+
+        <p>Think about what that means for the receiving end. GitHub's own Octoverse 2025 counted 180 million developers, 630 million repositories, and 43.2 million pull requests merged per month — already up 23% year over year <em>before</em> the agent volume started compounding. Agents don't just add commits; they add pull requests, CI runs, review comments, and merge operations at a cadence no human team ever produced. A single developer supervising four parallel agents can generate more PR traffic in an afternoon than a mid-2000s open source project saw in a year.</p>
+
+        <p>Here's the asymmetry nobody priced in: agent <em>write</em> throughput scales with compute, which is elastic. Human <em>review</em> throughput scales with headcount, which is not. Every agent-first team hits the same wall — the merge queue. The forge is where agent output goes to die in a queue behind human attention.</p>
+
+        <p>That's the bottleneck Origin is attacking. Cursor's changelog puts it in one line: <em>"Your code, PRs, and agents are now in the same place."</em> A developer can hand an agent a review comment and have it revise the pull request in place, or push a branch, without leaving the surface where the code lives. The forge and the agent stop being separate systems with a human clipboard between them.</p>
+
+        <h2>GitHub Earned This Fight</h2>
+
+        <p>It's tempting to read Origin as pure opportunism against a struggling incumbent, and there's some truth to that. GitHub's reliability record over the past fifteen months is genuinely bad:</p>
+
+        <ul>
+          <li>An analysis by LeadDev counted <strong>257 incidents between May 2025 and April 2026</strong>, 48 of them major — roughly one significant disruption per week. February 2026 was the worst month on record with 37.</li>
+          <li>GitHub Actions alone accounted for 57 outages in twelve months. Actions is precisely the layer agents hammer hardest.</li>
+          <li>GitHub's own CTO Vlad Fedorov has said the platform "wasn't built for the scale it's now being asked to handle" and must be redesigned for 30 times today's load. An April engineering post acknowledged the company "failed to meet its own reliability standards," citing rapid growth, tight architectural coupling, and inadequate load shedding.</li>
+          <li>Monday's outage was the seventh incident on GitHub's status page in fifteen days.</li>
+        </ul>
+
+        <p>The exodus started before Origin existed. HashiCorp's iceberg left GitHub in November 2025, citing Actions failures. In April, Mitchell Hashimoto announced Ghostty — a terminal emulator with over 52,000 stars — would leave too, pointing to near-daily outages blocking reviews and CI for hours. The Information reported in March that OpenAI, a company Microsoft holds a large stake in, began building its own GitHub alternative partly because outages left its engineers unable to commit for hours at a time.</p>
+
+        <p>And the organizational signals are bleak. Thomas Dohmke resigned as GitHub CEO in August 2025 and was never replaced; the unit was absorbed into Microsoft's CoreAI organization under Jay Parikh, who reportedly warned deputies that coding tools from Cursor and Anthropic could eventually make GitHub obsolete. Dohmke himself has moved on to Entire, a distributed Git network that raised a $60 million seed in February — with Microsoft's venture arm among the investors — and went to market in July.</p>
+
+        <p>When the former CEO of the incumbent raises money for a competitor and the incumbent's parent invests in it, the market is telling you something. GitHub's answer, Agent HQ — orchestrate third-party agents from Anthropic, OpenAI, Google, Cognition, and xAI <em>inside</em> GitHub — is a coherent strategy, but it concedes the agent layer to keep the substrate underneath. Origin attacks precisely that substrate.</p>
+
+        <h2>What "Agent-Native Forge" Actually Means</h2>
+
+        <p>Strip the launch hype and here's what Origin shipped: a Codebase tab inside Cursor, git repos you push to from the command line, pull requests with timelines, diffs, checks, and merges, and day-one integrations with Vercel (preview deployments per PR), Depot and Buildkite (CI — and both run your existing GitHub Actions workflows unchanged). It's in early beta on all paid plans. Notably, it's <strong>default-on</strong> for paid users except enterprise orgs whose admins opt out — a sentence administrators should read twice.</p>
+
+        <p>Cursor's Tomas Reimers was refreshingly honest about the differentiation: asked what sets Origin apart beyond uptime, he said "very little" — "We're intentionally releasing this as a GitHub alternative where we meet them toe-to-toe on functionality." The agent-native features — tooling that makes sense of agent-written code, automation that pushes PRs toward a mergeable state on their own — are explicitly "coming in the coming weeks."</p>
+
+        <p>So why does a toe-to-toe GitHub clone matter? Because of the <em>integration direction</em>. In the GitHub model, the agent is a guest: it authenticates over an API, opens PRs through a web abstraction, and reads review feedback through webhooks and notifications designed for humans. In the Origin model, the agent is a native resident: the review comment, the PR, the CI result, and the agent that can act on all three live in the same event loop.</p>
+
+        <p>This is the same structural move that played out at every other layer of the stack. The IDE treated the agent as an extension guest; the terminal gave the agent resident status — the same access the developer has — and won. MCP treated tools as external RPC calls; Agent Skills moved the instructions inside the context. Each time, the layer that <em>absorbed</em> the agent beat the layer that merely <em>hosted</em> it. The forge is the last major layer left, and Cursor just made its move.</p>
+
+        <h2>The Contrarian Read: This Isn't About Uptime</h2>
+
+        <p>Most people think Origin is a bet on GitHub being flaky. If GitHub fixes its reliability — and Microsoft is spending real money trying — the argument for Origin collapses, goes this reasoning.</p>
+
+        <p>I think that's wrong, and the evidence is in GitHub's own numbers. Even a perfectly reliable GitHub is still a <em>human-paced</em> forge. Its unit of account is the pull request a person reviews, the notification a person reads, the merge button a person clicks. Reliability is table stakes. The structural question is whether the forge's primitives — review, merge, checks, permissions — are designed for a party that never sleeps.</p>
+
+        <p>Consider what an agent-native forge could do that a human-native one can't cheaply express:</p>
+
+        <ul>
+          <li><strong>Merge contracts instead of merge buttons.</strong> A PR from an agent doesn't need a human to click merge; it needs a machine-checkable contract — tests green, review passed, no conflicts, budget under limit. Auto-merge exists on GitHub as an opt-in feature. In an agent-native forge it's the primary path, with human review as the escalation, not the default.</li>
+          <li><strong>Provenance as a first-class field.</strong> Which model wrote this diff? Which harness? What did the verification loop actually run? GitHub shows you a username. An agent-native forge can show you the whole causal chain — which is rapidly becoming a compliance requirement, not a nice-to-have.</li>
+          <li><strong>Review load balancing.</strong> When agents open a third of PRs, routing those PRs to <em>other agents</em> for first-pass review — with humans sampled in for audit — is a forge-level function. It can't be bolted onto a notification system built for humans.</li>
+        </ul>
+
+        <p>None of that is shipped yet. Origin today is repos, PRs, and sync. But the roadmap Reimers describes — "automation that pushes pull requests toward a mergeable state on their own" — points exactly at merge contracts and agent-mediated review. The boring beta is the trojan horse.</p>
+
+        <h2>The Sync Trap and the Exit Question</h2>
+
+        <p>Now the skeptical part, because there are real problems here.</p>
+
+        <p>First, <strong>the sync design is a one-way ratchet in disguise</strong>. Origin doesn't ask you to leave GitHub: connect an org, pick repos, and they sync in both directions, with GitHub remaining "the source of truth for anything started there." This is genuinely smart adoption mechanics — near-zero switching cost, walk away anytime. But the properties that make adoption safe are the ones most likely to erode. Today Origin runs your Actions workflows unchanged and mirrors GitHub faithfully. Once teams start creating repos natively in Origin — and Cursor will make that path increasingly frictionless — GitHub stops being the source of truth for anything new. Each agent-native feature will work a little better on Origin-native repos than synced ones. That's not deception; it's gravity. Ask what egress looks like now, while the mirror is still a mirror.</p>
+
+        <p>Second, <strong>the paperwork doesn't exist</strong>. Origin's pricing, security architecture, data retention, residency, training use, and subprocessor terms are unpublished. It's default-on for paid plans. And Cursor — now a fully owned SpaceX subsidiary after the $60 billion acquisition closed on August 14, making Origin the first product shipped under that ownership — answers to a rocket company, not a developer tools company. The defensible posture today is to treat Origin as a convenience layer over GitHub rather than a system of record. Conveniently, that's exactly what its current architecture is. Just don't confuse what it <em>is</em> with what it's becoming.</p>
+
+        <p>Third, <strong>concentration risk cuts both ways</strong>. The thing developers are fleeing GitHub over — one company's infrastructure being a single point of failure for the world's code — is the thing Origin recreates with a younger operator. 180 million developers won't move, and enterprises that spent years standardizing on GitHub won't rip it out for a beta. But Entire, OpenAI's internal alternative, and Origin all appearing within months of each other means the assumption that source control is a solved, boring problem is dead. When three credible competitors enter a market that has had none for a decade, the incumbent's pricing, roadmap, and reliability all get renegotiated — whether or not anyone migrates.</p>
+
+        <h2>What This Means for Your Infrastructure</h2>
+
+        <p>If you're building agent infrastructure, the forge's absorption into the harness has concrete implications:</p>
+
+        <p><strong>Your merge queue is now part of your agent architecture.</strong> Measure it. What fraction of your PRs are agent-opened? What's the median time from PR-open to merge for agent work versus human work? If the agent share is above 20% and the review latency is measured in hours, your constraint is the forge, not the model — and no model upgrade will fix it.</p>
+
+        <p><strong>Put provenance in your PRs now.</strong> Regardless of host, start stamping agent-opened PRs with model, harness, and verification metadata — in the PR body, in check runs, anywhere machine-readable. When forge-level provenance arrives, you'll have historical data. When auditors ask, you'll have answers.</p>
+
+        <p><strong>Make branch protection machine-legible.</strong> The teams that benefit first from agent-native forges will be the ones whose merge requirements are already expressed as machine-checkable contracts — required checks, status gates, auto-merge rules — rather than tribal convention. That's a refactor you can do entirely inside GitHub this week.</p>
+
+        <p><strong>Don't migrate; evaluate.</strong> Sync a non-critical repo into Origin, run one agent workflow against it, and measure whether the same-surface review loop actually shortens cycle time. The sync mode is a free experiment with a clean exit. Take it. Just remember it's an experiment with a vendor whose incentive is to make the exit progressively harder.</p>
+
+        <h2>The Pattern, One Layer Deeper</h2>
+
+        <p>Watch what's happened to the stack over the past two years. First the value moved from the model to the harness — benchmarks converged, and the scaffold became the differentiator. Then the harness became infrastructure — open-sourced, standardized, commoditized, a shift that's been accelerating all summer. Each time a layer commoditized, the value migrated one layer down or one layer out: to the runtime, to the package format, to the protocol.</p>
+
+        <p>The forge is the last major layer where a single incumbent has held unchallenged, uncontested ground for eighteen years. That run ended this week — not because Cursor shipped repos and pull requests, and not because GitHub had an outage. It ended because a third of the code arriving at the forge's front door stopped being written by people, and everything about how a forge works — its review model, its merge semantics, its reliability budget — is now designed for the wrong customer.</p>
+
+        <p>The terminal ate the IDE because the terminal is where agents can actually be agents. The forge is next, for the same reason: the forge is where agent output has to survive contact with the rest of the system. The bottleneck always ends up owning the roadmap. This month, the bottleneck got its first real competitor.</p>
+
+        <hr>
+
+        <p><em>How the storage, review, and merge layer fits into agent-first architecture — and why every layer of the harness eventually becomes infrastructure — is covered in depth in <a href="../book.html">Harness Engineering: The Complete Guide to Agent-First Software Development</a>.</em></p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
