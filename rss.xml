@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Wed, 19 Aug 2026 09:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 21 Aug 2026 09:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Claude Code Is Now a Sub-Agent</title>
+      <link>https://abuiliazeed.github.io/blog/claude-code-is-now-a-sub-agent.html</link>
+      <guid>https://abuiliazeed.github.io/blog/claude-code-is-now-a-sub-agent.html</guid>
+      <description>In one 72-hour window, DeepSeek, UiPath, Warp, and Cursor all shipped layers that schedule Claude Code and Codex as interchangeable workers. The flagship agents became executors — and the layer above them is where the stack is consolidating.</description>
+      <pubDate>Fri, 21 Aug 2026 09:00:00 GMT</pubDate>
+    </item>
     <item>
       <title>Your Coding Model Learned to Hack for Free</title>
       <link>https://abuiliazeed.github.io/blog/your-coding-model-learned-to-hack.html</link>
