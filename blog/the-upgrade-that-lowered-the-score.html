@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Upgrade That Lowered the Score — Abuiliazeed</title>
+  <meta name="description" content="Amazon's SOP-Bench found that upgrading to a newer Claude model lowered agent success rates on business procedures — silently. Model upgrades are not free improvements anymore. They're regression events, and almost nobody tests for them.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-upgrade-that-lowered-the-score.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-upgrade-that-lowered-the-score.html">
+  <meta property="og:title" content="The Upgrade That Lowered the Score">
+  <meta property="og:description" content="Amazon's SOP-Bench found that upgrading to a newer Claude model lowered agent success rates on business procedures — silently. Model upgrades are not free improvements anymore. They're regression events, and almost nobody tests for them.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Upgrade That Lowered the Score">
+  <meta name="twitter:description" content="Amazon's SOP-Bench found that upgrading to a newer Claude model lowered agent success rates on business procedures — silently. Model upgrades are not free improvements anymore. They're regression events, and almost nobody tests for them.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-08-23">August 23, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Upgrade That Lowered the Score</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Buried in Amazon Science's new agent benchmark, presented at KDD 2026 and published August 21, is a finding no model vendor will ever put in a release note: <strong>on Amazon's reasoning-style agent, the newer Claude 4.5 family scored lower than the older Claude 4 family.</strong> Not on one task. Across a suite of more than 2,000 real business procedures, the upgrade made the agent worse.</p>
+
+        <p>The benchmark is called SOP-Bench, and its stated purpose has nothing to do with debunking upgrades. It measures how well AI agents execute authentic standard operating procedures — healthcare intake, dangerous-goods classification, financial compliance, warehouse inspection — across twelve business domains, with working tools and ground-truth answers for every task. The upgrade reversal is a side effect the researchers themselves called their most surprising insight. Which is exactly why it matters: nobody was looking for it, and it showed up anyway.</p>
+
+        <p>Most people treat a model upgrade as the safest improvement available to an agent system. Newer checkpoint, same API, better benchmarks — what could go wrong? This week delivered three separate pieces of evidence that the answer is "plenty," and that the industry's default upgrade posture — swap the weights, glance at the leaderboard, move on — is now an unmanaged risk.</p>
+
+        <h2>What SOP-Bench Actually Measured</h2>
+
+        <p>First, the benchmark itself, because its design is what makes the finding hard to dismiss.</p>
+
+        <p>Most agent benchmarks test isolated capabilities with clean, machine-formatted prompts. SOP-Bench does the opposite. Domain experts authored real procedures; each task pairs the SOP text with actual callable tool interfaces and a known correct outcome. The agent earns its score by completing the procedure — calling tools, interpreting ambiguity, coordinating multi-step work — and gets graded against ground truth, not against another model's opinion of its output.</p>
+
+        <p>Amazon ran two deliberately simple agent designs across eleven frontier models: a function-calling agent and a reasoning-style ReAct agent. These are baselines, not tuned systems. Three results came out:</p>
+
+        <ul>
+          <li><strong>Upgrading the model sometimes lowered performance.</strong> The Claude 4.5 family scored below the Claude 4 family on the reasoning agent. The same reversal appeared in head-to-head model comparisons on identical setups.</li>
+          <li><strong>More tools reduced success.</strong> On a single video-annotation procedure, agents given exactly the six required tools succeeded at roughly twice the rate of agents given those six plus twenty plausible-but-useless ones. Every tool the task needed was available in both cases. Success nearly halved anyway.</li>
+          <li><strong>No pairing won across the board.</strong> The best model-agent combination on one procedure was often a weak choice on another. The spread was enormous: roughly nine-out-of-ten success on easy procedures like email triage, about one-in-four on the hardest, like annotating objects in driving video — a more-than-threefold gap within the same suite.</li>
+        </ul>
+
+        <p>Read that first bullet again in deployment terms. A team running agents in production upgrades its model — the routine, scheduled, vendor-recommended act — and the success rate drops with no error thrown, no alert fired, no signal that anything changed. The agent still runs. It just fails more often. Amazon's own framing: the only reliable way to catch it is to test on the procedures the team actually runs.</p>
+
+        <h2>The Reliability Picture Is Worse Than the Capability Picture</h2>
+
+        <p>Two days before SOP-Bench landed, Microsoft published ThinkingBox-Bench, and its numbers explain what "worse" actually looks like in production. Microsoft built 507 multi-turn tasks across five business domains — auto insurance, neobanking, internal IT, travel, consulting — ran them in isolated, stateful tool environments, and evaluated twelve models with twenty trials per task.</p>
+
+        <p>The headline leaderboard looks familiar: GPT-5.4 leads at 65.36% pass@1, Claude Sonnet 4.6 follows at 58.45%, and open-weight DeepSeek-V4-Pro sits at 43.26%. But the interesting numbers are the ones most leaderboards don't compute.</p>
+
+        <p>GPT-5.4's pass@20 — did it find a successful trajectory at least once in twenty attempts — reaches 91.12%. Its pass<sup>20</sup> — did it succeed on all twenty attempts — is 25.25%. It never solved 45 of the 507 tasks, and it solved all twenty attempts on only 128 of them. The best agent in existence, on tasks a competent human would call routine, succeeds first-try two times out of three and every-time one time in four.</p>
+
+        <p>The per-model profiles diverge in ways a single score completely hides. Claude Opus 4.6 and Kimi-K2.6 have nearly identical pass@1 averages — 37.91% versus 37.66%. But Opus's pass@20 is 70.02% with a pass<sup>20</sup> of 13.81%, while Kimi's pass@20 hits 84.22% with a pass<sup>20</sup> of just 3.16%. Translation: Kimi can eventually solve more problems; Opus can reliably re-solve the ones it has already solved. Those are opposite engineering properties. An aggregate score presents them as the same agent.</p>
+
+        <p>Now put the two benchmarks together. SOP-Bench says an upgrade can silently move you down the capability curve on your specific procedures. ThinkingBox says even your current model's average conceals a four-fold gap between "can do it" and "does it every time." The combination is the actual operating reality of production agents in August 2026 — and neither fact is visible on any model leaderboard.</p>
+
+        <h2>Why Upgrades Regress: The Model and the Harness Are Coupled</h2>
+
+        <p>The uncomfortable truth behind the Claude 4.5 result is that "the model" and "the agent" were never separate variables in the first place.</p>
+
+        <p>A harness is built against a model's behavioral grain: which prompts it parses well, how it formats tool calls, where it tends to overthink or cut corners, what reasoning style it responds to. Change the model and you change all of that silently. The newer model is almost certainly better in isolation — but the harness was tuned, implicitly or explicitly, for the old one's quirks. The upgrade doesn't just swap capability; it invalidates an invisible layer of coupling.</p>
+
+        <p>This is why framework-swapping studies keep finding small effects while harness-building studies keep finding huge ones. StartupBench, an end-to-end agent benchmark published August 18, re-ran its entire task suite under three different general-purpose agent frameworks and found the average variation between best and worst framework was 1.79 points, with model ordering unchanged. Swapping one generic harness for another moves almost nothing. But StateM — a runtime layer with durable states, phase-local context, and versioned runbooks — pushed GPT-5.6 Sol to 95.3% on Terminal-Bench 2.1 and lifted DeepSeek-V4 Flash from 82.7% to 88.1% for $15 in API costs against a $574.68 reference run.</p>
+
+        <p>The distinction is this: a generic framework is a fixed abstraction dragged across whatever model you point it at. A real harness is fitted to the work and the model together. The first kind is interchangeable and therefore nearly worthless as a differentiator — exactly what StartupBench measured. The second kind is where the points live — exactly what StateM, NVIDIA's AVO, and now SOP-Bench's procedure-specific results all demonstrate. And the second kind is also, unavoidably, coupled to a specific model version. That coupling is the mechanism by which upgrades become regressions.</p>
+
+        <h2>Tool Bloat Is the Same Disease</h2>
+
+        <p>SOP-Bench's tool experiment deserves separate emphasis, because it indicts a practice that has become almost a reflex: connect everything.</p>
+
+        <p>The MCP era made it trivially cheap to hand an agent forty tools. Each one feels like free capability. The SOP-Bench data says every additional tool is a tax on every decision the agent makes — a larger surface to reason over, more plausible-looking wrong doors. Agents given six required tools plus twenty decorative ones failed almost twice as often on a task where every needed tool was present. The capability was fully available and the agent still couldn't reliably find it.</p>
+
+        <p>This mirrors what ThinkingBox's framework was explicitly designed to control — a "controlled tool surface" is one of its four evaluation requirements, alongside a stateful environment, an interactive user, and isolated repeatable runs. The benchmark builders already know what most production teams haven't internalized: tool surface is a first-class performance variable, not just a security boundary.</p>
+
+        <p>The mental model that fits the data: an agent's effective capability is <em>model × harness fit × tool-surface discipline</em>. Multiplication, not addition. A zero anywhere — an unfitted harness, an undisciplined toolbelt — scales down everything else. And critically, all three factors shift underneath you every time a vendor ships a new checkpoint.</p>
+
+        <h2>What This Means for You</h2>
+
+        <p>If you run agents in production, the era of drop-in model upgrades is over. Treat a new checkpoint the way you treat a major dependency version bump: as a release event that requires its own regression suite. Concretely:</p>
+
+        <ol>
+          <li><strong>Build a procedure-level eval set before you need it.</strong> Take twenty to fifty of the procedures your agents actually run — real ones, with ground-truth outcomes, not sanitized prompts. SOP-Bench's entire framework is open on GitHub and HuggingFace, including its method for turning an SOP into executable tasks with gradable outcomes. You don't need Amazon's scale; you need your procedures. Twenty tasks with known answers will catch a regression that 10,000 leaderboard tokens will never show you.</li>
+          <li><strong>Pin model versions in production. Explicitly.</strong> "Latest" is now an uncontrolled variable. Pin the checkpoint, record it in run logs, and make the upgrade a deliberate, tested change — not a surprise delivered by a provider's default routing. SOP-Bench's reversal between Claude 4 and 4.5 happened inside one vendor's own lineage, with no API change to warn anyone.</li>
+          <li><strong>Measure pass<sup>n</sup>, not just pass@1.</strong> If you're only checking whether the agent succeeded, you're measuring capability. Reliability is whether it succeeds every time. Run your eval set multiple times per model and track both. The gap between the two numbers — 65% versus 25% for the best model in the world — is the honest size of your automation envelope. This is the same procedure-first discipline I spend a full chapter on in <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>, and it's the part teams skip first.</li>
+          <li><strong>Audit your tool surface quarterly.</strong> Remove tools the agent hasn't productively called in thirty days. If SOP-Bench's numbers generalize even loosely, an untrimmed toolbelt is costing you up to half your success rate on exactly the tasks those tools were added to help with.</li>
+          <li><strong>Re-fit the harness after every upgrade.</strong> The regression isn't proof the new model is bad; it's proof the coupling broke. Prompt structure, reasoning-effort settings, and supervision thresholds all need re-checking against the new checkpoint before you accept the numbers.</li>
+        </ol>
+
+        <h2>The Leaderboard Can't Save You</h2>
+
+        <p>The industry's evaluation energy still flows toward model leaderboards — one number, one model, one ranking. But every result this week points the same direction: your agent's performance on your procedures is a property of a coupled system, and the coupling is invisible from orbit.</p>
+
+        <p>The Claude 4-to-4.5 reversal will be explained away — different reasoning settings, harness mismatch, benchmark noise. Some of that is fair. But the burden of proof has now formally shifted. For the first time, a major industrial lab has published, in a peer-reviewed venue, that a routine model upgrade reduced agent success on realistic work — and that the only detection mechanism is testing the procedures you actually run.</p>
+
+        <p>The teams that internalize this will build eval sets this quarter and treat upgrades as release events. The teams that don't will keep swapping checkpoints on faith, and their agents will keep quietly getting worse at the work nobody is measuring — until a customer, or an auditor, runs the procedure-level test for them.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
