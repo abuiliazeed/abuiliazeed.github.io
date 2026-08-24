@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Terminal Ate the IDE — Abuiliazeed</title>
+  <meta name="description" content="JetBrains surveyed 15,000 developers: terminal-based agents now dominate, with Claude Code at 39% adoption — twice GitHub Copilot — while IDE-native Cursor fell from 18% to 12%. The terminal ate the IDE, and the harness won.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-terminal-ate-the-ide.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-terminal-ate-the-ide.html">
+  <meta property="og:title" content="The Terminal Ate the IDE">
+  <meta property="og:description" content="JetBrains surveyed 15,000 developers: terminal-based agents now dominate, with Claude Code at 39% adoption — twice GitHub Copilot — while IDE-native Cursor fell from 18% to 12%. The terminal ate the IDE, and the harness won.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Terminal Ate the IDE">
+  <meta name="twitter:description" content="JetBrains surveyed 15,000 developers: terminal-based agents now dominate, with Claude Code at 39% adoption — twice GitHub Copilot — while IDE-native Cursor fell from 18% to 12%. The terminal ate the IDE, and the harness won.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-08-24">August 24, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Terminal Ate the IDE</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Ninety percent of professional developers now use an AI coding agent at work at least once a week. Sixty-eight percent use one daily. Those numbers didn't come from a model vendor's keynote or a startup's landing page. They came from JetBrains — a company whose entire business is the IDE — publishing a survey of more than 15,000 professional developers in August 2026.</p>
+
+        <p>When an IDE vendor's own research shows that the terminal is where developers actually live now, you should pay attention. Because buried in the same report is a more uncomfortable number for anyone who bet on the IDE as the center of AI-assisted development: Claude Code, a terminal application with no GUI, no autocomplete dropdown, and no inline diff view by default, is now used at work by 39% of professional developers worldwide — twice the adoption of GitHub Copilot, the tool that invented this category. Meanwhile Cursor, the IDE that was supposed to win the AI era, declined from 18% adoption in January to 12% in May–July.</p>
+
+        <p>Most people read this as "Claude Code is winning." That's the wrong lesson. The right one: the terminal beat the IDE because the harness beat the suggestion. And that reorders the entire agent tooling stack.</p>
+
+        <h2>What the Survey Actually Says</h2>
+
+        <p>The JetBrains Developer Ecosystem Survey 2026 is in its tenth year — a large-scale, globally representative study, reweighted by region, employment status, and language, localized into eight languages. It's about as close to ground truth as developer tooling data gets. The May–July 2026 wave shows:</p>
+
+        <ul>
+          <li><strong>90% of professional developers</strong> use AI coding agents at work at least weekly; <strong>68% use them daily</strong>.</li>
+          <li><strong>Claude Code: 39% work adoption</strong> globally, up from 18% in January 2026 — a doubling in six months. In the United States, it's 47%.</li>
+          <li><strong>OpenAI Codex: 16% adoption</strong>, up 5x from 3% in January, with awareness jumping from 27% to 65%.</li>
+          <li><strong>GitHub Copilot: 21% adoption, down from 29% a year ago.</strong> Still 79% mindshare — the most recognized tool on the market — but no longer the most used.</li>
+          <li><strong>Cursor: 12% adoption, down from 18%</strong> in January — even as its mindshare <em>rose</em> from 69% to 75%.</li>
+          <li><strong>OpenCode: 7% adoption and 42% mindshare</strong> — an open-source agent with no major company behind it.</li>
+          <li><strong>Google Antigravity: 6% adoption</strong>, stable, while awareness nearly doubled from 29% to 47%.</li>
+        </ul>
+
+        <p>Look at the pattern. The two tools growing fastest — Claude Code and Codex — are terminal-first agents. The two tools declining — Copilot and Cursor — are IDE-native experiences built around inline suggestion and chat panels. That's not a coincidence, and it's not branding. It's architecture.</p>
+
+        <h2>Why the Terminal Won</h2>
+
+        <p>The consensus in 2024 was that AI coding would be won at the IDE layer. The argument was seductive: the IDE has the context — the open files, the project index, the language server. Whoever owns the editor owns the workflow. Cursor raised capital on that thesis and briefly looked like the future of the category.</p>
+
+        <p>But agents don't need an editor. They never did.</p>
+
+        <p>An agent needs an execution environment: a shell, a filesystem, the ability to run tests, read logs, install dependencies, and iterate until the task is done. The IDE's core assets — syntax highlighting, autocomplete, a diff pane — are interfaces for <em>humans watching code</em>. They're presentation. An autonomous agent that edits twenty files, runs the test suite, reads the failure output, and fixes the build doesn't benefit from any of it. What it benefits from is a harness: the loop that connects the model to tools, sandboxing, context management, and verification.</p>
+
+        <p>The terminal is the thinnest possible skin over that loop. Claude Code's doubling from 18% to 39% in six months isn't a triumph of terminal UX — nobody loves terminal UX. It's what happens when the unit of work shifts from "assisting a human who types" to "delegating a task an agent completes." The second workflow doesn't need a canvas. It needs a contract.</p>
+
+        <p>This is also why Copilot's decline looks structural rather than cyclical. Copilot's product surface — ghost-text completion and a chat sidebar — is a feature of the old workflow. Twenty-nine to 21 percent in a year, while overall agent usage climbed to 90% weekly, means Copilot didn't lose to a better autocomplete. The category it led stopped being the category developers were buying.</p>
+
+        <h2>The Number Nobody Is Talking About: 80% Conversion</h2>
+
+        <p>The most revealing statistic in the entire survey isn't the adoption headline. It's this: Claude Code is the <em>single most used</em> AI coding tool for 31% of developers — which, against 39% regular usage, is roughly an 80% conversion rate from "trying it" to "it's my primary tool."</p>
+
+        <p>Compare that to the awareness-versus-adoption gaps everywhere else in the data. Cursor has 75% mindshare and shrinking usage. Antigravity nearly doubled awareness to 47% while its adoption held flat at 6%. Copilot retains 86–90% awareness in Europe and the US while bleeding users. These are tools people know about and drift away from. Claude Code is a tool people adopt and then reorganize their workflow around.</p>
+
+        <p>That's what harness lock-in looks like from the outside. Once a developer's muscle memory, project conventions, and CLAUDE.md-style context files live inside a harness, switching costs stop being about the model and start being about the workflow. The survey is measuring the early formation of that stickiness at population scale — 80% primary-tool conversion is a number most consumer software never sees.</p>
+
+        <p>The contrarian read of the Copilot number holds here too: 39% of Copilot users run it inside JetBrains IDEs, among other surfaces. The tool that was supposed to make the IDE the AI platform is now effectively a plugin across whatever environment the developer actually inhabits. The IDE hosts the assistant; the assistant no longer needs the host.</p>
+
+        <h2>The IDE Vendor Surrenders to the Agent</h2>
+
+        <p>Here's the part of the JetBrains report that reads like a strategy document written under duress. JetBrains AI — their first-party assistant and the Junie agent — sits at around 9% adoption. Facing Claude Code at 39% and Codex at 16%, JetBrains' response wasn't to push Junie harder. It was to <em>integrate the winners</em>: Claude, Codex, Copilot, and OpenCode now run directly inside JetBrains IDEs, with dozens more agents connectable via the Agent Client Protocol.</p>
+
+        <p>Think about what that means. The IDE has stopped competing for the agent layer and started competing to be the <em>viewing surface</em> for agents that live elsewhere. JetBrains is marketing Air, its agentic development environment currently in preview, as a place to "combine multiple coding agents in one coherent workflow," and JetBrains Central as "a unified control and execution plane for managing agent-driven development across tools."</p>
+
+        <p>A control plane. The IDE vendor now describes its future in the vocabulary of orchestration — planes, coordination, management across tools. That's not an IDE roadmap. That's a harness roadmap. When the company with the most to lose from the terminal's rise adopts the architecture of the terminal's rise, the debate is over.</p>
+
+        <h2>OpenCode Is the Tell</h2>
+
+        <p>One more data point deserves its own paragraph: OpenCode — open-source, no big company, no marketing budget — has 7% adoption and 42% mindshare. More developers have heard of it than use Antigravity, which is backed by Google.</p>
+
+        <p>This is consistent with something this blog has tracked all year: the harness is becoming commodity infrastructure. When the execution loop standardizes, distribution shifts from "who owns the editor" to "who owns the context and the trust" — repository access, credential handling, policy, the accumulated project knowledge that makes an agent useful in <em>your</em> codebase. The terminal agents aren't winning because terminals are better. They're winning because they were forced to solve the hard problems — sandboxing, long-running execution, resumable state — that suggestion UIs never had to touch.</p>
+
+        <h2>What This Means for Your Stack</h2>
+
+        <p>If you're a team making tooling decisions, the survey implies three things:</p>
+
+        <p><strong>Your editor choice no longer determines your agent.</strong> The agent layer has decoupled from the IDE layer. Pick agents on harness quality — execution model, sandboxing, context management, sub-agent architecture — not on which editor they ship inside. The IDE is becoming a viewport, and viewports are replaceable.</p>
+
+        <p><strong>The durable asset is the context, not the client.</strong> With an 80% conversion rate to primary-tool status, the harness you standardize on will absorb your team's workflow conventions. Invest in the artifacts that survive a client switch — context files, skills, eval suites that test your agents against your codebase — rather than in bespoke IDE configurations nobody can port.</p>
+
+        <p><strong>Autonomy is the product; assistance is the legacy tier.</strong> Daily usage at 68% means agents aren't an experiment anymore. The workflows that still center a human typing while a model completes their line are the ones shrinking. This is the core argument of <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em> — design for delegation first, and the tooling choices make themselves.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <ol>
+          <li><strong>Audit where your team's agent time actually goes.</strong> Not which tools are installed — which tools complete tasks. If most agent usage is still inline completion, your workflow is a year behind where the developer population already is.</li>
+          <li><strong>Pick two agents, not one.</strong> Claude Code at 39% and Codex at 16% with 5x growth means both will be in your org whether you sanction them or not. Define sandboxing, spend limits, and review policy for at least two harnesses now, before usage forces improvised policy.</li>
+          <li><strong>Move your project knowledge into agent-readable form.</strong> Context files, skills, and machine-readable conventions work across harnesses. IDE snippets and workspace settings don't. That asymmetry compounds every week.</li>
+          <li><strong>Stop evaluating IDEs on AI features.</strong> Evaluate them on how well they let you observe what your agents are doing. The survey says the IDE's future is a monitoring surface for work that happens in the loop. Buy accordingly.</li>
+        </ol>
+
+        <h2>The Inflection</h2>
+
+        <p>There's a version of this story where the IDE absorbs AI and everything continues as before. That was the 2024 story, and the 2026 data killed it. An IDE vendor's own survey now shows the fastest-growing tools in the category are the ones with the least IDE in them, and the IDE vendor's own strategy is to become the control plane for agents it doesn't make.</p>
+
+        <p>The terminal ate the IDE because the terminal was never really the point. The point was the loop — model, tools, execution, verification — and everything that doesn't serve the loop turned out to be decoration. Ninety percent of developers now work inside that loop every week. The remaining question isn't whether the harness wins. It's who owns yours.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
