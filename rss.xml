@@ -5,8 +5,22 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Mon, 24 Aug 2026 09:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 26 Aug 2026 09:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Same Model, Three Harnesses, 31 Points</title>
+      <link>https://abuiliazeed.github.io/blog/same-model-three-harnesses-31-points.html</link>
+      <guid>https://abuiliazeed.github.io/blog/same-model-three-harnesses-31-points.html</guid>
+      <description>Perplexity ran one Qwen 3.8 27B through three harnesses on the same 53-task benchmark: 82.6%, 77.6%, 74.0%. Frontier harnesses are premium fuel for small engines — and the harness just became model-specific hardware.</description>
+      <pubDate>Wed, 26 Aug 2026 09:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>The Screen Went Open-Weight</title>
+      <link>https://abuiliazeed.github.io/blog/the-screen-went-open-weight.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-screen-went-open-weight.html</guid>
+      <description>Tencent's UI-Mate-27B — 27B parameters, Apache 2.0, ungated — scores 77.0 on OSWorld-Verified, beating a trillion-parameter Kimi-2.6. Computer use stopped being a frontier-lab capability this month. The bottleneck is now the harness, and screenshots are the ultimate legacy-API adapter.</description>
+      <pubDate>Tue, 25 Aug 2026 09:00:00 GMT</pubDate>
+    </item>
     <item>
       <title>The Terminal Ate the IDE</title>
       <link>https://abuiliazeed.github.io/blog/the-terminal-ate-the-ide.html</link>

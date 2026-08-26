@@ -95,6 +95,25 @@ async function loadRepos() {
   }
 }
 
+// Blog — render latest posts on the homepage from blog.html
+const BLOG_GRID = document.getElementById('blogGrid');
+const BLOG_POSTS_ON_HOMEPAGE = 5;
+
+async function loadBlog() {
+  if (!BLOG_GRID) return;
+  try {
+    const res = await fetch('blog.html');
+    if (!res.ok) throw new Error('Failed to fetch blog.html');
+    const doc = new DOMParser().parseFromString(await res.text(), 'text/html');
+    const cards = Array.from(doc.querySelectorAll('.blog-card')).slice(0, BLOG_POSTS_ON_HOMEPAGE);
+    if (cards.length === 0) return; // keep static fallback
+    BLOG_GRID.innerHTML = '';
+    cards.forEach(card => BLOG_GRID.appendChild(document.adoptNode(card)));
+  } catch (e) {
+    // fetch failed (offline, file://) — keep static fallback cards
+  }
+}
+
 // Navbar scroll effect
 const NAVBAR = document.getElementById('navbar');
 window.addEventListener('scroll', () => {
@@ -108,3 +127,4 @@ SCROLL_INDICATOR.addEventListener('click', () => {
 
 // Init
 loadRepos();
+loadBlog();
