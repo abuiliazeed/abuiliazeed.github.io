@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Same Model, Three Harnesses, 31 Points — Abuiliazeed</title>
+  <meta name="description" content="Perplexity ran the same Qwen 3.8 27B through three harnesses and got 82.6%, 77.6%, and 74.0%. Frontier harnesses are built for frontier models — and they actively hurt small local ones. The harness is now model-specific hardware.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/same-model-three-harnesses-31-points.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/same-model-three-harnesses-31-points.html">
+  <meta property="og:title" content="Same Model, Three Harnesses, 31 Points">
+  <meta property="og:description" content="Perplexity ran the same Qwen 3.8 27B through three harnesses and got 82.6%, 77.6%, and 74.0%. Frontier harnesses are built for frontier models — and they actively hurt small local ones. The harness is now model-specific hardware.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Same Model, Three Harnesses, 31 Points">
+  <meta name="twitter:description" content="Perplexity ran the same Qwen 3.8 27B through three harnesses and got 82.6%, 77.6%, and 74.0%. Frontier harnesses are built for frontier models — and they actively hurt small ones. The harness is now model-specific hardware.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-08-26">August 26, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">Same Model, Three Harnesses, 31 Points</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Same model. Same benchmark. Same hardware. Three harnesses. Three scores: 82.6%, 77.6%, 74.0%.</p>
+
+        <p>On August 25, Perplexity launched Portable Computer — its agentic knowledge-work platform rebuilt to run entirely on hardware you own, starting with Nvidia's DGX Spark desktop and any RTX GPU with 24GB of VRAM. The product is interesting. The research paper the company published alongside it is more interesting, because it contains the cleanest controlled comparison of harness performance anyone has shipped with a commercial launch: one Qwen 3.8 27B, run through Perplexity's own minimal harness, the open-source Pi harness, and Hermes, on an identical 53-task knowledge-work benchmark. Perplexity's harness won by 5.0 points over Pi and 8.6 over Hermes on the headline set — and by 22.8 points over Hermes on BrowseComp, and 30.5 points on multimodal document understanding, where Hermes scored 34.6% against Pi's 13.9%.</p>
+
+        <p>Most people think a model's benchmark score is a property of the model. The increasingly undeniable reality is that it's a property of the <em>system</em> — and for small local models, the harness you wrapped around the weights can swing results by more than the gap between competing frontier models. The difference between GPT-5.6 Sol and Claude Opus 4.8 on most agentic benchmarks is single digits. The difference between a frontier-grade harness and a minimal one, applied to the same 27B model, is up to 31 points.</p>
+
+        <p>That inversion is the story. Not "local agents finally work." The story is <strong>why</strong> they work — and what that says about every harness decision you're currently making.</p>
+
+        <h2>What Actually Shipped</h2>
+
+        <p>Portable Computer packages the whole local-agent stack into one system: a model, the agent harness, the vLLM inference engine underneath, tools, app connectors to Google Drive, Gmail, and GitHub, and an OS-level security sandbox. That bundling is the point. The standard local-AI experience in 2026 is assembly work — download weights, stand up an inference server, wire in tools, tune performance, and debug the seams between all four. Perplexity collapsed it into an appliance, and in demos on Monday the credit meter that normally ticks upward on every agent step <em>stayed parked at zero</em> while the system churned through a folder of 1099s and brokerage statements flagging unnecessary fees.</p>
+
+        <p>The launch configs are Qwen 3.8 27B or PPLX 27B — a variant Perplexity post-trained on its own harness — with Nvidia's Nemotron 3.5 Lightning coming soon. Every task starts on the device by default. When the local model hits its limits, the system asks permission before escalating a single step to a frontier model in the cloud.</p>
+
+        <p>The requirements are the honest constraint: Linux-only at launch (Windows in September), and a 24GB VRAM floor — roughly a GeForce RTX 3090 or better, or the DGX Spark. Apple silicon, home to the most enthusiastic local-inference community on the planet, is conspicuously absent. "We're very focused right now on Nvidia hardware," was the answer when asked. So this is not yet the everyone-device. It is, however, the first mass-market agent product designed around the premise that <em>local is the default and cloud is the escalation</em> — which is architecturally backwards from every agent stack shipped in the last two years, and the same inversion I argued for here two weeks ago. It's now shipping, with benchmarks.</p>
+
+        <h2>The Finding That Matters: Harnesses Don't Transfer</h2>
+
+        <p>Buried past the product messaging is the research claim that should reorganize how you think about harness engineering. Perplexity's paper argues that effective local agents require the model and the harness to be <strong>designed together</strong>, because general-purpose harnesses implicitly assume a frontier model — one that can absorb enormous contexts, navigate sprawling tool surfaces, and plan over long horizons. Small models buckle under those assumptions.</p>
+
+        <p>The empirics are specific. Qwen 3.8 27B advertises a 260,000-token context window, but Perplexity found it begins to struggle beyond 100,000 tokens. A general-purpose harness that stuffs context — accumulating transcript, bloated system prompts, every tool schema loaded permanently — pushes a small model past its effective range while a frontier model shrugs it off. So Perplexity built the opposite of a maximal harness: a succinct system prompt, a small core tool set, and capabilities that load and unload on demand as "skills" rather than sitting in context. It converted token-hungry MCP servers for Gmail and GitHub into compact command-line tools. It added self-verification hooks that monitor task health mid-run.</p>
+
+        <p>One design decision deserves separate mention because it inverts industry default behavior: if the OS-level sandbox is unavailable, the harness <em>disables itself</em> rather than running tools unprotected. Most open-source harnesses execute commands with the user's full permissions from the moment they start. Perplexity treated unsandboxed execution as a failure state, not an acceptable fallback.</p>
+
+        <p>The scores, on their internal 53-task Local Knowledge Work Bench (which the company says it plans to open-source): Computer with stock Qwen 3.8 27B at 82.6%, Pi at 77.6%, Hermes at 74.0%. Post-trained PPLX 27B pushes it to 85.4%. On BrowseComp: 66.7% versus 50.2% for Pi and 43.9% for Hermes — with 51% less wall time and 70% fewer tokens than Pi. On multimodal document understanding: 65.1% versus 34.6% and 13.9%. All vendor-reported, all on their own benchmark, so calibrate accordingly. But the pattern matches what every controlled harness comparison has found this year: same model, different scaffolding, double-digit swings.</p>
+
+        <h2>Frontier Harnesses Are Premium Fuel for Small Engines</h2>
+
+        <p>Here is the contrarian read, and I think it's the durable one: <strong>the frontier harness is now a liability outside the frontier.</strong></p>
+
+        <p>Every major harness — Claude Code, Codex CLI, the maximal configurations of the open-source agents — was tuned against models with effectively infinite context budgets, robust instruction-following under prompt bloat, and the ability to recover from a forty-tool surface. Those are frontier properties. Run the same scaffolding around a 27B model and every one of those assumptions becomes a tax: the bloated prompt eats the effective context window, the sprawling tool surface dilutes the model's attention, the long-horizon planning assumptions outstrip what the model can hold.</p>
+
+        <p>The right mental model is fuel. You would not put jet fuel in a lawnmower engine and expect better performance; you'd expect it to stop running. Frontier harnesses are premium fuel. Small models are small engines. The compatibility problem is real, it's measurable — 31 points real — and it cuts in a direction nobody planned for: <strong>as models fragment across sizes and deployment targets, harnesses fragment with them.</strong> There will not be one harness that runs everywhere any more than there is one vehicle that runs on every fuel.</p>
+
+        <p>This explains something that pure model-quality metrics never did: why "I ran the open-weight model in my Claude Code config and it was mediocre" experiences are so common, and why they say nothing about the model. The harness was premium fuel. The engine wasn't built for it.</p>
+
+        <h2>The Escalation Economics</h2>
+
+        <p>The most commercially interesting number in the entire release isn't on the local benchmark at all. It's on Terminal Bench 2.1, a hard coding benchmark, where Perplexity measured three configurations:</p>
+
+        <ul>
+          <li><strong>Fully local</strong> — Qwen 3.8 27B on the device: 59.6%, at essentially zero marginal cost.</li>
+          <li><strong>Local with escalation</strong> — the local model, escalating to a Claude Opus 5 "advisor" in the cloud when it hits its limits: 73.0%, at an estimated $0.415 per task.</li>
+          <li><strong>Frontier alone</strong> — Opus 5 running the whole task: 82.4%, at $0.65 per task.</li>
+        </ul>
+
+        <p>Do the arithmetic. Escalation recovered 13.4 points of the 22.8-point gap to frontier-only performance — call it three-fifths of the gap — for about two-thirds of the cost. And the user decides when that trade is worth making, task by task.</p>
+
+        <p>The escalation path is also engineered with more paranoia than most cloud-agent architectures bother with. Before any advisor call, the harness runs a PII classifier over the outgoing context and shows the user exactly what would leave the device. The remote model returns text guidance only. It never touches local files or tools. That's the correct shape for a privacy-preserving hybrid: the frontier model as consultable oracle, not as acting agent — which, notably, is the opposite of how most "hybrid" agent products wire it, with the cloud model holding the steering wheel and local execution as the optimization.</p>
+
+        <p>Put this against the pricing environment of the last two weeks — DeepSeek moving to peak/off-peak rates with output jumping to $3.96 per million tokens at peak, cache-hit prices rising 6x to 12x on exactly the token type agents consume most. For always-on workloads, an architecture where the meter reads zero by default and you pay $0.415 only on the tasks that genuinely need frontier reasoning isn't an optimization. It's a different cost structure, and it's available now on hardware thousands of developers already own.</p>
+
+        <h2>The Caveats, Honestly Stated</h2>
+
+        <p>Perplexity's most impressive numbers come from its own internal benchmark, run by the party with the most to gain. The company itself acknowledges that compact models still trail the frontier meaningfully on hard reasoning, and that advisor escalation "narrows but does not fully close the gap" — the honest phrasing, and one worth remembering every time a vendor shows you a hybrid graph. There is no independent replication yet. Treat the numbers as a reason to test, not a reason to conclude.</p>
+
+        <p>The hardware floor is real. 24GB of VRAM excludes the vast majority of consumer PCs, and Linux-only at launch excludes most of the rest. This is an early-adopter product with an enterprise privacy pitch — the demo is literally a retail investor who won't upload tax documents to a cloud service — not a mass-market unlock.</p>
+
+        <p>And post-training is doing quiet work in the headline numbers. PPLX 27B — Qwen 3.8 27B post-trained on Perplexity's harness — scores 85.4% where the stock model scores 82.6%. That's the co-design thesis in miniature: the same weights, tuned against the harness they run in, gain points on top of the harness's own contribution. Model and harness are no longer independently swappable variables even when you control the model.</p>
+
+        <h2>What This Means for Your Stack</h2>
+
+        <p><strong>Stop evaluating models without specifying the harness, and stop evaluating harnesses without specifying the model.</strong> The unit of benchmarking is the system. When your team runs a bake-off between models, pin the harness — and report which one, because "Qwen 3.8 27B scored 74" and "Qwen 3.8 27B scored 86" are both true statements about the same weights in different scaffolding. Any model-evaluation process that doesn't record harness configuration is producing numbers with error bars bigger than the differences it's measuring.</p>
+
+        <p><strong>Match harness weight to model size, deliberately.</strong> If you're running models below roughly 60B parameters — which now includes models that beat last year's flagships on coding — your harness budget should be a first-class design constraint. Small system prompt. Minimal resident tool set. Skills that load on demand instead of permanent MCP servers. Context trimming as a discipline, because the effective window is roughly 40% of the advertised one. These aren't compromises. For small models they're the difference between a capable agent and a disappointing one.</p>
+
+        <p><strong>Design your escalation triggers like you design your permissions.</strong> The three-number Terminal Bench result is the template: local by default, a defined escalation condition, a frontier advisor that advises rather than acts, and a cost gate the user controls. Escalation triggers — task complexity, context length, failed verification — are now as consequential a part of your architecture as tool permissions, and deserve the same explicit review.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p><strong>Run your own three-harness test.</strong> Take whichever local model you have — Qwen 3.8 27B, Muse Glimmer, whatever fits your memory — and run ten real tasks from your backlog through at least two different harnesses, one maximal and one minimal. Same model, same tasks. The spread you observe will be the most persuasive harness-engineering argument available, because you produced it yourself, on your workload, this week.</p>
+
+        <p><strong>Measure your effective context window.</strong> If you run local models with harnesses built for frontier budgets, pull your last few agent transcripts and check actual token counts at failure points. Perplexity's finding — degradation well before the advertised window — will very likely reproduce in your logs, and it converts "context management" from an abstraction into a number with your project's name on it.</p>
+
+        <p><strong>Price your escalation path.</strong> Take a month of API spend and bucket it by task. Estimate what fraction needed frontier reasoning versus what merely got routed there by default. Multiply the second bucket by the local-plus-advisor cost structure — $0.415 per escalated task is the reference point. That single calculation is the business case for hybrid local-first architecture, and no vendor needs to bless it.</p>
+
+        <h2>The Bigger Picture</h2>
+
+        <p>Two years of agent discourse assumed a single global hierarchy: frontier models at the top, everything else beneath, one harness spanning all of them. That world is ending from both directions at once. Open weights collapsed the capability gap from above — a 16GB download now beats last cycle's flagships. And harness engineering is fragmenting the stack from below, because the scaffolding that maximizes a frontier model measurably degrades a small one.</p>
+
+        <p>The result is not one agent stack. It's a portfolio: minimal harnesses tuned to local models for the always-on tier, frontier harnesses for the hardest reasoning, and routing between them with explicit escalation economics. The engineering that matters — the part that isn't a commodity, the part no model vendor ships you — is exactly the layer that decides which fuel goes in which engine, and when to pay for the expensive tank. That's the premise <em>Harness Engineering</em> argued from first principles. This week it shipped as a product, with a benchmark table attached.</p>
+
+        <p>The model is no longer the variable. It never really was.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
