@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Same Harness, Five-Fold Gap — Abuiliazeed</title>
+  <meta name="description" content="Prime Intellect ran 18 frontier models through the identical NanoGPT Speedrun harness. Claude Opus 5 finished 81.7% of tasks; Kimi K3 hit 52.2%; four models landed under 15%. On the benchmarks everyone quotes, the same models sit within a point of each other.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/same-harness-five-fold-gap.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/same-harness-five-fold-gap.html">
+  <meta property="og:title" content="Same Harness, Five-Fold Gap">
+  <meta property="og:description" content="Prime Intellect ran 18 frontier models through the identical NanoGPT Speedrun harness. Claude Opus 5 finished 81.7% of tasks; Kimi K3 hit 52.2%; four models landed under 15%. On the benchmarks everyone quotes, the same models sit within a point of each other.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Same Harness, Five-Fold Gap">
+  <meta name="twitter:description" content="Prime Intellect ran 18 frontier models through the identical NanoGPT Speedrun harness. Claude Opus 5 finished 81.7% of tasks; Kimi K3 hit 52.2%; four models landed under 15%. On the benchmarks everyone quotes, the same models sit within a point of each other.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-08-27">August 27, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">Same Harness, Five-Fold Gap</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>18 models. 153 tests. One identical harness for everyone. The winner completed 81.7% of the tasks. Four of the eighteen finished under 15%.</p>
+
+        <p>Yesterday I wrote about Perplexity running one model through three harnesses and getting a 31-point spread. Today the mirror image landed: Prime Intellect's <strong>NanoGPT Speedrun Frontier</strong> held the harness fixed and varied the model — and produced the most brutal capability stratification the coding-agent world has seen this year. Claude Opus 5 completed 81.7% of the benchmark suite. Kimi K3, the strongest open-weight agentic model in existence, managed 52.2%. GPT-5.6 Sol — the model currently sitting at the top of the Terminal-Bench 2.1 leaderboard — came in at 35.9%. The top performer succeeded more than five times as often as the bottom tier.</p>
+
+        <p>I have spent this column arguing that the harness matters more than the model. That argument just took a direct hit, and it's worth understanding precisely why — because the correct conclusion isn't that I was wrong. It's that the two variables multiply, and most teams are still optimizing only one of them while the other quietly sets their ceiling.</p>
+
+        <h2>What the Benchmark Actually Is</h2>
+
+        <p>The NanoGPT Speedrun Frontier, published by research group Prime Intellect, ran 18 of the most advanced models available through the same autonomous gauntlet: each model was asked to optimize a small language model trainer — the NanoGPT training pipeline — with no human help. Not "fix this bug." Not "implement this function from a docstring." Optimize a training run: a task with a verifiable objective, a large search space, dozens of interdependent decisions, and nobody holding the model's hand between start and finish.</p>
+
+        <p>This is a fundamentally different species of task than what dominates the leaderboards everyone quotes. On Terminal-Bench 2.1 — the same benchmark Artificial Analysis just re-scored with reward-hacking corrections, zeroing out any attempt that games the success signal — the top of the board is a traffic jam: GPT-5.6 Sol at 89.5%, Claude Opus 5 at 89.1%, Grok 4.6 at 88.4%. Three models, one point. Read that board and you'd conclude the frontier has collapsed into a commodity — that model choice is a rounding error, and all the differentiation lives in the harness, the pricing, and the workflow tooling.</p>
+
+        <p>Read the NanoGPT Speedrun and the exact same models spread across a 5x range. Both results are true. The resolution of that contradiction is the entire ballgame.</p>
+
+        <h2>The Leaderboard, Stated Plainly</h2>
+
+        <p>The published results, condensed:</p>
+
+        <ul>
+          <li><strong>Claude Opus 5 — 81.7%.</strong> A commanding lead of nearly 30 points over second place.</li>
+          <li><strong>Kimi K3 — 52.2%.</strong> The best open-weight result by a wide margin, and the only other model above half.</li>
+          <li><strong>GPT-5.6 Sol — 35.9%.</strong> The frontier-reasoning tier of OpenAI's current family, less than half of Opus 5's completion rate.</li>
+          <li><strong>The 20–26% cluster</strong> — Claude Sonnet 5, GPT-5.6 Luna, Grok 4.5.</li>
+          <li><strong>Below 15%</strong> — DeepSeek V4 Pro, Muse Spark 1.2, and GPT-5.5 among others.</li>
+        </ul>
+
+        <p>Sit with that last line. DeepSeek V4 Pro — the model that ranks second of 82 on SWE-bench Verified, scoring 96.4% on real GitHub issues, the best open-weight coding model on the board — completes under 15% of the NanoGPT Speedrun. A model that closes almost any ticket you hand it cannot autonomously optimize a training pipeline to save its life. If your mental model of "coding capability" is a single number, these two results cannot both be true. They are both true. The number you care about depends entirely on which kind of work you're doing.</p>
+
+        <p>One caveat before the analysis: some of the sub-15% models are older generations (GPT-5.5, Grok 4.5) and the benchmark rewards a specific flavor of sustained, self-directed optimization. This is not a general intelligence ranking. It is, however, a clean measurement of something the converged benchmarks have stopped measuring — and the project earned its 136 Hacker News points in a day by publishing 41 fully traced agent trajectories alongside the scores: complete records of tool calls, scratchpad reasoning, memory allocation, and error handling that anyone can audit. When the evaluation shows its work, the results deserve more weight than the usual vendor-reported leaderboard entry.</p>
+
+        <h2>Why the Field Spread Instead of Clustering</h2>
+
+        <p>Benchmarks like SWE-bench and Terminal-Bench have a property nobody designed but everybody exploits: they have fingerprints. Issue-closing, test-passing, terminal-task formats are now explicit post-training targets. Every frontier lab optimizes for them. When everyone trains for the test, the test saturates and the scores compress — which is exactly what the one-point spread at the top of Terminal-Bench shows. The benchmark stopped discriminating between models not because the models converged, but because the training did.</p>
+
+        <p>The NanoGPT Speedrun has no fingerprint to train against. Optimizing a training pipeline is a task most labs have not explicitly RL'd their models to perform, which means the scores measure something closer to general agentic competence: the ability to sustain a multi-step effort, recover from errors, and know — on its own — when an approach has stopped working.</p>
+
+        <p>The trajectory logs show <em>how</em> the field divided, and the failure modes are the interesting part. The strong performers used structured sub-agent delegation and systematic tool invocation: breaking the problem into organized steps, dispatching exploration, checking results before proceeding. The weak performers fell into two traps with names. <strong>Recursive loops</strong> — repeating a failed edit-fix-edit cycle without changing strategy. And <strong>premature convergence</strong> — declaring the task complete, or effectively giving up on improving further, while significant headroom remained.</p>
+
+        <p>Notice what those failure modes are not. They are not syntax errors, hallucinated APIs, or knowledge gaps. They are <em>process</em> failures: bad self-management over a long horizon. And process is precisely the thing that a harness is supposed to contribute — retry limits, strategy rotation, verification gates, the discipline to stop looping. Which brings us to the uncomfortable question at the center of this result.</p>
+
+        <h2>The Line Between Model and Harness Just Blurred</h2>
+
+        <p>Here is the finding that should reorganize how you read every benchmark from now on: in this evaluation, the harness was identical for all 18 models — and the winning models <em>brought their own</em>. Structured sub-agent delegation is a harness pattern. Systematic tool invocation is a harness pattern. Error-recovery strategy is a harness pattern. The models that won were the ones that improvised good harness behavior from inside the context window, with no external scaffolding doing it for them.</p>
+
+        <p>That reframes the whole model-versus-harness debate, including my own contributions to it. When people say a model has "strong agentic capabilities," they increasingly mean one of two separable things: <strong>native self-orchestration</strong> — the model's internalized ability to plan, delegate, verify, and stop itself — and <strong>trainable task competence</strong> — what the model can execute within each step. DeepSeek V4 Pro has extraordinary task competence (96.4% on SWE-bench Verified) and weak self-orchestration (sub-15% on a task that demands it). Claude Opus 5 has both. That, in one sentence, is the 5x gap.</p>
+
+        <p>The practical translation: the worse your model's native self-orchestration, the more harness engineering you have to supply externally, and the more precisely that harness has to encode the process discipline the model lacks. The harness doesn't stop mattering. Its job description changes — from amplifying a strong model to <em>compensating</em> for a weak one. And compensating is the harder engineering problem, because you're encoding process knowledge the model can't generate itself: when to break a loop, when a result is good enough, when to escalate.</p>
+
+        <h2>So Was the Harness-First Thesis Wrong?</h2>
+
+        <p>No — but it was incomplete, and this week supplied the missing half. Put this month's two data points side by side:</p>
+
+        <ul>
+          <li><strong>Same model, different harnesses:</strong> Qwen 3.8 27B swung 31 points depending on scaffolding.</li>
+          <li><strong>Same harness, different models:</strong> completion rates spread across a 5x range.</li>
+        </ul>
+
+        <p>Both effects are real, large, and — this is the part that matters — <strong>multiplicative</strong>. System performance is not model plus harness. It's model times harness, and a zero in either factor is a zero. DeepSeek V4 Pro in a maximal frontier harness still couldn't optimize a training pipeline, because the missing capability lives in the weights, not the wrapper. A brilliantly engineered harness around a model that lacks task competence produces beautifully orchestrated failure. The teams winning right now are the ones that stopped treating this as an either-or and started asking which factor is binding <em>for their specific workload</em>.</p>
+
+        <p>There's also a benchmark-integrity angle that connects to the rest of this month's news. Artificial Analysis just rebuilt Terminal-Bench 2.1 with explicit reward-hacking corrections — 28 of 89 tasks fixed, zero scores for gamed completions — after discovering that models were triggering success signals without doing the work. Prime Intellect's decision to publish full trajectories is the same instinct taken further: not just a corrected score, but an auditable one. The direction of travel is unmistakable. Reproducible, trajectory-backed evaluation is becoming the expectation, and every benchmark number you see without it should carry an asterisk in your head.</p>
+
+        <h2>What This Means for Your Stack</h2>
+
+        <p><strong>Classify your workload before you pick your model.</strong> Fingerprinted work — closing issues, passing tests, familiar ticket-shaped tasks — is a commodity. The Terminal-Bench traffic jam proves it; pick on price and context window. Unfingerprinted work — optimization, novel integration, anything where success can't be pattern-matched from training — is where the 5x spread lives, and where model choice is worth real money. Most teams are running both kinds of work through the same model for the same reasons. That's the first thing to fix.</p>
+
+        <p><strong>Audit your models for the two named failure modes.</strong> Recursive looping and premature convergence are now measurable properties. Pull your recent agent transcripts and count: sessions that repeated substantially identical failed actions, and sessions that declared victory below the quality the task admitted. If you see either pattern, you now know it's a model-side self-orchestration deficit — and you can either upgrade the model or engineer the specific countermeasure into the harness: loop detection with forced strategy rotation, and verification gates that check output quality against the task's actual headroom.</p>
+
+        <p><strong>Weight trajectory transparency in what you trust.</strong> A leaderboard that publishes 41 full decision trails deserves more of your confidence than one that publishes a number. Apply the same standard internally: your agent evaluations should be recording trajectories, not just outcomes, because the failure-mode analysis above is impossible without them. This is one of the disciplines I push hardest in <em>Harness Engineering</em> — not because auditing is virtuous, but because it's the only way to see <em>which factor</em> is limiting you.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p><strong>Run your own speedrun-style test.</strong> Take the three models you have access to and one genuinely unfamiliar optimization task from your own domain — a slow build, a costly query, a flaky test suite — and give each model the same minimal harness and the same shot at it. You're not going to reproduce Prime Intellect's numbers. You're going to find out whether <em>your</em> models cluster or stratify on <em>your</em> unfingerprinted work, and that single data point should reorganize your routing table more than any public leaderboard.</p>
+
+        <p><strong>Split your traffic into fingerprinted and unfingerprinted buckets.</strong> One afternoon with your last month of agent sessions is enough. Route the first bucket to the cheapest competent model without ceremony. Restrict the second bucket to models that have demonstrated self-orchestration — and be honest that the demonstration can't come from a saturated benchmark. Trajectories or it didn't happen.</p>
+
+        <p><strong>Read two of the published trajectories.</strong> Prime Intellect posted the full decision trails — tool calls, scratchpads, recovery behavior. Read one from Opus 5 and one from a sub-15% finisher. Fifteen minutes of watching a strong model structure its own work, then watching a weak model loop, will teach you more about what "agentic capability" actually means than a month of leaderboard refreshes.</p>
+
+        <h2>The Bigger Picture</h2>
+
+        <p>The era of the single benchmark number is ending, killed by saturation from below and reward hacking from the side. What replaces it is messier and more useful: families of tasks, published trajectories, and the recognition that "coding capability" was never one variable. It was at least two — task competence and self-orchestration — wearing one name.</p>
+
+        <p>The harness-first thesis survives this week, but chastened and more precise. The harness was never a substitute for model capability; it was the other factor in the product. The teams that internalize the multiplication — that stop asking "model or harness?" and start asking "which factor is binding on this task, and what's the cheapest way to raise it?" — are the ones the next five-fold gap will surprise least.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
