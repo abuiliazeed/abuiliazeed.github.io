@@ -5,8 +5,22 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Wed, 26 Aug 2026 09:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 28 Aug 2026 09:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Session Left the Editor</title>
+      <link>https://abuiliazeed.github.io/blog/the-session-left-the-editor.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-session-left-the-editor.html</guid>
+      <description>VS Code 1.135 shipped the Agent Host Protocol — an MIT-licensed spec that decouples agent sessions from the editor window, the same move that made LSP the lingua franca of code intelligence in 2016. The editor just became a client, and the most valuable state in software development just got a protocol.</description>
+      <pubDate>Fri, 28 Aug 2026 09:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Same Harness, Five-Fold Gap</title>
+      <link>https://abuiliazeed.github.io/blog/same-harness-five-fold-gap.html</link>
+      <guid>https://abuiliazeed.github.io/blog/same-harness-five-fold-gap.html</guid>
+      <description>Prime Intellect ran 18 frontier models through the identical NanoGPT Speedrun harness. Opus 5 finished 81.7%; DeepSeek V4 Pro — 96.4% on SWE-bench — landed under 15%. The harness-first thesis just took a direct hit, and the correct response is multiplication, not retreat.</description>
+      <pubDate>Thu, 27 Aug 2026 09:00:00 GMT</pubDate>
+    </item>
     <item>
       <title>Same Model, Three Harnesses, 31 Points</title>
       <link>https://abuiliazeed.github.io/blog/same-model-three-harnesses-31-points.html</link>

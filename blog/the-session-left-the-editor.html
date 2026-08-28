@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Session Left the Editor — Abuiliazeed</title>
+  <meta name="description" content="On August 26, VS Code 1.135 shipped the Agent Host Protocol — an MIT-licensed spec that decouples AI agent sessions from the editor window. The same move that made LSP the lingua franca of code intelligence in 2016 is now being applied to agent sessions, and it changes who owns the most valuable state in software development.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-session-left-the-editor.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-session-left-the-editor.html">
+  <meta property="og:title" content="The Session Left the Editor">
+  <meta property="og:description" content="On August 26, VS Code 1.135 shipped the Agent Host Protocol — an MIT-licensed spec that decouples AI agent sessions from the editor window. The same move that made LSP the lingua franca of code intelligence in 2016 is now being applied to agent sessions, and it changes who owns the most valuable state in software development.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Session Left the Editor">
+  <meta name="twitter:description" content="On August 26, VS Code 1.135 shipped the Agent Host Protocol — an MIT-licensed spec that decouples AI agent sessions from the editor window. The same move that made LSP the lingua franca of code intelligence in 2016 is now being applied to agent sessions, and it changes who owns the most valuable state in software development.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-08-28">August 28, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Session Left the Editor</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Here's a workflow that was impossible last week: you start a refactor in Claude Code in your terminal, get forty minutes deep into the planning conversation, and then open VS Code — and the session is just there. Same conversation. Same context window. Same agent state. You didn't export anything. You didn't re-paste the plan. The session followed you, because it was never yours to begin with.</p>
+
+        <p>That's what shipped in VS Code 1.135 on August 26. The release notes call it "portable agent sessions," and underneath it sits something bigger: the <strong>Agent Host Protocol</strong> (AHP), an open, MIT-licensed specification published by Microsoft that defines how agent sessions live independently of any editor window. It sounds like plumbing. It's actually a transfer of ownership for the most valuable state in software development.</p>
+
+        <p>Four days ago I argued that the terminal ate the IDE — that Claude Code's 39% adoption in JetBrains' developer survey, twice Copilot's, marked the terminal winning because the harness beat the suggestion. I still believe that. But the story this week is what happened next: Microsoft responded not by building a better terminal agent, but by changing what an editor <em>is</em>. If LSP taught editors to share language servers, AHP teaches them to share AI agents. The session left the editor. The editor became a client.</p>
+
+        <h2>What Actually Shipped</h2>
+
+        <p>Three things in 1.135 matter here, in ascending order of consequence.</p>
+
+        <p><strong>Portable agent sessions.</strong> VS Code's Sessions list can now display recent sessions started in other applications. Supported sources at launch: Copilot CLI, the GitHub Copilot app, Claude Code, and Codex. The practical case is exactly the one I opened with — start in the terminal where iteration is fast, continue in the editor where diffs and file navigation are visual, and lose nothing in the transition. External sessions are hidden by default and, notably, require a Copilot subscription. You configure visibility in the Sessions panel: none, the two most recent from the last seven days, last 24 hours, last 7 days, or all.</p>
+
+        <p><strong>Multi-client sessions.</strong> Multiple VS Code windows can connect to the same local session simultaneously. That reads like a pair-programming feature — two developers, one agent context — but it's really the architectural tell. A session that two clients can attach to concurrently is not a chat transcript. It's a shared, synchronized, live object.</p>
+
+        <p><strong>The Agent Host Protocol itself.</strong> AHP defines how a host — the process actually running your agent — communicates with one or more client windows over JSON-RPC and WebSocket. Sessions run in their own process, persist independently of any editor window, and use immutable state with sequence numbers to stay synchronized across multiple clients viewing the same session. Microsoft explicitly frames it alongside the Language Server Protocol and the Debug Adapter Protocol: decouple a capability that used to belong to the editor and turn it into a protocol any tool can implement. LSP did it for language intelligence. DAP did it for debuggers. AHP is doing it for agent sessions.</p>
+
+        <p>Two caveats before the analysis. First, AHP is pre-1.0 — Microsoft's own documentation warns that wire types, actions, and state shapes may break before 1.0, and the reasonable read is that the pre-1.0 window is for experimenting, not for baking AHP endpoints into production pipelines. Second, the <code>opencode</code> project already has a third-party implementation, which is the early signal that this is intended as a real ecosystem protocol rather than an internal interface with docs.</p>
+
+        <h2>The LSP Precedent, Properly Understood</h2>
+
+        <p>Most coverage will mention the LSP analogy and move on. It deserves more than a sentence, because the LSP story is one of the most instructive episodes in developer tooling history — and it didn't go the way most people remember.</p>
+
+        <p>Before LSP, language intelligence was an editor moat. Vim had its plugins, Eclipse had its compiler integration, Visual Studio had the best C# experience in the business, and none of it transferred. Switching editors meant rebuilding your entire language tooling stack. LSP inverted that: the language server became a standalone process any editor could talk to, and within roughly three years of the spec's publication, "does it have LSP support?" became the only question that mattered. Editor-specific language tooling didn't get less common — it stopped being a business.</p>
+
+        <p>The moat that got commoditized wasn't Vim's or Eclipse's. It was the assumption that intelligence lives inside the editor. LSP moved it into a protocol layer the editor merely consumed.</p>
+
+        <p>AHP is the same move with a bigger payload. Because an agent session isn't just intelligence — it's intelligence <em>plus accumulated state</em>. The planning conversation, the files the agent has read, the tests it has run, the mistakes it has already made and corrected, the half-finished reasoning about your architecture. In agent-first development, that context is the work product. Code is what falls out at the end. And until this week, that work product was trapped inside whatever surface it was created in: your Claude Code transcript lived in your terminal history, your Cursor chat lived in Cursor, your Copilot session lived in VS Code.</p>
+
+        <p>AHP makes session state a first-class, addressable, multi-client object. That's not a feature. That's a property-rights change.</p>
+
+        <h2>Why This Is Existential for the Fork Market</h2>
+
+        <p>The contrarian read of this release is about Cursor, Antigravity, Kiro, and the rest of the editor fork market — and it's brutal.</p>
+
+        <p>The fork market's core value proposition was owning the AI session natively. Cursor didn't win its early traction because it edited text better; it won because the agent experience was integrated into the editor in ways incumbent editors couldn't match. The session was the product. But the 2026 data has been eroding that position all year: JetBrains' survey showed Cursor falling from 18% to 12% adoption while terminal-native Claude Code doubled to 39%. Developers were already voting that the session matters more than the chrome around it.</p>
+
+        <p>AHP attacks what remains. If sessions are portable and agent-agnostic — if I can start in Claude Code, continue in VS Code, and the fork has no exclusive claim on the context — then the editor becomes a client to the session rather than the owner of it. That's a dramatically less defensible position. You can compete on client quality: rendering, keybindings, diff views, review workflows. But those are features, not moats. Cursor built a multi-billion dollar business on the assumption that the AI session is a property of the editor. Microsoft just published an MIT-licensed spec that says it's a property of the infrastructure.</p>
+
+        <p>And notice who benefits from the spec's existence. VS Code doesn't need to win the agent war — Anthropic, OpenAI, and Google are fighting that. It just needs agent sessions to be portable, because portable sessions make every editor interchangeable and every incumbent advantage cumulative. VS Code keeps borrowing its moat back, one protocol at a time.</p>
+
+        <h2>Sessions Are Becoming Long-Lived State</h2>
+
+        <p>There's a second story this week that turns AHP from a convenience into a necessity, and it's the one most people will treat as unrelated gossip.</p>
+
+        <p>On August 27, WIRED reported that OpenAI is developing a "Persistent mode" for Codex, based on changes to the public codebase. The setting appears in Codex's reasoning-effort menu, and the code describes an agent that will "continue working until put to sleep" — in contrast to current modes, which stop after minutes or hours regardless of whether the task is done. A companion feature called "proactivity" instructs the agent that its work is not finished when it answers your request: it should create follow-up tasks for itself, work on them across sessions, use knowledge of the user to decide priorities, and message you sparingly when it has something worth saying. Notably, the instructions also state that persistent mode does not expand what the agent is allowed to do, and that changing anything outside the user's own system still requires approval.</p>
+
+        <p>Whether or not Persistent mode ships broadly, the direction is unambiguous — OpenAI's CEO has said publicly that ChatGPT should eventually "feel like a more persistent agent." Anthropic and Meta are racing toward the same place. Agents are becoming long-lived processes, not request-response cycles.</p>
+
+        <p>Now put the two releases together. An agent session that lives for days, accrues context across tasks, and proactively works on its own follow-ups is not something any single window should own — because no single window will be open for its whole lifetime. You'll check on it from your editor, from your terminal, from your phone, maybe from a teammate's machine. Multi-client access stops being a pair-programming nicety and becomes the basic requirement for supervising software that runs until you stop it. Sequence-numbered immutable state and a JSON-RPC session protocol aren't plumbing for that world. They're the control plane.</p>
+
+        <p>This is the same architectural progression every stateful system goes through. Data outlived the process, so we got databases. Services outlived the connection, so we got message brokers. Agent sessions are outliving the editor — and now, deliberately, outliving the work session itself. The infrastructure question of 2027 is not "which model powers your agent" or even "which harness wraps it." It's "where does your agent state live, who can attach to it, and what happens when two clients disagree about what it should do next."</p>
+
+        <h2>The Catch: Standards From the Incumbent</h2>
+
+        <p>Before declaring victory for open protocols, sit with the uncomfortable part: AHP is a draft specification, published by Microsoft, whose flagship editor is the primary beneficiary, and the most useful consumer-facing feature built on it — external session visibility — requires a Copilot subscription.</p>
+
+        <p>This is the standard playbook for protocol-driven commoditization, and it's worth being clear-eyed about it. LSP was also born at Microsoft, also MIT-licensed, and also arguably timed to commoditize competitors' strengths. It succeeded anyway, because a genuinely open protocol serves the ecosystem more than it serves its author — every editor that adopted LSP made the whole market bigger, even if Visual Studio Code captured a disproportionate share of it. The protocol was real. The asymmetry was also real.</p>
+
+        <p>Expect the same double game here. AHP will likely become the genuine lingua franca for agent session hosting — the <code>opencode</code> implementation is the early evidence, and Anthropic and OpenAI's cooperation on session sources suggests they see more upside in portable sessions than in walled ones. But the default client experience will favor the incumbent, and if AHP's state model evolves to fit VS Code's needs first and everyone else's second, nobody should be surprised. The right posture is the one infrastructure teams always adopt with a dominant vendor's spec: implement it, depend on it, and keep an abstraction layer thin enough to swap.</p>
+
+        <p>One more detail from 1.135 deserves a mention: an experimental review agent called Rubber Duck, which runs on a model from a different AI family than your primary orchestrator. That's an early instance of a pattern that will matter more as sessions persist — cross-model review, where the thing checking the work isn't the same lineage as the thing doing it. A session that runs for days without supervision needs an inspector that doesn't share its blind spots.</p>
+
+        <h2>What This Means for You</h2>
+
+        <p>If you're building agent-first software, this week moved three things from "someday" to "this quarter."</p>
+
+        <ul>
+          <li><strong>Stop treating sessions as ephemeral.</strong> If your harness or internal tooling still assumes an agent session dies with its window, that assumption now has an expiration date. Sessions are becoming durable, addressable state. Design for reconnection, not just initiation: serialization of context, resumable task state, and clean attach/detach semantics. This is a core theme in <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em> — the harness is state management before it is prompt engineering — and this week it stopped being a design opinion and became a platform reality.</li>
+          <li><strong>Audit where your agent context lives.</strong> Portable sessions are also exfiltrable sessions. A context window containing your architecture, your credentials discussion, and your half-finished security fix is now an object that multiple processes can attach to. If your security model doesn't account for session-level access control, it's now incomplete. The sandbox-by-default movement of July and the portable-session movement of August are two halves of the same conversation: more agent autonomy requires more state discipline.</li>
+          <li><strong>Experiment with AHP now; don't productionize it yet.</strong> The spec is pre-1.0 and Microsoft says the wire types will break. The right move is a throwaway adapter this quarter, a tracked watch on the repo, and a reassessment the day 1.0 ships. When it stabilizes, session portability goes from feature to expectation fast — LSP taught everyone how quickly "nice to have protocol" becomes "table stakes."</li>
+          <li><strong>If you're betting on an editor, bet on client quality, not session ownership.</strong> For teams choosing tooling this quarter: the durable investments are the terminal agents and the session infrastructure, because those now survive any editor decision. The editor choice is becoming a preference, not a commitment. Choose accordingly — and renegotiate any contract whose value depends on session lock-in.</li>
+        </ul>
+
+        <p>The instinct most people have is that the editor war ended when the terminal won. It didn't end — it dissolved. The unit of competition stopped being the application and became the session, and the session just got a protocol. The editor became a client, the agent became a host, and the state that matters — the accumulated context of real work — became something you can carry with you, from window to window, tool to tool, and soon, task to task.</p>
+
+        <p>Sessions outlived the editor this week. Next they'll outlive the workday. Build for that.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
