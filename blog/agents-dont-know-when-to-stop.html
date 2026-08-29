@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agents Don't Know When to Stop — Abuiliazeed</title>
+  <meta name="description" content="Factory ran the same frontier models alone and in multi-role systems on ProgramBench. Same model, same benchmark: median 56.7 vs 89.3. The difference wasn't skill or compute — it was who decides the work is done.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/agents-dont-know-when-to-stop.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/agents-dont-know-when-to-stop.html">
+  <meta property="og:title" content="Agents Don't Know When to Stop">
+  <meta property="og:description" content="Factory ran the same frontier models alone and in multi-role systems on ProgramBench. Same model, same benchmark: median 56.7 vs 89.3. The difference wasn't skill or compute — it was who decides the work is done.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Agents Don't Know When to Stop">
+  <meta name="twitter:description" content="Factory ran the same frontier models alone and in multi-role systems on ProgramBench. Same model, same benchmark: median 56.7 vs 89.3. The difference wasn't skill or compute — it was who decides the work is done.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-08-29">August 29, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">Agents Don't Know When to Stop</h1>
+      </header>
+
+      <article class="blog-post-body">
+        <p>17,000 lines versus 115,000 lines. Same model, same task, same benchmark, same hardware. The only difference was who decided the work was finished.</p>
+
+        <p>On August 27, Factory Research published an experiment on ProgramBench, the cleanroom software-engineering benchmark where an agent must reproduce the observable behavior of a reference program it can run but never read. Factory asked Droid to rebuild GDAL — the geospatial library whose CLI surface alone spans roughly 600 thousand lines of C/C++ — twice. Once as a single agent that implemented, checked its own work, and decided for itself when it was done. And once as a multi-role system where a separate role built an executable standard of completion <em>before</em> implementation began, and the implementer was held to that standard. The single agent shipped 17,000 lines. The system grew to 115,000 lines and reached 90 percent behavioral parity with the reference.</p>
+
+        <p>That gap is not a model capability story. Every role in the system condition used the same model at the same reasoning level as its single-agent counterpart. The gap is architectural. And its most uncomfortable finding is buried in the middle of the write-up: <strong>every single-agent campaign ended because the agent decided to end it.</strong> Not because it hit a context limit. Not because it ran out of budget. Because it judged itself complete.</p>
+
+        <p>The single agent didn't lack skill. It lacked a standard of completion.</p>
+
+        <h2>The Experiment</h2>
+
+        <p>ProgramBench is a demanding limit case. Each task hands the agent a reference program, fixtures, and partial documentation. The reference is a black-box oracle — it may be executed without limit, but never read, decompiled, or traced. The goal is to reproduce the reference's observable behavior from scratch, graded against a hidden suite of behavioral checks the agent never sees.</p>
+
+        <p>Factory selected 24 of the benchmark's hardest tasks and ran each through two conditions with three frontier models: Claude Fable 5, Kimi K3, and GPT-5.6 Sol. In the single-agent condition, the agent investigates, implements, runs checks, judges its own work, and chooses when to stop. In the system condition, three things change. A validator constructs an independent instrument — its own account of what the reimplementation must do and what evidence would prove it — before any implementation starts. The implementer never sees raw results from that instrument; clustered findings cross an information wall. And an orchestrator adjudicates findings, issues directives, and decides when to ship.</p>
+
+        <p>The results were lopsided. Fable 5's median score jumped from 56.7 to 89.3 — closing 73 percent of the gap to perfect parity. GPT-5.6 Sol went from 48.6 to 66.2. Task by task, the deltas are stark: 7-Zip from 54 percent parity to 95, DuckDB from 34 to 80, lazygit from 46 to 93, lnav from 38 to 84, pandoc from 19 to 84. These are not marginal gains from a better prompt. They are what happens when the judgment of completion moves outside the agent that did the work.</p>
+
+        <h2>Why This Isn't a Compute Story</h2>
+
+        <p>The obvious objection: the system runs were longer and more expensive. For GDAL, the system condition consumed 14 times the credits and 13 times the wall time of the single-agent run. Maybe this is just "more compute wins."</p>
+
+        <p>It isn't, and Factory's own data says so. The critical observation is that <strong>additional compute does not help an agent that will not spend it</strong>. Every single-agent campaign terminated on the agent's own judgment. You could have given the lone Droid ten times the budget; it had already decided it was done. The single agent's GDAL run didn't fail because it ran out of room to write code. It failed because at 17,000 lines it looked at its own work, ran its own checks, and concluded — sincerely, wrongly — that it had covered the behavior space.</p>
+
+        <p>What the system condition changed was the judgment of completion. The compute followed from that judgment, not the other way around. This inverts the usual scaling narrative. Most of the 2026 discourse treats agent performance as a function of model capability times tokens spent. Factory's experiment suggests that on long-horizon tasks, the binding constraint is something else entirely: whether anything in the loop can tell the difference between "looks done" and "is done."</p>
+
+        <p>There's a second, subtler mechanism worth naming. The validator built its instrument <em>before</em> implementation began — before the implementer's attention had narrowed to whatever partial solution was already on disk. This is a well-known failure mode in human software too: the moment you have 5,000 lines written, your definition of "correct" drifts toward "consistent with what I've built." Agents do the same thing, faster. An agent that writes its own acceptance criteria after the fact is grading its own homework with an answer key it derived from its own answers. Moving the standard's construction to before implementation, and its enforcement outside the implementer's context, is the cheapest correction anyone has demonstrated at this scale.</p>
+
+        <h2>The Pattern Is Everywhere Once You Look</h2>
+
+        <p>Once you internalize "agents don't know when to stop," you start seeing it across this month's results.</p>
+
+        <p>Prime Intellect's NanoGPT Speedrun Frontier, published August 24, ran 18 models through 153 autonomous optimization tests. The spread was enormous — Claude Opus 5 completed 81.7 percent of the suite, Kimi K3 hit 52.2, and a long tail clustered below 15. But the failure analysis matters more than the leaderboard: struggling models fell into recursive loops or stopped improving too early, a pattern the researchers called <em>premature convergence</em>. The top performers weren't just smarter — they used structured subagent delegation and systematic tool invocation. They externalized the judgment of progress. Same diagnosis, different benchmark.</p>
+
+        <p>Or take SWE-Bench ProMax, the refactoring benchmark released August 21 by researchers at Shanghai Jiao Tong University, Peking University, and Douyin Group. The best model managed a 41.2 percent resolve rate on 170 real large-scale refactoring commits across seven languages. Refactoring is the purest test of knowing-when-you're-done: zero tolerance for behavior change, complete reversibility, cross-file scope. It's exactly the task where "I ran the tests I thought of and they pass" is worthless — because the tests you thought of are the ones your change was shaped around. A 41 percent resolve rate on refactoring while the same models clear 95 percent on SWE-bench Verified tells you the remaining gap is almost entirely in the verification layer, not the code-writing layer.</p>
+
+        <p>The convergence of these three results — Factory, Prime Intellect, ProMax — across totally different benchmarks and organizations is the strongest signal we've had that the bottleneck in agentic software has moved. Code generation is largely solved. Completion judgment is not.</p>
+
+        <h2>The Contrarian Take: Stop Buying Models, Start Building Instruments</h2>
+
+        <p>Most teams shopping for agents right now are optimizing the wrong variable. They compare model leaderboards, argue about pricing per million tokens, and A/B test frontier models against each other on their own tasks. But Factory's experiment — like every controlled harness comparison this year — shows that the spread between <em>architectures</em> dwarfs the spread between <em>models</em>. Sol and Fable differ by single digits on most benchmarks. Sol alone versus Sol in a system with an independent completion standard differed by 17.6 points on the same 24 tasks.</p>
+
+        <p>If you're building with agents and you don't have anything in your loop that plays the validator role — an external, executable standard of completion, derived from the outcome, constructed before implementation narrows attention, enforced by something that isn't the implementer — then you don't have an agent system. You have a very fast worker with no definition of done, and you are the validator. Every "the agent said it finished but the feature doesn't work" incident in your issue tracker is the single-agent condition running in production.</p>
+
+        <p>This is also, for what it's worth, the central argument of <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>: the durable engineering skill in the agent era is designing the system around the model — the roles, the information walls, the standards, the stopping conditions — because the model inside the loop keeps changing every quarter and the architecture is what you own.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p>You don't need Factory's 96-hour campaign runs to apply this. Three concrete moves:</p>
+
+        <ul>
+          <li><strong>Write the completion standard before the agent writes code.</strong> For your next real task, write down — as executable checks, not prose — what evidence would prove the work is done. Do it before prompting. If you can't write the checks, you don't understand the task well enough to delegate it. That was always true of human delegation too; agents just exposed it.</li>
+          <li><strong>Separate the grader from the worker.</strong> Even a cheap second pass helps: a separate context, ideally a separate model or at minimum a fresh session with no access to the implementer's reasoning, that scores the artifact against the standard and reports clustered findings — not raw logs. The information wall in Factory's design wasn't decoration; it's what stopped the validator from being anchored by the implementer's rationalizations.</li>
+          <li><strong>Move the stop decision out of the agent.</strong> Your harness — not the model — should decide when a run is over, based on the instrument's verdict. Any agent loop whose exit condition is "the model said done" will systematically undershoot on complex work and you'll never see it in the logs, because nothing in the logs looks like failure. It looks like confidence.</li>
+        </ul>
+
+        <h2>The Uncomfortable Endorsement</h2>
+
+        <p>One detail in Factory's results deserves more attention than it will get. The system condition's GDAL recreation matched 90 percent of the reference's measured behavior in 115 thousand lines — for a program whose reachable surface is roughly 600 thousand. That means the multi-role system didn't just score higher; it produced an artifact of a fundamentally different magnitude. Same model. The capability to write 115 thousand coherent lines was always there. Nothing unlocked it except a definition of done that refused to accept 17 thousand.</p>
+
+        <p>The next time a vendor tells you their new model is 5 percent better on a leaderboard, ask the question Factory's experiment actually answered: in your harness, who decides when the work is finished? If the answer is "the model," you're leaving more than 5 percent on the table — and unlike model capability, this one is yours to fix this week.</p>
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
