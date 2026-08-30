@@ -5,8 +5,22 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Fri, 28 Aug 2026 09:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 30 Aug 2026 09:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Supervisor Went Open-Weight</title>
+      <link>https://abuiliazeed.github.io/blog/the-supervisor-went-open-weight.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-supervisor-went-open-weight.html</guid>
+      <description>Tencent's 770B Hy4 shipped with one flagship demo: coordinating multiple OpenAI Codex sessions. Across four releases in five days, the open-weight labs stopped competing on workers and started training supervisors — the orchestration layer just became a commodity with a Hugging Face page.</description>
+      <pubDate>Sun, 30 Aug 2026 09:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Agents Don't Know When to Stop</title>
+      <link>https://abuiliazeed.github.io/blog/agents-dont-know-when-to-stop.html</link>
+      <guid>https://abuiliazeed.github.io/blog/agents-dont-know-when-to-stop.html</guid>
+      <description>Factory ran the same frontier models alone and in multi-role systems on ProgramBench. Same model, same benchmark: median 56.7 vs 89.3. The difference wasn't skill or compute — it was who decides the work is done.</description>
+      <pubDate>Sat, 29 Aug 2026 09:00:00 GMT</pubDate>
+    </item>
     <item>
       <title>The Session Left the Editor</title>
       <link>https://abuiliazeed.github.io/blog/the-session-left-the-editor.html</link>

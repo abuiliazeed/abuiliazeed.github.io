@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Supervisor Went Open-Weight — Abuiliazeed</title>
+  <meta name="description" content="Tencent's new 770B model shipped with one flagship demo: coordinating multiple Codex sessions. The open-weight labs stopped competing on the worker layer — they're training supervisors now, and pricing them at $0.83 per million tokens.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-supervisor-went-open-weight.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-supervisor-went-open-weight.html">
+  <meta property="og:title" content="The Supervisor Went Open-Weight">
+  <meta property="og:description" content="Tencent's new 770B model shipped with one flagship demo: coordinating multiple Codex sessions. The open-weight labs stopped competing on the worker layer — they're training supervisors now, and pricing them at $0.83 per million tokens.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Supervisor Went Open-Weight">
+  <meta name="twitter:description" content="Tencent's new 770B model shipped with one flagship demo: coordinating multiple Codex sessions. The open-weight labs stopped competing on the worker layer — they're training supervisors now, and pricing them at $0.83 per million tokens.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-08-30">August 30, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Supervisor Went Open-Weight</h1>
+      </header>
+
+      <article class="blog-post-body">
+        <p>Tencent spent last Friday open-sourcing a 770-billion-parameter model, and the flagship demo wasn't a benchmark. It was a video of the model <em>managing OpenAI's Codex</em> — spinning up multiple Codex sessions in parallel, comparing their results, and redirecting the work based on what came back.</p>
+
+        <p>Read that again. A Chinese lab's proudest showcase for its new flagship is that it can tell a closed American agent what to do. Hy4 preview — 770B total parameters, 49B active in a mixture-of-experts layout, a context window past one million tokens, weights on Hugging Face alongside an FP8 variant, API access at $0.834 per million input tokens and $2.501 per million output — is being marketed not as a better worker, but as a better <em>boss</em>.</p>
+
+        <p>Most coverage filed this under the regular Tuesday news: another giant open-weight model, another spec sheet, another leaderboard. That reading misses what actually changed this week. Across four releases in five days — Tencent's Hy4, Z.ai's GLM-5.3-Flash, IBM's Granite 4.2, Alibaba's Qwen3.8-Flash — the open-weight labs have quietly stopped competing on the worker layer. They're training and pricing supervisors now. The orchestration layer — the part of the stack that decides, delegates, verifies, and redirects — just went open-weight.</p>
+
+        <h2>The Week the Orchestration Layer Opened</h2>
+
+        <p>Look at the four releases side by side and the pattern is hard to miss.</p>
+
+        <p><strong>Tencent Hy4 preview</strong> (August 28): 770B total / 49B active MoE across 78 layers, 256 routed experts with top-8 routing, context stretched from Hy3's 256K to over one million tokens. The benchmark numbers are real — 85.4 on Terminal-Bench and 64.3 on DeepSWE, up from 70.8 and the high 20s for Hy3 two months ago — but the release's centerpiece claim is orchestration: coordinating multiple Codex sessions and beating standalone Codex exploration across eight evaluation targets on a small-model post-training task. That claim is vendor-graded homework, to be clear. Tencent tested its own model against someone else's agent and reported the winner. Treat the specific numbers as unverified. Treat the <em>positioning</em> as verified — it's the entire release.</p>
+
+        <p><strong>Z.ai GLM-5.3-Flash</strong> (weights on Hugging Face under MIT, announced August 26): the model that spent last week running anonymously on OpenRouter under the codename "Ox Alpha," evaluated against real-world traffic before anyone knew whose model it was — an evaluation strategy that is itself a statement about how confident a lab is outside the leaderboard game. Z.ai claims ten times better cost-efficiency than GLM-5.2. But look at where the gains concentrated. Terminal-Bench 2.1 crept from 81.0 to 84.3 — a solid worker improvement. Toolathlon Verified jumped from 59.9 to 78.4. AutomationBench nearly doubled, 26.2 to 48.8. The largest gains weren't in writing code. They were in <em>chaining tools and orchestrating multi-step work</em>.</p>
+
+        <p><strong>IBM Granite 4.2</strong> (August 25): 3B, 8B, and 30B dense models under Apache 2.0, with the 8B and 30B put through a three-stage agentic RL curriculum — software engineering, then terminal, then search — inside real sandboxed environments where the reward is a sparse outcome signal at the end of a long tool-use trajectory. IBM is explicitly training models to operate the loop, not just fill it.</p>
+
+        <p><strong>Alibaba Qwen3.8-Flash</strong>: a 125B main model with 6B active per token, 262K context extendable to a million, priced at roughly $0.16 per million input tokens — and positioned as the engine behind QwenWork's redesigned mode that cuts token consumption per task by 75 percent. A model whose headline feature is that it wastes less of its workers' output.</p>
+
+        <p>Four labs, one move. Nobody shipped "a better coder." They shipped better delegators, and they priced them like infrastructure.</p>
+
+        <h2>Why the Worker Layer Stopped Being the Prize</h2>
+
+        <p>To understand why, look at where the worker layer settled. The terminal-agent war is effectively over for now: Claude Code and Codex between them define what a frontline coding agent is, JetBrains' 15,000-developer survey this month put Claude Code at roughly twice Copilot's workplace usage, and every serious competitor now schedules those two as interchangeable workers — a consolidation this blog has tracked since DeepSeek, UiPath, Warp, and Cursor all shipped sub-agent schedulers in the same 72-hour window earlier this month.</p>
+
+        <p>You cannot out-frontier Anthropic and OpenAI at the worker layer on their own benchmarks with their own distribution. But you can do something they structurally can't: commoditize the layer above.</p>
+
+        <p>Here's the uncomfortable geometry for the closed labs. Anthropic and OpenAI monetize the worker directly — seats, credits, usage windows that scale with how autonomously agents run. A supervisor model that routes work to whatever worker is cheapest this week is a direct attack on that pricing power. Hy4's API price is $0.834 per million input tokens. The expensive thing in an orchestrated run is no longer the orchestration — it's Codex and Claude burning tokens at the bottom. Every point of supervisor competence at that price makes the closed workers look like line items, and makes switching between them a routing decision instead of a procurement decision.</p>
+
+        <p>There's a second reason the open labs are sprinting up-stack: regulatory and hardware reality. Beijing's rules pushed consumer-facing agent features toward extinction — Alibaba is sunsetting Qwen consumer agent features by October — so the Chinese labs' entire open-weight strategy is aimed at enterprise and developer infrastructure, where the supervisor lives. And IBM's Granite release shows the play isn't only Chinese: when you can't win at frontier scale, you win at the layer where a 30B model with the right RL curriculum is enough, because supervision is not a capability problem anymore. It's a training-data and architecture problem.</p>
+
+        <h2>The Evidence That Delegation Is Now a Trained Skill</h2>
+
+        <p>The most important word in this week's releases is not "770B." It's "curriculum."</p>
+
+        <p>For two years the industry debated whether orchestration belonged in the model or in the harness — whether your Python control loop would be replaced by a model that just <em>knows</em> how to decompose and delegate. The harness-first camp (myself included — it's practically the founding thesis of harness engineering) argued models were too unreliable to own the control loop, and that explicit architecture beat implicit capability. That argument won every round from 2024 through mid-2026. It is now quietly losing its premise.</p>
+
+        <p>Granite 4.2's SWE → Terminal → Search curriculum is post-training a model to be the loop. GLM-5.3-Flash's doubling on AutomationBench is the measurable shape of a model that learned to chain. Hy4's whole pitch is that decomposition, parallel dispatch, comparison, and redirection are in-weight capabilities. And the connective tissue is last week's Factory result: a same-model, three-role system — orchestrator, implementer, validator — closing 73 percent of the gap to perfect parity on ProgramBench where the single agent couldn't. Factory built the roles in harness. Tencent, Z.ai, and IBM are now baking them into the weights.</p>
+
+        <p>This is the same migration every infrastructure capability makes. Memory went from harness (RAG scaffolds) toward model (long context). Tool use went from prompt tricks to native function calling. Orchestration is making the same trip, and this week is the moment it became undeniable. Not because harnesses stopped mattering — they didn't — but because "can the model supervise?" flipped from a research question to a shipping feature with a price per million tokens.</p>
+
+        <h2>What Breaks When the Boss Is an Endpoint</h2>
+
+        <p>Assume the trend holds and a competent open-weight supervisor is an API call — or, given MIT and Apache 2.0 licenses, a container you run yourself. Three things follow.</p>
+
+        <p><strong>Your control loop becomes a swappable component.</strong> Teams that spent 2026 building bespoke orchestration harnesses — schedulers, decomposers, verifiers — are about to discover they're maintaining a reimplementation of a model capability that improves quarterly, for free. The durable parts of your harness are the parts models are bad at: state, secrets, sandboxes, audit, the information walls between roles. The decomposition-and-delegate logic is melting into the model.</p>
+
+        <p><strong>Verification becomes the moat, again.</strong> A supervisor that can dispatch but not verify is a delegation gap at machine speed — it will confidently ship whatever its workers produce. Everything this month, from Factory's completion-standard result to the reward-hacking corrections in Terminal-Bench v2.1, says judgment-of-done is the scarce resource. If you're building in this layer, build the instrument, not the dispatcher.</p>
+
+        <p><strong>Worker pricing inverts.</strong> When the supervisor is $0.83 per million tokens and open-weight, the pressure lands on the workers underneath. Expect routing supervisors to treat Claude, Codex, and open-weight workers as a portfolio, and expect "which worker did the supervisor pick and why" to become an observable your CI needs. The unit of negotiation moves from the seat to the task.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <ul>
+          <li><strong>Run Hy4 preview against a task you already delegate well.</strong> It's free on Tencent's WorkBuddy and CodeBuddy for two weeks, and on OpenRouter. Skip the benchmark debate. Give it one real multi-session job — a refactor with parallel exploration, a research pass with conflicting sources — and watch what it does when two workers disagree. That failure mode tells you more than any leaderboard.</li>
+          <li><strong>Audit your harness for what should stay.</strong> List every module in your orchestration layer and mark each one: does this depend on <em>judgment</em> (keep, for now) or on <em>plumbing</em> (state, permissions, sandboxes, audit — keep forever, this is the asset)? Anything that's just "decompose the task and dispatch" is on borrowed time, and knowing which is which is the difference between an architecture and a pile of scripts.</li>
+          <li><strong>Make your workers interchangeable now.</strong> If your stack can only be driven by one worker agent, a cheap supervisor is worthless to you. Wrap your workers behind one interface this week — task in, artifact plus trace out. That's the adapter that lets you buy orchestration as a commodity instead of building it.</li>
+          <li><strong>Instrument the verification layer.</strong> Before you let any model supervise anything in production, stand up the independent check — the executable standard of completion that isn't authored by the thing being graded. The supervisor era only works if the boss can be wrong and caught.</li>
+        </ul>
+
+        <h2>The Layer Nobody Wanted to Commoditize</h2>
+
+        <p>Two years ago the open-weight ecosystem was called a fast-follower machine: wait for the frontier labs to ship, distill, repeat. This week it did something the frontier labs can't easily answer. It commoditized the layer where strategy lives — deciding what work gets done, by whom, in what order, to what standard — and gave it away under permissive licenses at commodity prices.</p>
+
+        <p>Anthropic and OpenAI will respond with better workers, and they'll be right to; the worker layer is far from solved. But "our worker is 5 percent better" is a weak answer to "the management layer is free." The uncomfortable question every agent-infrastructure team should be asking this weekend isn't which model writes the best code. It's who owns the layer that decides what the code-writers do — because as of Friday, that layer has a Hugging Face page.</p>
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
