@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Same Score, Opposite Failure Modes — Abuiliazeed</title>
+  <meta name="description" content="JetBrains ran GPT-5.5 and Claude Opus 4.7 across 523 agentic coding tasks: four-tenths of a point apart on resolve rate, within a cent per run — and their patches are opposites. The aggregate score is now the least useful number on the board.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/same-score-opposite-failure-modes.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/same-score-opposite-failure-modes.html">
+  <meta property="og:title" content="Same Score, Opposite Failure Modes">
+  <meta property="og:description" content="JetBrains ran GPT-5.5 and Claude Opus 4.7 across 523 agentic coding tasks: four-tenths of a point apart on resolve rate, within a cent per run — and their patches are opposites. The aggregate score is now the least useful number on the board.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Same Score, Opposite Failure Modes">
+  <meta name="twitter:description" content="JetBrains ran GPT-5.5 and Claude Opus 4.7 across 523 agentic coding tasks: four-tenths of a point apart on resolve rate, within a cent per run — and their patches are opposites. The aggregate score is now the least useful number on the board.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-09-01">September 1, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">Same Score, Opposite Failure Modes</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>GPT-5.5 and Claude Opus 4.7 differ by four-tenths of a percentage point on resolve rate across 523 agentic coding tasks, and by roughly one cent per run. On any leaderboard, they are the same model. According to the trajectory analysis JetBrains published on August 31, they are in fact opposites: one hallucinates in a third of its runs and always checks its work; the other barely hallucinates, writes the cleanest patches in the field — and skips validation nearly a quarter of the time. Same score. Opposite failure modes. Pick wrong, and you won't see it in the benchmark. You'll see it in production, in the failure mode you didn't know you were selecting for.</p>
+
+        <p>This is the most important evaluation result of the quarter, and almost nobody will treat it that way, because it doesn't produce a ranking. It produces something better: proof that the aggregate score — the number the entire model-selection industry is built on — is now the least informative digit on the board.</p>
+
+        <h2>What JetBrains Actually Measured</h2>
+
+        <p>The setup is simple. Take a coding agent — JetBrains' Junie — and instead of scoring only whether it resolved the task, record everything the agent did along the way: the files it read, the searches it repeated, the commands it ran, the tests it executed or didn't, the shape of the final diff. The trajectory doesn't reveal private reasoning, but it shows how the model worked the repository. Did it localize the bug before editing? Did it test its assumptions? Did the patch stay contained, or did it drag in unrelated changes?</p>
+
+        <p>From those logs, JetBrains built a four-perspective pipeline:</p>
+
+        <ul>
+          <li><strong>Outcome:</strong> did the patch resolve the task, and which tests passed or failed.</li>
+          <li><strong>Efficiency:</strong> tokens, model calls, tool calls, seconds, cost.</li>
+          <li><strong>Patch quality:</strong> did the change touch the relevant files and symbols, stay contained, avoid unnecessary complexity.</li>
+          <li><strong>Process quality:</strong> how the agent moved through exploration, implementation, and validation — whether it reproduced the problem, repeated work, or stopped without testing.</li>
+        </ul>
+
+        <p>Deterministic metrics from logs. Semantic evaluation from LLM judges. Result plus path. It's the difference between judging a surgeon by survival rate and watching the operation.</p>
+
+        <h2>The Headline Numbers Hide the Story</h2>
+
+        <p>The first comparison ran Claude Opus 4.7 against Gemini 3.5 Flash across four benchmark datasets totaling 523 tasks. Opus resolved 267 (51.1%); Gemini Flash resolved 254 (48.6%). Close. But the genuinely striking number is agreement: both models produced the <em>same outcome</em> on 430 of 523 tasks — both solved 214, both failed 216. Only 93 tasks separated them at all.</p>
+
+        <p>Two models with different architectures, different training data, and different owners agree on 82% of tasks, and the industry's default evaluation instrument — a resolve-rate leaderboard — compresses that entire distribution into two decimal numbers two and a half points apart. The information being thrown away is the actual signal.</p>
+
+        <p>Because on those 93 separating tasks, and on everything the score never sees, the models are nothing alike.</p>
+
+        <h2>Profile One: The Diagnostician Who Doesn't Test</h2>
+
+        <p>Opus 4.7's profile reads like a strong senior engineer with a blind spot. Its strength is diagnosis: it was substantially more likely to identify the underlying cause of ambiguous defects — finding the right mechanism or architectural layer rather than patching the visible symptom — and it solved 53 tasks that Gemini missed. If your problem is understanding an unfamiliar repository, that's the profile you want.</p>
+
+        <p>Then the weakness, and it's a weird one: what happens <em>after</em> localization. Some runs found the right mechanism but stopped at a reproduction test, missed a companion call site, or implemented a plausible custom solution instead of following an existing repository pattern. More concretely: in 123 runs, Opus performed no executable validation at all. Sixty-eight of those runs still resolved the task — which means 68 green checkmarks on the scoreboard were patches whose correctness was never confirmed by running them. Resolved, yes. Verified, no. A score can't tell the difference; a regression three weeks later can.</p>
+
+        <h2>Profile Two: The Validator Who Invents APIs</h2>
+
+        <p>Gemini 3.5 Flash's profile is the mirror image. Its risks are grounding and convergence: it kept searching after already reaching relevant code, repeated equivalent commands, burned steps on build infrastructure, and leaned on unverified APIs, dependencies, paths, and test fixtures. JetBrains assessed 195 of its runs — 37.3% — as containing moderate or severe hallucination, against 130 for Opus. Eighty runs (15.3%) showed significant or severe patch redundancy, more than twice Opus's 6.5%.</p>
+
+        <p>So: one model that finds the root cause and sometimes doesn't check its answer, and one that checks diligently while inventing a quarter of the APIs it touches. Both finish within three points of each other. If your review capacity is the bottleneck, the redundant-patch model is your problem. If you merge on green tests, the validation-skipper is your problem. The leaderboard prices them identically.</p>
+
+        <h2>The Tie That Isn't a Tie</h2>
+
+        <p>JetBrains then widened the field: GPT-5.5, Opus 4.7, Gemini 3.5 Flash, and Qwen 3.6 27B FP8 on the 522 tasks all four share. GPT-5.5 posted the highest resolve rate at 51.5% — and was the only model that ran an executable check in literally every run. Opus led every patch-quality metric and produced the shortest trajectories of the four. Qwen 3.6 27B FP8 resolved 38.9% at 3% of GPT-5.5's cost per run.</p>
+
+        <p>Look at GPT-5.5 versus Opus specifically, because it's the cleanest argument in the whole dataset. Four-tenths of a point apart on resolve rate. Within a cent of each other per run. By leaderboard logic, interchangeable. Their patches are not: moderate or severe hallucination in 33.7% of GPT-5.5's runs versus 24.7% for Opus; significant redundancy in 13.2% versus 6.3%; Opus with the shortest trajectories; GPT-5.5 with perfect validation discipline while Opus skipped validation in 23.6% of its runs. What GPT-5.5 sells you is process reliability. What Opus sells you is artifact quality and efficiency. The scoreboard says "tie" because the scoreboard averages away everything that differs.</p>
+
+        <p>And Qwen's row is the quiet one that changes procurement: 12.6 points behind on resolve rate, but cheap enough that a failed run costs almost nothing. As JetBrains puts it, which model is preferable depends on whether the expensive part of your work is diagnosis, patch review, or the run itself. That's not a ranking question. It's a routing question — and routing questions are harness questions.</p>
+
+        <h2>Why This Is Happening Now</h2>
+
+        <p>The shift from scores to trajectories isn't a methodological fashion. It's what happens when the scores run out of resolution. Three data points from the past few months, all pointing the same direction:</p>
+
+        <p><strong>Aggregate benchmarks are saturating.</strong> Terminal-Bench 2.1's top agents are around 84%, which is why Terminal-Bench 3.0 exists — and on 3.0, the best model (Claude Opus 5, by Snorkel's reporting) achieves 43.5%. When everyone aces the test, the test stops discriminating, and the discriminating information migrates below the aggregate: not <em>whether</em> the agent passed, but how, and what it broke on the way.</p>
+
+        <p><strong>The aggregates were partly measuring broken tests.</strong> OpenAI's own February 2026 audit of SWE-bench Verified examined 138 problems its models couldn't consistently solve and found most weren't hard — they were broken: roughly 59% contained flawed test design or unclear descriptions, and more than a third rejected functionally correct solutions. OpenAI stopped leading with Verified scores. When the reference answer is wrong, pass/fail is noise, and trajectory review is the only signal left.</p>
+
+        <p><strong>Trajectories are becoming product infrastructure.</strong> JetBrains isn't alone. AgentLens — an ACL 2026 paper with an open-source benchmark — evaluates coding agents on instruction-following, tool use, verification, error recovery, and developer experience across full trajectories, and its authors run it as a nightly pipeline to catch regressions in their own agent. This is eval shifting from an event (launch day, leaderboard submission) to a continuous instrument. When evaluation runs nightly on trajectories, model selection stops being a ranking you consult once and becomes a profile you match against task mix — continuously.</p>
+
+        <h2>The Evaluation Unit Is the Harness</h2>
+
+        <p>Here's the structural point, and the reason this matters more than one interesting blog post from an IDE vendor. A trajectory is not a property of the model. It's a property of the model <em>plus the harness</em> — the tool schemas, the context management, the approval gates, the timeout policy, whether the loop strips reasoning state between turns. JetBrains is explicit about this caveat: their profiles describe Opus 4.7 and Gemini 3.5 Flash <em>as run in Junie's scaffold</em>, not the models in general. Run the same weights through a different harness and you'll get different behavioral profiles.</p>
+
+        <p>That caveat is the whole game. If behavior is produced by model-plus-harness — and it is — then behavioral evaluation is harness engineering. The team that logs trajectories, computes validation rates and redundancy rates on its own tasks, and tunes its loop against them is doing the same discipline as the team that just picks the top leaderboard model, except one of them is steering and the other is reading a compass that no longer points anywhere in particular. The trajectory is where model capability and harness design become inseparable, which is exactly why it's the right unit of analysis for agent-first development — an argument I make at book length in <a href="../book.html">Harness Engineering</a>.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p><strong>Stop asking "which model is best" and start asking "which failure can I afford."</strong> The JetBrains data gives you the decision table. Review-constrained team? Avoid the high-redundancy profile. Merge-on-green-tests culture? The validation-skip rate is your actual defect rate, not the benchmark score. Cost-constrained batch work? A 27B model at 3% of cost with 12 fewer points may be strictly better economics.</p>
+
+        <p><strong>Compute one new metric on your last 100 agent runs: validation rate.</strong> What fraction of merged patches were actually executed — tests run, command attempted — before the agent declared done? JetBrains found 23.6% of Opus runs skipped it, 68 of them still "passing." If you don't know your number, your resolve-rate dashboard is overcounting verified work.</p>
+
+        <p><strong>Log trajectories, not outcomes.</strong> You don't need JetBrains' pipeline or an LLM judge to start. Repeated file reads, unchanged command retries, tool failure loops, diff size versus task scope — these are deterministic, cheap to derive from logs you already have, and they were the signals that separated four near-identical scores into four distinct products.</p>
+
+        <p><strong>Rerun your model bake-off as a profile comparison.</strong> Take the two or three models that tied on your internal benchmark and diff them on hallucination rate, patch containment, trajectory length, and validation discipline over the same tasks. The tie will break. It always does — just never on the metric you were looking at.</p>
+
+        <p>Four-tenths of a point. One cent per run. And under that statistical tie, two entirely different engineers — one who diagnoses brilliantly and ships unverified, one who validates religiously and hallucinated in a third of its runs. The leaderboard can't see either of them. Your production system sees both, every day. The teams that start selecting on trajectories instead of scores are about to make the rest of the market look like it's betting on coin flips — because at the frontier, that's what a resolve-rate tie actually is.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>

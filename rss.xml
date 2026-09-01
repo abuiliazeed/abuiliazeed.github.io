@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Sun, 30 Aug 2026 09:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 01 Sep 2026 09:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Same Score, Opposite Failure Modes</title>
+      <link>https://abuiliazeed.github.io/blog/same-score-opposite-failure-modes.html</link>
+      <guid>https://abuiliazeed.github.io/blog/same-score-opposite-failure-modes.html</guid>
+      <description>JetBrains ran GPT-5.5 and Claude Opus 4.7 across 523 agentic coding tasks: four-tenths of a point apart on resolve rate, within a cent per run — and their patches are opposites. One hallucinates in a third of runs and always validates; the other writes the cleanest patches in the field and skips validation 24% of the time.</description>
+      <pubDate>Tue, 01 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
     <item>
       <title>The Supervisor Went Open-Weight</title>
       <link>https://abuiliazeed.github.io/blog/the-supervisor-went-open-weight.html</link>
