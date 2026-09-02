@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Cache Read Became the Product — Abuiliazeed</title>
+  <meta name="description" content="Anthropic cut the price of cache reads by 75% and left everything else alone. The most important number in the Fable 5.1 release isn't a benchmark score — it's the price of the one token category agent workloads consume most.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-cache-read-became-the-product.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-cache-read-became-the-product.html">
+  <meta property="og:title" content="The Cache Read Became the Product">
+  <meta property="og:description" content="Anthropic cut the price of cache reads by 75% and left everything else alone. The most important number in the Fable 5.1 release isn't a benchmark score — it's the price of the one token category agent workloads consume most.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Cache Read Became the Product">
+  <meta name="twitter:description" content="Anthropic cut the price of cache reads by 75% and left everything else alone. The most important number in the Fable 5.1 release isn't a benchmark score — it's the price of the one token category agent workloads consume most.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-09-02">September 2, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Cache Read Became the Product</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>On September 1, Anthropic released Claude Fable 5.1, and the coverage wrote itself: benchmark records on Terminal-Bench 4.0, a restricted-access sibling called Mythos 5.1, sharper safeguards with 60% fewer cybersecurity false positives. All true, all secondary. The most consequential line in the release is a price change on a token category most engineering teams have never budgeted for: cache reads dropped from $1.00 to $0.25 per million tokens — a 75% cut — while input and output prices didn't move at all.</p>
+
+        <p>That's not a discount. That's a repricing of the product around the agent loop. A chat application pays mostly for fresh input and output. An agent pays mostly for re-reading its own accumulated context, turn after turn, for hours. Anthropic just cut the price of exactly the second kind of work by three-quarters and modeled the savings on real traffic: roughly 25% cheaper for typical workloads, up to 45% for highly agentic ones. Read that asymmetry carefully. The discount scales with autonomy. The more your workload behaves like an agent, the bigger the cut. No frontier lab has ever priced that way before.</p>
+
+        <h2>What Actually Changed</h2>
+
+        <p>The sticker numbers first, because they define the geometry of the release. Fable 5.1 costs $10 per million input tokens and $50 per million output — unchanged from Fable 5, and double Claude Opus 5's $5/$25. The context window is one million tokens with 128K output. The model identifier is <code>claude-fable-5-1</code>, available across the Claude API, Claude Code, AWS, Google Cloud, and Azure.</p>
+
+        <p>The change is in the cached tier. A prompt cache lets an application store a repeated prefix — system instructions, tool schemas, codebase context, conversation history — and reuse it across requests instead of re-processing it. On Fable 5, reading that stored prefix cost $1.00 per million tokens: a 90% discount off input price, the standard ratio across the Claude lineup. On Fable 5.1, the same read costs $0.25 — roughly 2.5% of the input rate. Anthropic broke its own pricing convention, for one model, on one token type.</p>
+
+        <p>And it's specifically reads, not writes. Cache writes — the premium you pay to create or refresh a stored prefix — still carry their surcharge. That asymmetry is a policy statement: Anthropic is rewarding harnesses that build a stable prefix once and read it thousands of times, and declining to subsidize harnesses that rewrite their own context mid-session. If your agent invalidates its cache every ten turns, you pay full freight. The pricing encodes an opinion about harness architecture.</p>
+
+        <h2>Agents Are Cache Machines</h2>
+
+        <p>Most people think of prompt caching as an optimization, a line item in a cost-reduction retrospective. Actually, for agentic workloads, caching is the workload. Every step of a long-horizon task re-sends everything the agent has accumulated: the system prompt, the tool definitions, the repository context, every file read, every command output, every prior turn of reasoning. A 200-turn coding session doesn't send 200 small requests. It sends 200 requests that each re-read a prefix growing toward the context limit.</p>
+
+        <p>Run the arithmetic on published prices — illustrative, not measured, but the shape is undeniable. Take a long agent session that averages a 150K-token prefix across 100 turns. That's 15 million cache-read tokens. At Fable 5's $1.00, cache reads alone cost $15 for the session. Suppose the agent also emits 1K output tokens per turn — 100K total, $5 at $50 per million. Cache reads were 75% of the bill, three times the cost of the model's actual output. Drop the read price to $0.25 and the session's cache bill falls to $3.75 — total cost drops by more than half even though the model got better. The dominant line item just became a minor one.</p>
+
+        <p>This is why Anthropic's modeled savings land where they do. The company computed the 25%-typical and 45%-agentic figures from four weeks of real August 2026 traffic at default effort settings — not from a synthetic benchmark, and notably not a blanket 75% off everything. The 75% is the unit price of one token category. The 25-to-45 is what happens when that category flows through workloads with different cache intensity. A one-shot request with mostly fresh input sees almost no benefit. A coding agent that re-reads a large stable prefix hundreds of times per task sees the most. The pricing literally measures how agentic you are.</p>
+
+        <h2>Three Labs, Three Directions, One Battleground</h2>
+
+        <p>If cache pricing were an accounting detail, one lab touching it would be a footnote. Three frontier labs touching it in different directions within weeks is a market signal. Watch the pattern:</p>
+
+        <ul>
+          <li><strong>DeepSeek raised cache prices 6x to 12x</strong> when it moved V4-Pro to peak/off-peak billing in August. Cache-hit tokens — the exact token type agents consume most — went from $0.003625 to $0.022 off-peak and $0.044 peak per million. The lab that built its brand on price disruption started monetizing the agent loop directly.</li>
+          <li><strong>OpenAI rearchitected caching with GPT-5.6</strong>: explicit cache breakpoints, a mandatory <code>prompt_cache_key</code> that partitions the cache, cache writes billed at 1.25x, a 30-minute minimum cache life, and no more partial-prefix matching. Teams that didn't reconfigure saw first-call hit rates near zero on shared static prefixes.</li>
+          <li><strong>Anthropic cut cache reads 75%</strong> and made the cache read the cheapest mainstream token in its catalog relative to list price.</li>
+        </ul>
+
+        <p>Three different moves — up, sideways, down — but they agree on the underlying claim: the cache is where agent economics live. When labs compete on a token category that didn't meaningfully exist for chat workloads two years ago, they're telling you who they think their customer is. It's not the person typing one prompt. It's the harness running a thousand turns.</p>
+
+        <h2>The Benchmarks Point the Same Direction</h2>
+
+        <p>The capability story and the pricing story are coherent, which is what makes this release more than a tariff tweak. On Anthropic's reported numbers, Fable 5.1 scores 55.8% on Terminal-Bench 4.0 versus Fable 5's 42.0% and Opus 5's 52.3%; the safeguard-relaxed Mythos 5.1 reaches 60.9%. On Terminal-Bench-Science 0.1, Fable 5.1 more than doubles its predecessor: 52.6% against 24.7%, with Opus 5 at 29.0%. AutomationBench jumps from 17.1% to 31.4%.</p>
+
+        <p>Notice where the gains concentrate. Not in single-turn code completion — CursorBench moves modestly, 70.5% to 73.4%. The doubling happens on long-horizon, multi-step, tool-heavy work: science workflows, automation, terminal sessions that run for hours. Exactly the workloads that are cache-dominated. Anthropic improved the model most on the tasks its new pricing makes cheapest to run. That's not a coincidence; that's a coherent bet on what the demand curve looks like. Vendor-reported numbers, to be clear — but the direction of the improvement matches the direction of the discount, and both point at long-running agents.</p>
+
+        <p>There's also now a genuine routing decision in the Claude lineup that didn't exist before. Opus 5 at $5/$25 is half the sticker price and still wins plenty of workloads. Fable 5.1 at $10/$50 with $0.25 cache reads is the long-horizon specialist. The comparison is workload-shaped: an agent that re-reads a large cached prefix hundreds of times can now be cheaper per completed task on the nominally "expensive" model. Model selection stops being a leaderboard lookup and becomes arithmetic on your own cache hit rate — which most teams don't know, and are about to need.</p>
+
+        <h2>The API Is Now Cache-Shaped</h2>
+
+        <p>For harness builders, the sharpest details in the release aren't the prices — they're the migration notes, because they reveal how much of the API surface is now designed around cache integrity. For API organizations created after August 31, applications can no longer alter the prefix before a preserved thinking block: the block that carries the model's reasoning state across requests must be reused exactly or dropped, not edited. Forcing a tool call with <code>tool_choice</code> can now return an error. And earlier Claude models cannot consume Fable 5.1 thinking blocks during cross-model handoffs.</p>
+
+        <p>Each of those is a constraint on the harness, not the model. A harness that interleaves its own content into the reasoning prefix, or routes conversations between models mid-session, now has to be rebuilt around the assumption that reasoning state is a cache-coherent artifact. When the API's breaking changes are all about prefix stability, the API is telling you what it's for: sustained, resumable, cache-dense agent sessions.</p>
+
+        <p>This lands on top of what measurement work already showed. The harness audits published this summer found coding harnesses writing up to 54x more cache tokens than each other on identical tasks, and an agent platform discovering that its entire cross-model cost gap was cache misconfiguration, not model pricing — fix the keys and hit rates, and the "expensive" model came out cheaper. Anthropic's 75% cut multiplies the stakes of that discipline. Cache stability used to be a nice optimization. At $0.25 reads versus $10 fresh input, a harness that busts its own cache is burning a 40x price difference on every turn. Prefix stability is no longer a performance property of your harness. It's the primary cost lever, and it's priced.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p><strong>Compute your cache hit rate before you compute anything else.</strong> Pull API logs and find what fraction of input tokens are cache reads, per workload — not in aggregate. That single number now determines which model is cheapest for you. Above roughly 80% hit rate on long sessions, Fable 5.1's arithmetic beats Opus 5's halved sticker price; below it, it doesn't. You cannot make this call from a pricing page.</p>
+
+        <p><strong>Audit prefix stability in your harness.</strong> Hash your tools array and system blocks across requests, the way the summer's harness audits did. If your system prompt varies per session, your memory writes land mid-prefix, or your subagents each carry distinct scaffolding, you're paying cache-write premiums and fresh-input rates on tokens a stable design would read for $0.25. That's a harness bug with a dollar figure now.</p>
+
+        <p><strong>Test the migration path before swapping the identifier.</strong> If you're on the Claude API with stored reasoning, forced tool calls, or cross-model fallbacks, change nothing in production until you've tested the full request path — preserved thinking blocks, <code>tool_choice</code> behavior, handoffs — not just the model string. The breaking changes are exactly in the places sophisticated harnesses are most likely to touch.</p>
+
+        <p><strong>Re-run your model bake-off with cache math included.</strong> Any evaluation you did last month priced Fable 5.1's predecessor at four times the cache-read cost. Rerun your two or three candidate models on your own tasks with current pricing and your real hit rates. The ranking will likely move, and it will move in favor of whichever model your harness caches best against — which is a property of your engineering, not the leaderboard. That coupling between harness design and unit economics is the core discipline of agent-first development, and it's the throughline of <a href="../book.html">Harness Engineering</a> for anyone building this layer.</p>
+
+        <p>A 75% cut on a token nobody talks about is the quietest possible announcement that the industry's unit of demand has changed. Chat was priced by the turn. Agents are priced by the reread — the cost of a mind maintaining its own context across a thousand steps. DeepSeek taxed it, OpenAI rearchitected it, Anthropic just made it nearly free at the frontier. The labs have stopped debating whether agents are the workload. They're now fighting over who owns its economics — and the winner is going to be decided less by whose model tops the next benchmark than by whose harness keeps its cache warm.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
