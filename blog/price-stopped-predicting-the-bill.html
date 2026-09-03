@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Price Stopped Predicting the Bill — Abuiliazeed</title>
+  <meta name="description" content="Gemini 3.8 Flash costs exactly what 3.7 Flash costs per token — and roughly 40% more per task, because the new model works harder. Per-token pricing has stopped predicting what agents actually cost, and the model's own diligence is now the biggest line item.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/price-stopped-predicting-the-bill.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/price-stopped-predicting-the-bill.html">
+  <meta property="og:title" content="The Price Stopped Predicting the Bill">
+  <meta property="og:description" content="Gemini 3.8 Flash costs exactly what 3.7 Flash costs per token — and roughly 40% more per task, because the new model works harder. Per-token pricing has stopped predicting what agents actually cost.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Price Stopped Predicting the Bill">
+  <meta name="twitter:description" content="Gemini 3.8 Flash costs exactly what 3.7 Flash costs per token — and roughly 40% more per task, because the new model works harder. Per-token pricing has stopped predicting what agents actually cost.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-09-03">September 3, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Price Stopped Predicting the Bill</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Google shipped Gemini 3.8 Flash on September 2 at exactly the same price as the model it replaces: $0.75 per million input tokens, $3.75 per million output tokens. Same sticker, third Flash release in six weeks, three points higher on the Artificial Analysis Intelligence Index. By every convention of the last two years — where falling per-token prices were the story — this was a straight upgrade at zero cost.</p>
+
+        <p>Except your bill goes up anyway. Artificial Analysis measured Gemini 3.8 Flash at roughly 40% more per task than 3.7 Flash, despite identical per-token pricing. The model didn't get more expensive. It got more diligent. On complex tasks it executes extra reasoning steps and calls tools iteratively — Google's own release notes say it "works harder" and "might use more tokens to maximize performance, especially at higher effort levels." More turns, more output tokens, more tool calls. Same price per token, more tokens per outcome.</p>
+
+        <p>This is the moment per-token pricing stopped being a useful comparison metric for agents. The unit that determines your spend is no longer something the price sheet controls. It's something the model decides, task by task, every time it chooses to verify its work or take another pass. And almost nobody's harness is built to manage that.</p>
+
+        <h2>What "Working Harder" Actually Costs</h2>
+
+        <p>Strip away the benchmark talk and an agent loop has three cost levers. Input tokens — the context you resend every turn. Output tokens — the model's reasoning and tool calls. And turns — the number of times the loop cycles. Per-token pricing lets a lab hold the first two constant in its marketing while the third quietly inflates your invoice.</p>
+
+        <p>Gemini 3.8 Flash is the cleanest demonstration yet because the delta is purely behavioral. Same family, same price, same speed class. The only thing that changed is how the model allocates its own effort. And the effort shows up in the benchmark gains: 3.8 Flash scores 59 on the AA Intelligence Index at high reasoning, level with GPT-5.6 Sol and Grok 4.6, and it outperforms most larger frontier models on DeepSWE v1.1, the long-horizon software engineering benchmark. The capability is real. So is the cost of producing it.</p>
+
+        <p>Artificial Analysis now publishes a derived metric that matters more than any price sheet: cost per Intelligence Index task. Gemini 3.8 Flash sits at $0.58 per task — the cheapest model at its intelligence level. Anthropic's Fable 5.1 costs about 6x more at $3.76 per task. That sounds like a clean win for Google, and at the model layer it is. But notice what the metric presupposes: that "intelligence per task" and "dollars per task" have diverged so far from "dollars per token" that a third-party evaluator had to invent a new unit to make model comparisons coherent again. When the evaluator becomes the pricing analyst, the price sheet has already failed.</p>
+
+        <p>There's also a deadline attached. The $0.75/$3.75 rate is an introductory price that expires December 31, 2026, doubling to $1.50/$7.50 in the new year. Combine a 2x price increase with a behavior profile that already runs 40% hotter per task, and the same workload costs roughly 2.8x more in January than the sticker price alone suggests. Anyone budgeting from the price sheet is budgeting fiction.</p>
+
+        <h2>The Leaderboards Saw It First</h2>
+
+        <p>The independent benchmarkers caught this dynamic before the market did, because they pay the bills themselves.</p>
+
+        <p>Boundary-Bench, which runs coding-agent harnesses on Terminal-Bench 2.1 tasks under hardened sandbox policies, published an August leaderboard where cost per run varied more than capability did. Grok Build with Grok 4.5 topped the strictest tier at 74.9% success for $123.50 per run. Codex with GPT-5.6 Sol hit 74.2% for $58.90 — statistically indistinguishable performance at half the cost. Claude Code with Fable 5 came in at 67.8% for $375.30. That's a 6.4x cost spread across agents whose success rates sit within seven points of each other. The cost variance isn't in the price per token. It's in how many tokens each harness-model pair burns getting to an answer.</p>
+
+        <p>The same pattern shows up inside a single harness. On DeepSWE v1.1 run through mini-swe-agent, Claude Opus 5 at max effort scored 74% (±4%) at $11.84 average cost per task, while GPT-5.6 Sol at max effort scored 73% (±3%) at $8.39. Overlapping confidence intervals, materially different bills. If you picked between these two on capability, the data says it's a coin flip. If you picked on the price sheet, you'd have no idea a 40% gap existed.</p>
+
+        <p>This is why the Artificial Analysis Coding Agent Index now tracks cost per task, token usage, and execution time alongside pass rates — and why its leaderboard is a grid of the same model appearing multiple times at different effort settings. The row that wins your workload isn't "the best model." It's a specific model at a specific effort level in a specific harness. Two of those three variables live in your harness, not in the provider's catalog.</p>
+
+        <h2>The Counter-Trend: Restraint as a Feature</h2>
+
+        <p>Here's what makes this week interesting rather than just inflationary. The same 48 hours that gave us a model that spends more to think harder also gave us a model advertising that it spends less.</p>
+
+        <p>Meta shipped Muse Spark 1.3 on September 2 — same day, same category, opposite pitch. The headline numbers are the usual leaderboard fare: 75.4 on DeepSWE v1.1, up from 55.0 for Muse Spark 1.2 and past Opus 5's 74.0; 88.8 on Terminal-Bench 2.1, tied with GPT-5.6 Sol; long-context retention of 98.5 on MRCR v2 at 256K–512K where GPT-5.6 Sol posts 91.5. But the number that should stop you is buried in the internal comparisons: Muse Spark 1.3 uses about 20% fewer tool calls and 25% fewer tokens than Muse Spark 1.2. Same price as 1.2. More capability, less consumption.</p>
+
+        <p>Meta also claims 1.3 is better calibrated on irreversible actions — it asks clarifying questions when a prompt is ambiguous and confirms before consequential steps. Read that through a cost lens, not just a safety lens: an agent that escalates ambiguity to a human instead of burning tokens on a confident guess is an agent with a lower expected cost per successful outcome. Calibration is token efficiency wearing a safety badge.</p>
+
+        <p>So the frontier is splitting into two behavioral profiles. One camp — Gemini 3.8 Flash is its purest expression — maximizes diligence: more verification, more tool iterations, more reasoning turns, and it charges you for the thoroughness. The other camp — Muse Spark 1.3, and the broader efficiency push behind models like Tencent's Hy4 preview, which posts Kimi K3-adjacent agent scores from roughly a quarter of the active parameters — treats restraint as the product: fewer calls, fewer tokens, escalation to humans when the model is out of its depth. Both camps are selling the same thing from opposite directions: per-task cost as a first-class capability metric.</p>
+
+        <p>Most people think model pricing is set by the lab and model behavior is fixed at training time. Actually, the highest-leverage cost decisions now happen at inference time, in the interaction between a model's effort profile and your harness's willingness to manage it.</p>
+
+        <h2>Effort Is a Dial, So Start Turning It</h2>
+
+        <p>The practical consequence is that effort — the model's own setting for how hard to work — has become a cost-control surface that most teams leave at maximum. Every major reasoning model now ships with effort tiers: Gemini 3.8 Flash's headline scores come at high reasoning; the Boundary-Bench and DeepSWE numbers above are all max or xhigh configurations; Artificial Analysis indexes the same model at low, medium, high, and max as distinct rows because they perform like distinct models. Anthropic ships "high" as the Claude Code default instead of max precisely because the top tier spends longer per attempt.</p>
+
+        <p>Treating effort as a harness-managed variable changes the economics of agent workloads. A triage pass at medium effort that classifies 80% of tasks correctly, followed by a max-effort run only on the tasks that fail or matter — that pattern can cut spend dramatically while matching blanket max-effort outcomes, because max effort is wasted on the easy majority. But almost no agent harness implements it. The effort level is set once, globally, usually to whatever the default is, and never revisited. That's the new uncapped resource — the 2026 equivalent of shipping agents with no token budget at all.</p>
+
+        <p>This is also why per-outcome measurement has stopped being optional. The gap between Gemini 3.8 Flash's $0.58 per intelligence task and Fable 5.1's $3.76 collapses the moment you ask what a task is worth in your codebase. A model that resolves your bug at $0.60 beats one that resolves it at $3.50; a model that fails at $0.60 and forces a retry beats neither. Cost per merged PR, cost per resolved issue, cost per verified fix — these are the numbers that make the effort dial tunable. Without them you're comparing price sheets, and we've established what those are worth.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p>Three concrete moves, in order of effort.</p>
+
+        <p><strong>Re-baseline your models by cost per task, not price per token.</strong> Take your current agent workload, run it against your top two or three candidate models at your default effort setting, and record tokens in, tokens out, tool calls, turns, and outcome for each task. Most teams discover a 2–5x per-task cost spread between models whose price sheets are within 2x of each other — the behavior gap dwarfs the price gap. If you can't run this in-house in a day, Artificial Analysis's per-task cost data is a reasonable prior, but your own harness changes the numbers enough that a local calibration always beats a published one.</p>
+
+        <p><strong>Sweep the effort dial before you sweep models.</strong> Run the same workload at medium and high effort and compare outcomes per dollar. In most codebases the medium-effort pass handles the bulk of routine work, and reserving max effort for the tasks that actually fail produces near-identical resolution rates at a fraction of the spend. The teams that did this with model routing last year — cheap default, frontier escalation — should recognize the play. Effort routing is the same move one layer deeper, and almost nobody has made it yet.</p>
+
+        <p><strong>Price the January increase into your architecture decisions now.</strong> If Gemini 3.8 Flash just became your workhorse on the strength of $0.75 per million input tokens, model the doubled 2027 rate against your observed per-task consumption — the 40% behavioral inflation on top of the 2x sticker increase. If the math still works, you've future-proofed. If it doesn't, you want to know in September, not when the invoice lands in January.</p>
+
+        <h2>The Real Unit of Account</h2>
+
+        <p>The industry spent two years optimizing a number — dollars per million tokens — that no longer determines what agents cost. What determines cost now is a behavioral quantity: how many tokens a given model-harness pair consumes turning an input into a verified outcome, at a chosen effort level, on your workload. The labs know this, which is why Google markets "cheapest model at its intelligence level" per task, why Meta markets token reduction percentages, and why the evaluators publish cost columns next to success rates.</p>
+
+        <p>The harness is where that behavioral quantity is actually managed — effort routing, loop limits, escalation policies, verification that stops a diligent model from verifying forever. That's the core argument of <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>, and it's never been more literal: the engineering discipline that determines your agent bill is no longer attached to the model at all. It's attached to the system you built around it.</p>
+
+        <p>Gemini 3.8 Flash is a genuinely good deal at $0.58 per task. Muse Spark 1.3's token discipline is a genuinely good deal too. But neither deal exists on the price sheet. Both exist at the intersection of a model's work ethic and your harness's ability to direct it. The price stopped predicting the bill. Start measuring the thing that does.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
