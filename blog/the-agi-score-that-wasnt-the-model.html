@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The AGI Score That Wasn't the Model — Abuiliazeed</title>
+  <meta name="description" content="OpenAI reported 98.6% on ARC-AGI-3 for GPT-6 Astra — run through a Responses API harness that retains reasoning across turns. Nvidia's scaffolding hit 100% on the same benchmark with Claude Opus 5 underneath. The AGI headline and the model are no longer the same thing.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-agi-score-that-wasnt-the-model.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-agi-score-that-wasnt-the-model.html">
+  <meta property="og:title" content="The AGI Score That Wasn't the Model">
+  <meta property="og:description" content="OpenAI reported 98.6% on ARC-AGI-3 for GPT-6 Astra — run through a Responses API harness that retains reasoning across turns. Nvidia's scaffolding hit 100% on the same benchmark with Claude Opus 5 underneath. The AGI headline and the model are no longer the same thing.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The AGI Score That Wasn't the Model">
+  <meta name="twitter:description" content="OpenAI reported 98.6% on ARC-AGI-3 for GPT-6 Astra — run through a Responses API harness that retains reasoning across turns. Nvidia's scaffolding hit 100% on the same benchmark with Claude Opus 5 underneath. The AGI headline and the model are no longer the same thing.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-09-04">September 4, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The AGI Score That Wasn't the Model</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>On Thursday, OpenAI launched GPT-6 Astra and declared the arrival of the "AGI era." The headline number: 98.6% on ARC-AGI-3, the hardest reasoning benchmark in circulation. Greg Brockman suggested future observers might look back at Astra as the model that marked AGI's arrival.</p>
+
+        <p>Here's the part of the announcement that matters more than the number. Buried in OpenAI's own evaluation notes: Astra's 98.6% was achieved running through a <strong>Responses API harness</strong> — one that retains reasoning state between turns and uses compaction to manage long contexts. OpenAI had previously demonstrated that those harness choices can substantially raise ARC-AGI-3 scores <em>without changing the underlying model</em>. The company's own fine print concedes the benchmark "measures Astra and OpenAI's agent systems together."</p>
+
+        <p>And then there's the inconvenient comparison. Nvidia's AVO system — pure scaffolding, no new model — separately hit <strong>100% on ARC-AGI-3's public set</strong> using Claude Opus 5 as its underlying engine. The same benchmark where Astra posts 98.6 has already been maxed out by last quarter's model wearing a better harness.</p>
+
+        <p>Most people will read this week's news as "OpenAI achieved AGI." The more accurate reading: <strong>the AGI claim and the model have quietly decoupled</strong>. We have entered the era where benchmark scores at the frontier measure systems, and the model is just the largest component — one that a sufficiently good harness can substitute for.</p>
+
+        <h2>What OpenAI Actually Announced</h2>
+
+        <p>To be fair to the announcement, Astra is a real training milestone, and the release is unusually transparent about what moved. It was OpenAI's largest training run to date — the first pretrained on more than 100,000 GPUs at the Stargate site in Texas, and the first release where earlier OpenAI models played a significant role in supervising training. On the raw capability rows, the gains are genuine: 97.6% on FrontierMath Tier 4 (against 83.0% for GPT-5.6 Sol and 87.8% for Anthropic's Fable 5.1), 96.0% on GPQA Diamond, 74.1% on the 113-task DeepSWE v1.1 agentic coding test.</p>
+
+        <p>But look at where the biggest jumps live. The standout results — ARC-AGI-3 at 98.6%, Terminal-Bench Science at 64.6% versus a public leaderboard that tops out at 30%, BenchCAD Vision2Code at 95.9% — are all benchmarks of <em>long-horizon agentic work</em>, not single-turn reasoning. And on every one of them, the score was produced by a model running inside a harness OpenAI engineered for the evaluation: reasoning state retained across turns, context compacted rather than truncated, notes persisted across context windows.</p>
+
+        <p>This is not cheating. It is the benchmark finally measuring the thing that matters. But it changes what the number means, and almost nobody is updating their mental model accordingly. A 98.6% ARC-AGI-3 score in 2026 is not a statement about a model. It is a statement about a <strong>model-plus-harness composite</strong> — and OpenAI, to its credit, says so in the notes that nobody reads.</p>
+
+        <h2>The Harness Substitution Effect</h2>
+
+        <p>The Nvidia data point deserves more attention than it's getting, because it's the cleanest controlled experiment in harness engineering we've seen from a major lab. Same benchmark, same public task set. Different model — one that's been commercially available for months — wrapped in AVO, Nvidia's agent scaffolding. Result: 100%. A perfect score, with no new frontier training run underneath.</p>
+
+        <p>Put the two announcements side by side and the arithmetic is uncomfortable. If Opus 5 plus better scaffolding scores 100%, and Astra plus OpenAI's harness scores 98.6%, then the marginal value of the largest training run in OpenAI's history — on this benchmark at least — is <em>negative 1.4 points</em> relative to the right harness wrapped around an older model.</p>
+
+        <p>That's glib, of course. Astra's advantages show up elsewhere: raw knowledge benchmarks, professional-domain reasoning, and per-task economics that OpenAI argues beat GPT-5.6 Sol at 57% lower cost per completed DeepSWE task. But the glib version points at something true: <strong>at the frontier, harness quality now substitutes for model quality to a degree that reorders the leaderboard.</strong> A one-year-old model in a state-of-the-art harness beats a brand-new model in a mediocre one. Not occasionally — systematically.</p>
+
+        <p>If you're building agents and still choosing models by comparing vendor benchmark tables, you are optimizing the smaller variable. The labs know this. It's why OpenAI changed the Codex harness alongside the model launch, and why the Astra announcement leads with agent capabilities rather than chat quality. The product being reviewed is no longer the model. It never really was.</p>
+
+        <h2>The Composite Score Era Was Already Starting</h2>
+
+        <p>This week didn't invent the phenomenon; it made it impossible to ignore. A few developments from the past month, all pointing the same direction:</p>
+
+        <ul>
+          <li><strong>Factory's ProgramBench results</strong> showed the same frontier models scoring 56.7 alone versus 89.3 in multi-role systems on identical tasks — a 32.6-point swing attributable entirely to system architecture, not model choice.</li>
+          <li><strong>Meta trained Muse Spark 1.3 across multiple agent harnesses</strong> so its behavior generalizes past one environment — a lab explicitly optimizing the model for the harness layer, not the reverse. Meta's engineers measured roughly 20% fewer tool calls and 25% fewer tokens versus the previous version on the same work. That's a harness-optimization dividend, not an intelligence dividend.</li>
+          <li><strong>OpenAI's own prior demonstration</strong> — cited in the Astra notes — that Responses API harness choices substantially raise ARC-AGI-3 scores without changing the model. The company essentially published the confound and then shipped a launch headline that depends on it.</li>
+        </ul>
+
+        <p>The pattern across all of them: the variance explained by the harness is now as large as, or larger than, the variance explained by the model. When a 32-point swing fits between "alone" and "orchestrated," and a perfect benchmark score fits inside a scaffolding wrapper, the model column in your comparison spreadsheet has stopped being the decisive one.</p>
+
+        <h2>Why "the Model Hit AGI" Is Now an Unfalsifiable Claim</h2>
+
+        <p>There's a deeper problem than score inflation. Once benchmark results measure composites, the AGI claim itself becomes unfalsifiable in the model-level sense — and, ironically, more true in the system-level sense.</p>
+
+        <p>Brockman acknowledged AGI remains a "gray, fuzzy thing," then suggested Astra might mark its arrival. On the evidence: a system — Astra plus OpenAI's harness — scored 98.6% on a benchmark designed to resist exactly this. Whether that constitutes AGI is a definitional question. But note what's doing the work in the sentence. It's not the weights. It's the weights <em>plus state retention, plus compaction, plus persistent notes, plus a tool loop</em>. Remove the harness and you don't have a model that scores 98.6%. You probably don't have a model that scores half that.</p>
+
+        <p>This has a practical consequence for every procurement decision, every build-versus-buy analysis, every "which model should we standardize on" meeting for the rest of the year. <strong>The question "is Astra better than Opus 5?" no longer has a model-level answer, because the only evidence anyone cites is system-level.</strong> Ask instead: "Astra in whose harness, against Opus 5 in whose harness, on which tasks?" That question has an answer. The other one doesn't.</p>
+
+        <p>The 100% AVO result is the existence proof. If scaffolding can close the entire gap to a perfect score, then the benchmark no longer separates models — it separates engineering teams. ARC-AGI-3 has, functionally, become a harness leaderboard with a model attached.</p>
+
+        <h2>The Defense: Why Composite Scoring Is Honest</h2>
+
+        <p>The strongest counterargument, and it's a good one: measuring composites is more honest, not less. Nobody deploys a bare model. Every production agent is a model inside a harness, and a benchmark that isolates the model measures a component nobody ships. Under this view, OpenAI disclosing the harness configuration is best practice, and Nvidia's result is a feature of the evaluation — it proves the benchmark detects real system capability.</p>
+
+        <p>Agreed — with one condition. Composite scores are honest only when the composite is disclosed and comparable. OpenAI mostly clears this bar: the harness details are in the notes, and the company flagged that cross-harness comparisons "aren't strictly apples to apples." The bar most vendors clear is lower. When your launch table mixes your model in your harness against competitors' models in <em>whatever harness you chose to run them in</em>, the comparison is engineered twice over. OpenAI's chart excludes Muse, uses a 67.4% Fable 5.1 DeepSWE result that sits below other reported numbers, and — by The New Stack's analysis — makes Astra's advantage appear larger than the broader results support, with uncertainty ranges overlapping at the top of the leaderboard.</p>
+
+        <p>The disclosure standard to demand from now on is simple: <strong>no composite score without the harness configuration attached</strong>. Model ID, reasoning effort, harness or scaffold version, context management strategy, number of attempts. If a lab won't publish that alongside the number, the number is marketing.</p>
+
+        <h2>What This Means for You</h2>
+
+        <p>If you build or operate agents, this week settles a debate that's been running all year, and it settles it in an inconvenient direction. The leverage you were told models would provide mostly lives in a layer you control — which is good news if you've been investing there, and expensive news if you haven't.</p>
+
+        <ul>
+          <li><strong>Re-read the Astra fine print as a free harness lesson.</strong> OpenAI told you exactly which system choices raise long-horizon scores: reasoning state retained across turns, compaction instead of truncation, persistent notes across context windows. Astra can keep notes across context windows and search earlier messages and tool output — experimental in <code>config.toml</code> today, default "in the coming weeks." If your harness discards state at every turn boundary, this is the gap between your results and the leaderboard, quantified.</li>
+          <li><strong>Never compare bare-model scores again.</strong> When a vendor table shows their model at 74 and a competitor at 73, ask which harness ran each. If the answer isn't "the same one, disclosed," treat the table as decoration. The DeepSWE leaderboard's top four — Astra, Gemini 3.8 Flash, Opus 5, Sol, within overlapping uncertainty — are separated by less than the harness effect Factory measured. Model choice at the frontier is now a tie-breaker, not a decision.</li>
+          <li><strong>Price the harness into model economics.</strong> Astra costs $10/M input and $50/M output — identical to Fable 5.1. At parity pricing, the differentiator is which model completes more work per token inside <em>your</em> loop. Meta's numbers make the point from the other direction: 25% fewer tokens per task is a harness-behavior result. Your harness is now a cost-control surface, not just a capability surface.</li>
+          <li><strong>Treat benchmark claims below the system layer as untestable.</strong> You cannot verify "Astra is smarter than Opus 5." You can verify "Astra beats Opus 5 on my tasks in my harness in a week." That's the only comparison that has ever paid a salary, and this week removed the last excuse for doing the other one.</li>
+        </ul>
+
+        <h2>One Benchmark Crossed a Line</h2>
+
+        <p>Something specific happened this week that's worth naming precisely, because it will happen again. For the first time, a major lab attached an AGI claim to a benchmark score that its own notes describe as harness-dependent — while a third party held a perfect score on the same benchmark with an older model and better scaffolding. Whatever you believe about artificial general intelligence, that specific conjunction means the headline number has stopped tracking the thing it's advertising.</p>
+
+        <p>The uncomfortable summary: the "AGI era," if this is it, did not arrive as a model. It arrived as a system property — state retention, context management, orchestration — that any sufficiently disciplined engineering team can now wrap around whichever frontier model they prefer. The labs will keep selling the weights. The scores are being produced one layer up.</p>
+
+        <p>If you want the layer that produces the scores, that's harness engineering. It's the discipline this whole newsletter exists to track — and this week, it became the only layer the AGI conversation is actually about.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
