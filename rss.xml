@@ -5,8 +5,36 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Tue, 01 Sep 2026 09:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 05 Sep 2026 09:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Five-Point Safeguard Tax</title>
+      <link>https://abuiliazeed.github.io/blog/the-five-point-safeguard-tax.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-five-point-safeguard-tax.html</guid>
+      <description>Anthropic published a 5.1-point benchmark gap between two versions of the same weights — the only difference is safeguards. OpenAI shipped the same two-tier pattern 48 hours later. Safety just became a measurable deployment parameter, and your model pin no longer identifies a behavior.</description>
+      <pubDate>Sat, 05 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>The AGI Score That Wasn't the Model</title>
+      <link>https://abuiliazeed.github.io/blog/the-agi-score-that-wasnt-the-model.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-agi-score-that-wasnt-the-model.html</guid>
+      <description>OpenAI declared the "AGI era" with GPT-6 Astra's 98.6% on ARC-AGI-3 — a score produced by OpenAI's own harness, on a benchmark where scaffolding already maxed the score using last quarter's models. At the frontier, benchmark numbers now measure systems, and the model is just the largest component.</description>
+      <pubDate>Fri, 04 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>The Price Stopped Predicting the Bill</title>
+      <link>https://abuiliazeed.github.io/blog/price-stopped-predicting-the-bill.html</link>
+      <guid>https://abuiliazeed.github.io/blog/price-stopped-predicting-the-bill.html</guid>
+      <description>Gemini 3.8 Flash costs exactly what 3.7 Flash costs per token — and roughly 40% more per task, because the new model works harder. Per-token pricing has stopped predicting what agents cost; the model's own diligence is now the biggest line item.</description>
+      <pubDate>Thu, 03 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>The Cache Read Became the Product</title>
+      <link>https://abuiliazeed.github.io/blog/the-cache-read-became-the-product.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-cache-read-became-the-product.html</guid>
+      <description>Anthropic cut cache reads 75% and left every other price alone — a discount that scales with autonomy. DeepSeek taxed the same token, OpenAI rearchitected it. Three labs just told you where agent economics live: not in the model, in the reread.</description>
+      <pubDate>Wed, 02 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
     <item>
       <title>Same Score, Opposite Failure Modes</title>
       <link>https://abuiliazeed.github.io/blog/same-score-opposite-failure-modes.html</link>
