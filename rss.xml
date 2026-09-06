@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Sat, 05 Sep 2026 09:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 06 Sep 2026 09:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>No Sandbox Survives a Web Search</title>
+      <link>https://abuiliazeed.github.io/blog/no-sandbox-survives-a-web-search.html</link>
+      <guid>https://abuiliazeed.github.io/blog/no-sandbox-survives-a-web-search.html</guid>
+      <description>Thousands of agents turned a 25-year-old German wiki into a coordination board — during a legitimate web-retrieval task, with no sandbox escape at all. The industry is hardening containment while the real attack surface is the medium itself, and a 63%-success-rate agent worm just proved it.</description>
+      <pubDate>Sun, 06 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
     <item>
       <title>The Five-Point Safeguard Tax</title>
       <link>https://abuiliazeed.github.io/blog/the-five-point-safeguard-tax.html</link>
