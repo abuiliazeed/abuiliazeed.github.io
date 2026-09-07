@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Most Expensive Command in Your Agent Is grep — Abuiliazeed</title>
+  <meta name="description" content="One ordinary 800-line pull request burned 156 million tokens — not because of the model, but because of how agents navigate code. Inside the context tax, and why bigger context windows make it worse.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-most-expensive-command-is-grep.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-most-expensive-command-is-grep.html">
+  <meta property="og:title" content="The Most Expensive Command in Your Agent Is grep">
+  <meta property="og:description" content="One ordinary 800-line pull request burned 156 million tokens — not because of the model, but because of how agents navigate code. Inside the context tax, and why bigger context windows make it worse.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Most Expensive Command in Your Agent Is grep">
+  <meta name="twitter:description" content="One ordinary 800-line pull request burned 156 million tokens — not because of the model, but because of how agents navigate code. Inside the context tax, and why bigger context windows make it worse.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-09-07">September 7, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Most Expensive Command in Your Agent Is grep</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Sonar just published a number that should stop every team running coding agents on a large repository: a single, ordinary pull request — about 800 lines of changes, the kind a senior engineer would describe as routine — consumed roughly <strong>156 million tokens</strong>. About 700 model round-trips. A context window that peaked at 459k tokens. Across a broader batch of similar PRs, the average was around 234 million context tokens and roughly $65 per pull request, with a median near $52.</p>
+
+        <p>Read the final diff of that PR and you'd finish in five minutes. So where did 156 million tokens go?</p>
+
+        <p>Not into reasoning. Not into generation. They went into <code>grep</code> — or more precisely, into the file reads that follow every grep, and then into the conversation history that carries those reads forward, turn after turn after turn. Sonar calls this the <em>context tax</em>, and their measurement of it, published September 1 alongside their new Vortex product, is the most precise public accounting I've seen of where agent token budgets actually go.</p>
+
+        <p>The conclusion is uncomfortable for anyone who thinks model pricing is their cost problem. It isn't. The most expensive command in your agent's loop is a text search.</p>
+
+        <h2>The Arithmetic of Residency</h2>
+
+        <p>The core mechanic is simple once you see it, and almost nobody accounts for it. A coding agent doesn't read a file once. On every new step, the model is re-sent the entire conversation so far as input. Prompt caching makes those repeated tokens cheap per unit — roughly 10% of input price — but you pay that discounted rate on every single turn.</p>
+
+        <p>Which means the true cost of a token isn't its size. It's <strong>its size multiplied by the number of turns it survives</strong>.</p>
+
+        <p>Sonar's example: read a 600-line file on turn 40 of a 512-turn session and you haven't paid for 600 lines once. You've paid for 600 lines across roughly 470 more turns. One unnecessary file read in their measured trace carried about 2.7 million cache-read tokens that a precise lookup would have delivered in roughly 0.33 million — a 9x difference on a single navigation step, compounded across the rest of the run.</p>
+
+        <p>This is why agent bills feel irrational. The unit economics of autocomplete were proportional to human typing speed — the world's most natural rate limiter. Agents broke that proportionality twice over: they generate their own next step (more turns), and everything they touch stays resident in context for the rest of the run (more tokens per turn). Agent cost is approximately <em>turns multiplied by resident context</em>. Grep-and-read storms are the worst possible combination: they add turns <em>and</em> raise the resident-context floor at the same time.</p>
+
+        <h2>Bigger Windows Made It Worse</h2>
+
+        <p>Here's the part that runs against the industry's favorite fix. Most people think the path out of context pressure is bigger context windows. Actually, bigger windows made the tax worse.</p>
+
+        <p>Sonar's traces show context windows routinely peaking between 450k and 975k tokens on ordinary pull requests — brushing the 1M-token ceiling that frontier models now ship with. When the window fills, the agent is forced to compact, and compaction means losing earlier context: the task definition, the constraints, the file it read forty turns ago that turns out to matter. So the failure mode isn't just cost. It's the agent quietly forgetting what it was doing and re-deriving it — paying the tax again.</p>
+
+        <p>A bigger window doesn't eliminate the tax. It extends the runway over which every resident token keeps compounding before the reset. You go from paying 600 lines × 470 turns to paying 600 lines × 900 turns, and you call it an upgrade. The 1M-token window didn't fix navigation economics. It deferred the bill and made the final number larger.</p>
+
+        <p>The correct framing: a large context window is storage, not retrieval. Humans solved this decades ago — we don't keep entire libraries on our desks. We built indexes. Your agent is sitting in a library with a flashlight, and you're paying for every page it touches by the hour.</p>
+
+        <h2>grep Finds Strings, Not Meaning</h2>
+
+        <p>The tax has a second, quieter half that costs more than tokens. A regex finds the strings you thought to search for — not the call that reaches your function through an interface, an alias, or a different programming language.</p>
+
+        <p>Sonar's own pull request is the perfect example, and it's almost too on the nose: the change they were building added call-site resolution to their Python backend, mirroring logic that already existed in a C# backend. The C# function was named <code>resolve_type_node</code>. The Python function was named <code>resolve_return_type</code>. A grep for one name will never surface the other. Cross-language changes — the kind that are simultaneously the most expensive and the most error-prone thing you can ask an agent to do — are structurally invisible to text search.</p>
+
+        <p>What grep misses doesn't stay missed. It becomes a failed build, another round-trip to CI, another session of context re-accumulation — each retry paying the token tax again from a fresh start. And in the worst case it doesn't fail at all: a missed call site reached indirectly through an interface often still compiles, passes the tests that don't exercise that path, and ships as a silent bug. The navigation deficit converts directly into correctness debt.</p>
+
+        <h2>The Graph Answer</h2>
+
+        <p>Sonar's response is SemSitter, a semantic navigation engine that maintains what they call a Unified Dependency Graph of the repository: every function, method, class, field, and parameter is a node; the relationships between them — calls, references, returns, implements, extends — are typed edges. Instead of asking the filesystem "which files mention <code>resolve_return_type</code>?", the agent asks the graph: "give me the definition this call binds to, the type that owns it, its return type, and its callers." It gets back one method body plus the edges that answer the question. No surrounding file, no six-way grep spiral, nothing to widen.</p>
+
+        <p>The measured results, across six real refactoring scenarios in Java, Python, TypeScript, and C#: cost reductions from 6% to 36% per run. The best case — a BloomFilter self-typing refactor in Java — went from $14.29 to $9.38 per run with 31% fewer input tokens. A SQLAlchemy compiler change came in 29% cheaper. A C# return-type refactor, 20% cheaper.</p>
+
+        <p>But the number I respect most in their entire publication is the one that <em>didn't</em> move: a TanStack refactoring task where savings were around 5%, and other task shapes where cost stayed within a few percent of baseline. Sonar states plainly that the engine "will not help on tasks where navigation is not the constraint." This is the honest boundary, and it maps exactly onto when you should care: if your agent's cost is dominated by build loops, long test suites, or tasks where sufficient context fits in a single pass, semantic navigation has nothing to accelerate. If your agent is grepping its way through a codebase bigger than its window — and on any real production repository, it is — the tax is already on your bill.</p>
+
+        <h2>Substitutive Beats Additive</h2>
+
+        <p>Buried in Sonar's engineering detail is a design principle that generalizes far past this one product, and it's the reason I'd take this launch seriously even if you never buy a SonarQube license.</p>
+
+        <p>A navigation tool can be <strong>additive</strong> — it returns the right symbols but not their locations, so the agent still has to grep to find the edit points, stacking the query on top of the search. Or it can be <strong>substitutive</strong> — it hands back a deduplicated list of <code>{file_path, line}</code> rows, one per affected source line, and the search step disappears entirely. Sonar's engine returns exact line anchors, which is precisely what makes it a cost win instead of a cost add-on. The difference between the two is not implementation detail. It's the difference between a tool that shrinks your agent's loop and a tool that grows it while feeling helpful.</p>
+
+        <p>This is the sharpest version of a test I'd apply to anything that wants to sit inside an agent's loop: does it replace turns, or add them? Tools that inject context but don't remove work are additive — they make the agent smarter and more expensive simultaneously. Tools that answer a question the agent would otherwise spend five tool calls approximating are substitutive. This distinction between additive and substitutive tooling is one of the core ideas in harness engineering — I devote a full chapter to it in <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em> — because it's the difference between a harness that compounds savings and one that compounds cost.</p>
+
+        <h2>The Industry Is Converging From Both Ends</h2>
+
+        <p>Sonar isn't alone in discovering that navigation, not reasoning, is the bottleneck. The same week, Meta shipped Muse Spark 1.3, and the headline claims weren't benchmark scores — they were <strong>20% fewer tool calls and 25% fewer tokens</strong> per comparable engineering task. Meta is training the model itself to grep less: fewer turns where unnecessary, less verbosity, cleaner navigation behavior. It's the same diagnosis arriving through the parametric route instead of the infrastructure route.</p>
+
+        <p>Both will matter, but they're not equal. A model trained to navigate more carefully is still guessing at structure it cannot see — it's a better blindfolded searcher. A graph the agent can query is sight. And the model-side gains get captured once per model generation, while infrastructure-side gains compound with codebase size: the bigger the repository relative to the window, the more every structural lookup saves. For the codebases where agents cost the most — the ones that don't fit in any window — the graph wins by construction.</p>
+
+        <p>Expect this layer to become standard harness furniture. The MCP ecosystem already made servers the integration point: Sonar's engine ships as a SonarQube MCP Server or CLI-installed skill, meaning Claude Code, Codex, Cursor, and anything else MCP-capable can query the same graph. Once one vendor proved the context tax is measurable and cuttable, every serious harness will grow an index. The terminal ate the IDE this year. Next year, the index eats the grep.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p>You don't need to buy anything to act on this. Three moves, in order of effort.</p>
+
+        <p><strong>Measure your residency multiplier.</strong> Pull the traces from a few representative agent sessions and compute two numbers: total round-trips, and resident context at the final turn. Multiply them and compare against your invoice. If your sessions run hundreds of turns on tasks whose diffs are a few hundred lines, navigation is your cost center, and no model downgrade will fix it — a cheaper model just greps more inefficiently for fewer dollars per turn.</p>
+
+        <p><strong>Kill the biggest over-reads.</strong> Before adding anything, subtract. Most harnesses re-read entire files after every edit when a diff would do. Most agents open files far wider than the symbol they need. Compacting tool output, truncating file reads to relevant ranges, and summarizing stale exploration are pure subtraction — they cut resident context on every remaining turn. Sonar's own data says a single avoided over-read is worth millions of cache-read tokens.</p>
+
+        <p><strong>Give the agent an index, not a flashlight.</strong> Try structural navigation on one codebase where agents burn the most money. Sonar's version requires their cloud Enterprise or Teams Annual tiers, but the pattern isn't proprietary: language servers already expose references, definitions, and type hierarchies, and wiring an LSP-backed tool into an agent's toolset gets you the substitutive queries — exact locations, no grep aftermath — without waiting for procurement. Measure cost per completed task before and after. That delta, on your repository, is the only benchmark that matters.</p>
+
+        <h2>The Bigger Picture</h2>
+
+        <p>Two years of agent economics have been argued as if the bill were a function of model pricing, and every pricing announcement has been covered accordingly. The context tax shows the premise is wrong. The bill is a function of <em>how the harness moves information into the loop</em> — and text search in a conversation that never forgets is close to the worst possible design.</p>
+
+        <p>The teams that internalize this will stop shopping for cheaper tokens and start engineering smaller loops: fewer turns, less residency, structural retrieval instead of textual scanning. That work is unglamorous and yields no leaderboard scores. It just shows up, month after month, as the difference between an agent infrastructure that scales and one that doesn't.</p>
+
+        <p>grep built the modern software world. It should not be allowed to unbuild your token budget.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
