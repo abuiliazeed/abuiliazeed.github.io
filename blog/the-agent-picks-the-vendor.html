@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Agent Picks the Vendor Now — Abuiliazeed</title>
+  <meta name="description" content="In 17,000 recorded coding-agent sessions, PayPal was mentioned 139 times and picked zero times. Stripe won 9 out of 10. The buyer of developer infrastructure is no longer a human — and most vendors haven't noticed.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-agent-picks-the-vendor.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-agent-picks-the-vendor.html">
+  <meta property="og:title" content="The Agent Picks the Vendor Now">
+  <meta property="og:description" content="In 17,000 recorded coding-agent sessions, PayPal was mentioned 139 times and picked zero times. Stripe won 9 out of 10. The buyer of developer infrastructure is no longer a human — and most vendors haven't noticed.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Agent Picks the Vendor Now">
+  <meta name="twitter:description" content="In 17,000 recorded coding-agent sessions, PayPal was mentioned 139 times and picked zero times. Stripe won 9 out of 10. The buyer of developer infrastructure is no longer a human — and most vendors haven't noticed.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-09-08">September 8, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>8 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Agent Picks the Vendor Now</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>139 mentions. Zero picks. That's PayPal's record when coding agents were asked to add payments to real applications. Adyen, the second-most-mentioned payment vendor in the same study, went 175 mentions and 3 picks. Stripe — the vendor agents settled on nine times out of ten — barely needed the introduction. It was simply what got wired in.</p>
+
+        <p>Those numbers come from Armature, an evaluation-infrastructure team that ran 16,893 coding-agent sessions across Claude Code, Codex, and Cursor, kept 5,292 as valid after judging, and published every trace on September 3, 2026. The setup was careful: 75 repositories across 10 languages, 1,163 prompt variations, four user personas, sandbox providers rotated to rule out infrastructure bias, and a judge model that separated which vendors got <em>mentioned</em> from which vendors actually ended up in the shipped code.</p>
+
+        <p>Most people think AI's influence on developer-tool adoption is a future problem — something to worry about when agents get better. The data says it's a present-tense measurement. Vercel reported back in April 2026 that over 30% of its deployments were agent-initiated, up 1000% in six months. When an agent writes the integration code, the agent is the buyer. The question is whether anyone is selling to it.</p>
+
+        <h2>Mentions Are Not Distribution</h2>
+
+        <p>The single most important distinction in the study is the gap between being known and being chosen. LangChain was the most-cited framework in the entire dataset — 194 mentions — and was picked 4 times. Netlify was mentioned 152 times and picked 6. Supabase drew more mentions than any other database at 242, and lost the category anyway to Neon, which took 66% of database picks.</p>
+
+        <p>This should unsettle anyone who runs developer marketing. The entire playbook — conference talks, sponsorships, SEO, devrel, Hacker News launches — optimizes for a metric that no longer converts: human recall. An agent doesn't care that it "knows about" your product. Every capable model knows about every product. The agent cares about a much colder calculation: given this repo, this task, and this persona's prompt, what's the implementation I can complete and verify with the least friction?</p>
+
+        <p>Brand awareness, in other words, buys you a mention. It does not buy you the pick. PayPal has arguably the strongest consumer payments brand on earth and converted at exactly 0%. LangChain has spent years saturating the AI-engineering discourse and converted at 2%. If your growth model assumes awareness → evaluation → adoption, be aware that the agent has collapsed that funnel into a single step it doesn't delegate back.</p>
+
+        <h2>Three Agents, One Task, Three Answers</h2>
+
+        <p>Here's the number that should change how you review pull requests: when Claude Code, Codex, and Cursor were given the <em>identical</em> task in the <em>identical</em> repository, all three landed on the same vendor only 42% of the time.</p>
+
+        <p>The voice-agent category is the extreme case. Asked to add voice capability, Claude Code wired in Twilio, Codex picked OpenAI's Realtime API, and Cursor chose Vapi. Three vendors, three architectures, one prompt. Your codebase's dependency footprint is now a function of which agent your team happened to run that afternoon.</p>
+
+        <p>The divergence isn't random — it traces back to how each agent gathers information. Codex searched the web in 94% of sessions, and nine out of ten of those searches used <code>site:</code> operators scoped to trusted domains — literally querying <code>site:auth0.com</code> for the answer to an auth question. Cursor searched in about two-thirds of sessions. Claude Code searched in only about 30%, leaning on training priors — except in fast-moving categories like sandboxes, where its search rate jumped to roughly 80% and it browsed about three times more pages per session than Codex when it did.</p>
+
+        <p>The practical consequence: <strong>Claude Code's picks skew toward whatever was popular at its training cutoff; Codex's picks skew toward whatever ranks well on vendor domains today.</strong> Those are two different distributions, and both are sellable-to — but through completely different surfaces. One is influenced by training-data footprint and what the ecosystem looked like months ago; the other is influenced by the content currently living on your docs site and how it ranks.</p>
+
+        <h2>Documentation Became a Sales Surface</h2>
+
+        <p>The most actionable finding in the study is also the smallest: in Go repositories, agents abandoned Mailgun after reading its free-tier limit of one day of log retention. Not after evaluating it — after reading one line of pricing documentation. Postmark won the Go email category 20 out of 24 times largely because its limits survived being read.</p>
+
+        <p>Your free-tier limits, your retention windows, your rate caps — these are no longer terms a human skims and accepts. They are machine-read constraints that an agent weighs against its own threshold for "will this complete the task without creating a problem my user will notice." Your pricing page is now an adversarial evaluation environment.</p>
+
+        <p>This reframes what documentation is for. Docs written for humans optimize for comprehension — narrative, examples, conceptual grounding. Docs read by an agent optimizing for task completion reward something else: unambiguous quickstarts, copy-pasteable snippets that work, explicit limits stated plainly, and correct, current code. The Mailgun example shows the stakes cut both ways: honest, legible limits cost it the category, but the answer isn't to hide them — agents that discover undisclosed limits mid-implementation will route around you anyway, and the traces showing why are increasingly public.</p>
+
+        <h2>The Repo Chooses Before the Agent Does</h2>
+
+        <p>If you want to predict what an agent will add to a codebase, don't look at leaderboards. Look at what's already there. Vercel won 100% of deployment picks in Next.js repositories and was never recommended in Python repositories, where Render dominated instead. The email category split entirely by language: Resend won in TypeScript, SendGrid in Python, Postmark in Go, Azure Communication Services in Java.</p>
+
+        <p>This is path dependence, mechanized. The first integration into a framework's default template compounds — every future agent working in that template inherits the choice. "Best overall" is a category that barely exists in agent decision-making; <em>"fits this repo"</em> is the only category. Vendors fighting for market share should be fighting for template slots and scaffold positions, not review-site rankings, because the template is the inheritance the agent can't be bothered to dispute.</p>
+
+        <p>There's one more wrinkle: Claude Code built a custom in-house implementation rather than reaching for any vendor in roughly 19% of sessions, nearly double Codex's and Cursor's ~10%. That's a harness-philosophy difference leaking into your architecture. A "buy vs. build" decision that you thought you'd delegated to a senior engineer is being made by a tool whose default posture you didn't choose. If your team runs multiple agents, you have multiple de facto procurement policies.</p>
+
+        <h2>The Human Checkpoint Moves Share</h2>
+
+        <p>The study's subtlest finding: when Armature inserted a "simulated human" into the loop — an orchestrator the agent had to check in with before implementing — the defaults shifted. In object storage, agents acting unprompted defaulted heavily to Amazon S3; once required to ask first, Cloudflare R2 started winning a meaningfully larger share of sessions.</p>
+
+        <p>Pause on that. The vendor outcome changed based on whether there was a conversation before the code. Defaults dominate when nobody's looking; deliberation — even a single synthetic checkpoint — reopens the decision. That's an argument for putting approval gates in front of dependency-adding actions that most teams haven't built yet. Not because agents are untrustworthy, but because the checkpoint is measurably where a different, possibly better, choice becomes possible.</p>
+
+        <p>This is harness design, not model behavior. The same model with a different action-approval policy produces a different stack. If you've read <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>, this is the thesis in miniature: the harness's decision points are the product decisions now.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p><strong>If you build a developer tool:</strong> stop measuring awareness and start measuring machine convertibility. Get your quickstart into an agent's context and see if it completes. State your limits plainly — hidden limits lose slower but lose worse. Fight for one default-template integration in your category; it's worth more than a quarter of devrel spend. And look hard at your <code>site:</code>-searchable surfaces, because Codex-style scoped search means your own domain is the only shelf you control.</p>
+
+        <p><strong>If you use coding agents:</strong> treat every dependency an agent adds as a decision someone on your team made without a meeting. Diff-review the vendor, not just the code — 42% agreement means another agent would have shipped you a different infrastructure bill. Add an approval checkpoint before new third-party services enter the repo; the data says that single gate changes outcomes. And know your agent's bias: Claude Code reaches for in-house builds and training-era favorites, Codex reaches for whatever ranks on vendor domains today. Neither is neutral.</p>
+
+        <p><strong>If you're watching the industry:</strong> note what didn't happen. No vendor "won AI distribution" through an announcement, a partnership, or a marketplace listing. Stripe won because a million training-corpora examples of Stripe integrations make it the lowest-friction path to a working implementation. Neon and Resend won on the margins where docs and DX were machine-legible. Distribution in the agent era is earned in the corpus and the quickstart — the two surfaces almost no one is actively managing.</p>
+
+        <p>The buyer changed. It happened quietly, one generated <code>package.json</code> at a time, and now there's a 5,292-session dataset proving it. The vendors that internalize this will treat their documentation like a sales team and their quickstart like a checkout flow. The ones that don't will keep winning mentions — 139, 175, 194 of them — and keep converting at numbers that begin with zero.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
