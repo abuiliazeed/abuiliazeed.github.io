@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Harness Went Free — Abuiliazeed</title>
+  <meta name="description" content="OpenAI just put the Codex harness behind a managed API and charged nothing for it. The layer teams spent two years building in-house — sessions, compaction, subagents, recovery — now costs $0. The question is what that buys OpenAI, and what it costs you.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-harness-went-free.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-harness-went-free.html">
+  <meta property="og:title" content="The Harness Went Free">
+  <meta property="og:description" content="OpenAI just put the Codex harness behind a managed API and charged nothing for it. The layer teams spent two years building in-house — sessions, compaction, subagents, recovery — now costs $0. The question is what that buys OpenAI, and what it costs you.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Harness Went Free">
+  <meta name="twitter:description" content="OpenAI just put the Codex harness behind a managed API and charged nothing for it. The layer teams spent two years building in-house — sessions, compaction, subagents, recovery — now costs $0. The question is what that buys OpenAI, and what it costs you.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-09-11">September 11, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Harness Went Free</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Zero dollars. That is the price of the most consequential agent infrastructure announcement of the year. On September 10, OpenAI shipped the <strong>Agents API</strong> into public beta: the Codex harness — the same machinery that runs sessions, orchestrates tool calls, compacts context, delegates to subagents, and recovers failed work for millions of Codex users — is now a managed service any developer can call. And OpenAI is charging nothing for the harness itself. You pay for the model tokens, the tools, and the sandbox compute. The orchestration layer, the part your team probably spent the last two years building and maintaining in-house, is free.</p>
+
+        <p>Most coverage treated this as a developer-experience story: faster prototyping, less boilerplate. That reading misses what actually happened. A harness is not boilerplate. It is the layer that decides when your agent gets more context, how subagents divide work, what survives a crash, and which model behaviors get amplified or suppressed. OpenAI just made that layer a free, default, vendor-operated dependency — and made it the harness <em>every new model ships against</em>. When the next model launch requires harness rework, the Agents API gets the rework for free, versioned with the model. Your in-house harness gets a backlog ticket.</p>
+
+        <p>The question worth asking is not "is the API good." It is what OpenAI buys by giving this away — and what it costs you to take it.</p>
+
+        <h2>What Actually Shipped</h2>
+
+        <p>Strip the launch post down to mechanics and you get a clean division of labor. Your application creates a durable session, gives it a task, and follows progress through streamed events or webhooks. OpenAI's side runs the loop: session lifecycle, orchestration, automatic context compaction as the session approaches its context limit, subagent delegation, and resumption after interruption. A turn is one cycle of work; a message to an idle session starts a turn, a message mid-turn steers it. Sessions persist their configuration, conversation, and saved work — you can come back days later and continue.</p>
+
+        <p>The design is more honest about the hard problems than most framework abstractions. The event model, for instance, distinguishes between a session being idle and a turn having succeeded — <code>agent.session.idle</code> means the session is ready for more input, not that the last turn worked. A completed turn can still contain failed tool calls. Anyone who has debugged a production agent knows that conflating "stopped" with "succeeded" is where silent corruption lives. The webhook taxonomy encodes lessons that usually cost teams a postmortem to learn.</p>
+
+        <p>Three capability choices stand out:</p>
+
+        <ul>
+          <li><strong>Automatic context compaction.</strong> The harness summarizes earlier work as the session nears its context limit, preserving what the agent needs to continue. Developers get workflows that span multiple context windows without implementing compaction themselves — historically one of the most delicate pieces of any long-running agent.</li>
+          <li><strong>Multi-agent out of the box.</strong> The harness breaks work into subtasks, delegates to subagents that each maintain their own context, runs them in parallel up to a configurable concurrency limit, and merges results. OpenAI cites a customer-reported fourfold latency reduction in subagent flows — vendor-reported, but directionally consistent with what parallel decomposition does.</li>
+          <li><strong>MCP as a first-class citizen.</strong> Agents connect to Model Context Protocol servers over HTTP, alongside custom functions and built-in tools like web search. The protocol layer didn't get bypassed; it got absorbed.</li>
+        </ul>
+
+        <p>And the compute story is the surprising part. The environment options are: an OpenAI-hosted sandbox, a partner sandbox, <em>your own infrastructure</em>, or no environment at all. Self-hosting works by connecting an executor — literally <code>codex exec-server</code> pointed at a remote URL OpenAI assigns — and the harness runs its commands inside your network, your VM, your Lambda function. OpenAI runs the brain; you can keep the hands at home.</p>
+
+        <h2>Why Free Is the Tell</h2>
+
+        <p>Most people think OpenAI makes money on models, so giving away tooling is generosity or ecosystem building. Actually, the free harness is the business model working exactly as designed — and understanding it explains the timing.</p>
+
+        <p>Follow the tokens. A managed harness with durable sessions, automatic compaction, and subagent fan-out is, mechanically, a machine for consuming tokens: it keeps agents running longer, restarts them instead of abandoning them, and multiplies them into parallel subagents. Every one of those behaviors bills at the model's API rate. OpenAI isn't waiving a fee; it is removing the last reason a cost-conscious team might cap agent runtime. The harness is not the product. The harness is demand.</p>
+
+        <p>The second reason is subtler and more strategic: <strong>the harness is how model capability reaches the market.</strong> OpenAI's own launch framing says it plainly — taking advantage of new model capabilities often means reworking your harness, and the Agents API provides versioned access to those capabilities with each model launch. When GPT-6 Astra introduced its experimental context mechanism in Codex — notes maintained across context windows, with previous windows searchable so the agent can retrieve earlier requirements and test results mid-task — that shipped into the managed harness on day one. If your harness is theirs, every model upgrade lands in your agent with zero migration work. If your harness is yours, every model upgrade is a project.</p>
+
+        <p>This is the same play that consolidated the model layer, one rung up the stack. Price the commodity layer at zero, and the differentiation everyone assumed lived there evaporates. Two years ago the question was "which model." A year of routing and open weights made that question mostly a price/perf optimization. Now the same compression is being applied to "which harness" — except this time it's not a market doing the compressing, it's a single vendor with the strongest position in the market.</p>
+
+        <h2>The Catch Is the Session, Not the Sandbox</h2>
+
+        <p>Here is where the launch stops being a gift. The obvious enterprise objection — data control — is real but narrower than it looks. The Agents API currently supports data residency only in the United States, and it does not support Zero Data Retention. That alone disqualifies it for a class of regulated workloads. But the detail that should concentrate minds is this: <strong>choosing a self-hosted sandbox does not make the API ZDR-eligible.</strong> You can run every command inside your own VPC and the limitation stands — because the harness, the session state, the compaction summaries, the subagent coordination all still live on OpenAI's side.</p>
+
+        <p>That asymmetry tells you where the lock-in actually moved. Everyone spent 2025 worrying about the model pin — being stuck on one vendor's weights. Routers and open weights largely solved that. The Agents API relocates the switching cost to the session layer: your agent's durable memory, its accumulated context, its resumable work all live in OpenAI's session store. Migrating a model is a config change. Migrating thousands of hours of accumulated agent state is a data problem with no export format. The harness went free the same week it became the thing that holds your agent's memory.</p>
+
+        <p>There is a mitigation, and it is genuinely to OpenAI's credit: the Agents API runs on the open-source Codex harness, whose codebase is public and inspectable. You can read the compaction logic. You can learn from the orchestration. You can even run the same harness yourself against other providers. The moat is not hidden code — it is operational state and upgrade velocity. That is a fairer fight than most platform plays offer. It is still a fight you should enter deliberately.</p>
+
+        <h2>What This Does to Harness Engineering</h2>
+
+        <p>A reasonable objection: if OpenAI gives away the harness, is harness engineering — the discipline this blog has championed, and the subject of my book, <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em> — now obsolete? I think the opposite is true, and the evidence is already in front of us.</p>
+
+        <p>Look at what the managed harness explicitly does not do. It does not decide what your agent should ask before it acts — Sierra's hyper-τ-bench showed the best fully-automated frontier configuration passing 23.9% of a real client engagement because it never interrogated the client, while an engineer with the same model passed 82.2%. That failure lived above the harness, in engagement structure. It does not decide which tools exist, what they cost, or how their failures should be interpreted — and this week's other launch made that layer vivid: Cognition's SWE-2 posts strong short-horizon numbers but degrades roughly twice as fast as frontier models when tasks run long, a property no orchestrator can compensate for if you've pointed it at the wrong model for long-horizon work. And it does not own your evals — the machinery that tells you whether any of this is working for <em>your</em> tasks, which remains the least commoditized asset in the stack.</p>
+
+        <p>The managed harness commoditizes the <em>mechanics</em> of agency: sessions, compaction, delegation, recovery. Those were hard problems in 2024. In 2026 they are becoming table stakes, and pretending your homegrown session manager is a differentiator is the new form of wasted engineering. What does not commoditize: tool design, steering policy, elicitation structure, evaluation, and the judgment of which parts of the loop to own versus rent. The discipline doesn't shrink. It moves up a floor — the same way cloud computing didn't end systems engineering, it just ended racking servers as a career.</p>
+
+        <h2>The Decision Framework</h2>
+
+        <p>Should you adopt it? The beta status and the data-handling limits make this less binary than the launch messaging suggests. A useful split:</p>
+
+        <ul>
+          <li><strong>Rent the harness when the work is exploratory or the leverage is speed.</strong> Internal tooling, prototypes, batch workloads with no residency constraints, anything where a failed session costs you an afternoon. The economics are unarguable — free orchestration plus token bills you'd pay anyway — and the webhook-driven architecture is a clean fit for event-driven systems.</li>
+          <li><strong>Own the harness when the session is the asset.</strong> If your product's value compounds inside accumulated agent state — customer context, long-running research, institutional memory about a codebase — holding that state in a US-only, no-ZDR vendor store is not an infrastructure choice. It is a business-model choice, and probably the wrong one.</li>
+          <li><strong>Study the harness either way.</strong> The Codex harness source is now reference material for how the highest-volume agent operation on earth handles compaction, turn semantics, and failure. Even teams that never adopt the API should diff their assumptions against it. The distinction between session-idle and turn-completed is worth the read on its own.</li>
+        </ul>
+
+        <h2>What to Do This Week</h2>
+
+        <ol>
+          <li><strong>Inventory your harness.</strong> List what your in-house agent loop actually implements: session persistence, compaction, subagents, recovery, steering. For each, mark whether it differentiates your product or merely operates it. Anything in the second column is a candidate for deletion-by-adoption.</li>
+          <li><strong>Run one workload through the beta.</strong> Pick something bounded with a measurable outcome, self-host the environment if the data is sensitive — the executor model makes this genuinely viable — and compare cost, latency, and success rate against your stack. You are testing two things at once: the harness quality and your team's switching friction.</li>
+          <li><strong>Check the data clause before the demo impresses anyone.</strong> US-only residency, no ZDR, no exemption for self-hosted sandboxes. If either constraint touches your compliance surface, the evaluation ends there — for now. Watch whether OpenAI broadens those controls; that single roadmap item will decide how much of the market this captures.</li>
+          <li><strong>Move one eval from vibes to numbers.</strong> The layer OpenAI just commoditized makes model and harness swap trivially easy — which makes your evaluation suite the only stable basis for choosing. Teams with real evals will treat the Agents API as one config among many. Teams without them will treat it as a religion.</li>
+        </ol>
+
+        <p>The harness went free this week. That is either great news or a trap depending on which side of the session store you end up standing. The engineers who benefit are the ones who understand that free infrastructure is never free — it is paid for in dependency, and the interest rate is set by whoever holds your agent's memory.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
