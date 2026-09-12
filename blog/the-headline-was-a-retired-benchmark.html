@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Headline Was a Retired Benchmark — Abuiliazeed</title>
+  <meta name="description" content="Cognition's SWE-2 posted 92.8% on Terminal-Bench 2.1 — a superseded benchmark — and 27.3% on the current Terminal-Bench 4. Both numbers are real. Only one made the headlines. What the gap tells you about picking models for long-horizon agent work.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-headline-was-a-retired-benchmark.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-headline-was-a-retired-benchmark.html">
+  <meta property="og:title" content="The Headline Was a Retired Benchmark">
+  <meta property="og:description" content="Cognition's SWE-2 posted 92.8% on Terminal-Bench 2.1 — a superseded benchmark — and 27.3% on the current Terminal-Bench 4. Both numbers are real. Only one made the headlines.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Headline Was a Retired Benchmark">
+  <meta name="twitter:description" content="Cognition's SWE-2 posted 92.8% on Terminal-Bench 2.1 — a superseded benchmark — and 27.3% on the current Terminal-Bench 4. Both numbers are real. Only one made the headlines.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-09-12">September 12, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Headline Was a Retired Benchmark</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>92.8% and 27.3%. Same model, same launch, same company's own comparison table — a 65.5-point spread between two numbers that are both real. The first is SWE-2's score on Terminal-Bench 2.1, and it led nearly every headline about Cognition's launch on September 10: the highest score in the table, ahead of Claude Fable 5.1 at 91.4% and GPT-6 Astra at 89.9%. The second is SWE-2's score on Terminal-Bench 4, where Fable 5.1 sits at 55.8% and Astra at 57.9%. Here is the detail that reframes both: Terminal-Bench 4 is the current edition of the benchmark. 2.1 is the superseded one. The row where SWE-2 leads is retired. The row where it trails by 28 points is live.</p>
+
+        <p>I noted this model in passing earlier this week as a long-horizon caveat inside a bigger story. It deserves the full treatment, because what happened here is bigger than one model having a weak spot. SWE-2 is the cleanest demonstration yet of a pattern that is quietly restructuring how model launches work: <strong>benchmark version skew has become a launch strategy.</strong> When suites saturate faster than they can be replaced, every release inherits a menu of benchmarks ranging from comfortably solved to genuinely open — and which ones lead the press release is a marketing decision, not a measurement one.</p>
+
+        <p>Most coverage read SWE-2 as "frontier coding at 64% off." The more accurate summary, derived entirely from Cognition's own published table, is stranger: it's an open-weight base model plus roughly five points, distributed evenly across everything, sold only inside one harness. Let's run the arithmetic.</p>
+
+        <h2>What Actually Shipped</h2>
+
+        <p>The mechanics first, because they matter for everything that follows. SWE-2 is Cognition's new coding model for Devin, post-trained from Moonshot AI's Kimi K3 — the 2.8-trillion-parameter open-weight MoE with 104 billion active parameters per token. It is available in Devin Desktop and Devin CLI, with rollout underway on Devin Web and Fusion. There are no published weights and no per-token API. There is no documented way to point your own harness at this model. If you want SWE-2, you use it inside Devin, and the cost figures Cognition quotes — 64% cheaper than Fable 5.1, roughly a quarter of Astra's cost — are mean dollars per rollout on their benchmarks, not token prices. The invoice bundles model, harness, scaffolding, and serving into one number that cannot be compared against anyone else's rate card.</p>
+
+        <p>The genuinely impressive part of the release is not any percentage. It's the trajectory efficiency. Cognition's prior model, SWE-1.7, had a documented habit of reading a codebase deeply before touching anything: median first real code edit at step 48. SWE-2 at medium effort makes that edit at step 18. Mean steps per run on FrontierCode 1.1 Main fall from 127 to 53. On that same benchmark, SWE-2 medium beats SWE-1.7's score while taking 58% fewer turns and costing 81% less. That came from a reinforcement learning setup that penalized wasted spend — training medium, high, and max effort tiers in a single run, with cost penalties tuned to the local slope of Kimi K3's Pareto frontier. This is exactly the kind of optimization agent teams should want more of: the model was explicitly trained to stop burning tokens on exploration theater.</p>
+
+        <p>But the efficiency gains and the capability claims sit in the same table, and the table has a shape nobody seems to have looked at.</p>
+
+        <h2>The Arithmetic Nobody Ran</h2>
+
+        <p>Line SWE-2's scores up against its own base model and something almost mechanical falls out:</p>
+
+        <ul>
+          <li>FrontierCode 1.1 Main: SWE-2 at 50.0% versus Kimi K3 at 44.2% — <strong>+5.8</strong></li>
+          <li>DeepSWE 1.1: 73.0% versus 68.5% — <strong>+4.5</strong></li>
+          <li>Terminal-Bench 2.1: 92.8% versus 88.3% — <strong>+4.5</strong></li>
+          <li>Terminal-Bench 4: 27.3% versus 21.5% — <strong>+5.8</strong></li>
+        </ul>
+
+        <p>Four benchmarks. Four gaps. All between 4.5 and 5.8 points. The post-training moved the <em>level</em>, not the <em>shape</em>. Wherever Kimi K3 is strong, SWE-2 is strong plus about five. Wherever K3 is weak — Terminal-Bench 4 being the clear case — SWE-2 is weak plus about five. That is a remarkably consistent result for a fine-tune, and it hands you a practical evaluation shortcut: look up the base model's score on whatever workload you actually run, add five points, and you have a better forecast than the launch headlines will give you.</p>
+
+        <p>It also sharpens the Terminal-Bench 4 problem from "soft spot" into structural fact. Yes, everyone drops when a benchmark gets harder. The interesting part is by how much, and the fall is not proportional. Going from Terminal-Bench 2.1 to 4, Claude Fable 5.1 loses about 35.6 points and GPT-6 Astra about 32.0. SWE-2 loses 65.5. Its base model loses 66.8. On long-horizon agentic work, SWE-2 does not merely sit below the frontier models — <strong>it degrades roughly twice as fast as they do when the task runs long.</strong> The post-training that reliably added five points everywhere could not touch the degradation curve at all.</p>
+
+        <h2>Degradation Rate Is the New Capability Metric</h2>
+
+        <p>For agent workloads, the degradation rate matters more than any single score, and here is the contrarian claim of this post: <strong>most model selection today optimizes the level and ignores the slope.</strong> A model's benchmark score is a snapshot of performance at the horizon length the benchmark happened to be written for. But an agent in production does not live at one horizon. It lives on a distribution of horizons, and the long tail of that distribution is where your costs, your failures, and your 3 a.m. pages come from.</p>
+
+        <p>Think about what a 2x degradation rate means mechanically. If model A holds capability twice as long as model B before falling off, then for any task at the edge of B's horizon, A is the difference between completion and a half-finished diff. Worse, degradation compounds inside an agent loop: a model that starts failing at step N produces errors that a supervising pass then tries to fix, extending the run into the region where it fails harder. The failure isn't just a miss — it's a miss that generates more failing work. This is why "it scored 92% on the short suite" is nearly worthless information for deciding what to put at the center of a long-running harness, and why the 27.3% is the only number in SWE-2's table you should plan against.</p>
+
+        <p>The same week made the point from a completely different direction. On September 9, the Rails team published Stage 2 of <em>Agents on Rails</em>, a benchmark that asks models to ship real-world features on a real application — 20 feature tickets, 90 minutes and $60 per run, generous by any standard. Stage 1, with small atomic tasks, was nearly solved: two models hit 92%. Stage 2's best result: GPT-6 Astra at <strong>35%</strong>, solving 21 of 60 runs. A small model that was Stage 1's most cost-efficient darling — GPT-5.6 Luna, which completed 46 of 63 atomic tasks for 90 cents — completed <strong>0 of 60</strong> feature tickets. The Rails team's diagnosis is worth quoting in substance: at atomic scale you can ship a model's work without checking; features require high-level planning, and a model that can't do that doesn't ship — it submits half-done jobs and skips the test suite entirely.</p>
+
+        <p>Two benchmarks, two teams, one message: the gap between "knows the framework" and "can ship the feature" is not closing this year, and the models that look best on yesterday's suites are not the ones that survive today's. Terminal-Bench 2.1 and Agents on Rails Stage 1 measure the same thing — short-horizon competence. Terminal-Bench 4 and Stage 2 measure what your agent actually does for a living.</p>
+
+        <h2>Why the Retired Benchmark Won the News Cycle</h2>
+
+        <p>It is tempting to call the coverage lazy, but the incentives run deeper than that. Terminal-Bench 2.1 is saturated — when the field spans 88 to 93%, the suite is no longer discriminating between frontier and non-frontier models; it is a backdrop. A saturated benchmark is nonetheless still useful to a launcher, for exactly the wrong reason: on a saturated suite, small differences read as decisive wins. "Top of the table, ahead of Anthropic and OpenAI" is a sentence you can only write on a benchmark everyone has nearly solved. On the live suite, the same table reads "trails by 28 points." Both sentences are true. One of them travels.</p>
+
+        <p>There is a second, subtler asymmetry. FrontierCode — where SWE-2's 50.0% sits within a point of Fable 5.1's 50.9% — is Cognition's own benchmark. It is, to be fair, a serious piece of evaluation design: 20-plus open-source maintainers, more than 40 hours per task, each maintainer defining what "mergeable" means in their own repo. It is also a house instrument, run by the company whose model tops it, with comparisons executed inside Cognition's own Devin CLI. None of that makes the numbers wrong. All of it belongs in the sentence where you repeat them. The strongest independent signal in the entire table is DeepSWE 1.1 — produced by Datacurve, not Cognition — where SWE-2's 73.0% genuinely beats Fable 5.1's 67.4% and sits just behind Astra's 74.1%. That is a real result. It is also the fourth-most-quoted number of the launch.</p>
+
+        <p>The pattern generalizes. As benchmark suites age, we will see more launches led by numbers from superseded or self-owned suites, with the live and independent numbers further down the page. The defense is not cynicism — it is reading tables instead of headlines. Three questions decode any launch table in under a minute: Is this benchmark the current edition? Who built and ran it? And what does the base model score — because post-training, as SWE-2 just demonstrated with almost mathematical neatness, tends to add a constant, not a correction.</p>
+
+        <h2>The Lock-In You Can't Benchmark</h2>
+
+        <p>One more layer, because it connects to the structural story of this moment. SWE-2 ships with no weights and no API — Devin only. That is not a temporary gap in the rollout; it is the product. Cognition trained a model whose headline advantage is trajectory efficiency <em>inside a specific harness</em>, and the only way to buy the efficiency is to buy the harness. The cost claims don't decompose, by design: "64% cheaper than Fable 5.1" describes dollars per rollout inside Devin, a figure that bundles model, harness, and serving into one opaque ratio.</p>
+
+        <p>This is the same consolidation pressure I wrote about when OpenAI made the Codex harness free, arriving from the opposite direction. OpenAI's play: commoditize the harness, capture the sessions. Cognition's play: fuse model and harness into a single purchasable object, so the model comparison and the harness comparison can no longer be separated. In both cases, the layer you thought you were choosing independently — the model — is being welded to a runtime someone else owns. SWE-2 may be the more honest version of the two, because at least it doesn't present the weld as a gift. But anyone assembling an agent stack this quarter should notice that "which model" is quietly becoming "whose runtime," and price the switching cost accordingly.</p>
+
+        <p>The evaluation discipline this demands is the one thing that hasn't commoditized. Your own harness, run against your own repository, measuring cost per solved task at your horizon distribution — that remains the only decision instrument that can't be gamed by a launch table. It is also, not coincidentally, the core practice of harness engineering as a discipline: treat the model as a swappable component and the evaluation loop as the asset.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <ol>
+          <li><strong>Compute your degradation slope.</strong> Take the model at the center of your harness and run the same task family at 2x, 5x, and 10x the horizon. Plot solve rate against horizon length. That curve — not any single benchmark score — tells you where your agent's wall is, and whether the model you just read about would move it.</li>
+          <li><strong>Check the edition date on every number in your decision docs.</strong> If your team's model-selection memo cites a benchmark, verify it's the current edition, note who runs it, and look up the base model's score if the candidate is a post-train. The plus-a-constant pattern means the base model's weaknesses are inherited, not fixed.</li>
+          <li><strong>Test the feature-ticket layer, not the atomic layer.</strong> The Agents on Rails Stage 2 corpus and protocol are public, with raw data in their ai-evals repo. Run your current default model on a handful of real feature tickets from your own backlog with a 90-minute budget. Most teams doing this for the first time discover their effective solve rate is nowhere near what their short-task evals implied.</li>
+          <li><strong>Refuse benchmarks that can't leave the vendor.</strong> A model you can't point your own harness at can't be evaluated on your terms — only on the vendor's. That's acceptable for a product you buy as a product. It's disqualifying for a component you were planning to compare.</li>
+        </ol>
+
+        <p>SWE-2 is a genuinely interesting release: a serious cost-penalty training technique, real trajectory efficiency, and a fine-tune so consistent it accidentally published its own fingerprint. But the launch's most durable lesson isn't about Cognition at all. It's that in a market where suites saturate in months, the gap between the current benchmark and the retired one is where launches go to hide — and the engineers who read tables instead of headlines are the only ones who will notice. The 92.8% was real. So was the fact that it stopped counting.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
