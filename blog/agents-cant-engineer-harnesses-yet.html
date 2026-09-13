@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agents Can’t Engineer Harnesses Yet — Abuiliazeed</title>
+  <meta name="description" content="HarnessDev is the first benchmark that scores the harness an agent writes instead of the answers it gives. The verdict: 67.8 versus a human-engineered 86.2, and self-improvement gains that agree with reality 53.1 percent of the time — a coin flip.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/agents-cant-engineer-harnesses-yet.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/agents-cant-engineer-harnesses-yet.html">
+  <meta property="og:title" content="Agents Can’t Engineer Harnesses Yet">
+  <meta property="og:description" content="HarnessDev is the first benchmark that scores the harness an agent writes instead of the answers it gives. The verdict: 67.8 versus a human-engineered 86.2, and self-improvement gains that agree with reality 53.1 percent of the time — a coin flip.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Agents Can’t Engineer Harnesses Yet">
+  <meta name="twitter:description" content="HarnessDev is the first benchmark that scores the harness an agent writes instead of the answers it gives. The verdict: 67.8 versus a human-engineered 86.2, and self-improvement gains that agree with reality 53.1 percent of the time — a coin flip.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-09-13">September 13, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">Agents Can’t Engineer Harnesses Yet</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>53.1 percent. That is how often an agent iterating on its own harness saw its benchmark feedback improve and its actual held-out performance improve too — the same direction, on tasks it had never seen. Flip a coin and you get 50 percent. When six frontier models were asked to build and then self-improve agent infrastructure, the signal that guided their engineering decisions was statistically indistinguishable from noise.</p>
+
+        <p>That number comes from <strong>HarnessDev</strong> (arXiv:2609.01437), published September 1 by a team spanning ByteDance Seed, Singapore University of Technology and Design, Georgia Tech, M-A-P, and TokenWave.AI. It is the first benchmark that does something this blog has argued for since its first post: it scores the <em>harness</em> — the runnable loop logic, tools, context handling, state, recovery, and stopping rules — instead of the answers the model produces inside one. Every other agent benchmark holds the harness fixed and varies the model. HarnessDev freezes the model question and asks a different one: can the model write the infrastructure its successors will run in?</p>
+
+        <p>The consensus answer in 2026 is yes — it is on every roadmap, in every keynote, embedded in the phrase "self-improving agents." The first rigorous measurement of that claim says: not yet, and the failure mode is not the one anyone predicted.</p>
+
+        <h2>What the Benchmark Actually Does</h2>
+
+        <p>HarnessDev is built around a clean separation: a <strong>creator</strong> model writes the harness; a separate <strong>executor</strong> model runs tasks inside it; an evaluator scores the results. That separation is the whole trick. When a harness fails, you can ask whether the harness is bad or whether the executor is weak — and by swapping executors, you can measure how much of a harness's performance is portable engineering versus co-adaptation to one specific model.</p>
+
+        <p>The benchmark has two stages. In <strong>Creation</strong>, the creator starts from a deliberately weak but runnable seed — file, search, and process primitives, no planner, no verifier, no retry logic, no stopping rule — plus a task-family spec and one to three development cases. It has to build a complete execution system from that. In <strong>Evolution</strong>, the creator starts from its own frozen harness and iterates against execution feedback from a 100-task SWE-bench Pro feedback set and all 89 Terminal-Bench 2.1 tasks, trying to improve downstream performance — with a 630-instance held-out SWE-bench Pro split whose scores are never shown to the creator, so it cannot overfit its version selection to them.</p>
+
+        <p>The scale is serious: 2,207 unique downstream instances across five benchmarks (SWE-bench Pro, Terminal-Bench 2.1, MLE-bench, EQ-Bench3, BrowseComp), six creators — Opus 4.8, GPT-5.5, Gemini 3.1 Pro, DeepSeek V4 Pro, Qwen 3.7 Max, and Seed 2.0 Pro — each building three harnesses per benchmark pair, all developed inside Claude Code 2.1.177 (GPT-5.5 used Codex 0.144.3). This is not a prompt-engineering demo. It is a controlled study of harness-writing as a capability.</p>
+
+        <h2>Creation: Capable, and Eighteen Points Behind</h2>
+
+        <p>Under self-evaluation — the creator also serves as executor — the best model is Opus 4.8 with an overall average of 67.8. The human-engineered reference systems average 86.2. An 18-point gap is not a rounding error; it is the distance between "generates working infrastructure" and "does infrastructure engineering."</p>
+
+        <p>The domain splits are more interesting than the headline:</p>
+
+        <ul>
+          <li><strong>Code:</strong> Opus 4.8 hit 69.3 on SWE-bench Pro against an 80.0 human reference. GPT-5.5 managed 32.8. Seed 2.0 Pro collapsed to 10.8.</li>
+          <li><strong>Terminal:</strong> Gemini 3.1 Pro led at 68.8 on Terminal-Bench versus an 88.8 reference.</li>
+          <li><strong>Search:</strong> the worst gap. GPT-5.5's best BrowseComp score was 52.6 against a 92.2 reference — a 40-point chasm.</li>
+          <li><strong>Writing:</strong> Opus 4.8 scored 84.6 on EQ-Bench3, <em>above</em> the 83.7 reference.</li>
+          <li><strong>ML experimentation:</strong> Opus (32.9) and Gemini (32.4) both beat the 24.0 reference medal rate on MLE-bench.</li>
+        </ul>
+
+        <p>Read that pattern carefully, because it is the paper's most useful finding. Where the harness's job is to <em>get out of the way</em> — writing, ML experimentation, domains where a competent executor plus basic plumbing wins — generated harnesses match or beat human references. Where the harness is the product — search, where the reference systems encode years of iteration on query strategy, result triage, and stopping behavior — the gap is enormous. Models can generate the mechanics of agency. They cannot generate the accumulated judgment.</p>
+
+        <p>The failure attribution makes this concrete: <strong>77.8 percent of failed data tasks were attributed to harness defects, not executor capability</strong>. The bottleneck was not the model running inside the loop. It was the loop.</p>
+
+        <h2>The Executor Swap Is the Real Story</h2>
+
+        <p>Here is the result that should reorganize how you think about the harness market. When HarnessDev re-ran every generated harness under a single fixed executor — Gemini 3.1 Pro — the rankings fell apart.</p>
+
+        <p>Opus 4.8's SWE-bench Pro score fell from 69.3 to 33.0. Same harness. Same tasks. Only the model executing it changed. Its duplicate-search rate on retrieval work jumped from 10.1 percent to 88.2 percent, and the audit found the Opus-built system had effectively hard-coded a 120-step limit around its original executor's behavior. Meanwhile Qwen's harness <em>gained</em> 17.6 points on BrowseComp and 12.9 on MLE-bench under the stronger executor. Some harnesses were holding their creators back. Others were built so specifically for their creators that they were unusable by anyone else.</p>
+
+        <p>The paper calls this <em>creator co-adaptation</em>. It has an uncomfortable implication for everything the industry is currently shipping. The pitch of managed harnesses — OpenAI's Agents API being last week's headline example — is that the orchestration layer is model-agnostic plumbing you can rent once and run anything through. The HarnessDev data says generated harnesses at least are not plumbing. They are shaped around a specific executor's habits: its typical trajectory lengths, its failure modes, its tolerances. Write a harness with one model and swap the executor, and you may have changed nothing about your system except its performance — by 36 points, in Opus's case.</p>
+
+        <p>This is also evidence for something harness engineers have said anecdotally for a year and now have numbers for: harness and model are co-designed whether you intend it or not. The question is whether your co-design is deliberate — tested across the executors you might run — or accidental, discovered the day a model deprecation forces a swap.</p>
+
+        <h2>Evolution: The Self-Improvement Story Meets a Coin Flip</h2>
+
+        <p>The Evolution stage is where HarnessDev is at its most brutal, because it tests the exact claim the "self-improving agent" narrative rests on: take execution feedback, improve the system, repeat.</p>
+
+        <p>The headline numbers look fine. All five self-runtime creators improved their visible feedback scores. All five declared final versions improved over their starting harness on held-out tasks — gains of +1.43 to +4.44 points, mean +3.11. Opus 4.8 delivered one genuinely impressive diagnosis: it noticed that 99 of 100 runs reported success while only 48 actually passed, traced the gap to premature completion, and added a completion gate to the harness. That is real debugging of control flow.</p>
+
+        <p>Then you read the fine print. Across nine lineages producing 73 official versions and 64 adjacent version switches, feedback scores and held-out scores moved in the same direction 34 times — 53.1 percent. Only 2 of 9 declared final versions were the best held-out version. Agents were repeatedly selecting "improved" versions that were worse on tasks they hadn't seen, because the visible feedback signal was too noisy to optimize against. Under the fixed Gemini executor, only Opus improved on held-out tasks at all; the other three lineages regressed, GPT-5.5 by 10.32 points.</p>
+
+        <p>In other words: <strong>the models can write harness code, and they cannot tell whether their edits helped.</strong> Generation is solved-ish. Evaluation — deciding which of your own changes to keep — is not. And the paper adds a detail anyone who has watched an agent churn will recognize: the dedicated trajectory interface for failure diagnosis was called only twice. The models would rather rewrite than read their own execution traces.</p>
+
+        <h2>Dead Code and the Volume Fallacy</h2>
+
+        <p>One more finding deserves its own paragraph because it will map onto your production experience. Across 18 generated systems, the models added 17,111 net lines of code — and code volume did not predict quality. Gemini 3.1 Pro added the fewest lines and led Terminal-Bench. Worse, much of the added machinery did nothing: of 108 code component instances, 18 never fired at runtime, all in state and memory handling. In the writing domain, 124 of 587 features were dead code.</p>
+
+        <p>Agents write infrastructure the way they write everything else — maximally, defensively, with features that exist to satisfy the plan rather than the execution. A harness component that never runs is worse than no component: it costs context window, misleads future edits, and creates the appearance of capability — recovery logic! memory! — that audit shows is inert. If you are letting an agent build tooling around itself and reviewing diffs by skim, this is your reminder that runtime instrumentation beats code review for this class of system.</p>
+
+        <h2>What This Means for Harness Engineering</h2>
+
+        <p>The optimistic read of HarnessDev — models wrote functional harnesses from a weak seed, beat human references in two domains — and the pessimistic read — eighteen points behind, coin-flip self-improvement, near-zero portability — are both true. The synthesis is that <strong>harness development is not reducible to code generation</strong>, which is precisely why the discipline this benchmark names is safe for now. Writing the loop is the easy part. Diagnosing why the loop failed, predicting whether a change generalizes, and knowing which executor a harness is secretly shaped around — those are engineering judgments, and the benchmark shows current models possess them only inconsistently.</p>
+
+        <p>There is a spectrum worth internalizing here, and it runs from "let the model draft the harness" to "let the model own the harness." The data supports the first and demolishes the second. Generated first drafts that a human then audits against runtime traces are already competitive in well-bounded domains. Autonomous evolution loops with noisy selection are, today, a machine for accumulating dead code and overfitting your eval set. The practical architecture is a human in the version-selection loop, not the code-writing loop — you review which changes ship, not which lines get typed. That division of labor is the core of harness engineering as I lay it out in <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>, and this paper is the first controlled evidence for why the version-selection job can't be delegated yet.</p>
+
+        <p>It also settles a Tuesday-afternoon argument you may have had: whether your team's hand-built harness is obsolete now that agents can generate one. HarnessDev says your harness — with its years of encoded failure lessons — is exactly the asset the generated ones can't replicate. The 86.2 reference didn't come from a smarter model. It came from survived production.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <ol>
+          <li><strong>Instrument before you generate.</strong> If you're letting agents write any part of your harness, add coverage tracking first. The paper's dead-code finding (18 of 108 components never firing) is fully detectable with cheap runtime instrumentation, and invisible in code review. Anything the agent adds that never executes gets deleted, not refactored.</li>
+          <li><strong>Test every harness change across two executors.</strong> The executor-swap collapse (69.3 → 33.0) is the cheapest insurance policy in this paper. Before merging a harness change, run your eval subset under your current model and your fallback model. If the change only helps one, you've found co-adaptation — decide deliberately whether that's acceptable, don't inherit it accidentally.</li>
+          <li><strong>Stop trusting a single feedback number to pick versions.</strong> 53.1 percent agreement with reality means single-run feedback is not a selection signal. If an agent is iterating on its own tooling, require it to report held-out or at minimum multi-seed results before you accept a "better" version. Two of nine declared optima should scare you.</li>
+          <li><strong>Read the paper's Evolution protocol and copy it.</strong> Visible feedback set, disjoint held-out set, frozen official versions, adjacent-switch bookkeeping — this is a production-grade harness CI design disguised as a benchmark methodology. It is more actionable than most vendor whitepapers this month.</li>
+        </ol>
+
+        <p>The self-improving agent story assumes the agent can judge its own work. HarnessDev just measured that assumption at scale and returned 53.1 percent. Harness engineering as a human discipline survives this benchmark — and for the first time, it has a benchmark of its own.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
