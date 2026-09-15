@@ -5,8 +5,43 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Thu, 10 Sep 2026 09:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 15 Sep 2026 09:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Agent That Picks the Script</title>
+      <link>https://abuiliazeed.github.io/blog/the-agent-that-picks-the-script.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-agent-that-picks-the-script.html</guid>
+      <description>Sourcegraph's Agentic Batch Changes merged nearly a thousand changesets in beta — by routing most of the work to scripts instead of models, and charging only for merged pull requests. With Devin Fusion and OpenAI's free Agents API, the routing layer just became the product.</description>
+      <pubDate>Tue, 15 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>The Benchmark You Can't Download</title>
+      <link>https://abuiliazeed.github.io/blog/the-benchmark-you-cant-download.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-benchmark-you-cant-download.html</guid>
+      <description>On private production codebases, the best coding agent in the world resolves 38.8% of tasks — while the same models post 50%+ on public leaderboards the same week. Real-SWE just made evaluation data private, and it changes what a model choice even is.</description>
+      <pubDate>Mon, 14 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Agents Can’t Engineer Harnesses Yet</title>
+      <link>https://abuiliazeed.github.io/blog/agents-cant-engineer-harnesses-yet.html</link>
+      <guid>https://abuiliazeed.github.io/blog/agents-cant-engineer-harnesses-yet.html</guid>
+      <description>HarnessDev is the first benchmark that scores the harness an agent writes, not the answers it gives. The verdict: 67.8 vs a human-engineered 86.2, an 18-point executor-swap collapse, and self-improvement signal that agrees with reality 53.1% of the time — a coin flip.</description>
+      <pubDate>Sun, 13 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>The Headline Was a Retired Benchmark</title>
+      <link>https://abuiliazeed.github.io/blog/the-headline-was-a-retired-benchmark.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-headline-was-a-retired-benchmark.html</guid>
+      <description>Cognition's SWE-2 leads every model on Terminal-Bench 2.1 at 92.8% — a superseded benchmark. On the current Terminal-Bench 4 it scores 27.3%. Both numbers are real; only one made the headlines. Why degradation rate, not level, should pick your agent's model.</description>
+      <pubDate>Sat, 12 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>The Harness Went Free</title>
+      <link>https://abuiliazeed.github.io/blog/the-harness-went-free.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-harness-went-free.html</guid>
+      <description>OpenAI put the Codex harness behind a managed API and charged $0 for it — free sessions, compaction, subagents, recovery. The layer teams spent two years building is now a vendor default. What that buys OpenAI, and what it costs you.</description>
+      <pubDate>Fri, 11 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
     <item>
       <title>The Agent That Didn't Ask</title>
       <link>https://abuiliazeed.github.io/blog/the-agent-that-didnt-ask.html</link>

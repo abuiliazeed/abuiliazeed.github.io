@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Agent That Picks the Script — Abuiliazeed</title>
+  <meta name="description" content="Sourcegraph's Agentic Batch Changes merged nearly a thousand changesets in beta — and the most important detail is what the agent refused to do: it routed most of the work to scripts, not models, and charged only for merged pull requests. The routing decision is becoming the product.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-agent-that-picks-the-script.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-agent-that-picks-the-script.html">
+  <meta property="og:title" content="The Agent That Picks the Script">
+  <meta property="og:description" content="Sourcegraph's Agentic Batch Changes merged nearly a thousand changesets in beta — and the most important detail is what the agent refused to do: it routed most of the work to scripts, not models, and charged only for merged pull requests. The routing decision is becoming the product.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Agent That Picks the Script">
+  <meta name="twitter:description" content="Sourcegraph's Agentic Batch Changes merged nearly a thousand changesets in beta — and the most important detail is what the agent refused to do: it routed most of the work to scripts, not models, and charged only for merged pull requests. The routing decision is becoming the product.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-09-15">September 15, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>8 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Agent That Picks the Script</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Nearly a thousand changesets merged across enterprise codebases during a beta program — and the most consequential detail in the announcement is what the agent <em>refused</em> to do. When Sourcegraph took Agentic Batch Changes to general availability on September 14, the pitch was one prompt planning, executing, and tracking a change across hundreds or thousands of repositories. But buried in the mechanics was a routing decision that should reorganize how you think about agent architecture: for each unit of a plan, the coordination agent decides whether the work needs a coding agent — <strong>or, more often, a script</strong>. Sourcegraph's own language is blunt about why: "it avoids paying for a coding agent to work out the same change a hundred times over."</p>
+
+        <p>Read that again. The product's headline capability is an agent whose intelligence is spent deciding when <em>not</em> to use a model. In a year where every vendor is racing to put more agent into everything, the most production-hardened entrant in large-scale code change shipped with <em>model minimization</em> as a core feature. That is not a compromise. It is the correct answer, arrived at from the direction nobody was looking.</p>
+
+        <p>Most people think the agent revolution means models doing more of the work. The actual production frontier is agents doing less of it — deciding, per task, where judgment is required and where determinism wins. The routing layer is becoming the product. Everything else is a commodity it routes between.</p>
+
+        <h2>What Sourcegraph Actually Shipped</h2>
+
+        <p>The mechanics matter, because the design choices are the argument. An engineer describes a change once, in plain language. A coordination agent uses Sourcegraph's code intelligence — the indexing layer the company has run over some of the world's largest codebases for years — to scope the work across the customer's indexed repositories. It builds a plan, then <strong>validates its approach in a single repository before generating the full set of diffs</strong>. Only after the approach survives contact with one real repo does it fan out, pushing changes in batches, handling variation between repositories, reacting when CI fails, and tracking merge status for every pull request in one place.</p>
+
+        <p>Three design decisions stand out:</p>
+
+        <ul>
+          <li><strong>Validate-then-fan-out.</strong> The agent proves the change on one repository before multiplying it across a thousand. This is the same pilot-then-scale discipline good engineers apply manually, encoded as architecture. Most agent products skip it; they treat every repo as a fresh roll of the dice.</li>
+          <li><strong>Route to the cheapest sufficient executor.</strong> Where a change needs judgment, the coordination agent delegates to Claude Code or Codex, with repository-specific instructions and codebase context delivered through the Sourcegraph MCP server. Where it doesn't — which is most of the time at scale — a script does the work. Same output, zero tokens, zero variance.</li>
+          <li><strong>Humans stay in the merge path.</strong> Engineers see diffs as they're generated and approve every changeset before it merges. The autonomy is in the throughput, not the gate.</li>
+        </ul>
+
+        <p>The foundation under all of it is scale: Sourcegraph says Batch Changes, the deterministic predecessor to this product, already merges <strong>half a million changesets a year</strong> for the world's largest enterprises. That install base is why the agentic version could accumulate nearly a thousand merged changesets in beta with early adopters, and why Sourcegraph Cloud customers get it first. Support covers GitHub, GitLab, Bitbucket Server, Bitbucket Cloud, Azure DevOps, and Gerrit — the forge list itself signals who this is for.</p>
+
+        <h2>The Routing Decision Is the Product</h2>
+
+        <p>Here is the contrarian claim, and I think the week's evidence backs it: <strong>the most valuable intelligence in an agent system is not the code-writing capability. It is the router.</strong></p>
+
+        <p>Consider what a cross-repo change actually decomposes into. A thousand repositories need a dependency bumped, an API call migrated, a deprecated pattern replaced. The variation between repos is real but bounded: different import paths, different test setups, a few genuinely weird cases. The naive architecture sends a frontier model into every repository and pays for it to rediscover the same change a thousand times — with a thousand chances to hallucinate something novel. The Sourcegraph architecture sends the model in once, to figure out <em>the shape</em> of the change, and then sends a script everywhere the shape holds, escalating back to an agent only where it doesn't.</p>
+
+        <p>This is not a new insight in computing. It is the oldest one: interpret once, compile everywhere. What's new is that the interpreter is a frontier model, the target code is your entire portfolio of repositories, and the decision of when to re-invoke the interpreter is itself being made by a model. The agent's job has quietly shifted from <em>doing the work</em> to <em>classifying the work</em>: judgment or script? agent or tool call? frontier model or cheap one?</p>
+
+        <p>Classification is where the money is, and not only because scripts cost nothing. Every unnecessary model invocation is not just expense — it is variance. A script that renames a function in 400 repos either works or fails loudly. A model asked to do the same 400 times produces 400 slightly different interpretations, and now your review burden scales with your autonomy. The routing layer is also, without anyone naming it, a <strong>reliability layer</strong>. Determinism isn't a fallback for when intelligence is too expensive; it is the correct default for the class of tasks where surprise is a defect.</p>
+
+        <h2>The Rest of the Week Agrees</h2>
+
+        <p>Sourcegraph's routing is the infrastructure-grade version of a pattern that surfaced three separate times in the same news cycle — which is usually the sign of a structural shift rather than a coincidence.</p>
+
+        <p>On September 13, Cognition released <strong>SWE-2</strong>, a coding model post-trained from Kimi K3 via reinforcement learning, reporting 50.0% on FrontierCode 1.1 Main — within a point of Fable 5.1 — at <strong>64% lower cost</strong>. A day later, Cognition launched <strong>Devin Fusion</strong>, a two-agent architecture that pairs a frontier lead (recommended: Fable 5.1) handling planning and review with SWE-2 as a cheaper "sidekick" executing implementation and exploration. That is a routing architecture: classify the subtask, spend frontier tokens only where planning and review live, run execution on the model whose capability-per-dollar was tuned for exactly that lane.</p>
+
+        <p>And on September 10, OpenAI shipped the <strong>Agents API</strong> in public beta — the Codex harness exposed as a managed service, free beyond token costs, with versioned harness improvements riding along with each model launch. When the harness is free, the model is metered, and the routing between them is yours, the routing layer is the only place left where architecture creates leverage. OpenAI commoditized the loop; Sourcegraph and Cognition are competing on the dispatcher.</p>
+
+        <p>Line up the three announcements and a single thesis falls out: <strong>model capability is being unbundled from where it is applied.</strong> The frontier model is no longer the system. It is the most expensive executor in a pool of executors that includes scripts, small models, post-trained specialists, and cheaper frontier tiers. The system is the thing that decides.</p>
+
+        <h2>Outcome-Based Pricing Is the Tell</h2>
+
+        <p>The other half of Sourcegraph's announcement deserves more attention than it will get: <strong>the coordination agent is priced per changeset merged</strong>. If it opens a pull request and the team decides not to merge it, the customer doesn't pay for that pull request.</p>
+
+        <p>This is a bigger deal than a pricing gimmick, because per-token pricing has spent the past year quietly breaking. When the same model consumes four times the tokens to do marginally more work depending on its harness, its diligence, or its cache luck, the token stops being a unit of value and becomes a unit of effort — and customers don't want to buy effort. They want to buy outcomes. Every "why is our agent bill unpredictable" conversation inside engineering leadership is a complaint that the industry is selling the wrong thing.</p>
+
+        <p>Outcome pricing also realigns the vendor's incentives in a way token pricing never could. Under per-token pricing, a vendor profits when the agent works harder. Under per-merged-changeset pricing, Sourcegraph profits when the agent works <em>better</em> — and the single most reliable way to make an agent better is to route more of its work to the executor that never fails: the script. The pricing model and the routing architecture are the same idea expressed in two domains. A vendor charging for outcomes has a direct financial incentive to be the agent that picks the script.</p>
+
+        <p>Expect resistance from the incumbent labs, for the obvious reason: they sell tokens. But enterprise buyers have been demanding cost clarity on AI for a year, and Sourcegraph has now put a merged-changeset price on exactly the kind of work — large, tedious, well-specified cross-repo change — where agents have the clearest advantage over humans. The first credible outcome-priced agent product landing on the most automatable work category is not an accident. It is a beachhead.</p>
+
+        <h2>What This Means for You</h2>
+
+        <p>If you are building or buying agent systems this quarter, the action is not "adopt batch changes." It is to internalize the routing discipline and apply it to your own stack. Concretely:</p>
+
+        <ol>
+          <li><strong>Audit your agent's work for script-shaped tasks.</strong> Pull the last hundred tasks your coding agents completed and label each one: did it require judgment, or was the variation mechanical? Most teams find a large fraction of agentic work is a pattern discovered once and re-derived many times. Every script-shaped task you route away from the model cuts cost and variance simultaneously.</li>
+          <li><strong>Make your agent classify before it executes.</strong> Whether you're wiring the OpenAI Agents API, Devin Fusion, or your own harness, insert an explicit routing step: <em>script, cheap model, or frontier model?</em> This is the core move of harness engineering — the loop around the model decides what the model is even asked to do, and it is worth more than any model upgrade this year. (I work through the full methodology in <em>Harness Engineering</em>; the routing chapter has aged the best.)</li>
+          <li><strong>Pilot on one repo before fanning out.</strong> Sourcegraph's validate-then-scale pattern costs one round-trip and prevents a thousand malformed PRs. If your agent proposes a cross-repo change without first proving it on a single repository, that is a defect in your harness, not a feature of scale.</li>
+          <li><strong>Push your vendors toward outcome pricing.</strong> If you're an enterprise buyer, ask what a merged changeset, a resolved ticket, or a passed review costs — not what a token costs. The vendors that can answer that question are the ones whose incentives point at your outcomes. The ones that can't are telling you where their margin lives.</li>
+        </ol>
+
+        <p>The summary is one sentence, and it is the week's real lesson: the winning agent architecture is not the one that uses the most intelligence — it is the one that spends intelligence only where nothing cheaper will do. Sourcegraph built a product on that sentence, Cognition built a model pairing on it, and OpenAI made the substrate free enough that the sentence is now the only architecture left worth arguing about. The agent that picks the script isn't cheating the AI revolution. It is the AI revolution, finally reading its own invoice.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
