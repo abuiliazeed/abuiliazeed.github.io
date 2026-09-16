@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compliance Has a Half-Life — Abuiliazeed</title>
+  <meta name="description" content="Claude Opus 4.6 follows 82.4% of constraints in the first two turns of a coding session and 76.2% by turn nine — but its perfectly clean turns collapse from 19.0% to 2.3%. MTAC-IFBench is the first rigorous measurement of how fast code agents forget your rules.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/compliance-has-a-half-life.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/compliance-has-a-half-life.html">
+  <meta property="og:title" content="Compliance Has a Half-Life">
+  <meta property="og:description" content="Claude Opus 4.6 follows 82.4% of constraints in the first two turns of a coding session and 76.2% by turn nine — but its perfectly clean turns collapse from 19.0% to 2.3%. MTAC-IFBench is the first rigorous measurement of how fast code agents forget your rules.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Compliance Has a Half-Life">
+  <meta name="twitter:description" content="Claude Opus 4.6 follows 82.4% of constraints in the first two turns of a coding session and 76.2% by turn nine — but its perfectly clean turns collapse from 19.0% to 2.3%. MTAC-IFBench is the first rigorous measurement of how fast code agents forget your rules.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-09-16">September 16, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">Compliance Has a Half-Life</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>82.4 and 2.3. Same agent, same task, same rules. The first number is Claude Opus 4.6's constraint compliance across the first two turns of a coding session. The second is its rate of <em>perfectly clean turns</em> — every constraint satisfied, nothing quietly dropped — by turns nine and ten. The rules never changed. The agent decayed.</p>
+
+        <p>That asymmetry is the headline finding of <strong>MTAC-IFBench</strong>, a benchmark released September 14 by Tsinghua University's Conversational AI group in collaboration with Zhipu AI. Where every agentic coding benchmark you've heard of — SWE-bench, Terminal-Bench, FrontierCode — scores the <em>final artifact</em>, MTAC-IFBench scores the <em>process</em>: 100 multi-turn development sessions, 9,133 constraints, an average of 7.04 turns and 12.97 constraints per turn, each constraint verified against a checklist by deterministic scripts or a judge agent. It is the first rigorous measurement of a question every team running coding agents has felt but never quantified: <strong>how fast does an agent forget your rules?</strong></p>
+
+        <p>Most people treat instruction-following as a first-turn property — you write a good CLAUDE.md, the model reads it, done. The data says it's a half-life property. Compliance isn't a setting; it's a quantity that depletes. And the depletion rate, not the opening score, is what determines whether an agent survives a real workday.</p>
+
+        <h2>What MTAC-IFBench Actually Measured</h2>
+
+        <p>The design deserves attention because it's the first benchmark shaped like a real session rather than a real ticket. Each instance is a complete development engagement: a repository policy file (the CLAUDE.md / AGENTS.md layer), 5–10 progressive user instructions that add, revise, and override requirements, a constraint checklist for every turn, and a function checklist for the finished project. Constraints span six primary and eighteen secondary categories — content, language, quantity, style, environment, and workflow — ranging from "every code file must open with a UTF-8 encoding declaration" to "run ESLint and fix every error before finishing" to "log each planned modification to <code>dev_plan.md</code> before editing." Later turns deliberately contradict earlier ones, because that is what users actually do.</p>
+
+        <p>Two design details make the results credible. First, the constraint taxonomy was derived from an LLM-based agentic coding platform <em>serving over a million users daily</em> — these are rules real people actually impose, not synthetic pedantry. Second, the authors validated their automatic evaluation against human annotators: agreement of 92.1% for script-checked constraints, 92.4% for judge-agent-checked constraints, and 85.5% for function checks — the last matching the 85% agreement the human annotators managed with each other. The instrument is as reliable as the humans it was checked against.</p>
+
+        <p>Eleven models ran through the standard harness (Claude Code v2.1.14), five proprietary and six open-weight. The metrics that matter: <strong>CSR</strong>, the share of constraints satisfied at a given turn, and <strong>C-ISR</strong>, the share of turns where <em>every single constraint</em> held. CSR is the grade on effort. C-ISR is the grade on discipline. The gap between them is the story.</p>
+
+        <h2>The Leaderboard Nobody Should Celebrate</h2>
+
+        <p>The average constraint success rates look respectable. GLM-5.2 leads at 80.4%, Claude Opus 4.6 follows at 78.6%, GLM-5.1 at 76.5%, DeepSeek-V4-Pro at 74.7%, Kimi K2.6 at 73.2%, with the field tailing down to Qwen3.5-27B at 60.6%. Even the best model drops roughly one in five constraints, which is already an uncomfortable number for anyone whose constraints include things like "back up the file before modifying it."</p>
+
+        <p>But the clean-turn rates are brutal. GLM-5.2 tops the field at 12.7% of turns perfectly compliant. Gemini 3.1 Pro averages 11.1% — driven almost entirely by 28.1% in the first two turns, collapsing to 2.4% by turns five and six and <strong>zero from turn seven onward</strong>. Opus averages 8.7%. Seven of the eleven models sit below 7%. The paper's summary is dry and devastating: for most models, perfect compliance "plummets to zero after six turns."</p>
+
+        <p>One caveat belongs in any honest writeup: the benchmark's authors include Zhipu AI researchers, and the winning model is Zhipu's GLM-5.2. Flag the conflict. But the decay pattern it documents is universal — every model in the table, including Zhipu's own GLM-5.1, shows the same collapse curve — and the harness-swap results replicate independently. The ordering of the top of the table is debatable. The shape of the curve is not.</p>
+
+        <p>There's also a structural point hiding in the ranking: an open-weights model beats the proprietary frontier on the discipline metric. Whatever post-training pipeline produced GLM-5.2's 12.7% clean-turn rate, it's a capability, not an accident of scale — and it's precisely the capability that outcome benchmarks have been unable to see.</p>
+
+        <h2>Why the Average Lies</h2>
+
+        <p>Here's the arithmetic trap that makes CSR nearly worthless as a management number. With roughly thirteen constraints in force per turn, per-constraint compliance multiplies rather than adds. An agent satisfying 85% of constraints individually has, if failures are independent, roughly a 12% chance of a spotless round. Five percent of sloppiness per rule becomes eighty-eight percent of dirty turns. That's not a benchmark artifact — it's the actual experience of running an agent under a real rule set: the <em>code</em> is mostly fine, and something is always slightly non-compliant.</p>
+
+        <p>This is why outcome evaluation is structurally blind. On functional correctness — did the project build, do the features work — the same models look strong. Opus 4.6 posts a 98% build success rate, 90.2% function satisfaction, and 37% of instances with <em>every</em> functional requirement met. Its clean-turn rate is 8.7%. The strict-completion gap between "works" and "followed the rules" is more than four to one. An agent can ship the right feature while violating your logging convention, your file placement rules, and your tool-usage policy in the same session — and every outcome benchmark you run will score that session a pass.</p>
+
+        <p>Which failure would you rather catch in review: the feature that doesn't work, or the one that works but bypassed the backup-before-edit rule your compliance team mandated? The first announces itself. The second is invisible unless you instrument for it — and nobody instruments for it, because no benchmark asked them to.</p>
+
+        <h2>Static Rules Survive, Dynamic Rules Decay</h2>
+
+        <p>The per-category breakdown is the most actionable part of the paper. Agents are near-perfect on isolated, static constraints — file encoding, file paths, the kind of rule a formatter could check. They fall apart on constraints requiring <em>state held across the session</em>: workflow orchestration, project-wide style consistency, and worst of all, quantitative control — exact line counts, precise ranges, capped complexity. The pattern reads as a diagnosis: agents don't have a rule-following problem so much as a <strong>state-tracking problem</strong>. Anything that can be verified from the file in front of them, they handle. Anything that requires remembering a promise made four turns ago against a growing codebase, they lose.</p>
+
+        <p>The constraint-source analysis sharpens that diagnosis into direct guidance. Constraints living in the repository policy file — the CLAUDE.md layer, re-read every turn by the harness — show dramatically less decay over the session than identical constraints delivered in user instructions. And within user instructions, agents handle <em>added</em> constraints far better than <em>updated</em> ones: when turn six replaces a rule from turn two, the superseded rule keeps interfering. The agent isn't following the wrong instruction; it's following both.</p>
+
+        <p>In other words: the mechanism that keeps rules alive isn't the model's memory. It's the harness's context engineering. Rules that get re-injected every turn persist. Rules that live once in conversation history decay with everything else in that history.</p>
+
+        <h2>The Harness Moves Compliance, Too</h2>
+
+        <p>Because MTAC-IFBench holds the model constant and varies the harness, it adds a clean data point to the harness-effect literature: GLM-5.2's constraint compliance drops from 80.4% to 76.8% when moved from Claude Code to OpenCode — and its clean-turn rate nearly halves, from 12.7% to 6.7%. The broad model hierarchy survives the swap (Kendall correlations are strong at the top), but the middle of the table reshuffles.</p>
+
+        <p>A five-point CSR delta understates what that means in practice, because of the multiplication effect: 80.4% average compliance compounds into 12.7% clean turns, and 76.8% compounds into 6.7%. Small average differences in per-rule reliability produce <em>large</em> differences in session-level discipline. When you pick a harness, you're not just picking elicitation quality — you're picking a compliance decay rate. That's a procurement criterion that didn't exist in anyone's RFP last month.</p>
+
+        <h2>What This Means for You</h2>
+
+        <p>The strategic read: <strong>stop treating rule-following as a prompt problem and start treating it as a decay problem.</strong> Your agent's compliance at turn nine is not its compliance at turn one, and nothing you write in a system prompt changes that curve. What changes the curve is where rules live, how often they're re-injected, and how long you let sessions run. Concretely:</p>
+
+        <ol>
+          <li><strong>Promote rules from conversation to policy files.</strong> The benchmark's own data shows constraints in the repository policy file decay far slower than constraints spoken in chat. Anything that must hold for the whole engagement — style conventions, logging requirements, file operation rules — belongs in CLAUDE.md or AGENTS.md where the harness re-presents it every turn, not in turn two of a conversation the model will partially forget.</li>
+          <li><strong>Budget session length like you budget tokens.</strong> If most models hit zero clean turns past turn six, then a "session" is a unit of compliance risk. Restarting with a compacted, rules-forward context isn't giving up — it's resetting the half-life. Long-lived sessions should be a deliberate exception with compensating checks, not the default.</li>
+          <li><strong>Never change a rule mid-session when you can supersede it in the policy file.</strong> Updated constraints fail more than added ones, because superseded rules keep firing. If a requirement changes, write the new version where it's re-read every turn and end the old rule explicitly, rather than layering turn-eight revisions over turn-two promises.</li>
+          <li><strong>Make your critical constraints script-checkable.</strong> Agents comply near-perfectly with constraints that are mechanically verifiable — and so can your CI. The rules that can't be a linter rule or a pre-commit hook are exactly the rules agents will silently drop by turn five. Design your rule set so that the most safety-critical constraints are also the most mechanical.</li>
+          <li><strong>Evaluate on clean turns, not demos.</strong> A vendor demo is turns one and two — the peak of the compliance curve, where Gemini 3.1 Pro looks nearly flawless at 28.1%. Your workday is turns seven through ten. Any internal eval of a coding agent should score process compliance per turn, not just the final diff, or it will systematically flatter exactly the agents that decay fastest.</li>
+        </ol>
+
+        <p>The uncomfortable conclusion is that an agent's reliability is a function of elapsed interaction, and nobody's dashboards reflect that. We instrument cost per task, tokens per rollout, resolution rates — all static quantities. The quantity that determines whether an agent can be trusted with a full day of autonomous work is a decay rate, and until this week no benchmark on Earth measured it.</p>
+
+        <p>Context discipline — what lives in policy files, what gets re-injected, when sessions reset — has always been the unglamorous half of agent engineering. It's the half I spent a book's worth of pages on, mostly on argument and anecdote. It's nice to finally have the decay curve to point at.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
