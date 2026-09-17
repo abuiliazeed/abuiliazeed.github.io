@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Model That Gave Up Words — Abuiliazeed</title>
+  <meta name="description" content="The co-inventor of ChatGPT just shipped a model that cannot generate a single word — and answered a query in 114 milliseconds where GPT-5.6 Terra took 8.5 seconds. TypeSafe's Jev is the first model built to be called by code, not talked to by humans.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-model-that-gave-up-words.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-model-that-gave-up-words.html">
+  <meta property="og:title" content="The Model That Gave Up Words">
+  <meta property="og:description" content="The co-inventor of ChatGPT just shipped a model that cannot generate a single word — and answered a query in 114 milliseconds where GPT-5.6 Terra took 8.5 seconds. TypeSafe's Jev is the first model built to be called by code, not talked to by humans.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Model That Gave Up Words">
+  <meta name="twitter:description" content="The co-inventor of ChatGPT just shipped a model that cannot generate a single word — and answered a query in 114 milliseconds where GPT-5.6 Terra took 8.5 seconds. TypeSafe's Jev is the first model built to be called by code, not talked to by humans.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-09-17">September 17, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Model That Gave Up Words</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>0.114 seconds versus 8.566 seconds. That's TypeSafe AI's launch demo: their model Jev answering a query in 114 milliseconds while GPT-5.6 Terra — one of the most capable models money can buy — took more than eight and a half seconds on the same question. And Jev did it for $0.042 per million input tokens, with output tokens priced at zero, because there are no output tokens. Jev cannot generate text. Not one word.</p>
+
+        <p>On September 15, a San Francisco startup called TypeSafe AI came out of two years in stealth with a $40 million seed round led by DCVC and a product that reads like a contradiction: a frontier model with no chat interface, no string generation, no code writing, no conversation. The founder is Diogo Almeida — co-author of the InstructGPT research that became ChatGPT, and one of the people credited with inventing RLHF. The man who taught chat models to behave has now built a model that refuses to chat at all.</p>
+
+        <p>Most coverage filed this under "quirky new startup." That's the wrong read. Jev is the first credible product in a category agent engineers have been missing for two years: a <em>decision layer</em> — a fast, cheap, calibrated judgment primitive that sits between your deterministic code and your expensive generative model. If it works, it changes the shape of every agent harness being built today.</p>
+
+        <h2>What Jev Actually Is</h2>
+
+        <p>Strip away the Kahneman framing — "System One" is borrowed from <em>Thinking, Fast and Slow</em> — and Jev is a function. You send it a piece of state: an email, a log line, a support ticket, a JSON blob. You attach typed questions. It returns typed answers with probability distributions and confidence scores. No prose, no explanation, no markdown. Unstructured state in, typed probabilistic decisions out.</p>
+
+        <p>The entire API surface is three primitives:</p>
+
+        <ul>
+          <li><strong>Choice</strong> — pick one option from a list you supply (up to 255 options), returning the selection plus a probability for every candidate.</li>
+          <li><strong>Score</strong> — rate the state against an ordered rubric — churn risk, severity, priority — returning the level and per-level probabilities.</li>
+          <li><strong>Noul</strong> — a yes/no claim, returning the calibrated probability that it's true.</li>
+        </ul>
+
+        <p>That's it. And the architectural trick is that all questions in a call are evaluated <em>in parallel</em> against one shared read of the state — not generated autoregressively, one token at a time. Because the possible outputs are enumerated in advance, the model literally cannot return a value outside your schema. TypeSafe's documentation says adding more questions "barely changes the response time," and early testers confirm it: 21 questions across 37 documents landed inside a single 0.7-second call.</p>
+
+        <p>Training uses a method TypeSafe calls RLCD — Reinforcement Learning for Calibrated Decisions. The distinction matters. RLHF optimizes for what humans prefer. RLVR optimizes for verifiable correctness. RLCD optimizes for <em>calibration</em>: when the model says 70% confidence, it should be right about 70% of the time. The intended failure mode is a model that knows when it doesn't know — so your code can decide what to do about it.</p>
+
+        <h2>The Loop Nobody Counts</h2>
+
+        <p>Here's why this matters, and it's not the speed. It's what the speed buys.</p>
+
+        <p>Every production agent harness today is full of micro-judgments. Is this ticket billing or technical? Did the user's latest message contradict something they said three turns ago? Should this agent run continue or stop? Is this tool output consistent with the plan? These are Choice, Score, and Noul questions — narrow, binary-or-small-set decisions that a competent human makes in seconds.</p>
+
+        <p>Today you have exactly two options for answering them. You call an LLM, which means a structured-output prompt, a string response, a parse, a validation, a retry when the model decides to wrap the JSON in prose — and roughly four seconds of latency and frontier-model pricing for a judgment worth a fraction of a cent. Or you write a crude heuristic, because four seconds and frontier pricing per check doesn't scale, and heuristics quietly rot.</p>
+
+        <p>The prompt-parse-validate-retry loop is the most tolerated tax in agent engineering. Nobody budgets for it because it hides inside "we call the model for that." But it's a tax on every gate, every router, every classifier, every LLM-as-judge checkpoint in your harness — and it taxes latency and cost in the one place agents can least afford it: the per-turn loop.</p>
+
+        <p>Michael Lee, one of the first users with access, ran about 5,000 Jev requests for roughly $2 — p50 latency of 150 milliseconds, p95 of 350 milliseconds, across classification, routing, intent detection, and steering tasks. His conclusion: the per-turn check that was too expensive to run on an LLM can now run on <em>every</em> turn, before and after generation, and still feel instant. Checks you used to sample, you can now run exhaustively.</p>
+
+        <h2>Calibration Is the Product</h2>
+
+        <p>The deeper idea isn't the speed. It's that the probabilities are the product.</p>
+
+        <p>A chat model's confidence is vibes. You can ask it "how sure are you?" and it will generate a number, and the number means nothing you can act on. Jev's answers ship with a calibration contract — outcomes assigned 0.2 probability should occur about 20% of the time, measured across groups of predictions. That turns the model's confidence into a control surface. The documented pattern is three confidence bands: act automatically at the top, flag or confirm in the middle, route to a human at the bottom — with the thresholds living in your code, not in the model.</p>
+
+        <p>This is what harness engineering has been missing at the judgment layer. We already know how to build escalation logic. We already know how to route between models. What we've never had is a trustworthy dial that tells us <em>when</em> to escalate. Calibration turns judgment quality into something you can measure against real outcomes over time — which means it's something you can monitor, alert on, and regression-test. Try doing that with a chat model's vibes.</p>
+
+        <h2>Now Read the Fine Print</h2>
+
+        <p>Here's where I pump the brakes, because the honest read of this launch is more interesting than the hype.</p>
+
+        <p><strong>Jev loses its own benchmark.</strong> TypeSafe's internal workflow dashboard covers 711 cases across four tasks — security incident triage, agent-trace observability, invoice processing, customer service — with reference answers derived from the average judgment of GPT-6 Astra and Claude Fable 5.1, not ground truth. Jev aggregates at 67.8%. The best comparator hits 74.1%. Broken out: Jev loses every accuracy column — 61.7 vs 66.2 on security, 71.6 vs 76.6 on observability, 61.8 vs 79.1 on invoices, 76.0 vs 78.3 on customer service. It wins cost and latency by orders of magnitude and loses accuracy by six to seventeen points.</p>
+
+        <p><strong>The speedup numbers disagree with each other.</strong> The launch blog says 40–200x faster. The press release says "up to 100x." The homepage advertises 193.6x faster and 444.6x cheaper on a single workflow the company itself calls the high end. The one hard external datapoint is the demo: 0.114s vs 8.566s — a 75x gap, on one demo, chosen by the vendor.</p>
+
+        <p><strong>"Can't hallucinate" is a format guarantee, not a truth guarantee.</strong> Jev cannot emit anything outside your schema. It can absolutely pick the wrong option inside it. The Register's coverage and TypeSafe's own docs are both clear on this, and any team that deploys Jev treating "no hallucination" as "no errors" will learn it the expensive way.</p>
+
+        <p><strong>The pricing may be subsidized.</strong> The company says so itself — "we can't prove it isn't subsidized" — and expects prices to go down, not up. There's no independent benchmark yet, no self-serve signup, a ~32,000-token context budget, no image or audio input, and a bespoke request shape that won't drop into an OpenAI-compatible client.</p>
+
+        <p>So: a model that is measurably worse at judgment than the models it sits beside, at a price and latency that make it usable in places those models can't go. That's not a knock. That's the entire thesis, stated plainly.</p>
+
+        <h2>Judgment Per Dollar</h2>
+
+        <p>Most people think progress in agents means smarter models. The past year of evidence says otherwise: model quality has compressed to statistical noise while cost-per-task diverged by an order of magnitude depending on the harness. We already knew the harness determines what agents cost. What Jev adds is the mirror insight: the harness also determines what agents <em>know</em> — because most harnesses can only afford to check things occasionally.</p>
+
+        <p>TypeSafe's own thesis is that machine intelligence will be roughly 99% machine-to-machine and 1% human conversation. Whether that number is exactly right doesn't matter. The direction is right, and it inverts how we've been building: instead of one general model doing everything at human-interface latency, you get tiers. A fast tier — calibrated judgment at 70–500ms, sub-cent per call — running the gates, the checks, the routing decisions, the per-turn consistency audits. A slow tier — the generative models — invoked only when something actually needs to be composed. The LLM becomes the exception, not the default.</p>
+
+        <p>Look around and the tiering is already forming. Salesforce and NVIDIA announced Koa this week — a CRM reasoning model post-trained from Nemotron 3 Super because, in their words, a general model reasons about a refund policy the same way it reasons about a physics problem. Salesforce spent eighteen months replacing one general model with a series of smaller models for specific jobs; Koa moves the last holdout — core reasoning — onto purpose-built infrastructure. Specialization by job shape is the pattern, and Jev is its purest expression: a model that does one thing — decide — and refuses everything else.</p>
+
+        <p>This is also why routing alone doesn't finish the job. Routers pick between models that all speak prose. The decision tier is a different <em>kind</em> of call — typed, calibrated, too cheap to think twice about. Your harness's control flow stops being "prompt the model and hope" and starts looking like actual software: cheap predicates evaluated constantly, expensive generation invoked deliberately.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p>You don't need Jev access to act on this. The category exists now, which means the questions it raises are due regardless.</p>
+
+        <p><strong>1. Audit your harness for LLM-as-judge calls.</strong> Grep your codebase for every place you prompt a model to classify, score, route, or gate. Count them. Each one is a four-second, frontier-priced, parse-fragile call that a decision primitive wants to replace. Most teams find this number embarrassingly large.</p>
+
+        <p><strong>2. Measure cost per judgment, not per task.</strong> If a gate runs on every turn and costs a cent, it's your harness's biggest line item wearing a disguise. Aggregate judgment spend separately from generation spend — the ratio will tell you exactly how much a decision tier would save.</p>
+
+        <p><strong>3. Start logging confidence today.</strong> Wherever you already use a model as a judge, persist its output and the eventual ground truth. Calibration is only useful with outcome data, and you can't retrofit it. The team that has six months of labeled judgments the day a decision model enters production wins the migration.</p>
+
+        <p><strong>4. Get on the waitlist and test one thing.</strong> Not the benchmarks — your own calibration curve. TypeSafe ships an agent skill installable into Claude Code (<code>npx skills add typesafe-ai/skills</code>) and a Python SDK. Run a few thousand of your real decisions through it and check whether 70% confidence means 70% accuracy on your data. That single number decides whether the category is real for you.</p>
+
+        <p>The orchestration patterns for a tiered harness — fast judgment below, deliberate generation above, confidence-banded escalation between — are exactly the kind of architecture covered in <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>. The book's core claim keeps aging well: the model is a component; the harness is the product.</p>
+
+        <h2>The Bet, Stated Honestly</h2>
+
+        <p>Jev may fail. The accuracy gap is real, the pricing is unproven, the benchmarks are self-graded, and one demo does not a category make. Plenty of $40 million seeds have died on thinner contradictions than "the chat guy built the anti-chat."</p>
+
+        <p>But the bet behind it is sound, because it's the same bet the last year of agent infrastructure has been making in fragments: agents don't need more intelligence — they need cheaper judgment between the moments that require it. The models got fast at composing. Nothing got cheap at deciding.</p>
+
+        <p>The co-inventor of ChatGPT just spent two years building the model that can't say hello. Watch what your harness does with it.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
