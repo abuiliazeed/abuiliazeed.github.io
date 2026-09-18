@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Thread Ate the Pull Request — Abuiliazeed</title>
+  <meta name="description" content="On September 16, Zed turned off pull requests on its own repository — 33 people have landed 570 changes to main since. The next morning, Anthropic shipped a Claude Code workflow whose unit of work isn't a PR. Two unrelated teams converged on the same verdict in 24 hours.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-thread-ate-the-pull-request.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-thread-ate-the-pull-request.html">
+  <meta property="og:title" content="The Thread Ate the Pull Request">
+  <meta property="og:description" content="Zed disabled pull requests on its own repo and has landed 570 changes without them. The next morning, Anthropic shipped a workflow whose unit of work is the thread, not the PR.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Thread Ate the Pull Request">
+  <meta name="twitter:description" content="Zed disabled pull requests on its own repo and has landed 570 changes without them. The next morning, Anthropic shipped a workflow whose unit of work is the thread, not the PR.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-09-18">September 18, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Thread Ate the Pull Request</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>On September 16, Zed launched the public beta of Delta — a multiplayer environment for coding with agents — and buried the most aggressive detail in a single sentence: <em>"Last week, we crossed a key milestone: we disabled pull requests on Delta's own repository."</em> The team that builds Delta now ships Delta entirely inside Delta. Since turning PRs off, 33 people have landed 570 changes to main. No pull requests. None.</p>
+
+        <p>The next morning, Anthropic relaunched Projects inside Claude Code. The unit of work is no longer a session and not really a pull request either — it's a <em>thread</em>: a cloud Claude Code session on its own branch and its own copy of the repo, spawned by a coordinating agent that decomposes an engineering goal, delegates the pieces, and merges what comes back. When two threads touch the same code, the overlap is resolved "as a merge conflict just like any PR" — a telling phrase, because it keeps the conflict and discards the PR.</p>
+
+        <p>Two teams, 24 hours apart, working from completely different premises — an editor company rebuilding version control around conversations, and a frontier lab rebuilding orchestration around parallel cloud sessions — arrived at the same structural conclusion: the pull request is no longer the unit of collaboration. It's the legacy adapter you keep at the edges.</p>
+
+        <p>Most coverage read this week as a multi-agent orchestration story. That's the wrong variable. The orchestration is table stakes; everyone ships a coordinator now. What actually changed is the artifact underneath: both launches replaced review-of-a-diff with something that carries the reasoning that produced the diff.</p>
+
+        <h2>What the Pull Request Actually Was</h2>
+
+        <p>The pull request was never really about code. It was a lossy compression scheme for <em>context</em>. A developer spent days holding a problem in their head — the constraints, the rejected alternatives, the reason the loop is structured that way — and the PR was the 400-line artifact that survived. Reviewers inspected the compression, not the thinking, because the thinking was inaccessible. Review-by-diff wasn't a philosophy; it was a concession to what could be transmitted.</p>
+
+        <p>That concession made sense when humans wrote code at human speed. It has quietly inverted. An agent produces a diff in seconds, and the diff is now the <em>least</em> informative artifact of the run — a thin projection of thousands of tool calls, file reads, failed attempts, and course corrections that all happened inside the harness. Asking a human to review an agent's diff is asking them to grade a translation they can't compare against the original.</p>
+
+        <p>Both launches this week attack exactly this gap, from opposite ends.</p>
+
+        <h2>Zed's Bet: Version the Middle</h2>
+
+        <p>Delta's core move is refusing to throw the middle away. It's built on DeltaDB, which extends Git's content-based versioning with incremental delta-based versions: it records the edits <em>between</em> commits alongside messages from humans and agents, preserving how the code actually evolved through a thread. A commit remains the checkpoint you push, pull, and build from. DeltaDB retains everything those checkpoints used to discard.</p>
+
+        <p>That changes what a review is. In Delta, a review is a subthread that gets its own isolated copy of the parent thread's worktrees. The reviewer can explore the code, but they can also ask the original agent why it chose a <code>Mutex</code> over an <code>RwLock</code> — and get the answer from the thing that made the choice, with the full run context intact. If the reviewer spots a problem, they can request a revision or fix it with the agent themselves, and the fix gets folded back into the parent thread.</p>
+
+        <p>Notice what disappeared: the handoff. The reviewer no longer receives a frozen diff and a hopeful description. They join the conversation that is still producing the code. Zed calls this "continuous engineering" — the observation that the industry made integration continuous, then delivery continuous, while review and collaboration stayed batch. Delta is the batch queue being deleted.</p>
+
+        <p>The dogfooding numbers are small but real: 33 people, 570 changes landed to main since the PR valve was shut off. That's a mid-size team, on their own product, with their own tool — not a case study, but not a demo either. It's the first production codebase I'm aware of that runs without pull requests entirely.</p>
+
+        <h2>Anthropic's Bet: The Coordinator Eats the Queue</h2>
+
+        <p>Anthropic's version looks different and lands on the same shape. The relaunched Projects change the unit of work from manually managed sessions to a persistent project: Claude scopes an objective, creates threads, delegates tasks, reviews results, and coordinates dependencies. Threads share a project memory and a common library of files and artifacts, so later work reuses the context earlier sessions accumulated — the reasoning now outlives the run that produced it, which is the same property DeltaDB gives you, built at the platform layer instead of the version-control layer.</p>
+
+        <p>Each thread can further split its work using subagents, loops, and workflows. The coordinator is doing what a tech lead does on a decomposable task — multi-repo migrations, independent endpoint work, test generation — except it doesn't sleep and it bills by the token.</p>
+
+        <p>The honest caveats are substantial and mostly stated: it's cloud-only at launch, which is a hard line for anyone whose code or credentials can't touch Anthropic's infrastructure; local tool support is a roadmap statement, not a capability. It's gated to select Pro and Max subscribers — notably <em>not</em> Team and Enterprise yet. That ordering is itself informative: you test runaway-coordinator economics on individual developers before you point one at an organization with a compliance department.</p>
+
+        <h2>Why This Week and Not Two Years Ago</h2>
+
+        <p>The pull request didn't become the bottleneck because it got worse. It became the bottleneck because everything upstream of it got faster.</p>
+
+        <p>Set the week in order. September 10: OpenAI ships the Agents API, productizing the Codex harness so a production cloud agent is one API call. September 16: Cognition ships Code Scans, which uses Agentic MapReduce — plan, shard, map, reduce — to turn a broad engineering goal into batches investigated by parallel agents and synthesized into ready PRs. September 16: Zed deletes the PR on its own repo. September 17: Anthropic ships threads that resolve as merge conflicts.</p>
+
+        <p>Read that sequence as one story. Code generation became an API call. Then PR <em>generation</em> became an API call — Code Scans' entire premise is that producing reviewable pull requests is now a batch job. The moment that happened, human review became the last batch stage in an otherwise continuous pipeline, and the queue backed up. When an agent can open a thousand changesets before lunch, the PR stops being a quality gate and starts being a denial-of-service attack on your senior engineers.</p>
+
+        <p>This is the classic refactoring of a system under load: when a stage can't keep up, you stop pushing more items through it and start changing what the stage consumes. Review can't get faster by reviewing more diffs. It gets faster by reviewing less artifact and more intent — which is only possible if the intent finally ships with the code.</p>
+
+        <h2>The Failure Modes Nobody Has Priced Yet</h2>
+
+        <p>Before anyone schedules a migration, three risks deserve more attention than they're getting.</p>
+
+        <p><strong>Merge conflicts at machine speed.</strong> Both models lean on the merge conflict as the resolution mechanism when parallel work overlaps. That's fine when overlap is rare and the overlapping agents are your own. It is not fine when a coordinator spawns twenty threads against one hot path and the conflict-resolution work — done by more agents — generates its own conflicts. Nobody has published a number for conflict-resolution latency as a function of thread count. Until someone does, treat parallelism limits as a safety feature, not a limitation to work around.</p>
+
+        <p><strong>The audit trail question.</strong> A pull request is a governance primitive: a frozen, attributable, diffable record that compliance teams, auditors, and occasionally courts know how to read. A living thread with retained intermediate states is richer — and much harder to govern. DeltaDB's answer is that retention <em>is</em> the record; Anthropic's is that shared memory persists at the platform layer. Both are probably right technically and both are unproven institutionally. If your organization's change-management process says "PR with two approvals," that sentence does not parse against a coordinator landing fifteen branches overnight.</p>
+
+        <p><strong>Reasoning is not always an asset.</strong> The entire thesis is that carrying the agent's context into review makes review better. It also makes review <em>persuadable</em>. A reviewer who interrogates the agent that wrote the code is reviewing the defense attorney's account of the crime. Agents are fluent, confident, and trained to be agreeable; a well-articulated rationale for a wrong decision is harder to catch than the wrong decision alone. The teams that thrive here will be the ones that review the artifacts first and interview the agent second — never the reverse.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p>You don't need to turn off pull requests to act on a shift this size.</p>
+
+        <p><strong>1. Measure your review queue as a system stage.</strong> Time from "agent finished" to "human reviewed" is now the dominant latency term in most agent-heavy codebases, and almost nobody instruments it. If your agents can produce changes in minutes and your queue takes a day, your harness investment is being throttled by a process designed in 2008.</p>
+
+        <p><strong>2. Start persisting run context today.</strong> Whatever harness you run, stop discarding trajectories when a run completes. The teams that benefit from this shift won't be the first to adopt Delta or Projects — they'll be the ones with months of retained agent context the day a review workflow can consume it. Storage is cheap; retroactive capture is impossible.</p>
+
+        <p><strong>3. Trial one PR-free workflow on a low-stakes surface.</strong> Pick an internal tool or a docs repo, run review as a conversation with the agent present, and compare defect escape rate and review latency against your PR baseline. You're collecting the only evidence that will matter when your CTO asks whether this is real: your own.</p>
+
+        <p><strong>4. Keep the PR at the boundary, delete it in the middle.</strong> The pragmatic pattern for the next year isn't abolition — it's topology. Threads and coordinator-managed branches <em>inside</em> the team, where trust is high and context is shared; PRs at the organizational boundary, where strangers and auditors live. Zed itself frames PRs as "the first part" of the workflow being replaced — the edges will take years.</p>
+
+        <p>The deeper pattern is the one this blog keeps returning to: every layer of the pre-agent stack is being re-examined for whether it exists because it was a good idea or because it was the only option. The IDE went first, then the session went portable, then the harness became a product. The pull request was just the largest thing left standing — and this week, two independent bets landed on the same answer for what replaces it. The argument for thread-first collaboration — what to retain, what to review, what to trust — is the collaboration chapter of the problem space covered end to end in <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>.</p>
+
+        <p>570 changes. Zero pull requests. It's a small team on their own code with their own tool, and it is not, by itself, a migration plan. But every platform shift starts exactly like this: one team dogfoods something everyone else considers optional, and two years later it's the default. The pull request had a fifteen-year run as the center of software collaboration. The thread's is just beginning.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>

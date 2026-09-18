@@ -5,8 +5,29 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Tue, 15 Sep 2026 09:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 18 Sep 2026 09:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Thread Ate the Pull Request</title>
+      <link>https://abuiliazeed.github.io/blog/the-thread-ate-the-pull-request.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-thread-ate-the-pull-request.html</guid>
+      <description>Zed turned off pull requests on its own repo and has landed 570 changes to main without them. The next morning, Anthropic shipped Claude Code threads that resolve as merge conflicts. Two teams, 24 hours apart, converged on the same verdict: the PR is no longer the unit of collaboration — the thread is.</description>
+      <pubDate>Fri, 18 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>The Model That Gave Up Words</title>
+      <link>https://abuiliazeed.github.io/blog/the-model-that-gave-up-words.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-model-that-gave-up-words.html</guid>
+      <description>The co-inventor of ChatGPT shipped a model that cannot generate a single word — 114ms where GPT-5.6 Terra took 8.5 seconds, at $0.042 per million input tokens. TypeSafe's Jev is the first decision-only model: typed answers, calibrated probabilities, no text. It loses its own accuracy benchmark — and that's the entire thesis.</description>
+      <pubDate>Thu, 17 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Compliance Has a Half-Life</title>
+      <link>https://abuiliazeed.github.io/blog/compliance-has-a-half-life.html</link>
+      <guid>https://abuiliazeed.github.io/blog/compliance-has-a-half-life.html</guid>
+      <description>MTAC-IFBench scores the process, not the artifact — 9,133 constraints across 100 multi-turn coding sessions. Claude Opus 4.6 follows 82.4% of constraints early in a session and still drops to 2.3% perfect turns by turn nine. Your agent's rules have a decay rate, and no dashboard measures it.</description>
+      <pubDate>Wed, 16 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
     <item>
       <title>The Agent That Picks the Script</title>
       <link>https://abuiliazeed.github.io/blog/the-agent-that-picks-the-script.html</link>
