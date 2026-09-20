@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Maintenance Cliff — Abuiliazeed</title>
+  <meta name="description" content="Claude Fable 5 scores 90.35% building apps from a spec — but the same model generation tops out at 28% on VCB 1-100, which asks agents to keep changing a working app without breaking it. The gap between creation and maintenance is the real story in coding agents.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-maintenance-cliff.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-maintenance-cliff.html">
+  <meta property="og:title" content="The Maintenance Cliff">
+  <meta property="og:description" content="Claude Fable 5 scores 90.35% building apps from a spec — but the same model generation tops out at 28% on VCB 1-100, which asks agents to keep changing a working app without breaking it. The gap between creation and maintenance is the real story in coding agents.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Maintenance Cliff">
+  <meta name="twitter:description" content="Claude Fable 5 scores 90.35% building apps from a spec — but the same model generation tops out at 28% on VCB 1-100, which asks agents to keep changing a working app without breaking it. The gap between creation and maintenance is the real story in coding agents.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-09-20">September 20, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>8 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Maintenance Cliff</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>90.35 percent. That is Claude Fable 5's score on Vibe Code Bench v1.1 — build a complete web application from a natural-language spec, pass the browser workflows, collect your trophy. GPT-6 Astra sits at 89.59%, Claude Opus 5 at 88.40%. By every build-from-scratch measure, the frontier has arrived. Cocktail-party conclusion: software engineering is solved, the remaining points are a rounding error, plan your career accordingly.</p>
+
+        <p>Now look at the leaderboard published four days ago, September 16. Same benchmark family, same evaluator, eighteen model configurations — and <strong>not one clears 30 percent</strong>. Claude Opus 5 leads at 28.53%. Claude Fable 5.1: 28.00%. GPT-6 Astra: 27.64%. The rest of the field falls away from there — GLM 5.3 at 20.0%, Kimi K3 at 18.2%, and Gemini 3.1 Pro Preview, a model that posted 32.03% on the old board, at 6.69%.</p>
+
+        <p>Most people's first read is that coding agents regressed — that the September models are somehow worse than the summer's. That read is wrong, and the analysis published alongside the numbers (Superpower Daily's teardown on September 19 is the sharpest) explains why: the benchmark didn't get harder in degree. It changed jobs. The old Vibe Code Bench measured <em>creation</em>: fresh app, fresh context, five hours, one shot. The new one, VCB 1-100, measures <em>maintenance</em>: take an application that already works and already ships, then make up to ten dependent changes to it over a shared ten-hour budget — without breaking anything that already worked. That 62-point gap between building software and keeping software alive is the most important number in the coding-agent conversation right now. It has a name now: the maintenance cliff.</p>
+
+        <h2>What VCB 1-100 Actually Tests</h2>
+
+        <p>The design is quietly brutal, and every design choice maps to something real engineering teams live with.</p>
+
+        <p>The benchmark starts where the old one ended: with a fully passing VCB v1.1 application. Then it issues up to ten ordered product requests. The codebase, the application state, the conversation history, and the tool history all persist across the sequence — request seven inherits the code, the data, and every decision the agent made in requests one through six, exactly the way your third sprint on a service inherits the first two.</p>
+
+        <p>The scoring is where it stops being a vibe check. The old benchmark credited a workflow when at least 90% of its substeps passed, then averaged across workflows — partial credit, generously distributed. VCB 1-100 credits an iteration <strong>only when every workflow in it passes</strong>, and it stops the entire scenario after the first incomplete iteration. Ten requests, one dropped ball, scenario over. And critically, each iteration's checks pair tests for the <em>new</em> behavior with regression checks for <em>earlier</em> behavior against the same submitted app. The dataset carries 11,299 workflows, of which 3,747 are regression checks.</p>
+
+        <p>Read that scoring rule again, because it inverts everything the leaderboard era trained us to believe. An agent can implement the requested feature — correctly, elegantly, on time — and receive <strong>zero credit</strong>, because it broke a flow that worked before it arrived. Under this protocol, adding the feature and protecting the existing system are not separable. They are one measured unit, the same way they are one unit in every production engineering job on Earth.</p>
+
+        <h2>Why the Scores Collapsed</h2>
+
+        <p>The mechanism of failure is not mysterious, and the benchmark's own structure points at it.</p>
+
+        <p><strong>Regression is now the dominant failure mode.</strong> With 3,747 regression checks woven through the sequence, the expected cost of every change includes the probability that the change damages something elsewhere in the app. Agents optimized for "make the requested change" — which is what every build-from-spec benchmark rewarded for two years — are structurally blind to that cost. They ship the feature. The suite finds the corpse.</p>
+
+        <p><strong>Stop-at-first-failure compounds small error rates.</strong> If an agent has a 15% chance of breaking something per iteration, its probability of surviving ten iterations is roughly 20% — before you even ask whether it implemented the features correctly. The all-or-nothing, stop-on-failure rule turns per-step reliability into a exponent, which is precisely how real production incidents accumulate too. The benchmark is measuring whether agents can sustain correctness over a long horizon, and the answer, at 28%, is: not yet, not close.</p>
+
+        <p><strong>The budget inverted.</strong> Five hours per independent build became one ten-hour budget shared across the entire sequence — the same order of magnitude of time for roughly ten times the interdependent work, and the budget now has to cover reading and understanding an existing codebase before any change begins. Agents that spent their five hours generating now have to spend their ten hours partly on <em>comprehension</em>. Comprehension does not show up on any build-from-scratch leaderboard. It turns out it was the job.</p>
+
+        <p>And one honest caveat before the analysis continues: the before-and-after columns are not a controlled experiment. The task, scoring, budget, and state rules all changed at once, and the Gemini 3.1 Pro Preview that appears on both boards (32.03% then, 6.69% now) may not even be the same provider snapshot under the label. Superpower Daily's conclusion is exactly right: without matched reruns of the same model under both protocols, VCB 1-100 is a distinct test of sustained software change, not a trend line proving models got worse. But that caveat cuts both ways — nothing here proves the models are <em>fine</em> at maintenance either. The only defensible read is the direct one: on this measurement of this job, the best agents in the world fail seven times out of ten.</p>
+
+        <h2>The Convergence With Everything Else We Learned This Month</h2>
+
+        <p>Here is why I'd argue this leaderboard matters more than the usual weekly benchmark churn: it is the third independent signal in ten days pointing at the same wall.</p>
+
+        <ul>
+          <li><strong>Real-SWE (September 12):</strong> private production codebases, tasks that resemble actual inheriting-engineer work — best configuration resolved 38.8%. Failure analysis showed the leaders missing requirements (36.7% of Fable's failures) and hitting integration errors (34.7%). Not "can't write code." "Can't hold the whole existing system in mind."</li>
+          <li><strong>Real-SWE's task shape:</strong> solutions touched a median of 11 files, nearly double the six-file median of public benchmarks. Real changes ripple. Benchmarks that scored single repos of curated issues never priced that in.</li>
+          <li><strong>VCB 1-100 (September 16):</strong> sustained, dependent changes to a working app — 28.53% at the top, with regression checks as a first-class scoring component.</li>
+        </ul>
+
+        <p>Three different evaluators, three different task distributions, one shared finding: agents are strong at the greenfield and weak everywhere else. The build-from-spec benchmarks that carried the last two years of headlines measured the easy half of software engineering. The hard half — the half where the code already exists, already has users, and already has behavior someone is depending on — is where the frontier actually sits. And it's not a frontier of writing. It's a frontier of <em>not breaking things</em>.</p>
+
+        <h2>Maintenance Is a Harness Problem in Model Clothing</h2>
+
+        <p>Now the part that matters if you build agent systems. The instinctive reading of the 28% number is "models aren't good enough yet." Look at what the benchmark actually demands and a different picture forms: most of what VCB 1-100 punishes is missing <em>harness</em> behavior, not missing model capability.</p>
+
+        <p>Consider what an agent needs to survive ten dependent changes. It needs durable awareness of what the app did before it arrived — a regression suite it runs itself, unprompted, after every edit. It needs context management that survives a ten-hour sequence: the conversation history persists in this benchmark, which means naive accumulation eventually drowns the working set, and careless compaction throws away exactly the constraint that iteration seven needed to remember from iteration two. It needs a policy for spending its shared budget — when to re-read code, when to trust its own earlier summary, when to stop and verify instead of pressing on. It needs, in other words, every discipline that separates a senior engineer's third sprint on a service from a new hire's first afternoon.</p>
+
+        <p>None of those are model properties. They are loop properties. The model decides <em>what</em> to change; the harness decides whether anything checks that the rest of the system still works. When the scoring rewards nothing but net-progress-across-the-whole-app, the harness is doing as much of the dying as the model — and an agent whose loop includes self-run regression checks after every iteration is playing a different game from one that edits, tests the new path, and moves on. This is the core argument of harness engineering as a discipline — I made it at book length in <em>Harness Engineering</em> — and VCB 1-100 is the first mainstream benchmark whose scoring structure simply cannot be gamed without it.</p>
+
+        <p>There's a prediction in this, and it's testable: the first lab or open-source team that wires an explicit regression-verification stage into their agent's loop — run the prior behavior checks, every iteration, before declaring done — should move on VCB 1-100 by double digits without shipping a single new model weight. That kind of harness-only jump has happened repeatedly on other benchmarks this year. There is no structural reason it can't happen here.</p>
+
+        <h2>The Economics Nobody Is Pricing</h2>
+
+        <p>Step back from the leaderboards and ask which number your company actually lives inside.</p>
+
+        <p>Nobody's backlog is "build a fresh app from a clean spec." Every real backlog is VCB 1-100: a working system, ten pending changes, a shared budget, and a hard requirement that yesterday's behavior survives today's feature. The industry has spent two years optimizing agent performance against a task distribution that describes the first week of a product's life and none of the years after it. The 90.35% number was never your number. The 28.53% number is.</p>
+
+        <p>This also reframes the ROI conversation executives keep having. "Agents write 90% of the code" is a creation claim, and creation was never where software spend concentrated — maintenance of existing systems always was. If agents are 90% reliable at greenfield and 28% reliable at sustained change, then deploying them without a verification harness doesn't remove your engineering bottleneck. It relocates it to whatever poor team now owns the regressions. The cliff is not an academic finding. It is a line item, and it lands on whoever ships agent-written changes into software with users.</p>
+
+        <h2>What This Means for You</h2>
+
+        <p>Concrete moves for the next two weeks:</p>
+
+        <ol>
+          <li><strong>Stop evaluating agents on generation tasks.</strong> If your eval set is "build X from scratch," you are measuring the 90% and deploying into the 28%. Rewrite your top ten eval tasks as change sequences on an existing codebase — three to five dependent requests each, scored all-or-nothing, with the old behavior's tests included in every step's pass criteria. Ten tasks is enough to find out which side of the cliff you're on.</li>
+          <li><strong>Put regression checks inside the agent's loop, not after it.</strong> The single highest-leverage harness change this benchmark implies: after every agent edit, the harness itself runs the pre-existing test suite for touched flows — before the agent is allowed to declare the task complete or move to the next one. You are converting stop-at-first-failure from a scoring rule into a working checkpoint. Cheap, boring, and it attacks exactly the failure mode carrying 3,747 of the benchmark's workflows.</li>
+          <li><strong>Treat context persistence as a designed surface.</strong> A ten-hour sequence with full history is a compaction problem. Decide explicitly what survives each iteration: the constraints, the data model decisions, the permissions model, the reasons earlier changes were shaped the way they were. Default accumulation will eat the budget; default truncation will silently delete the constraint that iteration seven violates. This is engineering, not a model setting you inherited.</li>
+          <li><strong>Read every leaderboard with its scoring rule attached.</strong> A number without its protocol is a marketing asset. The same model family moved from 90% to 28% with no weight change — because the definition of success changed. The next vendor deck you see quoting a coding-agent percentage, ask one question first: does this score include regression behavior, or only the new feature? The answer determines whether the number means anything where you work.</li>
+        </ol>
+
+        <p>The summary I'd carry into next week: the creation era of coding-agent benchmarks is ending, and it ended with the frontier looking more finished than it was. VCB 1-100 is the first widely-watched benchmark that scores the job as it actually exists — a working system, a sequence of changes, and the unforgiving requirement that nothing that already worked stops working. On that job, the best agents in the world score 28%. That's not a disappointment. It's a map. The next round of serious gains in coding agents won't come from models that write better first drafts. They'll come from systems — models plus harnesses — that can hold a living application in their head across a long afternoon and still be standing at iteration ten.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
