@@ -5,8 +5,22 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Sat, 19 Sep 2026 09:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 21 Sep 2026 09:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Environment Got a Harness Too</title>
+      <link>https://abuiliazeed.github.io/blog/the-environment-got-a-harness-too.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-environment-got-a-harness-too.html</guid>
+      <description>Google's new open-source agent training framework is literally named after the harness — and its own data shows agents practicing in static environments learn skills that make them worse. On SpreadsheetBench, original-environment skills scored below the no-skill baseline. The harness just went full-stack: runtime, training time, and into the weights.</description>
+      <pubDate>Mon, 21 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>The Maintenance Cliff</title>
+      <link>https://abuiliazeed.github.io/blog/the-maintenance-cliff.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-maintenance-cliff.html</guid>
+      <description>Claude Fable 5 scores 90.35% building apps from a spec — but the same model generation tops out at 28% on VCB 1-100, which asks agents to keep changing a working app without breaking it. The gap between creation and maintenance is the real story in coding agents.</description>
+      <pubDate>Sat, 20 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
     <item>
       <title>The Middle of the Stack Went Open-Source</title>
       <link>https://abuiliazeed.github.io/blog/the-middle-of-the-stack-went-open-source.html</link>
