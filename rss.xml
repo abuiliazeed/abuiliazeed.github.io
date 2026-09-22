@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Mon, 21 Sep 2026 09:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 22 Sep 2026 09:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Nobody Ships a Model Anymore</title>
+      <link>https://abuiliazeed.github.io/blog/nobody-ships-a-model-anymore.html</link>
+      <guid>https://abuiliazeed.github.io/blog/nobody-ships-a-model-anymore.html</guid>
+      <description>Grok 4.7 costs the same per token as Grok 4.6 — and 2.47x more per task. Trained to natively understand its own harness, with its biggest gains appearing only inside it, it's the third vendor in eleven days to weld model and harness into a single artifact. The leaderboard was ranking pairs all along.</description>
+      <pubDate>Tue, 22 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
     <item>
       <title>The Environment Got a Harness Too</title>
       <link>https://abuiliazeed.github.io/blog/the-environment-got-a-harness-too.html</link>
