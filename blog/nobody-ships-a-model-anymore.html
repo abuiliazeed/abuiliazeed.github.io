@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nobody Ships a Model Anymore — Abuiliazeed</title>
+  <meta name="description" content="Grok 4.7 costs the same per token as Grok 4.6 and 2.5 times more per task. The gains live in the model-harness pair — and three vendors just made the pair the unit of deployment.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/nobody-ships-a-model-anymore.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/nobody-ships-a-model-anymore.html">
+  <meta property="og:title" content="Nobody Ships a Model Anymore">
+  <meta property="og:description" content="Grok 4.7 costs the same per token as Grok 4.6 and 2.5 times more per task. The gains live in the model-harness pair — and three vendors just made the pair the unit of deployment.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Nobody Ships a Model Anymore">
+  <meta name="twitter:description" content="Grok 4.7 costs the same per token as Grok 4.6 and 2.5 times more per task. The gains live in the model-harness pair — and three vendors just made the pair the unit of deployment.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-09-22">September 22, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">Nobody Ships a Model Anymore</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Grok 4.7 costs exactly what Grok 4.6 costs: $2 per million input tokens, $6 per million output. The rate card didn't move. The bill did. Artificial Analysis measured Grok 4.7 inside its native coding harness at an average of $8.82 in pay-per-token API cost per benchmark task, against $3.57 for Grok 4.6 — 2.47 times the cost, twice the wall time (39.2 minutes versus 19.5), for a nine-point index gain.</p>
+
+        <p>Same price per token. Two-and-a-half times the spend. That gap is today's story, because it's no longer a pricing story. It's an architecture story about what a "model release" even is — and three vendors, in eleven days, have quietly answered it the same way.</p>
+
+        <h2>The Launch That Wasn't About the Model</h2>
+
+        <p>Read xAI's own release notes for Grok 4.7, shipped September 21, and the most consequential sentence isn't about parameters or benchmarks. It's this: the model "was trained to natively understand the Grok Bot harness."</p>
+
+        <p>Sit with that. The harness — the scaffolding of prompts, tools, and loop logic wrapped around a model — used to be the thing <em>you</em> wrote, after the fact, around a model that shipped blind to it. Now the training run itself targets a specific harness. The weights and the wrapper are being optimized as one artifact.</p>
+
+        <p>The benchmark split shows where the gains actually landed. On Artificial Analysis's Intelligence Index, which standardizes the harness to isolate the model, Grok 4.7 scores 46 — two points above Grok 4.6. On the Coding Agent Index, which runs each model inside its native agent (Grok 4.7 paired with Grok Build), it scores 56 — nine points up, with improvement across all three components: 73% versus 65% on DeepSWE, 33% versus 18% on Terminal-Bench, 63% versus 58% on SWE-Atlas-QnA. Two points of model, nine points of pair. The release is mostly a harness event wearing a model's name.</p>
+
+        <p>The 2.47x cost increase is the same phenomenon from the other side. Grok 4.7 burned roughly 81,000 output tokens per Intelligence Index task versus about 38,000 for its predecessor — because it was reinforced on problems that take hours, it works longer, checks itself more, and doesn't stop until it's done. The model's diligence is now the biggest line item on your invoice, and per-token pricing tells you nothing about it.</p>
+
+        <h2>Eleven Days, Three Confessions</h2>
+
+        <p>Grok 4.7 isn't an outlier. It's the third vendor confirmation in eleven days that the model and the harness have stopped being separate things.</p>
+
+        <p><strong>September 10.</strong> OpenAI shipped the Agents API in public beta — the harness that powers Codex, exposed as a managed interface, free of additional fees. The telling language: the API provides "versioned access to these capabilities <em>with each model launch</em>. We maintain and continuously improve the harness alongside our models." The harness now has a release cadence coupled to the model's. They version together because they're tested together.</p>
+
+        <p><strong>September 17.</strong> Claude Code's changelog, version 2.1.274: the <code>/code-review</code> command switched "to use leaner inline review prompts for every model that has no tuned settings of its own." Read that clause carefully. Anthropic is sorting the world's models into two bins — <em>tuned</em> and <em>untuned</em> — inside a shipping product. A model without harness-tuned settings is now a second-class citizen in the tooling.</p>
+
+        <p><strong>September 21.</strong> Grok 4.7, trained to natively understand its own harness, with its biggest measured gains appearing only when it runs inside that harness.</p>
+
+        <p>Three companies that compete on model benchmarks all made the same move: fold the harness into the deliverable. Most commentary still treats "which model is best" as a standalone question with a standalone answer. The vendors have stopped behaving as if it is one.</p>
+
+        <h2>The Leaderboard Was Ranking Pairs All Along</h2>
+
+        <p>If you want to know when the industry's measurement apparatus caught up with this, it's the same week. A paper submitted September 15 — an audit of 254 public SWE-bench submissions — quantified something practitioners had been grumbling about for months: the top of the Verified leaderboard is one statistical tie.</p>
+
+        <p>The numbers are stark. The two leading entries each resolve 396 of 500 instances. The top ten share 285 successes and 51 failures — they're solving the same problems and missing the same ones. Exact paired McNemar tests separate <strong>none</strong> of the 29 adjacent top-thirty pairs at the standard significance threshold. Ranks 1 through 8 differ by less than three points. Meanwhile, detecting a one-instance gap at that score level would require roughly 734,000 benchmark instances. There are 500.</p>
+
+        <p>Here's the number that explains why. Within a single model, swapping just the scaffold moves the score by a median of 15.6 points — and up to 29.8 points for claude-3-5-sonnet across its nine scaffolds. The entire spread of the top thirty submissions is 8.8 points. The harness variable is three times larger than the ranking it's buried inside.</p>
+
+        <p>And the leaderboard can't even tell you what it measured. Only 46% of Verified submissions carry a single usable model tag; the identifiers are inconsistent, some entries link a URL instead of a model name. A leaderboard whose entire purpose is comparison doesn't record what was compared in machine-readable form. Every entry is a model-scaffold pair, and the provenance is folklore.</p>
+
+        <p>You can watch the confusion in real time on Grok 4.7's own launch. xAI's table puts Terminal-Bench 4.0 at 38.0%. Artificial Analysis, running the same 66 tasks with the mini-swe-agent harness, has it at 26%. Twelve points, one benchmark, two harnesses — and neither publication names the other's scaffold. Both numbers are real. They describe different systems that happen to share weights.</p>
+
+        <h2>Why You Can't Copy the Winning Scaffold</h2>
+
+        <p>The obvious defense is: fine, the harness matters — so copy the winner's harness. A second paper, submitted September 17, ran 176 matched harness configurations across four models and showed why that doesn't work either: <em>the optimal harness is a function of the model.</em></p>
+
+        <p>One binary flag makes the point. Give an agent a predefined tool set — file read, write, edit, glob, grep, bash — or strip it all and leave bare bash. With the full tool set, Mistral-Medium-3.5 beats Nemotron-3 550B by 2.8 points while costing 35% more per task. Remove the tools, and the 550B wins by 24 points while costing 35% less. Same tasks, same budget, one flag — the winner doesn't just change margin, it reverses, and the margin grows eightfold.</p>
+
+        <p>Context management behaves the same way. At a 32k window, one context-management setting swung a single model from 6.40% to 58.40% on SWE-Bench Verified — a 52-point swing, larger than the entire model spread at generous budgets, because 78.7% of unmanaged 32k runs simply died of context overflow. At 128k, the same lever moves accuracy by 2.7 points and becomes what it really is: a cost control.</p>
+
+        <p>Put the two papers next to the three vendor announcements and the full picture resolves. The vendors fuse model and harness because the pair is what performs. The auditors prove the leaderboard ranks pairs without recording the pairing. The ablation study proves the pairing doesn't transfer. The unit of deployment, the unit of measurement, and the unit of engineering effort have all collapsed into the same thing — and almost nobody's tooling, budgeting, or evaluation treats them as one.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p><strong>1. Version the pair, not the model.</strong> Your lockfile says <code>claude-fable-5.1</code> and your repo says <code>AGENTS.md@v14</code>. Nothing records that they only work together. Fix that: one artifact, one version, covering model, scaffold, and settings, bumped atomically. If you can't reproduce last month's eval, missing provenance is why.</p>
+
+        <p><strong>2. Re-run your last model bake-off under two harness configurations.</strong> Hold your scaffold fixed and vary the model, and you measured scaffold fit, not capability. The reversal risk is not theoretical — one tool-surface flag flipped a 2.8-point win into a 24-point loss. If the winner changes when you flip one setting, you learned more about your harness than about the models.</p>
+
+        <p><strong>3. Price swaps per task, never per token.</strong> Grok 4.7's rate card is identical to its predecessor's and its task cost is 2.47x. The diligence premium is real and it cuts both ways — paying 2.5x for a model that finishes in one pass instead of three can be a bargain, and paying it for routine edits is a leak. You find out which by measuring cost-per-task on your own repository, split by task type, not by reading launch posts.</p>
+
+        <p><strong>4. Budget the re-tune into every model swap.</strong> In the 176-setting study, cost per task for the same model ranged from $1.11 to $3.31 while accuracy moved less than four points. A harness tuned against your old model's blind spots is mistuned the day you swap — the discount you negotiated on tokens can be erased by a scaffold tuned for a model you just left. A model swap is a harness event. Treat it like one, with an owner and an estimate.</p>
+
+        <p><strong>5. Distrust any benchmark row that doesn't name its harness.</strong> Including your own dashboard. If the number can't say which scaffold produced it, it isn't a model score — it's a pair score with the pairing missing.</p>
+
+        <h2>The Merge Is the Product</h2>
+
+        <p>There's a defensible objection to all this: maybe this is temporary. The same ablation study found that planning scaffolds mostly rescue weak models and mostly just cost strong ones money — as models improve, harness elaboration might matter less for quality and more for the invoice. Birgitta Böckeler's feedforward-guid framework at Thoughtworks deliberately bets on model-independent scaffolding. If models keep absorbing what scaffolds do, the pair could dissolve back into the model.</p>
+
+        <p>But that's the same trajectory read correctly. Whether the harness gets absorbed into training (Grok), shipped versioned alongside the model (OpenAI), or used to sort models into tuned and untuned (Anthropic), the boundary is dissolving in one direction. The engineers who spent two years learning to build harnesses didn't waste the effort — the discipline of specifying tools, context, and control flow for an agent is exactly what the labs are now doing in the training run. It just stopped being a layer you own separately from the weights.</p>
+
+        <p>The practical chapters of <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em> age into this landscape rather than out of it: the harness is still the product — it just ships welded to a model now, and your leverage moved to picking, pricing, and versioning the pair.</p>
+
+        <p>Nobody ships a model anymore. The sooner your lockfile, your eval harness, and your budget reflect that, the fewer 2.5x surprises you'll find on the invoice.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
