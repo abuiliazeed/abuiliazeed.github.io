@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Tue, 22 Sep 2026 09:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 23 Sep 2026 09:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Only Four Survived the Loop</title>
+      <link>https://abuiliazeed.github.io/blog/only-four-survived-the-loop.html</link>
+      <guid>https://abuiliazeed.github.io/blog/only-four-survived-the-loop.html</guid>
+      <description>NVIDIA's auto-research loop evaluated 152 harness improvements and four survived — cutting token traffic up to 49% at 94% of the score, $8.75–$13.50 saved per agent-hour vs native Codex and Claude Code. The first self-improvement run that actually worked, and the human-engineered selection trick that made it possible.</description>
+      <pubDate>Wed, 23 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
     <item>
       <title>Nobody Ships a Model Anymore</title>
       <link>https://abuiliazeed.github.io/blog/nobody-ships-a-model-anymore.html</link>

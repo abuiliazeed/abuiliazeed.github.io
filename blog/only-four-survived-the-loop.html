@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Only Four Survived the Loop — Abuiliazeed</title>
+  <meta name="description" content="NVIDIA's auto-research loop evaluated 152 harness-improvement proposals and four survived — cutting token traffic up to 49% at 94% of the score. The first self-improvement run that worked, and the human-engineered selection trick that made it possible.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/only-four-survived-the-loop.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/only-four-survived-the-loop.html">
+  <meta property="og:title" content="Only Four Survived the Loop">
+  <meta property="og:description" content="NVIDIA's auto-research loop evaluated 152 harness-improvement proposals and four survived — cutting token traffic up to 49% at 94% of the score. The first self-improvement run that worked, and the human-engineered selection trick that made it possible.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Only Four Survived the Loop">
+  <meta name="twitter:description" content="NVIDIA's auto-research loop evaluated 152 harness-improvement proposals and four survived — cutting token traffic up to 49% at 94% of the score. The first self-improvement run that worked, and the human-engineered selection trick that made it possible.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-09-23">September 23, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">Only Four Survived the Loop</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>152 proposals went in. Four came out. On September 21, a team from NVIDIA, NTU, and MIT released <strong>SoL-Pi</strong> (arXiv:2609.20519) — an MIT-licensed extension for the open-source Pi coding agent that cuts token traffic by 44.7 to 49.0 percent on the 51-task EdgeBench evaluation while keeping roughly 94 percent of the baseline score, dropping API cost by about a third. Estimated savings: $4.36 to $5.71 per agent-hour against vanilla Pi, and $8.75 to $13.50 per hour against the native Codex and Claude Code harnesses.</p>
+
+        <p>Those are good numbers. But they are not the interesting part. The interesting part is how the four mechanisms were found: nobody designed them. An automated research loop proposed 152 harness modifications across six families, rolled them out in 535 executable environments built from GitHub issue–pull-request pairs and synthetic tasks, generated more than 3,000 runs and 60,000 agent–environment interactions — and then killed 148 of its own ideas against a held-out evaluation that no agent inside the loop could see.</p>
+
+        <p>Ten days ago I wrote about HarnessDev, the first benchmark that scores the harness an agent writes instead of the answers it gives. Its most damning number was 53.1 percent — how often an agent iterating on its own harness saw its benchmark feedback improve and its actual held-out performance improve too. A coin flip. The conclusion then: models can write harness code, but they cannot tell whether their edits helped. SoL-Pi is the strongest counterexample yet published — and the reason it worked is not that models got better at judging themselves. It's that the humans built a loop where judging themselves doesn't matter.</p>
+
+        <h2>What the Loop Actually Does</h2>
+
+        <p>The architecture is worth spelling out, because it is quietly different from every "self-improving agent" demo of the last year. There is no agent editing its own harness in place. There is a division of labor enforced by the infrastructure:</p>
+
+        <ul>
+          <li>A <strong>research AI</strong> observes execution traces from a <em>separate</em> agent running the base Pi harness, then proposes candidate harness changes across six families — context, progress, tools, delegation, prompt and policy, and improvement/evaluation.</li>
+          <li>Each proposal gets its own lineage: trajectory rollouts, map-reduce analysis over them, an implementation, and a <strong>separate reviewer model</strong> that has to pass the candidate before it costs anything.</li>
+          <li>Survivors face capability and efficiency gates, and finally a <strong>fully isolated held-out set</strong>. No agent inside the loop ever sees held-out results, so a mechanism only survives by generalizing — not by fitting the trajectories it was proposed from.</li>
+        </ul>
+
+        <p>This is the HarnessDev Evolution protocol with one variable changed, and it is the variable that mattered. HarnessDev let the creators optimize against visible feedback and measured agreement with held-out reality — 53.1 percent. SoL-Pi removed the visible feedback from the optimization entirely. The loop can't overfit a signal it never receives. Selection pressure comes from the environment's architecture, not the model's judgment. Four proposals survived: a 2.6 percent survival rate, which tells you exactly how much noise was in the other 97 percent.</p>
+
+        <h2>The Four Survivors</h2>
+
+        <p>Each mechanism targets a different point where harnesses waste tokens, and none of them requires touching the model:</p>
+
+        <p><strong>Action Fusion.</strong> Base Pi executes a file edit and the command that follows it — a test run, a build, a quick verification — as two separate tool calls, paying a full model round trip in between. Action Fusion merges them into a single tool request and returns both outcomes in one observation. One fewer generation cycle per edit-and-check, which over a multi-hour task compounds into a serious fraction of the bill.</p>
+
+        <p><strong>ObservationPack.</strong> Tool outputs above 10 KiB get archived to local disk and sent in full for the next two provider requests — the window where they're most likely to matter — and from the third request onward, the model sees a stable handle, the original size, and a short excerpt of head and tail lines. Exact pages remain retrievable through the handle. Your three-megabyte test log stops living rent-free in the context window.</p>
+
+        <p><strong>Evidence-Preserving Reducer.</strong> Build and test logs of at least 4 KiB go to a cheaper model — GPT-5.6 Luna at high reasoning — which writes a compact receipt. Then a <em>deterministic</em> verifier checks the receipt's schema, source hash, exit status, exact quotes, and size against the archived log. If anything fails, if credentials are suspected, or if the receipt isn't actually smaller, the harness falls back to the original log. Delegation to a cheaper model with a machine-checked honesty guarantee: this is the pattern every production harness should be copying for log triage.</p>
+
+        <p><strong>Online Context Compact.</strong> Vanilla harnesses compact when the context window is about to run out — late, reluctantly, and at maximum cache damage. Online Context Compact tracks plan steps and, when a step completes, estimates the remaining requests and compares projected input savings against the cost of rewriting the prompt cache. It compacts only when the gate passes. Compaction becomes an economic decision made at semantic boundaries instead of an emergency made at the window limit.</p>
+
+        <h2>The Numbers, Read Honestly</h2>
+
+        <p>On GPT-5.6 Sol, the full stack — the "Efficiency" configuration — used 1.10 billion recorded tokens against Pi's 2.15 billion, a 49.0 percent reduction, while API cost fell from $1,339 to $894. Average score held at 42.0 versus Pi's 44.8 — 93.7 percent. The more interesting configuration is "Performance," which used only the single best mechanism per backend: it <em>raised</em> the average score 5.3 percent on Sol and 12.8 percent on Opus 5 while still cutting token traffic. The full stack saves the most money; a single well-chosen mechanism can make the agent genuinely better. Those are different products, and the paper is unusually honest about it.</p>
+
+        <p>Three caveats deserve the same billing as the headline. First, the transfer test: SoL-Pi was searched entirely on GPT-5.6 Sol and then deployed on Opus 5 <em>without re-running the search</em> — it kept 94.3 percent of Pi's score and cut traffic 44.7 percent. That is real cross-model generalization, the exact thing HarnessDev's executor swaps destroyed. But the best single mechanism flipped: ObservationPack won on Sol, Action Fusion won on Opus 5. The mechanisms transfer; their ranking is backend-dependent.</p>
+
+        <p>Second, the efficiency stack costs score. 42.0 versus 44.8 is a real trade, and on Terminal-Bench 4's 63 CPU-only tasks, SoL-Pi solved 15 against 18 for both Codex and baseline Pi — three fewer solved tasks, even at 26.3 percent lower total cost. If a missed task costs more than the tokens saved, the Efficiency configuration is the wrong product for you.</p>
+
+        <p>Third, the cache trade-off, which almost no coverage mentioned: the full stack cut cache-read traffic from 2.13 billion to 1.06 billion tokens but <em>more than doubled</em> cache-write traffic (0.0141B to 0.0316B), because compaction rewrites the prefix the cache was holding. Total cost still fell from $1,339 to $894. The lesson is that cache-hit rate, the metric everyone optimizes, is not the objective — total task cost is. A harness that preserves cache blindly can be more expensive than one that aggressively invalidates it.</p>
+
+        <h2>Why This Worked When Self-Improvement Kept Failing</h2>
+
+        <p>Most people will read SoL-Pi as "self-improving agents are finally here." The evidence supports a narrower and more useful claim: <strong>automated search over harness designs works when — and only when — the selection environment is engineered to be unfakeable.</strong></p>
+
+        <p>Look at what the humans contributed. They built the 535 environments from real issue–PR pairs. They enforced independent review lineages. They quarantined the held-out set so thoroughly that no optimizer inside the loop could touch it. They wrote the deterministic verifier that makes the cheap model's summaries trustworthy — note that this is verification by <em>code</em>, not by another LLM's opinion, which is exactly the part the LLM can't fake. The models proposed and implemented. The humans guaranteed that only true generalization survives.</p>
+
+        <p>That is the reversal worth internalizing. The bottleneck in self-improvement was never generation — HarnessDev showed months of accumulated harness judgment is partially encodable by current models. The bottleneck was <em>version selection</em>: deciding which of your own changes to keep. SoL-Pi doesn't solve that problem. It routes around it, by making the selection signal environmental rather than cognitive. The loop doesn't know it's right. It just can't be wrong without getting caught.</p>
+
+        <p>This also reframes where the moat sits in an agent stack. Two days ago xAI shipped Grok 4.7 trained to natively understand its own harness, and the week before OpenAI exposed Codex's harness as a managed Agents API. Vendors are welding model and harness together from above. SoL-Pi demonstrates the opposite vector: a permissive-licensed, model-agnostic harness layer, improved by search, that any backend can run. Both trends say the same thing — the harness is where the leverage is — but only one of them leaves you with an asset you own. The four mechanisms here are described precisely enough to reimplement in any harness in an afternoon, and several teams will.</p>
+
+        <h2>The Swarm Result Nobody Wanted</h2>
+
+        <p>One experiment in the paper deserves wider attention because it deflates a current fad. The team tested a coordinated swarm: a Codex coordinator directing 20 SoL-Pi workers. It ran 1,127 cycles at $60.11, versus 1,366 cycles at $82.12 for the same swarm with Pi workers. The swarm with SoL-Pi workers is meaningfully cheaper per unit of work. And a single Codex agent doing everything itself cost $39.20 — cheaper than both. Orchestration overhead ate the parallelism. Before you build a twenty-agent fleet, note that the paper's own data says the boring single agent with an efficient harness remains the price-performance frontier.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <ol>
+          <li><strong>If you run Pi, install it.</strong> NVlabs ships SoL-Pi under MIT on GitHub; it installs through Pi's extension system against unmodified Pi 0.85.1 (Node.js 22.19+), and each mechanism toggles independently in a <code>sol-pi.json</code>. Start with the Performance configuration — the single best mechanism for your backend — and graduate to the full stack only where a 6 percent score dip is cheaper than the tokens.</li>
+          <li><strong>If you don't run Pi, steal the mechanisms.</strong> All four are harness-layer patterns with published thresholds (10 KiB observation archive, 4 KiB delegation floor, compaction gated on plan-step completion). Action Fusion and an ObservationPack-style archive are each implementable in a few hundred lines in any harness you control. The Evidence-Preserving Reducer's deterministic-verification pattern is the one with the highest reuse value — verified delegation to cheap models is a solved pattern now, not a research question.</li>
+          <li><strong>Build your held-out set before your improvement loop.</strong> The single transferable insight of this paper is architectural: any automated optimization over your harness needs an evaluation set the optimizer cannot see, and capability gates it cannot argue with. That's cheap to build and, per the 53.1 percent result from two weeks ago, it is the entire difference between improvement and noise-chasing.</li>
+          <li><strong>Measure total task cost, not cache-hit rate.</strong> Pull your last month of agent bills and split them into cache reads, cache writes, and generation. SoL-Pi's cache numbers show a harness can more than double cache-write traffic and still cut total cost by a third. If your efficiency dashboards lead with hit rate, they are pointing at the wrong target.</li>
+        </ol>
+
+        <p>The survival rate is the headline I'd keep: 2.6 percent. Automated harness research didn't get smart; it got honest. The loop succeeded because 148 wrong answers were allowed to die against evidence they couldn't see, selected by infrastructure humans designed. That division of labor — models propose, environment disposes — is the working blueprint for harness engineering, and it fits on a postcard. It's also, not coincidentally, the argument at the center of <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>: the durable skill isn't writing the loop. It's building the thing that tells you the truth about the loop.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
