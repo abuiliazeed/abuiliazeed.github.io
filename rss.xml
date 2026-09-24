@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Wed, 23 Sep 2026 09:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 24 Sep 2026 09:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Bottleneck Was Noticing</title>
+      <link>https://abuiliazeed.github.io/blog/the-bottleneck-was-noticing.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-bottleneck-was-noticing.html</guid>
+      <description>950 Claude agents, 21 hours, 210 million tokens — and the discovery came from one agent reading raw DNA "by eye." Anthropic's ART enzyme system proves the scarce resource in science was never data or compute. It's expert attention, and harnesses can now manufacture it.</description>
+      <pubDate>Thu, 24 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
     <item>
       <title>Only Four Survived the Loop</title>
       <link>https://abuiliazeed.github.io/blog/only-four-survived-the-loop.html</link>
