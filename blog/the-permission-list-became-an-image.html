@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Permission List Became an Image — Abuiliazeed</title>
+  <meta name="description" content="Between September 21 and 23, three infrastructure vendors shipped nearly identical agent runtimes. On September 24, Docker shipped the thing that makes them all interchangeable — and it wasn't a runtime. It was a permission list packaged as an OCI image, donated to the CNCF.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-permission-list-became-an-image.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-permission-list-became-an-image.html">
+  <meta property="og:title" content="The Permission List Became an Image">
+  <meta property="og:description" content="Between September 21 and 23, three infrastructure vendors shipped nearly identical agent runtimes. On September 24, Docker shipped the thing that makes them all interchangeable — and it wasn't a runtime. It was a permission list packaged as an OCI image, donated to the CNCF.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Permission List Became an Image">
+  <meta name="twitter:description" content="Between September 21 and 23, three infrastructure vendors shipped nearly identical agent runtimes. On September 24, Docker shipped the thing that makes them all interchangeable — and it wasn't a runtime. It was a permission list packaged as an OCI image, donated to the CNCF.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-09-25">September 25, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Permission List Became an Image</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Between September 21 and September 23, three infrastructure companies — a hyperscaler, a cloud-managed services provider, and an open-source database platform — shipped agent runtimes that are functionally the same product. AWS open-sourced Strands Harness under Apache 2.0. DigitalOcean launched Managed Agents with an event-driven Action Gateway. Aiven went GA with Runtime and DataHub, its MCP-integrated, agent-native database layer. Different companies, different customer bases, the same feature list: shell access, file manipulation, web tools, long-term memory, context management, subtask delegation.</p>
+
+        <p>Then on September 24, at WeAreDevelopers in Palo Alto, Docker announced something that quietly makes all three of those interchangeable. It wasn't a runtime. It was a specification for the most boring artifact imaginable: a list of what an agent is allowed to touch — packaged as a standard OCI image, open-sourced under Apache 2.0, and donated to the CNCF.</p>
+
+        <p>Docker called it the Sandbox Kit Spec. Here's the part that matters: a Kit carries three things in one image — the agent, its tools, and a typed list of everything it asks to reach, like hosts, credentials, and volumes. Pin the image and you've pinned the agent and its permission requests together. Nobody can change one without changing the other.</p>
+
+        <p>Most coverage will file this under "agent security." That's the wrong shelf. This is the moment the agent ecosystem decided that <strong>permissions are a packaging concern, not a runtime concern</strong> — and the implications run in exactly the opposite direction from where the sandbox conversation has been going.</p>
+
+        <h2>The Week the Runtime Became a Commodity</h2>
+
+        <p>To understand why a permission spec matters more than it sounds, look at what the week before it established.</p>
+
+        <p>The September 21–23 launches weren't coordinated, but they converged on one architecture with uncanny precision. Strands Harness is an open-source, pre-configured agent runtime deployable everywhere from Modal and Cloudflare Containers to ECS and Bedrock AgentCore. DigitalOcean's Managed Agents pairs a harness runtime with an Action Gateway so hobbyist-scale teams get production agent infrastructure without a platform team. Aiven's Runtime turns managed Postgres, Kafka, ClickHouse, and Valkey into active participants in agentic workflows via a DataHub MCP server that exposes entity search, lineage traversal, and SQL association to agents like Claude, Cursor, and VS Code.</p>
+
+        <p>When three vendors in three different market segments ship the same thing inside 48 hours, the thing has stopped being a differentiator. It's a commodity. The run-anything harness with shell, files, web, and memory is now table stakes — the agent equivalent of a Linux distro. Nobody wins by shipping a better Linux distro anymore.</p>
+
+        <p>This is the setup for Docker's move. When the runtime layer commoditizes, two things happen. First, the value migrates to whoever owns the default environment — which is why AWS, DigitalOcean, and Aiven are racing to embed runtimes into their existing surfaces. Second, and less obviously, a new question appears: if my agent runs anywhere, what happens to its permissions?</p>
+
+        <p>That question had no good answer before September 24. Every runtime has its own policy model. VS Code enforces sandboxing at the editor layer. Claude Code gates actions through approval modes. Cloud platforms enforce network policies at the VPC layer. Enterprise gateways enforce spending and tool policies at the routing layer. Each of these works. None of them travels with the agent.</p>
+
+        <h2>What a Kit Actually Is</h2>
+
+        <p>Strip the branding and a Kit is an OCI image containing three payloads: the agent (or an agent launcher), its tools, and a typed manifest of reach — hosts it may contact, credentials it may request, volumes it may mount. Because the manifest lives inside the image, the rules and the thing they govern are cryptographically bound. There is no drift between "what the agent is" and "what the agent may do."</p>
+
+        <p>The second design decision is more interesting: Kits snap together from mixins. A platform team publishes a base Kit with the company's network policy. A database vendor publishes a mixin granting scoped access to its service. An agent vendor publishes a Kit for its own runner. Your team composes them — and because composition happens at the image layer, every registry, scanner, and signing tool the industry already runs handles the result. Docker's blog post makes the adoption argument bluntly: because a Kit is an OCI image, "every registry, scanner, and signing tool you already run handles it. There is nothing new to deploy."</p>
+
+        <p>The third decision is the one reviewers will feel immediately: permission changes show up as diffs. When a new version of an agent Kit asks for more access than the last one, the delta appears as added lines in the manifest — lines a teammate can refuse. Docker's post frames this as "the answer travels with the agent," and the enforcement story is concrete: Docker Sandboxes is the first runtime that enforces Kit policies today, with the expectation that other conforming runtimes follow under CNCF governance.</p>
+
+        <p>The same day, Docker also launched Cloud Sandboxes — the same microVM isolation model extended onto Docker-managed compute, scaling from 1 to 16 vCPUs, booting "in the low hundreds of milliseconds," with a secrets proxy that injects credentials per-request so agents never hold the actual tokens, and an MCP gateway shared across every agent in the environment. Kits for the leading coding agents — Claude Code, Codex, Copilot, Antigravity, Open Code, Hermes — are available on Docker Hub today. One command moves a workflow between laptop and cloud; the policy moves with it because it was never attached to the machine in the first place.</p>
+
+        <h2>Permissions Belong in the Artifact</h2>
+
+        <p>Here is the contrarian read, and it's worth being precise about it.</p>
+
+        <p>The dominant agent-safety narrative of 2026 has been about runtimes: sandbox the terminal by default, isolate the microVM, gate the approval prompt. I've argued for that direction myself — containment as the default execution environment is correct. But notice what every one of those mechanisms has in common: the policy lives in the platform. Switch runtimes and your carefully tuned sandbox configuration stays behind. The VS Code sandbox doesn't follow your agent into a Docker sandbox. DigitalOcean's Action Gateway doesn't know what your AWS policies permitted. The agent walks into each new environment naked, and the environment dresses it in whatever it has lying around.</p>
+
+        <p>The Kit spec inverts this. The policy is a property of the artifact, not the environment. The runtime's job shrinks to one thing: enforce whatever the image declares, and refuse what it doesn't. Docker's own framing draws the historical parallel explicitly — "just like we did when the image format went to OCI" — and the parallel is better than a talking point. Before OCI, the image format belonged to whoever ran the runtime. After, the runtime became replaceable because the artifact was portable. The Kit spec makes the same bet: a standard for what an agent may do "is worth a good deal less if it belongs to whoever sells you the runtime."</p>
+
+        <p>This also explains why donation to CNCF is the strategy and not a courtesy. A governance-neutral permission format is a coordination device: vendors will publish Kits because publishing one is cheap and withholding one is conspicuous. The database vendor that ships a Kit with a sensibly-scoped access policy is making its service agent-native for every conforming runtime at once. The one that doesn't is asking every customer to reinvent its access policy per platform. Docker's blog puts the ask directly: "If you make a tool agents use, publish a Kit for it."</p>
+
+        <p>There's an enterprise governance angle that ties the week together. Databricks shipped its Unity Gateway CLI the same day — centrally managed models, MCP servers, and spending policies for every coding agent in an org, with one customer reporting 61 billion input tokens across roughly 360,000 requests flowing through a single governed path, and Databricks's own engineering team crediting trace analysis with finding seven MCP tool bugs worth an estimated $1.2 million a year in wasted spend. That's the centralized-governance model: one choke point, one policy authority. Kits are the decentralized complement — policy that ships with the artifact into any environment. Real organizations will run both, and the interesting design question of the next six months is where the boundary sits.</p>
+
+        <h2>Why This Beats a Config File</h2>
+
+        <p>The obvious objection: isn't a Kit just YAML with extra steps? Platform teams already express agent policies as configuration — Helm values, Terraform, gateway rules. Why reify it as an image?</p>
+
+        <p>Three reasons, and they're the same reasons containers beat configuration management.</p>
+
+        <p><strong>Immutability.</strong> A config file is mutable state; drift is a when, not an if. An image is content-addressed. The permission set your agent ran with in staging is bit-for-bit the set it runs with in production, and you can prove it later. When an agent does something it shouldn't have, the first forensic question — "what was it allowed to do at the time?" — has an exact answer instead of an archaeology project.</p>
+
+        <p><strong>Supply chain for free.</strong> The moment permissions are an OCI image, the entire container toolchain applies to them. Signing, provenance attestation, vulnerability scanning, registry policies that block unsigned pulls — none of it was built for agents, all of it works on Kits today. IBM's research cited around this week's enterprise-governance launches found that fewer than one in five organizations maintain a complete, current inventory of their AI systems. You cannot review what you cannot inventory, and you cannot inventory policies scattered across every runtime's config surface. A registry of signed Kits is an inventory that already exists.</p>
+
+        <p><strong>Diffability as a review workflow.</strong> The pull request won agent development because diffs made change reviewable at machine speed. Permission manifests that diff cleanly extend the same workflow to authority. "This upgrade asks for three new hosts and write access to the deploy key" is a reviewable sentence. "This upgrade changes the agent" is not — and today, in most stacks, it's the only signal a reviewer gets.</p>
+
+        <h2>What This Means for Your Harness</h2>
+
+        <p>If you build agent infrastructure — and this is the layer <em>Harness Engineering</em> spends its whole length on — the Kit spec changes three design assumptions.</p>
+
+        <p><strong>Assume your policy is portable even if your runtime isn't.</strong> Stop encoding permissions in runtime-specific configuration that dies with the platform. Express the agent's reach declaratively, in one place, and treat every runtime-specific policy layer as a compiled artifact of that declaration. When the Kit format (or its successors under CNCF) covers your case, the migration is a build step, not a rewrite.</p>
+
+        <p><strong>Design tools to request scope, not grant.</strong> Tools that require broad ambient authority — "give the agent my production credentials and hope" — are un-Kit-able. Tools that request narrow, typed access — this host, this scope, this expiry — compose cleanly into a manifest someone can review. The permission granularity of your tool surface now determines whether your harness can be packaged at all.</p>
+
+        <p><strong>Treat permission changes as releases.</strong> If a Kit binds agent and reach into one versioned artifact, then asking for more access is a release event: reviewed, signed, rolled out, rollback-able. Bake that into your release process now — changelog entries for permission deltas, review requirements for reach expansion — and you'll be ahead of the governance curve that Gartner says is coming, with its projection that more than 40% of agentic AI projects get canceled by end of 2027 on cost, value, and risk-control grounds.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p><strong>Inventory your agents' reach, today, manually.</strong> For each agent your team runs, write down: which hosts it can contact, which credentials it can obtain, which volumes it can write. Most teams have never done this. It's the input every later step needs, and the exercise itself usually surfaces something alarming.</p>
+
+        <p><strong>Read the spec.</strong> It's open at <code>docker/sandbox-kit-spec</code> on GitHub, with capability pages and a worked tour of a real Kit. Even if you never adopt Docker's runtime, the manifest schema is the clearest expression yet of what a portable agent permission model looks like — worth an hour of anyone's time who designs harnesses.</p>
+
+        <p><strong>Publish one Kit.</strong> Pick your most internal, most well-understood agent workflow and package it: agent, tools, reach manifest. Run it in Docker Sandboxes locally. The point isn't production adoption on day one — it's learning where your current tooling resists being expressed as a typed permission manifest, because those resistance points are exactly where your harness leaks ambient authority.</p>
+
+        <h2>The Bigger Picture</h2>
+
+        <p>There's a version of this history that repeats every decade. Compute standardized, then the image standardized, then orchestration standardized. Each time, the standard didn't come from the most powerful vendor — it came from whoever was willing to give the layer away. Docker gave the image format to OCI in 2015 and the container ecosystem became the largest infrastructure movement in a generation. Nobody remembers who lost that argument, because everyone who fought it lost.</p>
+
+        <p>The agent stack spent 2026 standardizing from the bottom up: MCP made tools portable, skills made expertise portable, plugin formats made clients interoperable. The one layer that stayed proprietary — the permission model, the answer to "what may this agent do" — was also the layer enterprises kept citing as the reason they can't deploy agents at scale.</p>
+
+        <p>Last week the runtimes became commodities. This week, the permission list became an image. The layer that was holding agents back is now the most portable thing about them — and the runtimes that once enforced their own rules are about to find out their real job was carrying someone else's.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
