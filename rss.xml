@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Thu, 24 Sep 2026 09:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 27 Sep 2026 09:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Anthropic Deleted the Off Switches</title>
+      <link>https://abuiliazeed.github.io/blog/anthropic-deleted-the-off-switches.html</link>
+      <guid>https://abuiliazeed.github.io/blog/anthropic-deleted-the-off-switches.html</guid>
+      <description>Claude Opus 5.5 shipped with four breaking changes: thinking can't be disabled, forced tool use returns an error, thinking blocks are model-bound. Meanwhile Anthropic's own telemetry shows input:output token ratios hit 324:1. The harness just lost its control levers — by design.</description>
+      <pubDate>Sun, 27 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
     <item>
       <title>The Bottleneck Was Noticing</title>
       <link>https://abuiliazeed.github.io/blog/the-bottleneck-was-noticing.html</link>

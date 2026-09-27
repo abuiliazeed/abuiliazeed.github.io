@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anthropic Deleted the Off Switches — Abuiliazeed</title>
+  <meta name="description" content="Claude Opus 5.5 shipped with four breaking changes: thinking can't be disabled, forced tool use returns an error, thinking blocks are model-bound. Meanwhile Anthropic's own telemetry shows input:output token ratios hit 324:1. The harness just lost its control levers — by design.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/anthropic-deleted-the-off-switches.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/anthropic-deleted-the-off-switches.html">
+  <meta property="og:title" content="Anthropic Deleted the Off Switches">
+  <meta property="og:description" content="Claude Opus 5.5 shipped with four breaking changes: thinking can't be disabled, forced tool use returns an error, thinking blocks are model-bound. Meanwhile Anthropic's own telemetry shows input:output token ratios hit 324:1. The harness just lost its control levers — by design.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Anthropic Deleted the Off Switches">
+  <meta name="twitter:description" content="Claude Opus 5.5 shipped with four breaking changes: thinking can't be disabled, forced tool use returns an error, thinking blocks are model-bound. The harness just lost its control levers — by design.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-09-27">September 27, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">Anthropic Deleted the Off Switches</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>324 to 1. That is the input-to-output token ratio of a typical Claude Code session as of this month, according to telemetry Anthropic published on September 24. In March it was 189 to 1. In six months, the model's own output has shrunk to roughly 0.3 percent of the tokens moving through a coding session — everything else is context the harness re-sends, tool results, and cached prefix. The modern coding agent is a reading machine that occasionally emits a diff.</p>
+
+        <p>Five days earlier, Anthropic shipped Claude Opus 5.5, and most coverage treated it as a routine flagship refresh: better benchmarks, 20 percent cheaper. The part that matters to anyone who builds agent infrastructure is buried in the platform docs under "breaking changes." Four of them. <strong>Thinking can no longer be disabled.</strong> <strong>Forced tool use now returns an error</strong> — <code>tool_choice</code> accepts only <code>auto</code> and <code>none</code>. <strong>Thinking blocks are tied to the specific model and conversation</strong>, so switching models mid-task discards reasoning context. And the text a model writes between tool calls now comes back inside <code>thinking</code> blocks whose text is empty at the default display setting — which means any application that streamed that text to users as a progress indicator silently went quiet.</p>
+
+        <p>Read together, the telemetry and the breaking changes are one story. The session became a long, context-heavy, mostly-cached read. The model got good enough that Anthropic removed the harness's levers over <em>how</em> it works — and kept only the levers over <em>how much</em> it works. This is not a model release. It is a transfer of authority from harness configuration to model policy, executed through the API contract itself.</p>
+
+        <h2>What Anthropic's Own Numbers Say Happened</h2>
+
+        <p>The September 24 post is the most candid vendor telemetry on agentic coding published this year, and every line of it points the same direction. Comparing March to September 2026 across aggregate Claude Code usage:</p>
+
+        <ul>
+          <li>Claude works <strong>3.3x longer on each prompt</strong>, with more than 40 percent more model calls per prompt.</li>
+          <li><strong>68 percent fewer interruptions</strong> — humans are stepping in less.</li>
+          <li>Context per request grew <strong>2.6x</strong>, driving the input:output ratio from 189:1 to 324:1.</li>
+          <li>Developers are about <strong>twice as likely to have a tool server connected</strong> or use a skill, and a third less likely to paste text into a prompt.</li>
+          <li>Despite the heavier context, input that misses the cache <em>decreased</em> by more than 50 percent — Claude Code got materially better at not breaking its own prefix.</li>
+        </ul>
+
+        <p>That is the profile of a workload that stopped being a chat and became a job. Sessions run long, touch many tools, and re-read the same large context repeatedly. And when the work looks like that, the two things a harness engineer used to control directly — whether the model deliberates, and which tool it must call next — are not just unnecessary. They are actively expensive, because overriding a model that knows what it wants to do next produces worse trajectories than letting it proceed.</p>
+
+        <p>So Opus 5.5 removes them. Adaptive thinking is always on; the model decides how much reasoning each task needs, and your control surface collapses to a single <code>effort</code> parameter — <code>low</code> through <code>high</code>, default <code>medium</code> — that sets the budget instead of the behavior. You cannot tell it to stop thinking. You cannot tell it which tool to call. You can tell it how hard to try.</p>
+
+        <h2>The Numbers That Justify the Removal</h2>
+
+        <p>None of this would matter if the model hadn't earned it. The benchmark story is unusually strong, and unusually honest about its own limits:</p>
+
+        <ul>
+          <li><strong>Terminal-Bench 4.0: 66.4 percent</strong>, versus 52.3 for Opus 5, 57.9 for GPT-6 Astra, and 55.8 for Anthropic's own Fable 5.1 — a 14-point jump over the predecessor on agentic terminal work.</li>
+          <li><strong>FrontierCode v1.1 (Main): 54.6 percent at default effort</strong>, beating GPT-6 Astra's 53.3 — at roughly one-fifth the cost per task.</li>
+          <li><strong>CursorBench 4.0: 52.5 percent at default effort</strong>, eleven points over GPT-5.6 Sol's 41.7, at about a third of the cost.</li>
+          <li>An early tester audited and fixed a <strong>200,000-line codebase in under three hours</strong>, where Opus 5 took over 20 hours and 2.5x the tokens.</li>
+          <li>Translating HAProxy from C to Rust: both Opus 5.5 and Fable 5.1 passed nearly all regression tests, but Opus 5.5 finished in 9.5 hours versus 12, at 51 percent less cost.</li>
+          <li>In one internal test it ran autonomously for <strong>more than 18 hours across six repositories</strong>; on internal research reports, 16 of 18 met Anthropic's quality threshold — against zero for Opus 5 and zero for Fable 5.1.</li>
+        </ul>
+
+        <p>Pricing follows the same logic. Input dropped 20 percent to $4 per million tokens, output to $20 — but the number doing the real work is the cache read, cut 60 percent to $0.20 per million. When output is 0.3 percent of traffic and the majority of cost is re-read context, the cache price <em>is</em> the price. Anthropic also added a one-hour cache lifetime on API keys and made forked subagents start from the parent's cache instead of paying for the same context again — and, tellingly, you can now change effort levels mid-session without resetting the cache. The one control lever they kept you, they made sure it doesn't cost you anything to pull.</p>
+
+        <p>Anthropic itself cautions that at this capability level benchmark margins have become a less reliable guide to real-world differences, and that the gap between Opus 5.5 and Fable 5.1 in daily use is narrower than the scores suggest. Good. That caution is correct, and it is also the point: when benchmarks stop discriminating, selection pressure moves to how the model behaves inside your harness — which is exactly where Opus 5.5's changes concentrate.</p>
+
+        <h2>The Quiet Breaking Change That Broke Real Products</h2>
+
+        <p>Of the four breaking changes, the one that will bite hardest is the subtlest. Previously, text a model produced between tool calls arrived as ordinary content. Applications built progress UIs on it: "Examining the test failures now…" streaming by while the agent worked. Under Opus 5.5, that text comes back inside <code>thinking</code> blocks — and at the default <code>display</code> setting, the text is empty. No error. No deprecation warning. The request succeeds, the agent keeps working, and the human watching the terminal sees nothing between tool calls.</p>
+
+        <p>This is a new class of harness failure worth naming: the <strong>response-shape break</strong>. Nothing fails programmatically, so your tests pass, your error rates stay flat, and your product degrades in the one dimension no dashboard tracks — the user's sense that the agent is alive. Every harness that parses model output structurally, not just every harness that uses the removed parameters, is exposed to this on every model generation. If your test suite asserts on response shape and content-block roles, you caught this on day one. If it asserts on task outcomes only, you are finding out from your users.</p>
+
+        <p>The model-bound thinking blocks are the same story at the architecture level. Reasoning context now belongs to the specific model and conversation that produced it; switch executors mid-task and the reasoning is gone. This is creator co-adaptation — the harness-model coupling that HarnessDev measured and Nvidia's SoL-Pi worked around — now enforced by the API contract rather than emerging from optimization. Anthropic is telling you, in schema, what the research literature spent September proving: the harness and the model are one system, and hot-swapping the model is no longer a supported operation.</p>
+
+        <h2>What the Harness Engineer Still Controls</h2>
+
+        <p>Most people will read this release as "the model got smarter and cheaper." The structural reading is more interesting: the set of things a harness controls just got strictly smaller, and what remains got more valuable.</p>
+
+        <p>Strip away the removed levers and look at what Anthropic actually shipped <em>alongside</em> the model. A classifier that screens every action before it runs. An open-source sandbox security teams can audit. Code review that catches vulnerabilities before merge. The one-hour cache lifetime. Subagent cache forking. The effort parameter that survives a session. That is the new control surface, and notice where it sits: not over the model's reasoning, but around its actions — <strong>gating, budgeting, and memory, instead of steering.</strong> The harness's job is no longer to direct the model's next step. It is to decide what the model may touch, how hard it may try, and what it remembers.</p>
+
+        <p>This is the continuation of a line this blog has been tracking all year — Anthropic deleting 80 percent of Claude Code's system prompt because the model had internalized it, LangChain cutting Deep Agents' base payload by 65 percent, Nvidia's search discovering that the surviving harness mechanisms were all compression and routing. Each step removed harness machinery the model had absorbed. Opus 5.5 removes the last of it: the parameters that made the model a component you could commandeer. The discipline formerly known as prompt-and-parameter engineering is being folded into the model, and what's left — the environment design, the budgets, the evals — is the part I've been calling harness engineering all along. The book covers this division in depth; the short version is that authority doesn't disappear when you delete a lever. It moves to whoever designs the environment the lever used to sit in.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <ol>
+          <li><strong>Grep your codebase for <code>tool_choice</code> before you migrate.</strong> Any request that forces a specific tool or <code>"any"</code> will error against Opus 5.5. If you were using forced tool use to implement structured extraction or guaranteed side effects, move that logic into tool schemas and let the model select — or move it out of the model entirely, which for deterministic operations is where it always belonged.</li>
+          <li><strong>Replace your thinking toggles with an effort ladder.</strong> If your harness has branches like "thinking on for hard tasks, off for cheap ones," those branches are now dead config. Rebuild them as <code>effort</code> settings — and since effort changes no longer bust the cache, you can adapt mid-session per task instead of provisioning two session classes.</li>
+          <li><strong>Pin your display semantics and test response shape.</strong> If you stream inter-tool text as progress, set the <code>display</code> value that returns it, explicitly. Then add a contract test that fails when content-block roles change shape — one test, run against every new model version, would have caught this break before your users did.</li>
+          <li><strong>Re-run your bill math with the new asymmetry.</strong> At $4 input, $0.20 cache reads, and a 324:1 ratio, the economics reward a different set of habits: longer sessions over fresh sessions, subagent forking over context re-sending, one model per task over mid-task switching. Anthropic's own advice is to pick the model at session start, compact before stepping away, and set the one-hour cache lifetime. Run <code>/usage</code> in Claude Code, find your cached-read share, and protect it like the KPI it now is.</li>
+        </ol>
+
+        <p>A 324:1 ratio and a model you can no longer tell what to do — those are the same fact. When the output is 0.3 percent of the traffic, the model isn't the tool anymore. The session is the tool, the harness is the handle, and the vendor just reminded everyone who owns the blade: effort in, action gated, reasoning bound. The off switches weren't taken from you because the model is fragile. They were taken because you weren't using them right, and now the API won't let you.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
