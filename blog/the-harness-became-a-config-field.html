@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Harness Became a Config Field — Abuiliazeed</title>
+  <meta name="description" content="LiteLLM's LiteAgents swaps the agent harness with one string literal — deepagents, claude-sdk, codex, pydantic-ai, opencode — while keeping your tools, MCP config, and client code. The most fought-over layer of the 2026 stack just became a config value. What survives commoditization is the part you actually own.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-harness-became-a-config-field.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-harness-became-a-config-field.html">
+  <meta property="og:title" content="The Harness Became a Config Field">
+  <meta property="og:description" content="LiteLLM's LiteAgents swaps the agent harness with one string literal — deepagents, claude-sdk, codex, pydantic-ai, opencode — while keeping your tools, MCP config, and client code. The most fought-over layer of the 2026 stack just became a config value. What survives commoditization is the part you actually own.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Harness Became a Config Field">
+  <meta name="twitter:description" content="LiteLLM's LiteAgents swaps the agent harness with one string literal — deepagents, claude-sdk, codex, pydantic-ai, opencode — while keeping your tools, MCP config, and client code. The most fought-over layer of the 2026 stack just became a config value. What survives commoditization is the part you actually own.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-09-28">September 28, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Harness Became a Config Field</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>One string literal. That's what it now takes to rip the entire agent loop out of your application and replace it with a different one. On September 25, LiteLLM shipped LiteAgents, and the core of it fits in a single line of Python: <code>harness="deepagents"</code>. Change it to <code>"claude-sdk"</code>, <code>"codex"</code>, <code>"pydantic-ai"</code>, or <code>"opencode"</code>, and your agent runs a completely different harness — different loop, different middleware, different defaults — while your tools, your MCP configuration, your model connection, and your client code stay exactly where they are.</p>
+
+        <p>The harness — the layer this entire industry spent 2025 and 2026 fighting over, the thing vendors weld their models to and teams spend months tuning — is now a field in a profile object. A profile that, incidentally, loads from JSON or YAML.</p>
+
+        <p>Most people read an announcement like this as a convenience feature. It isn't. It's the endgame of a commoditization arc that has been running all year, and it lands in the same week the opposite trend produced its purest artifact yet. Both signals point at the same conclusion: the loop itself is no longer where the value lives. What's left — the parts that don't swap — is about to become very obvious, and very expensive to have ignored.</p>
+
+        <h2>What Actually Shipped</h2>
+
+        <p>The mechanics matter, so let's be precise about what LiteAgents does, because the details are more radical than the pitch.</p>
+
+        <p>The interface is modeled on the Claude Agent SDK — the <code>query()</code> pattern with typed messages. Your application receives the same <code>AssistantMessage</code>, <code>UserMessage</code>, and streaming <code>TextDelta</code> objects regardless of which harness is running underneath. LiteAgents adapts your tools, your MCP configuration, and your event stream to each target. Each harness still runs its own native agent loop; what's standardized is the boundary, not the implementation.</p>
+
+        <p>Two design choices stand out. First, native controls survive the abstraction: through <code>harness_options</code> you can still reach Deep Agents middleware and backends, or Pydantic AI tool timeouts. The adapter doesn't flatten its targets to a lowest common denominator — which is honest, and also a confession that the harnesses genuinely differ in ways that matter.</p>
+
+        <p>Second, durability is a checkbox. A simple agent runs locally with no infrastructure. When a job needs to survive worker restarts or client disconnects, you add Temporal to the profile and run a worker — starting with SQLite, graduating to self-hosted Temporal or Temporal Cloud — and your client API doesn't change. Durable execution, which was an entire engineering discipline with its own specialist tooling eighteen months ago, is now a profile flag. With one caveat that I'll come back to, because it's the most important sentence in the docs: tools that perform external actions still need idempotency if an interrupted action may be retried.</p>
+
+        <p>The SDK ships as a preview, with a cookbook that runs the same model, the same Python tool, the same MCP tool, and the same follow-up across all six harness selectors. That cookbook is not documentation. It's a benchmark harness for the harness.</p>
+
+        <h2>The Pattern Rhymes, Deliberately</h2>
+
+        <p>If LiteAgents feels familiar, it should. LiteLLM itself did this to the model layer: one interface, any provider, swap with a string. The industry resisted, then adopted it almost universally, because once models converged on capability, the cost of provider lock-in exceeded the benefit of provider intimacy.</p>
+
+        <p>Now the same force is applied one layer up. And the precondition — convergence — is met. We know from direct measurement that the same model run through different harnesses can swing by more than 30 points on the same tasks. When the spread between harnesses is that large, harness choice is a per-workload optimization problem, not an identity. And optimization problems demand cheap switching. You can't A/B test an architecture; you can A/B test a config field.</p>
+
+        <p>This is how every infrastructure layer dies: not with a replacement, but with an adapter. The database went through it with ORMs and connection pools. The model went through it with LiteLLM. The loop is going through it now. Every layer that gets an adapter stops being a competitive decision and becomes a routing decision.</p>
+
+        <h2>The Squeeze From Both Ends</h2>
+
+        <p>Here's where the week gets interesting, because the same seven days produced the exact opposite signal too.</p>
+
+        <p>On September 27, MiniMax launched M3.1-Flash-Preview — a coding model with a one-million-token context and five reasoning-effort levels — and it is unavailable as a model. No model card, no benchmark report, no public pricing, no API endpoint. It exists only inside MiniMax Code, the company's own agent product. You cannot call it; you can only run inside its harness.</p>
+
+        <p>Days earlier, an anonymous free model called Space Bunny Alpha appeared on OpenRouter, and the community fingerprinted it — 24 out of 24 tokenizer probes matched MiniMax models in one test, 50 out of 50 in another — as an early build of the same system. The pattern is deliberate: collect free real-world benchmark data anonymously, then ship the model as a property of your product. The stealth preview is the eval phase; the in-product launch is the release.</p>
+
+        <p>So put the two ends of the week side by side. MiniMax is welding model to harness so tightly the model has no independent existence. LiteLLM is unwelding them so completely that the harness is a string literal. Both strategies can't win long-term, and the tension between them is the actual story of the stack right now.</p>
+
+        <p>My read: the unwelders win, and it won't be close. Vendors spent 2026 making model-plus-harness a single artifact, and for a quarter it worked, because the pairs genuinely performed better than the parts. But a pair you can't leave is a pair you're renting. The moment a neutral adapter lets teams measure Codex's loop against Deep Agents against OpenCode on their own tasks with their own tools, the welded pairs get forced back into competing on the merits of each layer separately — which is exactly the competition abstraction was invented to enable. Consolidation happened; what consolidated then got turned into plugins.</p>
+
+        <h2>Look at What Everyone Else Shipped This Week</h2>
+
+        <p>If you doubt the loop is commoditized, look at where everyone else is competing. In the same five days:</p>
+
+        <ul>
+          <li><strong>LangChain</strong> shipped Managed Deep Agents 0.8 — and not one headline feature is about the loop. It's identity-scoped auth, user-level memory that doesn't bleed across callers, HTTP channels for putting agents inside product surfaces, and built-in web search with vendor credentials managed for you.</li>
+          <li><strong>n8n</strong> launched n8n Agents — prebuilt memory, sessions, versions, approvals, sub-agents — where the genuinely interesting design decisions are all in the tool layer: MCP servers wholesale, or specific integrations with pinned parameters, or entire workflows as tools, with per-tool credentials the agent never holds.</li>
+          <li><strong>Prismor</strong> went open-source as a runtime control plane that sits between your agent and every tool call, with named governance modes and an MCP gateway that injection-scans server responses before they reach the model's context.</li>
+        </ul>
+
+        <p>Three major releases, zero of them competing on the agent loop. They're competing on credentials, memory isolation, channels, policy, tool governance. The industry's smartest money looked at the stack and decided the loop is settled — so settled it's worth giving away — and moved one layer out in every direction at once.</p>
+
+        <h2>What Survives a Commodity</h2>
+
+        <p>So if the harness is a config field, what are you supposed to engineer? This is the question that separates the teams that benefit from this shift from the teams that get hurt by it.</p>
+
+        <p><strong>Your tools and their contracts.</strong> Every one of this week's releases treats tools as the durable asset: n8n lets any workflow become one, LiteAgents carries yours across five harnesses unchanged, Prismor exists to govern them. A tool with a clean, well-typed contract outlives any loop you run it from. A tool wired into one harness's internals dies with that harness's fashion cycle.</p>
+
+        <p><strong>Your evaluation set.</strong> LiteAgents ships with a cookbook that runs identical tasks across six harnesses because the authors understand: once switching is cheap, the only thing that differentiates harnesses is measurement on <em>your</em> workloads. The team with a private eval set of real tasks can swap harnesses in an afternoon and know, with numbers, whether the new one is better. The team without one is switching on vibes.</p>
+
+        <p><strong>Your policy layer.</strong> Prismor's governance modes compile to a <code>policy.yaml</code> you can edit, and its MCP gateway evaluates every tool call before forwarding it. Policy that lives outside the harness survives the harness. Policy baked into one harness's middleware does not — and this is the trap in LiteAgents' otherwise sound design: those native <code>harness_options</code> are a seductive path back into lock-in. Every setting you push through them is a setting you'll re-implement five times when you switch.</p>
+
+        <p><strong>Your idempotency discipline.</strong> Here's that caveat from the docs again: the harness can replay, but it cannot un-send. Temporal durability means an interrupted run gets retried — which means any tool that charges money, sends email, or writes to a production system gets executed twice unless you made it idempotent. No amount of harness sophistication fixes this, because it's not a harness problem. It's the oldest problem in distributed systems, resurfacing at the exact boundary where the commoditized layer ends and your code begins. The adapter standardizes the loop; it cannot standardize the side effects.</p>
+
+        <h2>What This Means for You</h2>
+
+        <p>If you build agents for a living, this week changes your planning assumptions, concretely:</p>
+
+        <p><strong>Stop writing harness glue.</strong> Any code that exists to integrate your application with a specific harness — session plumbing, message munging, retry wrappers — is now technical debt with a known expiry date. Route through a neutral boundary, whether that's LiteAgents or your own thin equivalent.</p>
+
+        <p><strong>Treat harness choice as a benchmark question, per workload.</strong> The 30-point spread between harnesses on the same model means your coding-agent workload and your data-enrichment workload may want different loops. That's only actionable if switching costs nothing. It now costs a config change.</p>
+
+        <p><strong>Move your investment to the assets that don't swap.</strong> Tools, evals, policies, idempotency, and the data your sessions generate. This is the same argument I make at length in <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>, and it's getting stronger by the week: engineering effort belongs in the layer you own, not the layer everyone is racing to give away.</p>
+
+        <p><strong>Watch the vendors' next move.</strong> The welded-pair strategy — MiniMax shipping models that only exist inside one product — is the counter-trend, and it will intensify before it breaks. Every model you can't call directly is a vendor betting that distribution beats abstraction. The adapter says otherwise. Your eval set is how you'll know who won.</p>
+
+        <h2>The Unsent Email Test</h2>
+
+        <p>There's a simple way to know whether you're on the right side of this shift. Ask: if my harness disappeared tomorrow — if every trace of the loop I run were replaced by a competitor's overnight — what would I actually lose?</p>
+
+        <p>If the answer is "our tools, our eval results, our policies, and our session history," you've built durable assets, and every adapter that ships makes your life cheaper.</p>
+
+        <p>If the answer is "about four months of harness-specific middleware," the commoditization just arrived at your door, and it doesn't knock.</p>
+
+        <p>The harness became a config field this week. Make sure the same can't be said of anything you own.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
