@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interface Silos Were a Training Bug — Abuiliazeed</title>
+  <meta name="description" content="A 27B open-weight model scored 61.7% on OSWorld 2.0 — and the same weights also write code, call MCP tools, and hit APIs. H Company's Holo4 argues the split between GUI agents and tool agents was never a capability boundary. It was a data boundary.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/interface-silos-were-a-training-bug.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/interface-silos-were-a-training-bug.html">
+  <meta property="og:title" content="Interface Silos Were a Training Bug">
+  <meta property="og:description" content="A 27B open-weight model scored 61.7% on OSWorld 2.0 — and the same weights also write code, call MCP tools, and hit APIs. H Company's Holo4 argues the split between GUI agents and tool agents was never a capability boundary. It was a data boundary.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Interface Silos Were a Training Bug">
+  <meta name="twitter:description" content="A 27B open-weight model scored 61.7% on OSWorld 2.0 — and the same weights also write code, call MCP tools, and hit APIs. H Company's Holo4 argues the split between GUI agents and tool agents was never a capability boundary. It was a data boundary.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-09-29">September 29, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">Interface Silos Were a Training Bug</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>61.7% on OSWorld 2.0. That would be an unremarkable number if it belonged to a frontier lab's flagship — Claude Opus 5.5 posts 81.8% on the same benchmark. But it belongs to a 27-billion-parameter dense model, post-trained from Alibaba's open Qwen3.8-27B base, whose weights you can download right now in BF16, FP8, NVFP4, or 4-bit GGUF. And here is the part that matters more than the score: <em>the same weights</em> also write and run their own code, call MCP tools, and hit REST APIs. One checkpoint, every interface.</p>
+
+        <p>The model is Holo4, released September 28 by H Company. It comes in two sizes — 27B dense and a 35B-A3B mixture-of-experts — plus Holotron4 Nano, their post-training stack applied to NVIDIA's Nemotron 3 Nano Omni. The launch's central claim is not a leaderboard position. It's a claim about market structure: the split between "GUI agents" and "tool-calling agents" and "coding agents" was never a capability boundary. It was a data boundary. And it's now dissolving.</p>
+
+        <p>Most people treat computer use and tool use as different disciplines — different products, different vendors, different evals. The evidence accumulating this month says they're the same capability trained on different data, and that the data problem just got solved with synthetic environments. If that's right, it doesn't just change model selection. It deletes an entire category of interface-specific agent products.</p>
+
+        <h2>The Silo Thesis and Where It Came From</h2>
+
+        <p>Walk through the agent landscape of the past eighteen months and you find it neatly partitioned by interface. On one shelf: computer-use agents — models trained to click and type through screenshots, evaluated on OSWorld and WindowsAgentArena. On another: tool-calling agents, fluent in JSON schemas and MCP servers, evaluated on BFCL and Terminal-Bench. On a third: coding agents, which are really tool-calling agents with a compiler for a verifier. Each shelf has its own model families, its own startups, and its own procurement conversations.</p>
+
+        <p>The partition made internal sense. GUI models are blind without a screen; tool models are stuck in front of an application that has no API. But the partition also had a cost that everyone felt and nobody priced: real work is not siloed that way. A single business task — "reconcile this quarter's invoices" — might require reading an email (GUI), querying an ERP (API), fixing a broken export script (code), and entering results into a legacy form that has no API and never will (GUI again). Building that as a multi-agent system means building three integration layers and a router between them, and debugging the seams forever.</p>
+
+        <p>H Company's framing is blunt: the model should pick the interface, per step, based on fit. Holo4 "clicks and types on a screen, writes and runs its own code, and calls MCP or API tools. It uses whichever fits the task." The same model runs on desktops, on the web, on Android, in a code sandbox, and against business APIs — and it's called the same way in each. That last sentence is the quiet revolution: no model-per-surface routing, no format negotiation, one checkpoint.</p>
+
+        <h2>How You Train an Interface Generalist</h2>
+
+        <p>The interesting engineering is in the data pipeline, which H Company calls the Agentic Task Factory. It builds interactive environments and verifiable tasks <em>from documentation alone</em> — screenshots of real websites, manuals for open-source software. So far it has produced roughly 10,000 tasks across web apps, MCP servers, and desktop environments.</p>
+
+        <p>The key detail is the word <em>hybrid</em>. Some Factory environments expose the same underlying state through both a GUI and an MCP server. Train on those, and the model isn't just learning two skills in parallel — it's learning the equivalence between them. The screenshot of the invoice form and the MCP tool that writes the same field are presented as two views of one object, and interface selection becomes a learned, cost-aware decision instead of a hardcoded architecture.</p>
+
+        <p>This is the same lesson the coding-agent world learned in 2025, replayed one layer up. Everyone once assumed "uses a terminal" was a special model property; then it turned out that with the right training environments, tool fluency transferred broadly across model families. Interface generality is following the identical curve, and for the identical reason: verifiable environments make RL cheap. You don't need human labels to know whether the Eiffel Tower model closes as a solid — FreeCAD tells you.</p>
+
+        <p>And the Factory outputs are not toy prompts. The release includes a task that asks the agent to build a Pac-Man-style game in Godot — maze, pellets, three chasing ghosts, a heuristic-driven player, running unattended and indefinitely. Holo4 27B completed it in 68 tool calls and 2.4 million tokens. Its own base model, Qwen3.8-27B, needed 197 calls and 11.4 million tokens — 4.7 times the token volume on the identical task, same harness. That gap is pure post-training: the same 27B foundation, taught where to reach instead of flailing.</p>
+
+        <h2>The Harness Confession</h2>
+
+        <p>Buried mid-way through the announcement is a paragraph that practitioners should read twice. Alongside training the model, H Company rebuilt their harness — the loop that executes actions and manages context over hundreds of steps — using feedback from OSWorld 2.0 runs. The method: agents tagged <em>why</em> each task failed, engineers reviewed the tags, and the harness was patched accordingly. The two largest changes to survive that process: reliable memory that keeps track of hundreds of steps, and a shell on the desktop machine itself.</p>
+
+        <p>Notice what that converges with. Prime Agent's one-tool thesis — strip everything down to a persistent REPL — and H Company's desktop shell are the same discovery arrived at from opposite ends: <em>give the agent a general-purpose execution primitive and let it program its way through the environment.</em> When two teams with completely different training recipes land on the same harness answer, that's not coincidence. That's the field identifying a load-bearing wall.</p>
+
+        <p>It's also a data point for the "who owns the value" question. H Company trained the model and rebuilt the harness, and attributes material performance to both — without publishing an ablation separating them. They did, however, publish something rarer: every trajectory behind every public benchmark score, open-sourced for replay or download. In a quarter where benchmark numbers routinely swing 12 points depending on whose harness ran them, releasing the full execution traces is the strongest honesty signal available. More labs should be pressured into it.</p>
+
+        <h2>Reading the Numbers Honestly</h2>
+
+        <p>Now the cold water, because the launch page won't spray it on itself.</p>
+
+        <p>First, the frontier still leads, and by a lot. 61.7% versus Opus 5.5's 81.8% on OSWorld 2.0 is a 20-point gap — this is not frontier parity, and H Company doesn't claim it is. Their claim is the Pareto move: comparable long-workflow competence at orders of magnitude fewer parameters and a fraction of the cost per task. On AutomationBench, an API-use benchmark, they report competing with frontier models on cost-per-task curves. For workloads that are 80% routine and 20% hard, an open 27B model sitting two ticks below the frontier is already the economically rational default.</p>
+
+        <p>Second — and this is the anomaly everyone should interrogate — the mixture-of-experts sibling, Holo4 35B-A3B, scores just 30.9% on OSWorld 2.0. Half the score of the smaller dense model, from the same post-training recipe. H Company doesn't dwell on it, and the lesson matters: interface generality did not automatically transfer across their own architecture change. Whatever the MoE variant lost — dense attention over long visual histories is the plausible suspect — it lost it in a way that post-training data alone didn't fix. The "training bug" thesis explains the silos' origin, not their extinction. Architecture still gates interface competence.</p>
+
+        <p>Third, the reference numbers for closed models mix sources: Opus 5 (70.2%) and GPT-5.6 Sol (66.2%) come from max-effort runs on an offline set from OpenAI's launch materials, while Opus 5.5's 81.8% comes from the official leaderboard. Different releases, harnesses, and task subsets. Cross-model comparisons at this granularity are directionally useful and nothing more.</p>
+
+        <h2>The Same Week, the Opposite Bet</h2>
+
+        <p>Context makes the strategy sharper. The day before Holo4 shipped, Anthropic released Claude Sonnet 5.5 — a strong model distributed through every surface Anthropic controls, with GitHub announcing general availability in Copilot the same day. Meituan's LongCat-2.5-Preview, also this week, pitches a 1.6-trillion-parameter MoE for "long-workflow" tasks spanning terminals, browsers, and desktop software, Anthropic-API-compatible so Claude Code users can swap the backend with a key change. MiniMax just shipped M3.1-Flash exclusively inside its own IDE with a five-tier reasoning slider and double-credit promotions.</p>
+
+        <p>These are the two competing theories of agent distribution, both visible within 72 hours. Theory one: distribution is the moat — embed the model in your product, your IDE, your office suite, and win by surface area. Theory two: the model is a component — make it interface-general, open the weights, and let it run wherever the work actually is. H Company is the purest expression of theory two. The uncomfortable truth for theory one is that open weights plus interface generality erode exactly the lock-in that makes embedded distribution profitable. You cannot charge a premium for reach if every reachable surface already speaks a model the customer downloaded.</p>
+
+        <h2>What This Means for Your Stack</h2>
+
+        <p>If the interface silos were a data artifact, then three budget lines need rewriting.</p>
+
+        <p><strong>Multi-agent interface routing is a depreciating asset.</strong> Teams running a GUI agent, a tool agent, and glue code between them built integration value that a single interface-general model makes redundant. Don't rip anything out on the basis of one release, but stop investing in the seams. Every new seam you build in Q4 is a migration cost in Q2.</p>
+
+        <p><strong>Your harness still has to speak every interface.</strong> The model choosing between a screenshot and an MCP call doesn't eliminate the harness's job — it changes it from <em>routing</em> to <em>exposure</em>. Your job is to make the interfaces available, cheap, and safe: the memory layer, the shell, the permission model that decides whether the click on the payroll screen is allowed. That's not a diminished role; it's the whole game. It's the central argument of <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>, and releases like this one keep confirming it — the durable engineering is everything around the weights.</p>
+
+        <p><strong>Hybrid environments are now a training-infrastructure category.</strong> If you post-train anything, the highest-leverage investment isn't more data — it's environments that expose one state through multiple interfaces, with automatic verification. Ten thousand Factory tasks moved a 27B base model from flailing to frontier-adjacent. The recipe is documented; the moat is whether you can generate environments faster than your competitors.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <ol>
+          <li><strong>Download Holo4-27B and run one hybrid task.</strong> Something that genuinely requires two interfaces — a form with no API plus a script that has one. Watch which interface the model picks at each step and whether the choice is sensible. That observation is worth more than any benchmark table.</li>
+          <li><strong>Audit your agent estate for interface seams.</strong> Count the places where one agent hands off to another because "that one does the GUI part." Each seam is a candidate for deletion over the next two model generations.</li>
+          <li><strong>Replay a released trajectory.</strong> H Company open-sourced every trajectory behind their public scores. Twenty minutes stepping through one — seeing where the model switched interfaces and how the harness caught failures — is the best free agent-engineering course available this week.</li>
+          <li><strong>Put failure tagging in your harness if it isn't there.</strong> H Company's harness improved by having agents tag why tasks failed, then patching the top causes. It's a weekend of work, and their two surviving changes — step-scaled memory, a local shell — tell you where your audit will probably point.</li>
+          <li><strong>Re-run your interface economics.</strong> If an open 27B model covers your routine GUI-and-API work at a fraction of frontier cost, your frontier-token budget should be shrinking to the residual hard 20%. Model that split before the next billing cycle.</li>
+        </ol>
+
+        <p>The siloed agent market was a reasonable response to models that genuinely couldn't cross interfaces. But the cause was narrow training data, and narrow training data is the one resource the industry now manufactures industrially. Holo4 is a 27B proof point, with open weights and open trajectories, that the boundary was drawn in the dataset all along. The vendors whose products assume it was drawn in the physics have a difficult roadmap conversation ahead.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>

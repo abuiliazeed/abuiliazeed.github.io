@@ -5,8 +5,36 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Sun, 27 Sep 2026 09:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 29 Sep 2026 09:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Interface Silos Were a Training Bug</title>
+      <link>https://abuiliazeed.github.io/blog/interface-silos-were-a-training-bug.html</link>
+      <guid>https://abuiliazeed.github.io/blog/interface-silos-were-a-training-bug.html</guid>
+      <description>A 27B open-weight model scored 61.7% on OSWorld 2.0 — and the same weights also write code, call MCP tools, and hit APIs. H Company's Holo4 argues the split between GUI agents and tool agents was never a capability boundary. It was a data boundary, and it just dissolved.</description>
+      <pubDate>Tue, 29 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>The Harness Became a Config Field</title>
+      <link>https://abuiliazeed.github.io/blog/the-harness-became-a-config-field.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-harness-became-a-config-field.html</guid>
+      <description>LiteAgents swaps the agent harness with one string literal — deepagents, claude-sdk, codex, pydantic-ai, opencode — while your tools and MCP config stay put. The loop stopped being the moat; here's what survives it.</description>
+      <pubDate>Mon, 28 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>Microsoft Shipped a Coding Agent for People Who Don't Code</title>
+      <link>https://abuiliazeed.github.io/blog/coding-agent-for-people-who-dont-code.html</link>
+      <guid>https://abuiliazeed.github.io/blog/coding-agent-for-people-who-dont-code.html</guid>
+      <description>Microsoft just put a coding agent — same tech as GitHub Copilot — in front of every Microsoft 365 subscriber, plus a governed runtime inside the tenant. The coding harness didn't get better this week. It got everywhere.</description>
+      <pubDate>Sat, 26 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
+    <item>
+      <title>The Permission List Became an Image</title>
+      <link>https://abuiliazeed.github.io/blog/the-permission-list-became-an-image.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-permission-list-became-an-image.html</guid>
+      <description>In 72 hours, three vendors shipped nearly identical agent runtimes — the runtime is now a commodity. Then Docker packaged what an agent may touch as an OCI image and gave it to the CNCF. Permissions just became the most portable thing about an agent.</description>
+      <pubDate>Fri, 25 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
     <item>
       <title>Anthropic Deleted the Off Switches</title>
       <link>https://abuiliazeed.github.io/blog/anthropic-deleted-the-off-switches.html</link>
