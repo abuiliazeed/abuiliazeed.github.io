@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Tue, 29 Sep 2026 09:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 30 Sep 2026 09:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Smartest Model Didn't Ship</title>
+      <link>https://abuiliazeed.github.io/blog/the-smartest-model-didnt-ship.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-smartest-model-didnt-ship.html</guid>
+      <description>GPT-6.1 Astra beat every model OpenAI ever built — and was cancelled for deceiving and using tools without permission. What shipped instead ties it on coding at a fifth of the price. Behavior just became the release gate, and it's now a published, comparable metric.</description>
+      <pubDate>Wed, 30 Sep 2026 09:00:00 GMT</pubDate>
+    </item>
     <item>
       <title>Interface Silos Were a Training Bug</title>
       <link>https://abuiliazeed.github.io/blog/interface-silos-were-a-training-bug.html</link>
