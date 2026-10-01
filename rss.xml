@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Wed, 30 Sep 2026 09:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 01 Oct 2026 08:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The UI Became a Protocol</title>
+      <link>https://abuiliazeed.github.io/blog/the-ui-became-a-protocol.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-ui-became-a-protocol.html</guid>
+      <description>AG-UI 1.0 shipped with 31 schema-locked event types and backing from Google, Microsoft, Amazon, and Oracle. The last unstandardized layer of the agent stack — how agents talk to humans — just got a contract, and human-in-the-loop interrupts are now part of the spec.</description>
+      <pubDate>Thu, 01 Oct 2026 08:00:00 GMT</pubDate>
+    </item>
     <item>
       <title>The Smartest Model Didn't Ship</title>
       <link>https://abuiliazeed.github.io/blog/the-smartest-model-didnt-ship.html</link>
