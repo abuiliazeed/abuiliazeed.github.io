@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Environment Became the Asset — Abuiliazeed</title>
+  <meta name="description" content="Xiaomi published the itemized bill for its frontier RL run — $2.62M, 30 steps, under six days — and open-sourced the 7,000 training environments that did the work. Weights depreciate; environments compound. The scarcest input in AI just got a price tag.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-environment-became-the-asset.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-environment-became-the-asset.html">
+  <meta property="og:title" content="The Environment Became the Asset">
+  <meta property="og:description" content="Xiaomi published the itemized bill for its frontier RL run — $2.62M, 30 steps, under six days — and open-sourced the 7,000 training environments that did the work. Weights depreciate; environments compound. The scarcest input in AI just got a price tag.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Environment Became the Asset">
+  <meta name="twitter:description" content="Xiaomi published the itemized bill for its frontier RL run — $2.62M, 30 steps, under six days — and open-sourced the 7,000 training environments that did the work. Weights depreciate; environments compound. The scarcest input in AI just got a price tag.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-10-05">October 5, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Environment Became the Asset</h1>
+      </header>
+
+      <article class="blog-post-body">
+        <p>$2.62 million, 30 training steps, a little under six days. That is the complete, itemized cost of the reinforcement-learning run that took Xiaomi's MiMo-V2.6-Pro from mid-pack to the top of the open-weight charts — and unlike every frontier lab this cycle, Xiaomi published the receipt. The smaller Flash model cost $850,000. Together the two runs consumed roughly 750,000 agent trajectories and lifted DeepSWE v1.1 scores by 14 and 17 points respectively, with no change to the base architecture. The gains came from where the agent practiced, not from what it is.</p>
+
+        <p>Everyone covered the benchmark climb. Almost everyone missed the payload sitting underneath it: more than 7,000 RL task environments — self-contained workspaces where an agent attempts a task and receives verified feedback — spanning software engineering, vulnerability reproduction, knowledge-intensive work, and web design and development. Plus the end-to-end training framework, built on verl, uni-agent, and mini-swe-agent. Plus a set of deliberately minimal, composable harnesses, so that success in training never depends on one scaffold. Plus a 9-billion-parameter student model so you can reproduce the whole loop on a budget. Weights, recipe, gym, and bill.</p>
+
+        <p>The model is the least interesting artifact in that release. The environments are the asset — and this month, for the first time, you can see the whole market forming around them.</p>
+
+        <h2>What Actually Shipped</h2>
+
+        <p>Start with what the numbers say, because they're unusually legible. On the Artificial Analysis Intelligence Index, MiMo-V2.6-Pro scores 46 — the top open-weight model, ahead of GLM-5.3 at 45 and Kimi K3 at 44, and tied with Grok 4.7, a proprietary frontier model. Its predecessor, MiMo-V2.5-Pro, scored 26. That is a twenty-point jump in a single generation, and Xiaomi's own accounting attributes almost all of it to the RL phase: the training post reports Pro's DeepSWE v1.1 moving from 58.4 to 72.6, and Flash's from 48.8 to 65.7. Artificial Analysis measured Pro at $0.13 per intelligence-index task. For calibration, that sits near the cheap end of the frontier per-task distribution, at near-frontier composite quality.</p>
+
+        <p>The obligatory honesty paragraph: most of those benchmark numbers are vendor-reported. The independent signal — the AA index, the pricing, the architecture — checks out, but the DeepSWE and Terminal-Bench figures come from Xiaomi's own tables, and the gaps that remain are real. On Terminal-Bench 4.0, Xiaomi's model card reports 34.9 for Pro against 49.0 for Claude Opus 5. Open weights caught up on repository-scale engineering; they still trail on terminal-native execution. This is not a closed-frontier-is-dead story. It's a where-did-the-gains-come-from story.</p>
+
+        <p>And the gains came from the gym. The detail that deserves more attention than it got: Flash, at 310 billion total parameters with 15 billion active, lands within a few points of the trillion-parameter Pro nearly everywhere that matters — 67.9 versus 71.9 on DeepSWE v1.1, 87.6 versus 89.9 on Terminal-Bench 2.1, and it actually beats Pro on CyberGym, 95.1 to 94.0 — at one-third the API price. When one RL environment corpus can move capability into models of very different sizes, the corpus is doing a measurable share of the work. The environments are the transferable component. The checkpoint is just where they happened to be serialized this quarter.</p>
+
+        <h2>Weights Depreciate. Environments Compound.</h2>
+
+        <p>Most coverage asked whether MiMo beats DeepSeek or Grok. Wrong variable — again. Model-versus-model comparison is the frame the labs prefer, because it makes every release look like an event. But the decision-layer story last week already showed how that movie ends: a $40M moat lasted sixteen days. Weights are now the fastest-depreciating asset in software. Every checkpoint devalues on or shortly after release, either because a competitor matches it or because the same lab's next run does.</p>
+
+        <p>Environments run on the opposite schedule. Consider what Xiaomi's 7,000 environments are, structurally: reusable across model generations (V2.7 will train against the same gym), portable across model families (the released MiMo-V2.6-Distill-Qwen-9B — a Qwen fine-tune, not a MiMo — gained from the same loop, with SWE-bench Verified rising from 61.1 to 66.2 and Terminal-Bench 2.1 from 37.1 to 52.8), and they are the verifier itself. In RL, the environment's grader <em>is</em> the reward function. You are not just practicing in the gym; the gym is the definition of correct.</p>
+
+        <p>That's the structural reason environments are scarce in a way pretraining data never was. Pretraining scraped the web — abundant, unstructured, already there. RL needs tasks with checkable outcomes, and every skill you want an agent to have requires someone to build a workspace where that skill can be attempted, observed, and graded. One environment per skill cluster. Seven thousand of them, curated and de-duplicated, is a bigger commitment than the 1.02 trillion parameters, and it's the number I'd watch in future releases. Parameters are capacity. Environments are curriculum.</p>
+
+        <h2>The Bill Makes It a Market</h2>
+
+        <p>A receipt does something a press release can't: it makes the thing tradeable. $2.62 million for a frontier-adjacent RL run is less than a month of payroll for a two-hundred-engineer organization. Any mid-size lab reading Xiaomi's post now knows the order of magnitude of the compute line, the trajectory count, the step count, and the wall-clock — 30 steps, ~750,000 trajectories, under six days. The mystery is gone. What's left as the binding constraint is the part money can't directly buy: several thousand verified, reward-hack-resistant task environments that correspond to work anyone actually wants done.</p>
+
+        <p>Xiaomi just gave that constraint away too, under MIT-adjacent open terms, alongside the training framework that consumes it. The strategic read is not generosity. A phone-and-EV company that open-sources its gym is trying to make its curriculum the community standard — the same play as open-sourcing a protocol, applied one layer lower. If your team's RL experiments start from MiMo's environments because they're free and good, Xiaomi shapes what gets trained and how, without selling you a single token.</p>
+
+        <p>One practical caveat before anyone gets ideas about self-hosting: the Pro checkpoint is roughly 573 GB, and serving it takes on the order of 680 GB of GPU memory — about eight H200s, or a two-node SGLang setup. The rational on-ramp is the API: $0.435 per million input tokens and $0.87 per million output for Pro, $0.14 and $0.28 for Flash, with cache hits priced near a third of a cent. Run your own tasks through that before you budget any hardware. The environments, though — those you download today and keep forever.</p>
+
+        <h2>The Cloud Started Counting Environments</h2>
+
+        <p>Here's the confirmation that this is a trend and not a press release: this week, at CoreWeave's Fully Connected event, NVIDIA's Vera CPU was announced as "the first CPU built for AI agents," and its rack density was quoted in a unit nobody used eighteen months ago — concurrent environments. One rack: 128 CPUs, 11,264 cores, described as supporting more than 11,000 concurrent agent environments at one core each. CoreWeave reported over 3× faster agent-sandbox startup on Vera versus x86, and a 1.7× performance gain on Terminal-Bench across passing tasks.</p>
+
+        <p>Read the unit, not the speeds. When a hardware vendor starts denominating a rack in how many isolated agent environments it can run simultaneously, the environment has become the workload — the thing the physical plant is designed around, the way VMs defined the first cloud generation and containers defined the second. CoreWeave's accompanying Forge launch closes the loop: Sandboxes (isolated CPU and GPU execution for agent tool use and RL, with a serverless variant that bills by the millisecond), Agent Lens for tracing production agents, and a Registry that versions models, agents, and datasets with lineage. Run, observe, curate, improve, evaluate — the same lifecycle Xiaomi published a bill for, productized as infrastructure.</p>
+
+        <p>And it's not only the GPU layer. DigitalOcean's Managed Agents, which hit public preview days earlier, sells pause-aware Firecracker microVMs per agent session with resume, fork, and checkpoint as first-class primitives. Two different layers of the stack, the same bet, arriving within a fortnight: the agent session — an environment with state — is the new unit of consumption. Xiaomi published the environments; the clouds built the racks to run them at scale. Supply and demand found each other in under a month.</p>
+
+        <h2>The Overfitting Catch</h2>
+
+        <p>Before you conclude that the winning move is to build the biggest environment set in your industry, absorb the warning that arrived the same week — a research paper from Google Cloud AI Research and several universities on what happens when agents keep optimizing against a fixed set of tasks. Their subject was harness self-improvement, but the mechanism generalizes to any RL loop: performance on the training tasks climbs, while gains on new, unseen tasks shrink or disappear. The system isn't learning to work; it's memorizing the exam.</p>
+
+        <p>The numbers are blunt. The regularized method they propose — RRSI, which caps how many edits a candidate can bundle, shrinks that budget over time, and uses a critic to reject anything that hardcodes task names or benchmark-specific tricks — gained up to 14.1 points on the tasks it trained on, but only up to 4.7 points on benchmarks it never saw, while using about 30% fewer tokens at runtime. The unregularized competitors posted bigger training gains and then, in two cases, finished <em>below the baseline harness</em> on unseen work. A familiar data point frames the ceiling: an Opus 4.6 model wrapped in a purpose-built harness scored 97.1% in its environment of origin and 0% in an unfamiliar one.</p>
+
+        <p>The implication for environments: <strong>diversity is the quality metric.</strong> A large static set isn't an asset that compounds forever — past some point it degrades into a test you are teaching to, and your next model generation inherits the overfit. Xiaomi seems aware; the release emphasizes multi-harness training, varying the scaffold across configurations precisely so that success doesn't depend on any single one. And their own post-release history makes the verifier point: the most-observed failure mode after launch was tool-call repetition, an agent issuing near-identical calls, "appearing busy while making no progress." Nothing errors out. The context just burns. An environment only teaches what its grader measures, which makes verifier design — rewarding progress rather than activity — the actual curriculum engineering.</p>
+
+        <h2>What This Means for You</h2>
+
+        <ul>
+          <li><strong>Mine your backlog for environments.</strong> Every resolved ticket with a verifiable outcome — tests that pass, a build that compiles, a reproducer that closes — is a candidate environment. You already own thousands of these. They describe your actual distribution of work, which no public gym matches. Start version-controlling them like code, because they are the training asset that survives every model upgrade.</li>
+          <li><strong>Use Xiaomi's corpus as the starter gym, not the destination.</strong> The 7,000 environments plus the verl-based framework get an RL loop standing in days. But hold out a slice of your own environments and never train on it. The RRSI result is your reason: training gain is cheap; unseen-task gain is the only number that predicts production.</li>
+          <li><strong>Rewrite your model-selection math.</strong> Flash at $0.14/$0.28 per million tokens, within a few points of its trillion-parameter sibling on agent work, changes the default for high-volume loops. Test Flash before defaulting to Pro-or-frontier; spend the difference on more environments.</li>
+          <li><strong>If you're buying compute, learn the new unit.</strong> Millisecond-billed sandboxes and racks quoted in concurrent environments are early, but the pricing model they imply — pay for agent-environment seconds, not idle VM hours — is where agent infrastructure is heading. DigitalOcean's pause-when-idle billing and CoreWeave's serverless Sandboxes are the first quotes in that currency.</li>
+          <li><strong>Budget the loop, not the weights.</strong> Xiaomi's receipt makes a frontier-adjacent RL run a line item, not a moonshot. If a $3M run moved DeepSWE 14 points, the question for any team with proprietary, verifiable work is no longer "can we afford RL" but "why are our environments still trapped in ticket comments."</li>
+        </ul>
+
+        <p>Model releases are news for about a week; then the leaderboard moves and yesterday's numbers are trivia. Environments are the other kind of capital — slow to build, reusable across every future checkpoint, portable across model families, and now openly priced by the first company willing to print the receipt. The durable engineering has always lived around the model rather than in it; that's the argument I spent a book making. What changed this month is that the surroundings acquired an order of magnitude, an open-source corpus, and a rack density. The ledger now explicitly favors whoever has been building their own gym all along.</p>
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>

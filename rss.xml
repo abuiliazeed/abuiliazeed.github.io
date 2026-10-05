@@ -5,8 +5,71 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Thu, 01 Oct 2026 08:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 05 Oct 2026 08:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Environment Became the Asset</title>
+      <link>https://abuiliazeed.github.io/blog/the-environment-became-the-asset.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-environment-became-the-asset.html</guid>
+      <description>Xiaomi published the itemized bill for its frontier RL run — $2.62M, 30 steps, under six days — and open-sourced the 7,000 training environments that did the work. Weights depreciate; environments compound. The scarcest input in AI just got a price tag.</description>
+      <pubDate>Mon, 05 Oct 2026 08:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>The $40M Moat Lasted Two Weeks</title>
+      <link>https://abuiliazeed.github.io/blog/the-moat-lasted-two-weeks.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-moat-lasted-two-weeks.html</guid>
+      <description>Sixteen days after TypeSafe AI launched Jev with a $40M seed, Cloudflare and AWS both shipped Apache-2.0 decision models — and Cloudflare&#x27;s beats Jev on its own index. The fastest commoditization in AI history, and why the category still won.</description>
+      <pubDate>Sun, 04 Oct 2026 08:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>The Minimalist Harness Added the Protocol</title>
+      <link>https://abuiliazeed.github.io/blog/the-minimalist-harness-added-the-protocol.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-minimalist-harness-added-the-protocol.html</guid>
+      <description>Pi 1.0 shipped MCP by default — the exact feature its creator spent a year arguing nobody needed. The reversal isn&#x27;t a retreat. It&#x27;s the clearest signal yet that minimal harnesses and protocols grew toward each other.</description>
+      <pubDate>Sat, 03 Oct 2026 08:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>The Upgrade That Lowered the Score</title>
+      <link>https://abuiliazeed.github.io/blog/the-upgrade-that-lowered-the-score.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-upgrade-that-lowered-the-score.html</guid>
+      <description>Amazon&#x27;s SOP-Bench found that upgrading to a newer Claude model lowered agent success rates on business procedures — silently. Model upgrades are not free improvements anymore. They&#x27;re regression events, and almost nobody tests for them.</description>
+      <pubDate>Sun, 23 Aug 2026 08:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Same Model, 70 More Points</title>
+      <link>https://abuiliazeed.github.io/blog/same-model-70-more-points.html</link>
+      <guid>https://abuiliazeed.github.io/blog/same-model-70-more-points.html</guid>
+      <description>NVIDIA wrapped Claude Opus 5 — a model that scores 30.2% on ARC-AGI-3 — in its AVO agent architecture and scored 100%. The 70-point gap is the harness, and it&#x27;s the cleanest measurement of harness value anyone has published.</description>
+      <pubDate>Sat, 22 Aug 2026 08:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>The Forge Became the Bottleneck</title>
+      <link>https://abuiliazeed.github.io/blog/the-forge-became-the-bottleneck.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-forge-became-the-bottleneck.html</guid>
+      <description>Cursor launched Origin, an agent-native code forge, the same morning GitHub went down for nearly seven hours with a 20% error rate. The timing was luck. The thesis wasn&#x27;t: when agents open a third of all pull requests, the forge becomes part of the harness.</description>
+      <pubDate>Thu, 20 Aug 2026 08:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>DeepSeek Just Commoditized the Harness</title>
+      <link>https://abuiliazeed.github.io/blog/deepseek-commoditized-the-harness.html</link>
+      <guid>https://abuiliazeed.github.io/blog/deepseek-commoditized-the-harness.html</guid>
+      <description>DeepSeek open-sourced its Claude Code rival under MIT — then raised model API prices up to 4.5x. One announcement, read twice: the harness is becoming free infrastructure, and all the money is moving to what flows through it.</description>
+      <pubDate>Tue, 18 Aug 2026 08:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>The Frontier Just Fit on Your Laptop</title>
+      <link>https://abuiliazeed.github.io/blog/the-frontier-just-fit-on-your-laptop.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-frontier-just-fit-on-your-laptop.html</guid>
+      <description>Qwen3.8-27B beats Claude Opus 4.6 Max on SWE-bench Pro while running from a 16GB download on a consumer Mac. The last defensible line between frontier and local models just dissolved.</description>
+      <pubDate>Sat, 15 Aug 2026 08:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>The Protocol Trusted Every Server</title>
+      <link>https://abuiliazeed.github.io/blog/the-protocol-trusted-every-server.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-protocol-trusted-every-server.html</guid>
+      <description>Connect five MCP servers to an agent, compromise one, and tool poisoning succeeds 84% of the time. As the MCP Dev Summit convenes in Seoul, the protocol that ate the agent stack has become its largest attack surface — and the 2026 security roadmap is racing to build trust boundaries that should have existed on day one.</description>
+      <pubDate>Fri, 14 Aug 2026 08:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>The UI Became a Protocol</title>
       <link>https://abuiliazeed.github.io/blog/the-ui-became-a-protocol.html</link>
