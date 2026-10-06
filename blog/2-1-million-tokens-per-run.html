@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2.1 Million Tokens Per Run — Abuiliazeed</title>
+  <meta name="description" content="The first large public dataset of real agent runs shows SWE-bench agents average 2.1 million tokens per run — a number no leaderboard shows. Scores compress. Traces decompress.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/2-1-million-tokens-per-run.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/2-1-million-tokens-per-run.html">
+  <meta property="og:title" content="2.1 Million Tokens Per Run">
+  <meta property="og:description" content="The first large public dataset of real agent runs shows SWE-bench agents average 2.1 million tokens per run — a number no leaderboard shows. Scores compress. Traces decompress.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="2.1 Million Tokens Per Run">
+  <meta name="twitter:description" content="The first large public dataset of real agent runs shows SWE-bench agents average 2.1 million tokens per run — a number no leaderboard shows. Scores compress. Traces decompress.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-10-06">October 6, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">2.1 Million Tokens Per Run</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>2.1 million tokens. That is the average consumption of a single SWE-bench run by a frontier agent — one task, one attempt, start to finish — according to the first large-scale public dataset of real agent runs, released by Hugging Face on October 4. Two point one million tokens in, one benchmark score out.</p>
+
+        <p>Think about what that ratio means. The entire industry argues about agent capabilities using a number that compresses a multi-hour, multi-megabyte stochastic process into a single percentage. The cost, the detours, the moments where the agent nearly gave up, the recoveries — all of it discarded at scoring time. We have been benchmarking the destination and burning the map. The dataset is called Exgentic Agent LLM Traces: 10,000 real runs and 242,000 model calls from five leading models, run through up to five different agent designs, across six kinds of real work. Every model call preserved in one standard format. It is 236 MB, and it might be the most consequential 236 MB released this quarter.</p>
+
+        <p>Most people think the industry's measurement problem is that benchmarks are too easy or too gameable. The actual problem is more basic: a score is a <em>compression</em>, and we compressed away every variable that determines whether an agent is deployable. This is the first public artifact that lets anyone decompress.</p>
+
+        <h2>What Actually Shipped</h2>
+
+        <p>The release, from Hugging Face's Lena Dankin and Michal Shmueli-Scheuer, is deliberately unglamorous: no model, no leaderboard, no product. Just runs. Ten thousand of them, filtered down from a raw corpus of 10,500 runs and 626,000 model calls — roughly two-thirds of the raw calls were removed on purpose, because they were scaffolding around the agent rather than the agent itself. What survived is the model-facing spine of each run.</p>
+
+        <p>The coverage is what makes it valuable. Five frontier models in comparable volume: DeepSeek-V3.2 (2,300 runs), Kimi-K2.5 (2,300), GPT-5.2 (2,100), Claude Opus 4.5 (1,900), and Gemini 3 Pro (1,400). Each run through up to five different agent designs. Six task domains spanning the actual deployed spectrum of agent work: software engineering (SWE-bench), deep research (BrowseComp Plus), personal-task automation across hundreds of apps (AppWorld), and policy-bound customer service and technical support across three flavors of the τ²-bench airline, retail, and telecom domains.</p>
+
+        <p>And the format is the quiet headline. Every call is written in the OpenTelemetry GenAI conventions — the open standard that a growing part of the ecosystem already emits. Each call records the models used, the full input and output messages, the tools that were available (not just the ones that got called), token usage, why the call stopped, and an error type when it failed. Each run carries its context: which benchmark, which agent design, the score, the cost, the number of steps. Because every run speaks the same format, the runs line up across models and harnesses without per-tool reconciliation. That last property — comparability — is the one the field has never had.</p>
+
+        <p>Why did it take a neutral party to do this? Because producing real agent runs at scale means running frontier models across many environments, thousands of times over, and paying for every token. A single lab could afford it but won't publish it; a single tool vendor's traces only cover its own dialect. Hugging Face ran the meter for everyone and posted the receipt.</p>
+
+        <h2>The Ten-X Spread Nobody Budgets For</h2>
+
+        <p>Here is the table the release buried in the middle, and it deserves to be the lead:</p>
+
+        <ul>
+          <li><strong>Software engineering (SWE-bench):</strong> 2,000 runs, <strong>2.1M</strong> average tokens per run</li>
+          <li><strong>Personal-task automation (AppWorld):</strong> 1,500 runs, <strong>1.7M</strong> average tokens per run</li>
+          <li><strong>Deep research (BrowseComp Plus):</strong> 1,900 runs, <strong>1.6M</strong> average tokens per run</li>
+          <li><strong>Technical support (τ²-bench Telecom):</strong> 1,800 runs, <strong>332K</strong> average tokens per run</li>
+          <li><strong>Airline customer service (τ²-bench Airline):</strong> 1,000 runs, <strong>255K</strong> average tokens per run</li>
+          <li><strong>Retail customer service (τ²-bench Retail):</strong> 1,800 runs, <strong>198K</strong> average tokens per run</li>
+        </ul>
+
+        <p>Read the spread, not the absolutes. The same label — "an agent run" — covers workloads that differ by more than an order of magnitude. A coding agent is a <em>ten-times heavier</em> animal than a retail-support agent, per attempt. At frontier list rates, 2.1 million tokens is dollars per run, not cents — before a human ever reads a line of the output, and multiplied by every retry, every parallel session, every failed attempt your eval pipeline quietly absorbs.</p>
+
+        <p>This single table retires several arguments at once. It retires "how much does an agent cost to run?" — the question was malformed; the answer is "which domain?" It explains why enterprise token bills tripled while per-token prices collapsed: the workloads being attempted migrated up this table, from autocomplete-adjacent support tasks toward multi-million-token engineering work, and nobody's dashboard drew the distinction. And it exposes the unit economics of every agent product pitched on a flat "per-task" price: whether that price survives contact with customers depends entirely on which side of the 10x spread their tasks land on.</p>
+
+        <h2>What a Score Throws Away</h2>
+
+        <p>The deeper problem the dataset illuminates is structural. A benchmark score answers exactly one question: did the run end in success? It is silent on everything that determines whether you'd deploy the thing.</p>
+
+        <p>Where does the agent give up? Does it recover when something breaks — a failed tool call, an erroring step, a context that overflowed mid-task? What does the successful path cost versus the failed one? How many steps before the model stopped making progress while still emitting confident output? None of these are score-visible. All of them are now trace-visible, at scale, in a comparable format, for the first time.</p>
+
+        <p>Prior public traces existed, but each was a narrow window. SWE-agent-trajectories covered GitHub issues through one framework. KernelBench hard traces covered GPU kernel coding. Some datasets captured only the conversation visible to the user; others embedded tool invocations in free text, or omitted which tools were even available — which makes the trajectory uninterpretable, because you cannot evaluate a choice without knowing the option set. The noise floor was also unmanaged: without deliberate filtering, recorded "runs" are larded with framework chatter that isn't the agent at all. Hence the two-thirds cull in this release. Clean, uniform, broad: pick any two used to be the rule. Now all three exist in one 236 MB download.</p>
+
+        <p>There is a second-order effect worth sitting with. When the same task, in the same format, exists for five models across five agent designs, you can finally ask questions that are neither model questions nor harness questions but <em>interaction</em> questions: which model-harness pairings burn tokens on loops, which ones front-load context efficiently, which agent designs make every model placed inside them more economical. The harness-variance argument — same weights, different scaffolding, double-digit swings — has been made repeatedly with individual studies. This corpus turns it from an anecdote collection into a systematically mineable property.</p>
+
+        <h2>Traces Are Now Load, Not Just Lore</h2>
+
+        <p>Here is the part with immediate operational consequences, and it is already happening: a team working on LLM inference infrastructure is using these traces to benchmark serving configurations under realistic agentic load — the workload that synthetic benchmarks systematically miss.</p>
+
+        <p>The tool is inference-perf, a Kubernetes SIG benchmarking project that replays OpenTelemetry traces against a live endpoint. Because the Exgentic traces are already in OTel format, they plug in without conversion. Out comes latency, cache hit rates, and cost measured under <em>real</em> agent traffic — not synthetic token streams, not chat-shaped assumptions.</p>
+
+        <p>If you operate inference infrastructure, understand what just changed. Agent traffic has a peculiar shape: long prefixes re-sent on every turn as context accumulates, tool results injected mid-conversation, bursts of parallel sessions. Whether your serving stack's prefix cache hits or misses on that shape can swing effective cost by multiples — and until now, there was no public, replayable representation of the shape to test against. Teams tuned their stacks against the traffic they could synthesize. Now there is a canonical corpus of the traffic that actually occurs. Expect every serious inference vendor to be replaying this within a quarter, whether or not they announce it.</p>
+
+        <p>The same move works at personal scale. Run the replay against the local stack on your own hardware — the MLX or llama.cpp endpoint you've been telling yourself is "basically ready" for agentic work — and watch where latency and cache behavior fall apart under a real 2.1M-token SWE-bench run's arrival pattern. That is a more honest readiness assessment than any synthetic benchmark, and it takes an afternoon.</p>
+
+        <h2>The Format Is the Moat That Isn't a Moat</h2>
+
+        <p>Yesterday's framing on this site was that environments — the verified task worlds agents train against — are the compounding asset in the RL era. This dataset completes the picture from the other side. Environments are where agents <em>practice</em>. Traces are what agents <em>did</em>. One is the training-side capital; the other is inference-side capital, and both survive model upgrades — a corpus of recorded behavior from last quarter's models remains valid measurement material for characterizing this quarter's infrastructure, the way last year's web traffic logs still calibrate this year's load balancers.</p>
+
+        <p>The unlock is the standard. The release's own framing is exactly right: because every run speaks the same format, these traces accumulate into something comparable instead of fragmenting into one dialect per tool. The value compounds as more are added. An OTel-formatted trace corpus is non-rival, vendor-neutral, and mergeable across organizations in a way no proprietary telemetry ever is. If your team emits OTel GenAI today, your internal runs are already dialect-compatible with a growing public corpus — which means your internal analysis tooling, your replay harnesses, and your fine-tuning pipelines can consume both without adapters.</p>
+
+        <p>That is also why this will not stay a one-off. The obvious sequels — traces from coding-agent CLIs in daily developer use, from enterprise deployments, from local-first stacks — all become additive the moment they land in the same format. The first mover's advantage here isn't exclusivity; it's convention-setting. Whoever publishes the second and third large trace corpora in OTel inherits the framing this release established.</p>
+
+        <h2>The Honest Caveats</h2>
+
+        <p>Three limits, stated plainly. First, the corpus is benchmark-shaped: runs are attempts at defined tasks with scores attached, not open-ended production sessions where the goal itself drifts. Production behavior — the user interjecting, the task changing mid-run — is richer than this. Second, five models is breadth, not coverage; frontier release cadence being what it is, the model list is a snapshot of a particular quarter. Third, filtered corpora encode their filter: the two-thirds of calls removed as scaffolding were removed by a judgment call, and someone building on the data inherits it. None of these caveats blunt the release. They define its next version.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p><strong>Download the dataset and read three runs end to end.</strong> Not skim — read. One SWE-bench run, one τ²-bench retail run, one BrowseComp Plus run. Watch where token mass accumulates, where the agent retries, what the context window looks like at the moment of failure versus success. Three runs will recalibrate your intuition for what "an agent run" physically is more than any blog post, including this one.</p>
+
+        <p><strong>Emit OTel GenAI from your harness, starting now.</strong> If your agent infrastructure records traces in a bespoke format, you are choosing dialect over language. The standard exists, the tooling exists, and every week of bespoke telemetry is a week of traces that can never be compared, replayed, or merged with anything outside your walls. Instrumenting the loop so that every call is captured — not just the final answer — is half the discipline of harness engineering, and it is now also half the value.</p>
+
+        <p><strong>Compute your own tokens-per-run distribution and place it against the reference table.</strong> Pull your last month of agent sessions, bucket by task type, and calculate average tokens per completed run. Then compare against the published domain averages. If your "simple" internal tasks are averaging like SWE-bench runs, you have found a harness problem masquerading as a cost problem — and you found it with arithmetic, not vendor claims.</p>
+
+        <p><strong>Replay before you buy.</strong> If you are evaluating any serving change — new vendor, new cache configuration, a local stack you intend to self-host — replay a slice of this corpus against the candidate before committing. Latency and cache hit rate under real agentic load is the number that determines your actual cost. Synthetic benchmarks will not surface it. These traces will.</p>
+
+        <p><strong>Stop accepting scores without a bill.</strong> From this week forward, any internal model evaluation that reports a success rate without a tokens-per-run figure is incomplete in a way you can now name publicly, with a reference distribution to point at. The score tells you what the agent did. Only the trace tells you what it cost to get there — and the organizations that internalize that distinction first will pick models, harnesses, and infrastructure with an accuracy their competitors can't copy, because their competitors are still reading leaderboards.</p>
+
+        <p>Every benchmark score is a claim. Ten thousand runs, in one format, with the receipts attached, just became public. The era of taking the claim on faith is over.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
