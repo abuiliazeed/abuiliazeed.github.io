@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Tue, 06 Oct 2026 08:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 07 Oct 2026 08:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Protocol Wars Moved to the Front Door</title>
+      <link>https://abuiliazeed.github.io/blog/protocol-wars-front-door.html</link>
+      <guid>https://abuiliazeed.github.io/blog/protocol-wars-front-door.html</guid>
+      <description>Meta and Sierra just announced the Personal Agent Protocol with Walmart and Stripe — nine months after Walmart signed Google&#x27;s competing UCP. The infrastructure stack settled; the front door didn&#x27;t. And neither protocol touches the 93%-of-merchants problem: who pays when an agent gets it wrong.</description>
+      <pubDate>Wed, 07 Oct 2026 08:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>2.1 Million Tokens Per Run</title>
       <link>https://abuiliazeed.github.io/blog/2-1-million-tokens-per-run.html</link>

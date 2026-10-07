@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Protocol Wars Moved to the Front Door — Abuiliazeed</title>
+  <meta name="description" content="Meta and Sierra just announced the Personal Agent Protocol with Walmart and Stripe — while Walmart's name is also on Google's competing UCP. The protocol wars didn't end. They moved upstairs.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/protocol-wars-front-door.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/protocol-wars-front-door.html">
+  <meta property="og:title" content="The Protocol Wars Moved to the Front Door">
+  <meta property="og:description" content="Meta and Sierra just announced the Personal Agent Protocol with Walmart and Stripe — while Walmart's name is also on Google's competing UCP. The protocol wars didn't end. They moved upstairs.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Protocol Wars Moved to the Front Door">
+  <meta name="twitter:description" content="Meta and Sierra just announced the Personal Agent Protocol with Walmart and Stripe — while Walmart's name is also on Google's competing UCP. The protocol wars didn't end. They moved upstairs.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-10-07">October 7, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Protocol Wars Moved to the Front Door</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Nine months after Walmart put its name on Google's Universal Commerce Protocol, its name showed up on the competing one.</p>
+
+        <p>On Monday, Meta and Sierra announced the <strong>Personal Agent Protocol</strong> — an open standard for how consumer AI agents interact with businesses, developed with Genesys, Instinct, Rocket, Shopify, Stripe, and Walmart. Nine months earlier, Google launched UCP with an ecosystem list that also included Walmart, alongside Target, Best Buy, Visa, and Mastercard. The largest retailer in the world is hedging both sides of a standards fight. That tells you more about where this is going than either press release does.</p>
+
+        <p>Most commentary will frame this as "a new protocol for agentic commerce." That undersells it. What actually happened this week is that the protocol wars — the ones everyone declared finished when MCP and A2A consolidated under the Linux Foundation — restarted one layer up. The infrastructure stack settled. The front door did not.</p>
+
+        <h2>What Actually Shipped</h2>
+
+        <p>Strip away the launch-page language and the Personal Agent Protocol is a set of concrete design decisions, which is more than most standards announcements can say:</p>
+
+        <ul>
+          <li><strong>Sessions, built on OAuth.</strong> A personal agent starts as a guest on a company's site — enough to check availability or a returns policy — and escalates to authenticated access only when the task requires it, with the customer deciding between read-only and write access.</li>
+          <li><strong>Sessions that survive channel changes.</strong> A question asked before sign-in and an order change made after are part of the same visit. That's an agent-native session concept, not a scrape of human browser behavior.</li>
+          <li><strong>Three routes into the company.</strong> The agent can work through the company's website, through its APIs (explicitly built on MCP and OpenAPI), or through the company's own agent for conversational tasks like warranty claims.</li>
+          <li><strong>A published timeline.</strong> The v0.1 specification lands later this month, followed by design workshops and a reference implementation.</li>
+        </ul>
+
+        <p>Bret Taylor's framing of the problem is unusually direct: consumers want agents that get the job done right the first time, brands want visibility and control over what agents do on their properties, and agent builders want a consistent way in. "We're designing it to handle authentication, empower consumers and give companies visibility into what personal agents do through their websites, APIs or company agents."</p>
+
+        <p>He told CNBC there "will be chaos until such a standard exists." Given what the chaos looks like right now, he's not exaggerating.</p>
+
+        <h2>The Stack Didn't Settle. It Grew a Floor.</h2>
+
+        <p>In <a href="protocol-stack-settled.html">May I argued the protocol wars were over</a>: MCP won the tool layer with 200+ server implementations, A2A won the agent layer with 150+ supporting organizations, IBM's ACP merged in rather than fight, and both protocols landed under multi-vendor governance at the Linux Foundation's Agentic AI Foundation. That analysis was correct — for the layer it covered.</p>
+
+        <p>What it never covered is the boundary nobody was fighting over yet: what happens when a consumer's personal agent knocks on a company's door. MCP governs how <em>your</em> agent reaches <em>your</em> tools. A2A governs how <em>your</em> agents talk to each other. Neither governs how a customer's agent — one you've never seen, running software you don't control, holding delegated authority you didn't grant — transacts with your business.</p>
+
+        <p>That layer is now fragmenting in a precise replay of 2025, and the lineup is crowded:</p>
+
+        <ul>
+          <li><strong>PAP</strong> — Meta, Sierra, Shopify, Stripe, Walmart, Genesys, Instinct, Rocket. OAuth sessions, three integration routes, v0.1 this month.</li>
+          <li><strong>UCP</strong> — Google's Universal Commerce Protocol, live since January 2026, with Walmart, Target, Best Buy, Visa, and Mastercard in its ecosystem. TikTok's new Shopping Assistant and Buy Direct checkout, announced October 5 at Advertising Week, run on it.</li>
+          <li><strong>The banks.</strong> Six major banks including Bank of America and Capital One published a paper in September demanding standards built on five principles: transparency, safety, privacy and data, choice, interoperability. PAP is, in part, a direct response to that paper.</li>
+          <li><strong>The card networks.</strong> Visa TAP and Mastercard Agent Pay already exist as agent-payment signaling specs. Amex shipped Agent Purchase Protection in April 2026.</li>
+        </ul>
+
+        <p>Notice the pattern, because it's the actual lesson here: <strong>every settlement at one layer seeds a war at the next.</strong> Consolidation in protocols isn't global; it's local. The industry standardized agent-to-tool, then agent-to-agent, and the moment that finished, the same companies started drawing battle lines over agent-to-business. If you're building an agent company and waiting for "the protocols to settle" before committing, you will be waiting forever. The settling is a treadmill.</p>
+
+        <h2>The Smartest Thing About PAP Is That It's Boring</h2>
+
+        <p>Here's the contrarian take: the most important technical decision in the Personal Agent Protocol is that it contains no new cryptography, no new handshake, and no new token format. The session is OAuth. Plain, unglamorous, fifteen-years-of-enterprise-audit-trail OAuth.</p>
+
+        <p>That's not laziness — it's the entire lesson of the last protocol cycle compressed into one decision. The specs that won in 2025 and 2026 were the ones that reused boring, widely deployed primitives. MCP rode JSON-RPC over standard transports. The specs that died trying to be clever. A consumer-commerce standard that required every retailer on earth to implement a novel identity scheme would be dead on arrival; one that rides the same OAuth flows their security teams already review annually has a fighting chance of surviving procurement.</p>
+
+        <p>The second smart decision: PAP explicitly builds its API route on MCP and OpenAPI instead of inventing a rival interface. It treats the settled infrastructure layer as a given and composes on top of it. That's what a healthy stack looks like — new floors reference the floors below them rather than replacing them.</p>
+
+        <p>So if you're scoring at home: agent-to-tool is MCP, agent-to-agent is A2A, and agent-to-business-session is increasingly OAuth-with-semantics across both PAP and UCP. The fragmentation everyone is alarm-tweeting about is real at the governance level — two rival alliances, overlapping membership, competing press cycles — but much thinner at the mechanical level. Both proposals are session-plus-scope over HTTP. Both will be implementable behind a thin adapter. Walmart knows this. That's why it can afford to sign both.</p>
+
+        <h2>What PAP Deliberately Doesn't Solve</h2>
+
+        <p>Now the uncomfortable part. Read the PAP announcement closely and notice the boundary of what it standardizes: authentication, consumer control, and company visibility. What it does not touch is <strong>who pays when an agent gets it wrong</strong>.</p>
+
+        <p>The numbers around that gap are stark. PYMNTS Intelligence data from September 2026 found that <strong>93% of merchants believe AI providers should bear the financial loss when an agent makes an error</strong>. Meanwhile, the payment infrastructure has no clean reason code for "agent error," no standardized dispute framework, and the existing network offerings — Visa TAP, Mastercard Agent Pay — provide signaling without reallocating liability. Amex's Agent Purchase Protection is the closest thing to an answer, and its cart-context specifications are still under development.</p>
+
+        <p>The week's news supplies the cautionary tales that make this concrete. Meta's Muse agent, launched last month and already among the most-downloaded apps in the App Store, was <em>banned from Amazon</em> after its agents failed to identify themselves on the retail platform — precisely the visibility problem PAP's session model is built to fix. Wired reported that Muse builds profiles for people who never signed up for it. 404 Media reported engineers raced to patch multiple serious security vulnerabilities just to hit the launch date. And TikTok's agentic checkout launched this week with the liability question explicitly unresolved — the technical rails ready, the financial responsibility for errors unassigned.</p>
+
+        <p>This omission isn't an oversight. It's structural. <strong>Liability allocation is a business negotiation cosplaying as a technical spec.</strong> No consortium of competitors can ship it, because it's a zero-sum question — someone's P&amp;L absorbs the loss, and every party at the table is trying to make sure it isn't theirs. Protocols can standardize the hello; only markets, courts, and regulators will standardize the harm. Expect the real fight of 2027 to be about reason codes and dispute flows, not handshakes.</p>
+
+        <h2>Why the Front Door Is Worth $27 Billion</h2>
+
+        <p>Strip the sociology away and ask the crude question: why are Meta, Google, Sierra, the banks, and the card networks all burning protocol effort on consumer-agent boundaries?</p>
+
+        <p>Citi published the answer this week: Muse alone could generate upwards of <strong>$27 billion in revenue for Meta by the end of the decade</strong> by becoming the "front door" to online shopping. That's what this is about. Whoever owns the agent session owns the customer relationship. The merchant doesn't get displaced, but it gets backended — queried through an API, negotiated with by a proxy, chosen or skipped by software the customer trusts more than your landing page.</p>
+
+        <p>The merchant postures already span the full spectrum: QVC welcoming agents, Kate Spade letting them browse but blocking checkout, Amazon blocking outright. These aren't ideological positions — they're negotiations over that $27 billion conducted through robots.txt.</p>
+
+        <p>Here's the harness-engineering lens on it, because this is where it gets practical. From the merchant's side of the counter, a personal agent is <strong>a harness you don't control, operated on your customer's behalf</strong>, whose permission model determines what your interface means. Its read/write scoping, its session persistence, its escalation to a human — those are the same design problems you solve internally when you give a coding agent access to a repo, just pointed inbound instead of outbound. Companies that have already done this thinking internally will find PAP-style sessions obvious. Companies that haven't will discover their API surface is now a negotiation with software they've never met.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <ol>
+          <li><strong>Treat agent traffic as a first-class client, starting now.</strong> Your access logs already contain agents pretending to be browsers. Segment them, name them, and decide policy before volume forces the decision on you. The gap between platform readiness and merchant readiness is enormous — by one September estimate, only 11% of SMBs are agent-ready, even though Shopify flipped agent-readiness on by default for its merchants almost a year ago.</li>
+          <li><strong>Expose read-only before write.</strong> PAP's own escalation model — guest, then authenticated read, then write — is the right template for your own surface. Availability data, order status, and returns policy are safe wins. Checkout and account mutation come after you trust your own audit trail.</li>
+          <li><strong>Instrument per-session, not per-IP.</strong> OAuth-based agent sessions give you an accountability record that scraping never will. If an agent misbehaves, you want a session to point at — that's also your future evidence in a liability dispute.</li>
+          <li><strong>Don't pick a winner. Pick an adapter.</strong> PAP and UCP overlap heavily in mechanics. Implement the shared core — session, scopes, an MCP or OpenAPI description of your capabilities — and keep the standards-specific bits in a thin layer you can rewrite. The v0.1 PAP spec drops this month; read it, but don't marry it.</li>
+          <li><strong>Watch the liability fight, not the handshake fight.</strong> The specs will converge or interoperate eventually; they always do. The reason codes won't exist until someone loses money in court. Whichever side of the counter you're on, your contracts should already be assigning agent-error responsibility explicitly, because no protocol is coming to do it for you.</li>
+        </ol>
+
+        <p>The move from "which agent framework" to "which front-door protocol" took about eighteen months. The next move — from protocol semantics to liability assignment — is already visible in the gap between this week's announcements and this week's numbers. Build for the session model. Budget for the courtroom.</p>
+
+        <hr>
+
+        <p><em>The permission boundary between an agent and the world it acts on is harness design, whether the agent lives in your terminal or your customer's pocket — it's one of the core topics in <a href="../book.html">Harness Engineering: The Complete Guide to Agent-First Software Development</a>.</em></p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
