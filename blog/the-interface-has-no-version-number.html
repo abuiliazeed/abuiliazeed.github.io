@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Interface Has No Version Number — Abuiliazeed</title>
+  <meta name="description" content="Seven days after AG-UI 1.0 standardized the agent interface as a contract, OpenAI shipped Intelligent UI — where the model generates the interface per question. Two opposite bets on the same layer, one week apart.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-interface-has-no-version-number.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-interface-has-no-version-number.html">
+  <meta property="og:title" content="The Interface Has No Version Number">
+  <meta property="og:description" content="Seven days after AG-UI 1.0 standardized the agent interface as a contract, OpenAI shipped Intelligent UI — where the model generates the interface per question. Two opposite bets on the same layer, one week apart.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Interface Has No Version Number">
+  <meta name="twitter:description" content="Seven days after AG-UI 1.0 standardized the agent interface as a contract, OpenAI shipped Intelligent UI — where the model generates the interface per question. Two opposite bets on the same layer, one week apart.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-10-08">October 8, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Interface Has No Version Number</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Seven days. That is how long the agent interface stayed standardized.</p>
+
+        <p>On October 1, AG-UI 1.0 shipped with 31 schema-locked event types and the backing of Google, Microsoft, Amazon, and Oracle. The pitch was a contract: agents and humans would talk through a versioned, typed, auditable event stream, and human-in-the-loop interrupts would be part of the spec.</p>
+
+        <p>On October 7, OpenAI rolled out GPT-6 with Intelligent UI to ChatGPT — a product used by more than 1.2 billion people every week. The pitch was the opposite: the model itself now composes the interface for each answer. Graphics, tappable buttons, forms, charts, interactive experiences, generated on the fly, fitted to the question. No contract. No schema you pin. The interface is model output, regenerated every time you ask.</p>
+
+        <p>Most coverage read yesterday's announcement as a consumer feature — nicer charts in ChatGPT, an answer to Gemini's canvas mode, a retention play for the free tier. That reading is wrong. Two of the most consequential infrastructure companies in AI placed directly opposing bets on the same layer of the agent stack within one week, and both bets are instructive. One says the interface is a contract. The other says the interface is a completion.</p>
+
+        <p>The tension between those two positions is the subject of this post, because if you build agents, you are about to have this argument with your product team. Here is the ammunition for both sides.</p>
+
+        <h2>What Actually Shipped</h2>
+
+        <p>Strip the launch page of its demo glow and three engineering facts remain. They matter more than the feature itself.</p>
+
+        <p><strong>The interface is now part of the model's action space.</strong> OpenAI trained GPT-6 to compose responses out of text, visuals, and interactive elements, choosing how they fit together based on the question. The model decides when interactivity earns its place and when a plain text answer is the right call. That is a design decision — the kind that used to live in a designer's Figma file and a product review — relocated into post-training. Interface judgment is now a model behavior, with everything that implies: it is steerable, improvable, non-deterministic, and impossible to code-review.</p>
+
+        <p><strong>Rendering moved into a compiler that runs against the token stream.</strong> OpenAI built a library of native, streamable components and a compiler that processes the interface as the model generates it, so the UI appears progressively instead of waiting for the full response. Read that sentence as an infrastructure engineer: the render loop is now downstream of generation, the same way tool execution is. The UI streams like tokens. Which means the latency budget of your interface and the latency budget of your model are now the same budget — a point the launch makes implicitly with its speed numbers: GPT-6 Instant begins responding 44% sooner than GPT-5.6 Instant when web search is required, and GPT-6 at Extra High reasoning effort starts answering as fast as GPT-5.6 at Medium while scoring above GPT-5.6 at Extra High. Interface latency and reasoning latency fused into one number the user experiences.</p>
+
+        <p><strong>Interface quality is now an eval.</strong> OpenAI says it expanded training to include evaluating the interfaces the model creates for clarity, usefulness, and completeness. Whatever you think of generative UI, this is the part to internalize: interface quality crossed from a design discipline into an evaluation discipline. When the model writes the interface, you test the interface the way you test tool calls — with rubrics, datasets, and regression runs, not with a design review.</p>
+
+        <h2>The Sentence Everyone Skipped</h2>
+
+        <p>Buried near the end of the announcement is one line that changes the entire interpretation of the launch: <em>"The models powering Work and Codex are not changing as part of this release."</em></p>
+
+        <p>OpenAI just shipped generated interfaces to 1.2 billion weekly users — and deliberately did not ship them to its agentic products. Codex, where GPT-6 compiles code and runs tools. Work, where agents act on behalf of companies. The most aggressive generative-UI deployment in history stops exactly at the boundary of agentic software.</p>
+
+        <p>That is not a roadmap gap. It is a design position, and it happens to be correct: chat is a consumption surface, but agent products are control surfaces. A Codex interface is where you review a diff before it merges, interrupt a running task, approve a tool call that spends money. Those affordances must be <em>predictable</em> — in the same place, behaving the same way, every time — because they carry the accountability of the actions underneath them. A control surface that regenerates itself per interaction is a control surface you cannot build muscle memory for, cannot screenshot for an audit, cannot trust to render the reject button.</p>
+
+        <p>OpenAI's own rollout drew the line precisely where the accountability lives. The free-tier users who got Intelligent UI this morning can play with generated charts; the enterprise customers whose agents touch production systems still get a fixed interface. When a company with unlimited incentive to demo its flashiest capability declines to put it in its agent products, that restraint is data.</p>
+
+        <h2>Ephemeral UI vs. Durable UI</h2>
+
+        <p>Put AG-UI and Intelligent UI side by side and you get the cleanest framing of the year for anyone building agent products.</p>
+
+        <p><strong>Durable UI</strong> is the AG-UI position: the interface is a contract. Events are schema-locked, versioned, testable. You can diff version 1.1 against 1.2, write regression tests against the event stream, replay a session and prove what the human saw and approved. The interface is boring, predictable, and auditable — because it has to be. It is load-bearing infrastructure for trust.</p>
+
+        <p><strong>Ephemeral UI</strong> is the Intelligent UI position: the interface is a completion. It is fitted perfectly to one question, it may never exist again in that exact form, and it costs the developer nothing to produce. No frontend to maintain, no component library to keep current, no design debt. The trade is exactly what it looks like: you gain interfaces that never would have been built — the one-off visualization for one question at 2 a.m. — and you lose everything that comes from stability.</p>
+
+        <p>The title of this post is the crux of the trade. The generated interface has no version number. You cannot pin it, cannot diff it, cannot regression-test it in the classical sense, cannot promise a regulator or an auditor that the approval flow looked a certain way. OpenAI's own answer to that problem — training the model on interface-quality evals — is real, but an eval that passes 98% of the time is a different object than a component that renders identically 100% of the time. One is a statistical guarantee. The other is a contract.</p>
+
+        <p>Neither position wins outright, because they are answers to different questions. Durable UI answers <em>"how do agents and humans stay accountable to each other?"</em> Ephemeral UI answers <em>"why does every question deserve the same interface?"</em> The mistake — the one you should expect to see product teams make for the next eighteen months — is applying the ephemeral answer to the durable problem: generated interfaces over agent actions, native-feeling charts hiding the interrupt path, control surfaces that shift between sessions.</p>
+
+        <h2>The Frontend Joins the Harness</h2>
+
+        <p>For harness engineers, yesterday collapsed one more boundary. The stack we have all been building — model, harness, tools, protocols, UI — just lost its clean top edge. When the model emits interface, the render layer becomes part of the harness, and every discipline we apply to the harness applies to it.</p>
+
+        <p>Three consequences, in order of how soon they will hit you.</p>
+
+        <p><strong>Your design system becomes a tool schema.</strong> OpenAI's component library is, functionally, a set of tools the model can call — with the difference that composition happens inside generation rather than through function calls. When this pattern reaches the API layer, and it will, your design system stops being implementation guidance for engineers and becomes a typed surface you expose to the model: these components, these props, these constraints. Schema-first component design is about to have the moment schema-first tool design had in 2025. The teams that name their components and props the way they should have named their tools — unambiguously, with the usage evident from the signature — will get better generated interfaces than the teams that don't. We already know models read schemas better than prose. Nothing about that finding changes when the schema renders.</p>
+
+        <p><strong>Your eval suite grows a render branch.</strong> If interface quality is a model behavior, then every model change is an interface change. The upgrade path for your agent now includes questions no one asked a year ago: did the new model version start burying the cancel button, simplifying the approval summary, phrasing the confirm step differently? These are regressions your current evals cannot see, because your current evals stop at the last token. They need to run one layer further — to the interface the tokens became. OpenAI evaluating its interfaces for clarity, usefulness, and completeness is not vendor theater; it is the checklist.</p>
+
+        <p><strong>The demo-to-product gap widens.</strong> Generated UI makes every product look trivially buildable — ask, and the interface appears. Most of what makes software a product rather than a demo is the durable half: consistency, permissions, audit trails, the interface that is the same on the ten-thousandth use as the first. The gap between "an interface exists for this" and "this interface is trustworthy" was always the product gap. It just became visible at generation time.</p>
+
+        <p>This is the same drift the rest of the stack already went through, which is why it feels familiar. Tools became schemas, protocols became contracts, and now interfaces become completions — with the same asterisk every time: the generated thing is the flexible thing, and the contract is the thing you can build a business on. I have spent a book's worth of pages on the first half of that pattern — <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em> — and the second half is now arriving on schedule: whatever the model touches becomes harness, and as of this week, it touches the pixels.</p>
+
+        <h2>What This Kills (Slowly) and What It Can't</h2>
+
+        <p>The honest casualty list is narrower than the launch implies, and the contrarian take cuts both ways.</p>
+
+        <p>What generated interfaces genuinely threaten is the long-tail middle of frontend work: the one-off dashboard, the internal tool built for a single recurring question, the "database with a UI" app whose entire value is mediation. When the interface is fitted to the question for free, standing mediators compete with something that has zero maintenance cost. That pressure is real and it starts now.</p>
+
+        <p>What it does not threaten — yet, and maybe not for a long time — is everything with an accountability requirement. Enterprise workflows, regulated surfaces, anything where the interface is evidence. Remember the constraint OpenAI placed on itself: not in Codex, not in Work. The company that built the technology drew its own deployment boundary at exactly the line where interface stability becomes a compliance property. Your enterprise roadmap is safer than the launch headlines suggest, and your internal-tools backlog is less safe than your sprint plan suggests.</p>
+
+        <p>The model that changes this calculus is not the one that generates prettier interfaces. It is the first one that ships a generated interface with a version number — a reproducible, pinnable, diffable render. The day OpenAI or anyone else solves <em>deterministic</em> generative UI for agent control surfaces, the durable-UI position loses its moat. Nothing announced yesterday is that. But watch for it, because that is the release that actually ends the argument.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p><strong>Audit your UI by interaction frequency, not by screen.</strong> For each surface in your product, ask: is this interface used the same way thousands of times, or does it answer long-tail questions? Long-tail surfaces are generated-UI candidates the moment this reaches your stack; high-frequency, standardized surfaces are not. Most products are a mix, and the mix is the roadmap.</p>
+
+        <p><strong>Refactor your design system toward schema.</strong> Do it before generative UI reaches your platform, not after. Typed components, unambiguous props, constraints expressed in the signature instead of a doc page. This is cheap now and expensive retroactively, and it pays off even if you never expose it to a model — schema-first design did for tools.</p>
+
+        <p><strong>Add interface checks to your eval pipeline.</strong> Screenshot the render at the end of golden-path agent runs, hash it or score it, and compare across model versions. You are looking for the interface regression nobody tests for: the approval flow that silently rearranged itself after a model upgrade. Ten golden paths is enough to start.</p>
+
+        <p><strong>Do not touch your control surfaces.</strong> Interrupt paths, approval steps, diff reviews — keep them fixed, boring, and identical every session. The pressure to "modernize" them with generated interfaces will arrive in a product review near you, armed with yesterday's demo. The AG-UI event stream, or any durable contract, remains the right substrate for the half of the interface that carries accountability.</p>
+
+        <p><strong>Watch the Work and Codex model line, not ChatGPT.</strong> That is where the signal will come from. The day generated interfaces appear in OpenAI's agentic products is the day they solved the accountability problem — or decided to ship without it. Either way, that release, not yesterday's, is the one that should change your architecture.</p>
+
+        <h2>The Question Behind the Question</h2>
+
+        <p>Whether models can generate useful interfaces was settled yesterday, at a scale no demo could settle it: 1.2 billion weekly users, free tier included, production traffic. That debate is over.</p>
+
+        <p>The live question is which surfaces deserve an interface that is different every time. The answer the industry's infrastructure vendors gave in the same seven-day window was contradictory on purpose: a contract for the surfaces where trust lives, a completion for everything else. The engineers who internalize that split — who know which half of their product is which — will ship agent products that feel modern and hold up under audit. The ones who apply one answer to both halves will spend 2027 rebuilding.</p>
+
+        <p>The interface has no version number. Your judgment about where that's acceptable is the version number. Ship accordingly.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>

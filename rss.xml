@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Wed, 07 Oct 2026 08:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 08 Oct 2026 08:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Interface Has No Version Number</title>
+      <link>https://abuiliazeed.github.io/blog/the-interface-has-no-version-number.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-interface-has-no-version-number.html</guid>
+      <description>Seven days after AG-UI 1.0 locked the agent interface into a contract, OpenAI shipped Intelligent UI to 1.2 billion weekly users — where the model generates the interface per question. Two opposite bets on the same layer, one week apart.</description>
+      <pubDate>Thu, 08 Oct 2026 08:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>The Protocol Wars Moved to the Front Door</title>
       <link>https://abuiliazeed.github.io/blog/protocol-wars-front-door.html</link>
