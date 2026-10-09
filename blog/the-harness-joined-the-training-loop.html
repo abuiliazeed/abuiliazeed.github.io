@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Harness Joined the Training Loop — Abuiliazeed</title>
+  <meta name="description" content="JetBrains took a 12B model from 2.0 to 47.0 on SWE-bench Verified without changing the architecture — because the harness was inside the training loop. Agent Lightning v1.0 makes that a reusable pattern. Your harness is now a training artifact.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-harness-joined-the-training-loop.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-harness-joined-the-training-loop.html">
+  <meta property="og:title" content="The Harness Joined the Training Loop">
+  <meta property="og:description" content="JetBrains took a 12B model from 2.0 to 47.0 on SWE-bench Verified without changing the architecture — because the harness was inside the training loop. Agent Lightning v1.0 makes that a reusable pattern.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Harness Joined the Training Loop">
+  <meta name="twitter:description" content="JetBrains took a 12B model from 2.0 to 47.0 on SWE-bench Verified without changing the architecture — because the harness was inside the training loop. Agent Lightning v1.0 makes that a reusable pattern.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-10-09">October 9, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Harness Joined the Training Loop</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>2.0 to 47.0. Same 12 billion parameters, same mixture-of-experts routing, same 131K context window, same Apache 2.0 license. On October 8, JetBrains released Mellum2.1, and on SWE-bench Verified — evaluated through the same open-source Pi v0.73.1 harness, at the same 114K-token budget — the model went from a 2.0 to a 47.0. SWE-bench Pro went from 0.0 to 28.0. Terminal-Bench 2.1 went from 0.6 to 17.4.</p>
+
+        <p>The architecture didn't change. JetBrains says so explicitly: everything that changed happens after pre-training. The model spent a summer inside real repositories, with a shell and file-editing tools, getting rewarded when the tests passed — millions of sandboxed runs across thousands of environments. It wasn't taught more about code. It was taught to operate <em>inside a harness</em>.</p>
+
+        <p>The same week, Microsoft Research's Agent Lightning v1.0 landed — an MIT-licensed, roughly 3,500-line framework that formalizes this exact maneuver and gives it a name: <strong>harnessed agentic RL</strong>. The deploy-time harness owns the environment interaction loop; the trainer sits behind an LLM proxy and watches nothing but request-response pairs. In their own pipeline, RL alone took Qwen3.5-9B from 41.8% to 56.4% on SWE-bench Verified — 14.6 points — using about six thousand training samples and what the paper calls modest compute.</p>
+
+        <p>Put those two releases side by side and you get the cleanest statement yet of where agent engineering is going: <strong>the harness used to be the thing you built after training. Now it's the thing you train through.</strong></p>
+
+        <h2>What Actually Shipped</h2>
+
+        <p>Two artifacts, one architecture.</p>
+
+        <p><strong>Mellum2.1</strong> is a 12B-parameter MoE model with 2.5B active per token — small enough that the recommended GGUF quantization is 8.1 GB, with an MXFP4 build at 7.0 GB. It runs on a laptop. JetBrains moved RL from "a short final stage" to the main phase of training: filtered open RL datasets plus self-built tasks, real repositories as environments, tests passing as the reward. The model "explores a codebase, edits files, and checks its own changes" — which is a description of a harness resident, not a chatbot. On LiveCodeBench v6 it scores 82.0, ahead of Qwen3.5-9B (75.4) and Gemma 4 E4B (69.4) in JetBrains' shared evaluation pipeline. All of these numbers are self-reported, and Qwen3.5-9B still wins the agentic rows — 50.0 on SWE-bench Verified, 38.0 on SWE-bench Pro, 21.7 on Terminal-Bench. But that's the wrong comparison to fixate on. The right one is Mellum2 versus Mellum2.1: same weights-shaped container, 23x the agentic score.</p>
+
+        <p><strong>Agent Lightning v1.0</strong> is the infrastructure version of the same idea. Three components: an API Gateway that acts as an OpenAI-compatible LLM proxy, recording prompts, responses, and log-probabilities while routing calls; a Rollout Controller that runs agents as local processes or Kubernetes jobs; and a trainer built on verl that assembles training samples from what the proxy recorded. Integration for an existing harness is a one-line change: point the model endpoint at the proxy. The framework deliberately avoids the commercial sandbox services (Modal, E2B) that comparable stacks depend on — agents run as ordinary Kubernetes jobs, so the whole loop is self-hostable and reproducible. The release includes the unglamorous parts nobody else ships: a data-cleaning pipeline for the SWE-smith dataset and explicit reward-hacking safeguards.</p>
+
+        <p>Microsoft's paper also notes, almost in passing, that the proxy-based approach has already been adopted by verl Uni-Agent, AReaL 2.0, slime v0.3.0, and Polar. This isn't one team's experiment anymore. It's the emerging default architecture for agent RL.</p>
+
+        <h2>The Reimplementation Tax</h2>
+
+        <p>To see why this matters, look at what agentic RL looked like before. Frameworks like verl, AReaL, and slime required you to implement the agent loop <em>inside the training framework</em>. Your production harness — with its context construction policy, its tool protocols, its retry logic, its token budgeting — had to be rewritten as a training-compatible environment. Microsoft's paper lists the casualties by name: mini-SWE-agent, OpenHands, OpenCode, Claude Code, Codex. Each would need to be reimplemented inside the training stack to participate in RL at all.</p>
+
+        <p>Nobody does that faithfully. What they do is build a simplified training-loop stand-in that approximates the real harness, train against the stand-in, and deploy into the real one. The result is a permanent train/deploy skew: the model is optimized for a control flow it will never actually run under, and every difference between the stand-in and the real harness — different context truncation, different tool description ordering, different failure handling — is unlearned variation the model has to absorb at inference time.</p>
+
+        <p>This is the same pathology benchmark people know well. We've spent two years learning that a model's score is a property of the model-harness <em>pair</em>, not the model: the same Qwen 3.8 27B spread across three harnesses on identical tasks produced scores of 82.6%, 77.6%, and 74.0%. Training was the last place that insight hadn't reached. You can't claim the pair is the unit of performance and then train only half the pair.</p>
+
+        <p>Harnessed RL closes the loop. The model is optimized under exactly the context policy, tool surface, and execution semantics it will run with in production — because it is running with them. The trainer doesn't know what a tool is. It just sees sequences of model calls and their outcomes, and it nudges the weights toward the trajectories that ended in passing tests. That's the whole trick, and it's worth stating plainly: <strong>the harness became the curriculum.</strong></p>
+
+        <h2>Read the Numbers as Economics</h2>
+
+        <p>The Agent Lightning result — 14.6 points on SWE-bench Verified from roughly 6K training samples — deserves to be put next to the numbers from Xiaomi's MiMo run that I covered in August: $2.62 million, about 750,000 trajectories, 14 and 17 points of DeepSWE v1.1 improvement. Different benchmarks, so don't compare the points directly. Compare the shape.</p>
+
+        <p>Both runs prove the same thing: the binding constraint is no longer compute or data volume, it's the fidelity of the environment and the loop that connects the model to it. Xiaomi's receipt showed the cost of building that loop at scale. Agent Lightning's contribution is showing how little framework you need around it — 3,500 lines — if you let the harness stay in its native form instead of reimplementing it. And JetBrains' contribution is showing what a model vendor can extract from the loop when they own both sides: a 2.5B-active model at 47.0 on SWE-bench Verified, self-hostable on a single GPU, with GGUF files small enough for a commute.</p>
+
+        <p>The price of a point of agentic benchmark is collapsing, and it's collapsing specifically at the small-model end of the market. That's the end enterprises want for sub-agent work anyway — cheap, fast, private workers under an expensive supervisor. Mellum2.1 is explicitly positioned for that slot: agent worker, general reasoning assistant, private self-hosted deployment. The infrastructure needed to produce such models just dropped from "frontier lab" to "team with a Kubernetes cluster and a harness worth training through."</p>
+
+        <h2>The Catch: Lock-In Moves Into the Weights</h2>
+
+        <p>Here's the part the launch posts won't emphasize, and it's the reason to think carefully before celebrating.</p>
+
+        <p>A model trained through a harness is co-adapted to that harness. We already know harnesses don't transfer cleanly — Perplexity's controlled comparison showed frontier models losing double-digit points when moved between harnesses on identical tasks. Harnessed RL optimizes the pair, which means the pair's performance now has a weight-side component. Move the model to a different harness and you're not just changing the scaffolding; you're breaking a co-adaptation that was trained in. Lock-in used to live in the API. Now it can live in the weights.</p>
+
+        <p>Watch how this plays out in the fine print of this week's releases. JetBrains trained Mellum2.1 in its own RL infrastructure and evaluated everything through Pi v0.73.1 with a fixed 114K context — a deliberately standardized yardstick. But their own table shows the yardstick matters: Qwen's model card claims 65.6 on LiveCodeBench v6 where JetBrains' pipeline measured 75.4 for the same model. Same weights, different loop, ten points of daylight. Now imagine that gap working in reverse — a model that scores well in the harness it was trained in and quietly degrades in yours.</p>
+
+        <p>There's a second-order effect too. If the harness shapes the gradients, then every harness design decision — how you truncate context, how you order tool descriptions, when you retry — is no longer just a runtime cost decision. It's a data-quality decision. A sloppy harness doesn't just produce sloppy agent behavior anymore; if you train through it, it produces sloppy weights. Reward hacking is the failure mode that bites here, which is why Agent Lightning ships safeguard tooling as a first-class component rather than a footnote. The harness was already the most under-versioned artifact in the stack. It just became a training input, and most teams don't version it like one.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <ul>
+          <li><strong>Stop treating your harness as deployment plumbing.</strong> Inventory it the way you'd inventory a training dataset: context policy, tool descriptions, control flow, retry semantics. If you wouldn't train on unversioned data, don't train through an unversioned harness.</li>
+          <li><strong>Wire a proxy in front of your model endpoint now, even if you're not training.</strong> The one-line integration Agent Lightning exposes — redirect the endpoint, capture the traffic — is also the cheapest observability you'll ever install. Recorded trajectories are dual-use: they're debugging gold today and training data the moment you decide to fine-tune.</li>
+          <li><strong>Evaluate models in the harness you actually run.</strong> This week's numbers are a reminder that vendor scores are harness-bound. A model's published benchmark is a claim about the pair the vendor tested, not the pair you deploy. Demand harness details, or measure it yourself.</li>
+          <li><strong>If you self-host sub-agents, benchmark Mellum2.1 in your own loop.</strong> An 8.1 GB coding model with 47.0 on SWE-bench Verified changes the economics of local worker agents on Apple Silicon and single-GPU boxes. Treat JetBrains' table as a hypothesis, not a result — it's self-reported — but the download is free and the test is an afternoon.</li>
+          <li><strong>Read the Agent Lightning paper for the failure modes, not the wins.</strong> The sections on retokenization, sample merging, and advantage calculation under a dynamic number of calls per rollout are where harnessed RL breaks. Those are exactly the problems you'll hit first if you build this yourself.</li>
+        </ul>
+
+        <h2>The Unit of Optimization Changed</h2>
+
+        <p>The industry argument I've been making for a while — that the harness is the variable, the model is the constant — has now been accepted at the deepest possible level: the training loop. When Microsoft's own framework lists Claude Code and Codex as harnesses too complex to reimplement for training, and then builds a way to train through them anyway, the debate about whether harness engineering is a real discipline is over. The remaining question is whether your organization treats it as one.</p>
+
+        <p>The teams that benefit from this shift won't be the ones with the biggest clusters. They'll be the ones with harnesses clean enough to train through — versioned, instrumented, and designed with the knowledge that every routing decision is now a curriculum decision. That's the discipline I spent a book mapping end to end, <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>, and this week is the first time I'd say the industry's training infrastructure has caught up to its table of contents.</p>
+
+        <p>Mellum2.1's 2.0-to-47.0 jump will be remembered as a nice benchmark story. The durable news is quieter: the thing your model runs inside is now the thing it learns from. Build accordingly.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
