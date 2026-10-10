@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Swarm Is the Cheap Part — Abuiliazeed</title>
+  <meta name="description" content="737.8 ms to 55.8 ms startup, 2,000 agents, 200 billion tokens, two weeks — and the swarm was still the cheapest part of Prime Agent's Rust rewrite. The real engineering was the verification apparatus, and the bugs it still missed.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-swarm-is-the-cheap-part.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-swarm-is-the-cheap-part.html">
+  <meta property="og:title" content="The Swarm Is the Cheap Part">
+  <meta property="og:description" content="737.8 ms to 55.8 ms startup, 2,000 agents, 200 billion tokens, two weeks — and the swarm was still the cheapest part of Prime Agent's Rust rewrite. The real engineering was the verification apparatus, and the bugs it still missed.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Swarm Is the Cheap Part">
+  <meta name="twitter:description" content="737.8 ms to 55.8 ms startup, 2,000 agents, 200 billion tokens, two weeks — and the swarm was still the cheapest part of Prime Agent's Rust rewrite. The real engineering was the verification apparatus, and the bugs it still missed.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-10-10">October 10, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Swarm Is the Cheap Part</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>737.8 milliseconds to 55.8. That is Prime Agent's cold-start time to first keystroke, TypeScript versus Rust, measured by the company that just had more than 2,000 agents rewrite the entire harness in two weeks. Two hundred billion tokens went through the loop. More than 10,000 sandboxes were spawned and destroyed. And the number every headline quoted — the swarm size — is the one figure that appears nowhere in the repository.</p>
+
+        <p>Most coverage read the October 9 announcement as "agents can now rewrite production software." The accurate reading is narrower and considerably more useful: <strong>generation has become the cheap part of software.</strong> Prime Intellect's own timeline proves it. The swarm finished the port in two weeks. Then humans spent additional weeks finding everything the checks didn't cover, because — in the company's own words — the parity checks only verified the behavior they exercised. The bottleneck moved. It is no longer writing code. It is proving the code.</p>
+
+        <h2>What Actually Shipped</h2>
+
+        <p>Prime Agent is Prime Intellect's open-source coding harness, launched in August for long-running tasks and persistent subagents. The company reports more than 300,000 downloads and over 8 trillion tokens processed since launch — company-reported totals, with no breakout of active users, but the repository sat at roughly 18,000 stars and 2,000 forks at coverage time. This is not a toy being ported for a blog post.</p>
+
+        <p>The mechanical record, which matters more than the press release: pull request #2524, titled "Port Prime Agent to Rust," was opened September 22 and merged into <code>main</code> on September 30 — eight days — carrying 520 commits and bundling more than 100 merged sub-PRs. The port split the codebase into nine Rust crates with a one-way dependency graph enforced by Cargo. A maintainer approved the merge with 48 of 50 checks green. The shipped artifact is labeled <code>v0.9.9-beta.61</code>, a nightly, with native Windows support in beta and Homebrew installation joining the Unix path.</p>
+
+        <p>The performance claims come from the company's own runtime suite: fresh four-core, 8 GB sandboxes, a scripted model driving a real terminal through a screen emulator, inference explicitly excluded. By that measure, cold time-to-type fell from 737.8 ms to 55.8 ms (13.2×), warm time-to-type from 549.6 ms to 42.4 ms (13.0×), process-tree memory after startup from 607.4 MB to 106.0 MB (5.7× smaller), and installed size from 172.1 MB to 59.6 MB (2.9× smaller). Prime Intellect itself flags the caveat: there is no common industry standard for harness benchmarks, and these numbers measure the shell around the model, not task completion. Hold that thought; it becomes important.</p>
+
+        <h2>The Swarm Was the Cheapest Part</h2>
+
+        <p>Here is how the work actually ran, because the org chart is the interesting artifact. A root agent divided the rewrite into dependency-ordered tasks — topologically sorted, with finite state machines structuring the looped computations — and wrote zero product code. It allocated, tracked, merged, and negotiated priorities with the human team. Under it, every task passed through the same four-role state machine: a <strong>Planner</strong> that specified the feature, the original TypeScript behavior, and its checks; an <strong>Implementer</strong> that wrote Rust in a separate working copy; a <strong>Reviewer</strong> that challenged the change from a separate context, running a different model; and a <strong>Verifier</strong> that compiled and tested in a fresh sandbox. A failed review or a failed verification sent the task back to the Implementer. Both gates had to pass before merge, and tasks ran in parallel without skipping them.</p>
+
+        <p>An activity snapshot from October 1 in the company's post shows the shape of the thing: 2,209 agents, 16,758 agent-to-agent messages, 228.7 billion total tokens. An independent build review of the Rust repository counted about 594,000 lines of source across 1,416 files. Whatever fraction of that the swarm produced, the port itself — the part that would consume a human team for a quarter — took two weeks of wall-clock time.</p>
+
+        <p>That is the sentence to sit with. Generation at scale is now a budget line, not a research question. Two hundred billion tokens through a GLM-5.3 endpoint is a number you can pay. The scarce resource in this story was never typing speed.</p>
+
+        <h2>The Apparatus That Did the Real Work</h2>
+
+        <p>The genuinely novel engineering in this release is not the swarm. It is the oracle the swarm was aimed at. To hold behavior constant across the rewrite, Prime Intellect ran the old TypeScript build and the new Rust build against the same scripted model and compared four artifact classes: <strong>rendered terminal frames</strong>, <strong>session transcripts</strong>, <strong>requests sent to model providers</strong>, and <strong>daemon protocol messages</strong>. Separate agents audited features for matches, partial implementations, and omissions. Nothing merged on vibes; everything merged on observed equivalence.</p>
+
+        <p>If that technique feels familiar, it should — it is golden-master differential testing, the method human teams have used for decades to migrate payroll systems off COBOL without anyone dying. Prime Intellect's contribution is pointing it at agent-written code as a continuous gate rather than a one-off migration audit. The genius is in the question it asks. "Is the new code good?" is unanswerable by machine. "Does the new code behave identically to the old code, observable artifact by observable artifact?" is mechanically checkable, at any frequency you can afford compute for.</p>
+
+        <p>The second transferable design decision is the separation of powers. The Reviewer ran a different model than the Implementer, in a separate context. The Verifier compiled and tested in a fresh sandbox the author never touched. Nothing that wrote code graded its own work — a rule old enough to be constitutional, and one that gets a full chapter treatment in <em>Harness Engineering</em>, because it is the single cheapest quality intervention available in multi-agent design. Prime Intellect also ran a three-day optimization loop after parity: more than 144 profiling experiments and audits, 69-plus merged changes, with gains coming from moving work off the startup and rendering path, replacing polling with event-driven waits, and freeing memory after large sessions loaded. Hillclimbing against a fixed benchmark — again, the oracle does the work; the agents are interchangeable labor.</p>
+
+        <h2>What the Checks Didn't Catch</h2>
+
+        <p>Now the part the announcement says quietly and every practitioner should read twice. Once parity was achieved on the main loop, Prime Intellect moved the rewrite agents themselves onto the Rust build — the harness recursively improving its own replacement — and then moved the internal team onto it for daily use. Both waves found bugs and missing behavior the differential tests had not exercised. Bringing the release to shippable quality took further weeks of human-guided fixes. At least one user filed (and closed) an issue describing regressions in TUI polish and consistency against the mature TypeScript version. An independent test run before release recorded 775 passing tests and zero failures — but hit a 900-second timeout before the full suite finished. The verification of the verification remains incomplete.</p>
+
+        <p>Strip the branding and the honest ratio is this: <strong>two weeks of swarm, weeks of humans.</strong> The scripted checks covered exactly the behaviors they were built to cover, and the gap between coverage and reality was filled by people using the tool. That ratio — not the 13× startup number — is the current state of the art in agent-written software. This is the verification gap this site has tracked before, now with a production-scale data point attached: a well-funded team, a disciplined oracle architecture, adversarial review, fresh-sandbox verification, and the coverage gap still ate weeks.</p>
+
+        <h2>The Number That Isn't in the Repository</h2>
+
+        <p>One more layer, because it matters for how you read every claim like this. A skeptic went looking for the 2,000-agent figure in the pull request, the README, the issue tracker, and the paper. It appears in none of them. The verifiable record shows the branch, the 520 commits, the bundled sub-PRs, the human approvals. The swarm census — 2,000, 2,209, "more than 2,000" — lives in the blog post and the launch thread. The honest label, as that review put it, is "claimed, not verified." It could count total subagent spawns across sub-PRs; it could be a rounded figure from an internal dashboard nobody outside can inspect.</p>
+
+        <p>Does that sink the story? No — and this is the nuance worth keeping. The <em>verified</em> story is still remarkable: an eight-day merge window for a nine-crate port of a 300,000-download harness, pinned by differential tests, approved by maintainers, shipped as a beta. But the industry metric and the industry reality have diverged. Swarm size is a marketing metric. The merge queue, the oracle, and who pressed the button are the engineering metrics. When you evaluate any vendor's autonomy claims this quarter, demand the second category and treat the first as decoration.</p>
+
+        <p>There is also a clean strategic reading, which the announcement does not disguise: Prime Intellect sells exactly what this rewrite consumed. Sandboxes, inference, traces, hosted training — the stack behind the $130 million Series A they raised in July at a reported $1 billion valuation. Routing 200 billion tokens through your own endpoint to rebuild your own open-source harness is simultaneously an engineering event and a product testimonial. That does not make the result wrong. It makes it a demo with unusually good receipts — and it explains why the receipts are curated.</p>
+
+        <h2>Why the Harness Went Native</h2>
+
+        <p>The language choice is not cosmetic, and the reasoning generalizes to anyone building agent infrastructure. A coding harness used to be a script: spawn a model, loop some tool calls, print the output. Prime Agent — like every serious harness now — is a <em>daemon</em>: it streams model output to a terminal while reacting to keystrokes, runs tools, coordinates subagents across sessions, persists state to disk. In TypeScript, that meant garbage-collection pauses competing with input rendering and a JavaScript runtime's memory floor in every process. In Rust, per-session worker processes under a small supervisor, crash isolation (one session dying leaves the others running), on-disk persistence with reconnect, and platform-specific work — transport, process control, file locking — behind traits. Windows support stopped being a port and became "implement the interface." Model and plugin catalogs are fetched at runtime, so new models ship without a harness release.</p>
+
+        <p>The footprint numbers are the quiet headline for local-first practitioners. In Prime Intellect's own suite — non-standard, self-flagged as such — the Rust build's 106.0 MB startup process tree compared against 226.9 MB for Claude Code v2.1.289, 344.4 MB for Codex CLI v0.160.0, 138.1 MB for Piv 1.0.3, and 194.6 MB for Hermes Agent v0.21.5. Those are reference points, not rankings. But the direction matters for a specific reason: swarms. A harness that costs 600 MB per session does not run ten sessions on a laptop; one that costs 106 MB might. Local multi-agent viability is, to first order, a memory-budget question, and the harness just got 5.7× cheaper on that axis. The rewrite was also a re-architecture — the largest source file shrank from roughly 15,000 lines to about 2,500, and no file now exceeds 5,000, versus four before. That kind of mechanical discipline at scale is precisely what agent labor is good at <em>when an oracle exists to gate it</em>.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p><strong>Build the oracle before the swarm.</strong> If an agent-driven migration or large refactor is anywhere on your roadmap, write the differential harness first. Record the current system's observable artifacts — rendered output, transcripts, outbound requests, protocol messages — replay a scripted driver against old and new, and diff. An afternoon of golden-master capture converts "trust the agents" into "measure the agents." It is the single highest-leverage artifact in this entire story, and not one headline was written about it.</p>
+
+        <p><strong>Split author and evaluator.</strong> Different context at minimum; a different model if you can afford it. The Reviewer-Implementer separation is why adversarial catch rates beat self-review, and it costs you one extra model call per task — the cheapest insurance in the stack.</p>
+
+        <p><strong>Discount swarm-size claims on contact.</strong> "N agents wrote our system" is now a genre. The questions that separate engineering from theater: where are the per-task logs, who approved the merge, what did the oracle compare, and what did dogfooding find that the checks missed? Prime Intellect survives all four questions better than most. Most claims won't survive the first.</p>
+
+        <p><strong>Scope every benchmark before deciding on it.</strong> Time-to-first-keystroke is real and pleasant; it is not task throughput. Startup memory is not capability. The company itself labels its suite non-standard and inference-free — that honesty is the standard you should hold every vendor to, including on the numbers that favor you.</p>
+
+        <p><strong>Start counting harness footprint.</strong> If local agents matter to your setup, process-tree memory per session is now a first-class number. It determines how many parallel sessions your hardware actually sustains, which determines whether swarms stay a cloud feature or become a laptop feature.</p>
+
+        <p>Two thousand agents made a compelling headline. One differential oracle made the release shippable — and a few weeks of humans made it honest. The industry will keep manufacturing the first. The durable advantage sits with whoever builds the second.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
