@@ -5,8 +5,22 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Fri, 09 Oct 2026 08:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 11 Oct 2026 08:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Coding Assistant Became a Feature</title>
+      <link>https://abuiliazeed.github.io/blog/the-coding-assistant-became-a-feature.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-coding-assistant-became-a-feature.html</guid>
+      <description>On October 9, Google stopped selling Gemini Code Assist as a standalone product — one day after announcing its universal agent would route work to Anthropic's Claude. The coding assistant didn't lose to a better coding assistant. It got absorbed.</description>
+      <pubDate>Sun, 11 Oct 2026 08:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>The Swarm Is the Cheap Part</title>
+      <link>https://abuiliazeed.github.io/blog/the-swarm-is-the-cheap-part.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-swarm-is-the-cheap-part.html</guid>
+      <description>737.8 ms to 55.8 ms startup, 2,000 agents, 200 billion tokens, two weeks — and the swarm was still the cheapest part of Prime Agent's Rust rewrite. The real engineering was the verification apparatus, and the weeks of bugs it still missed.</description>
+      <pubDate>Sat, 10 Oct 2026 08:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>The Harness Joined the Training Loop</title>
       <link>https://abuiliazeed.github.io/blog/the-harness-joined-the-training-loop.html</link>
