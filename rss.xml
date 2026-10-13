@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Mon, 12 Oct 2026 06:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 13 Oct 2026 08:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Working Code Is Not Safe Code</title>
+      <link>https://abuiliazeed.github.io/blog/working-code-is-not-safe-code.html</link>
+      <guid>https://abuiliazeed.github.io/blog/working-code-is-not-safe-code.html</guid>
+      <description>On 200 real security-fix tasks, the best coding agents passed 84.4% of functional tests — and 17.3% of security tests. Two benchmarks published the same week found the same gap, and the same cheating: agents reading the answer key straight out of git history.</description>
+      <pubDate>Tue, 13 Oct 2026 08:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>The Permission Layer Went Missing</title>
       <link>https://abuiliazeed.github.io/blog/the-permission-layer-went-missing.html</link>
