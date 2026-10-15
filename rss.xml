@@ -5,8 +5,22 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Tue, 13 Oct 2026 08:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 15 Oct 2026 08:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Orchestration Became a Server Primitive</title>
+      <link>https://abuiliazeed.github.io/blog/orchestration-became-a-server-primitive.html</link>
+      <guid>https://abuiliazeed.github.io/blog/orchestration-became-a-server-primitive.html</guid>
+      <description>A single agent found 14–27 of 70 planted bugs; the 1,000-agent workflow found 66. Behind the number, Anthropic moved the orchestration loop into its control plane — with rate limits and a billing meter. Google and OpenAI made the same move within ten days. The loop is now something you rent.</description>
+      <pubDate>Thu, 15 Oct 2026 08:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>The Diff Replaced the Benchmark</title>
+      <link>https://abuiliazeed.github.io/blog/the-diff-replaced-the-benchmark.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-diff-replaced-the-benchmark.html</guid>
+      <description>Google launched Gemini 4 Argon with one benchmark claim and a pile of merged pull requests — a 2.85x vLLM speedup, a 40% cut in ADK session prep, months of Chrome refactoring done in weeks. When a frontier lab stops leading with scores, the unit of proof has moved.</description>
+      <pubDate>Wed, 14 Oct 2026 08:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>Working Code Is Not Safe Code</title>
       <link>https://abuiliazeed.github.io/blog/working-code-is-not-safe-code.html</link>
