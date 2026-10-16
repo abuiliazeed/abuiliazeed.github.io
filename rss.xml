@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Thu, 15 Oct 2026 08:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 16 Oct 2026 08:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Download Became the Deployment</title>
+      <link>https://abuiliazeed.github.io/blog/the-download-became-the-deployment.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-download-became-the-deployment.html</guid>
+      <description>Meta shipped 816B open weights and the headline demo was a desk — two Mac Studios, 21 tokens/sec, $0.22 of electricity per session against $35 on a flagship API. The frontier you can download is one release behind the one you rent, and agent economics just split into rent-versus-own.</description>
+      <pubDate>Fri, 16 Oct 2026 08:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>Orchestration Became a Server Primitive</title>
       <link>https://abuiliazeed.github.io/blog/orchestration-became-a-server-primitive.html</link>
