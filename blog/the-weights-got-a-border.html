@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Weights Got a Border — Abuiliazeed</title>
+  <meta name="description" content="China's draft export rules add 23 AI technologies and make a top-10 leaderboard spot a trigger for weight licenses. Nothing already on your disk is touched — the exposure is the next generation.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-weights-got-a-border.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-weights-got-a-border.html">
+  <meta property="og:title" content="The Weights Got a Border">
+  <meta property="og:description" content="China's draft export rules add 23 AI technologies and make a top-10 leaderboard spot a trigger for weight licenses. Nothing already on your disk is touched — the exposure is the next generation.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Weights Got a Border">
+  <meta name="twitter:description" content="China's draft export rules add 23 AI technologies and make a top-10 leaderboard spot a trigger for weight licenses. Nothing already on your disk is touched — the exposure is the next generation.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-10-17">October 17, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Weights Got a Border</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>On Thursday, the open-weight world spent the day arguing about how many tokens per second two Mac Studios can squeeze out of 816 billion parameters. On Friday, China's Ministry of Commerce and Ministry of Science and Technology published a draft revision to the country's export control catalog, and the ground shifted under everyone who downloads frontier weights. Twenty-three AI technologies were added. A model's "core technology" — weights, checkpoints, source code, architecture, training and inference methods — now requires an export license if the model was trained with at least 10<sup>26</sup> FLOPs of compute, has at least 2 trillion parameters, or ranks in the global top ten.</p>
+
+        <p>Read that last trigger again. Not compute. Not parameter count. A <em>leaderboard position</em>. A model that enters the top ten on a public ranking — by a Chinese or a foreign evaluator, on overall performance, a specific task, safety, or even global usage — becomes export-controlled by that fact alone. The eval orgs have spent years insisting their numbers are directional. Beijing just made them jurisdictional.</p>
+
+        <p>Most coverage filed the draft under "China closes the open-weight era," which misreads the text in an important way. Everything already public stays outside the rules. Qwen3.8-2.4T-A95B — 2.4 trillion parameters, sitting on Hugging Face since August, comfortably above the parameter threshold — is exempt, because it's already in the public domain. The draft takes nothing off your disk. What it takes is the assumption that the next generation arrives the same way. The open-weight era doesn't end with a ban. It ends with a filing.</p>
+
+        <h2>What the Draft Actually Says</h2>
+
+        <p>The revision, published October 16 under Announcement No. 48 of 2026, adds 40 technologies to China's export control catalog: 23 in AI, 5 in biomedicine, 12 in solar. By a count of the draft's annex, six of the AI items would be banned outright and seventeen restricted, meaning license-required. The outright bans are the parts Western security teams will quietly cheer: AI that autonomously generates and mutates malware aimed at critical infrastructure, defense, or government systems; models trained on China's "core data"; high-performance agents built for those sensitive settings; certain deepfake-detection systems.</p>
+
+        <p>The restriction that matters to everyone else is the large-model clause. Three triggers — 10<sup>26</sup> FLOPs of training compute, 2 trillion parameters, or a global top-ten ranking — pull a model's core technology into license territory. "Global top ten" is determined by public rankings from major Chinese <em>or foreign</em> evaluators and industry platforms, judged on overall performance, specific tasks, safety, or global usage. Note what that last criterion means: a model can become a controlled export for being <em>popular</em>, not merely capable.</p>
+
+        <p>The deployment line is drawn deliberately. Serving a restricted model from abroad through APIs, apps, websites, or SaaS is not a technology export. Installing restricted technology on local servers in another country is. A Chinese company running its own overseas cloud gets a faster process. Registration for exports of listed technologies — including deals already in flight — started the same day the draft was published, and public comment runs until November 15.</p>
+
+        <p>None of this arrived from nowhere. Reuters reported in July that the commerce ministry had consulted Alibaba, ByteDance, and Z.ai about restricting overseas access to China's most advanced models, including unreleased ones. The draft is the codified version of those conversations — narrower than the July reports suggested on open models, but formal where the reports were speculative.</p>
+
+        <h2>The Exemption Is the Story</h2>
+
+        <p>Two carve-outs do most of the work in this document. First: technology already in the public domain through open-source releases or academic papers is entirely outside the rules. Second: open-sourcing restricted technology in the future qualifies for "automatic licensing," which the ministry describes as clearance upon filing.</p>
+
+        <p>Automatic licensing is being reported as a fast-track, and technically it is. But read it as mechanism design, not generosity. A fast lane is still a lane. "Clearance on filing" means a form reaches a regulator before weights reach Hugging Face, and nothing in the draft prevents the fast lane from getting slower when tensions escalate — no new law required, just processing time. The July consultations tell you the intent was discussed at the highest labs in the country; the published draft is the polite version. For the next Qwen or Kimi that crosses any threshold, publishing weights becomes an act that requires state paperwork. Whether that paperwork is a formality or a veto is now a single political decision, reviewable at any time, per model, per release.</p>
+
+        <p>The API carve-out completes the picture, and it isn't a loophole — it's the point. For Beijing, weights leaving the country means strategic capability leaving; API traffic leaving means revenue, influence, and a kill switch staying home. The fence has a gift shop. Foreign consumers of Chinese models are being gently steered toward the arrangement where China controls the off switch, and the only alternative escape — self-hosting the weights yourself — is exactly the act the draft now gates.</p>
+
+        <h2>The Leaderboard Became Law</h2>
+
+        <p>This blog has spent a year arguing that leaderboards are directional at best: the same model scoring 76.4% and 8.1% on adjacent Terminal-Bench versions in the same week is not an instrument you should run a procurement decision on. That argument just acquired a harder edge. A ranking is no longer just marketing. In the world's second-largest AI market, it is now a legal status.</p>
+
+        <p>Follow the incentives downstream. A Chinese lab whose next model is hovering near the top ten now has a legal reason to care about its benchmark placement — sandbagging a eval stops being petty marketing gamesmanship and starts being customs strategy. Ranking volatility becomes legal volatility: a model that enters and exits a top-ten list has, in principle, changed its export status on the way through. And foreign evaluators — private companies running private methodologies — have acquired leverage they never asked for. If Artificial Analysis' index or an arena leaderboard places a Chinese model in the global top ten, that placement has consequences in Chinese export law. Every methodology decision an eval org makes — which quants to test, which harness, which tasks — now carries a faint regulatory shadow.</p>
+
+        <p>The evaluators will say, correctly, that they can't administer a law they didn't write. That's precisely the problem. A control regime keyed to volatile third-party rankings has a soft, deniable trigger — adjustable not just by the regulator but by anyone who influences the rankings. If you thought benchmark gaming was bad when the stakes were launch-day press coverage, wait until the stakes are export licenses.</p>
+
+        <h2>Two Governments, One Number</h2>
+
+        <p>Here is the detail that deserves more attention than it got: 10<sup>26</sup> FLOPs is not a new number. The US AI Diffusion Rule, published January 15, 2025, required a license to export the weights of <em>closed</em> models trained on 10<sup>26</sup> operations or more, and deliberately left open-weight models alone. It was rescinded on May 13, 2025. China's draft uses the same compute trigger and goes further — adding the parameter and ranking triggers, and reaching open weights through the filing requirement.</p>
+
+        <p>Two rival governments, eighteen months apart, independently converged on the same threshold. When your adversary copies your number, the classification argument is over: that's the line where model weights stopped being software and became strategic materiel, the AI equivalent of a dual-use chemical. The American rule is rescinded but not repudiated — the doctrine sits on a shelf, and shelves are for taking things down. The direction of travel in both capitals is identical; only the implementation details differ.</p>
+
+        <p>Now hold that next to the week's other news. Twenty-four hours before the draft landed, Meta shipped 816 billion open weights with day-zero support across llama.cpp, MLX, and every major serving stack — the most capable US open-weight model, by Meta's own framing. The same week, Reflection's Beam weights landed under Apache 2.0: 501B total parameters, 23B active, 80.9% on SWE-bench Verified, with the terminal harness it was trained alongside open-sourced too. The American open-weight surge and the Chinese fence arrived in the same news cycle, and neither is intelligible without the other. Meta's "most capable US open-weight model" phrasing always read like marketing. As of Friday it reads like industrial policy — a national title in a market where the world champions are about to need export paperwork. And they are still the champions: in the comparison table inside Meta's own release, Qwen3.8, Z.ai's GLM 5.3, and Kimi K3 all sit above Muse Spark Open on the Artificial Analysis index, and Meta's own model card puts Kimi K3 at 85.0 on Terminal-Bench 2.1 against Spark Open's 76.4. One side of that race is shipping the hedge. The other is building a fence around the crown.</p>
+
+        <h2>What It Does to Your Stack</h2>
+
+        <p>If you self-host Chinese open weights — Qwen, GLM, Kimi, DeepSeek — the draft changes nothing about the checkpoints you run today and everything about your upgrade path. Today's models are grandfathered by the public-domain carve-out. Tomorrow's Qwen above 2T parameters, tomorrow's Kimi in the top ten, ships behind a filing you don't control, processed by a regulator you can't lobby, on a timeline that can stretch without explanation. That's not a ban. It's a dependency — and it's the kind of dependency that only surfaces the day you need it not to.</p>
+
+        <p>If you call Chinese models through APIs, the draft's text leaves you untouched. But notice what you're then holding: sovereignty-through-API isn't sovereignty, it's tenancy — and per the draft's own architecture, it's precisely the arrangement Beijing prefers you choose. Europe's position is the hardest. The EU's independence strategy has been to run open weights in domestic clouds — but that strategy requires at least one of the two weight superpowers to keep the taps open, and as of Friday both reserve the right to close them. The US rescinded its rule; it did not renounce the concept.</p>
+
+        <p>The practical upshot is that model selection just gained a column. Next to price, context window, latency, and quant availability, write <em>origin jurisdiction</em> — and treat it with the same seriousness you'd treat any other supply-chain metadata. This is less novel than it sounds. Agent stacks already learned to treat models as swappable config, because models get patched, deprecated, and repriced weekly — OpenAI is switching off GPT-4o, GPT-4.1 and their fine-tunes in January, and Copilot is dropping three models on November 16. Jurisdiction risk is the same class of risk with longer notice periods. The discipline of keeping model identity in versioned configuration — the running argument of this blog, and the subject of <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em> — was built for exactly this world: the model is a component, components get replaced, and the system that survives is the one where replacement is a config change and not a rewrite.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p><strong>Inventory your exposure.</strong> List every Chinese open-weight model your systems actually load — not the ones you benchmarked once, the ones in production paths. For each, note the version, the quant you run, and where the checkpoint lives.</p>
+
+        <p><strong>Mirror what you depend on, now.</strong> While the public-domain carve-out is unambiguous, download the checkpoints you may need and store them somewhere you control. Yesterday's arithmetic still holds — the download is the deployment. As of Friday, it's also the insurance policy.</p>
+
+        <p><strong>Split "needs weights" from "needs answers."</strong> For workloads where an API is acceptable, Chinese models via API sit outside the draft. That's a legitimate choice — but document it as a dependency on Beijing's continued preference for the gift shop, and keep the exit configured.</p>
+
+        <p><strong>Add origin to your model config.</strong> Model ID, version, quant, and origin jurisdiction, in the same file. When the final catalog lands after November 15, you want your exposure to be a one-line filter, not an archaeology project.</p>
+
+        <p><strong>Watch November 15.</strong> The comment window is where the thresholds get negotiated, and the top-ten trigger is the provision most likely to be lobbied out — it makes foreign leaderboards legally load-bearing, and Chinese labs hate depending on foreign evaluators as much as anyone. What survives in the final catalog tells you how much of this was signaling and how much was architecture.</p>
+
+        <h2>The Version You Already Have</h2>
+
+        <p>There's an irony buried in Friday's draft, and it's worth sitting with. The open-weight movement spent a decade arguing that these artifacts are too consequential to lock up — that capability wants to be free, that weights in the open make everyone safer and faster. Both governments have now agreed with the first half. Weights <em>are</em> consequential. That's exactly why they're building borders around them.</p>
+
+        <p>The download became the deployment this week. Then the download became an export. The version you already have is safe — grandfathered, exempt, on your disk. The open question, the one worth engineering around, is whether the next one arrives as a release or as a clearance.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
