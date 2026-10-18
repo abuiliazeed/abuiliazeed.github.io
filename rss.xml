@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Sat, 17 Oct 2026 08:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 18 Oct 2026 08:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Repository Became a Database</title>
+      <link>https://abuiliazeed.github.io/blog/the-repository-became-a-database.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-repository-became-a-database.html</guid>
+      <description>Anthropic went from 2,500 merges a day to 30,000, then replaced git with a server-side system: a write-ahead log, content-addressed storage, 200x smaller footprint — and testing that now runs after the merge. The engineers' main job became telling Claude no.</description>
+      <pubDate>Sun, 18 Oct 2026 08:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>The Weights Got a Border</title>
       <link>https://abuiliazeed.github.io/blog/the-weights-got-a-border.html</link>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Repository Became a Database — Abuiliazeed</title>
+  <meta name="description" content="In May, Anthropic merged 2,500 changes a day. By September it was over 30,000, and git — several hundred mirrors, 600 PB of theoretical daily clone traffic — became the bottleneck. So a team of seven replaced it with a server-side system, moved testing to after the merge, and told engineers their main job was saying no.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-repository-became-a-database.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-repository-became-a-database.html">
+  <meta property="og:title" content="The Repository Became a Database">
+  <meta property="og:description" content="In May, Anthropic merged 2,500 changes a day. By September it was over 30,000, and git — several hundred mirrors, 600 PB of theoretical daily clone traffic — became the bottleneck. So a team of seven replaced it with a server-side system, moved testing to after the merge, and told engineers their main job was saying no.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Repository Became a Database">
+  <meta name="twitter:description" content="In May, Anthropic merged 2,500 changes a day. By September it was over 30,000, and git — several hundred mirrors, 600 PB of theoretical daily clone traffic — became the bottleneck. So a team of seven replaced it with a server-side system, moved testing to after the merge, and told engineers their main job was saying no.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-10-18">October 18, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Repository Became a Database</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>The most important infrastructure announcement of the week was not a model. On October 13, Anthropic's source control team published a quiet engineering post with a number in it that should reorganize how you think about agent-first development: in May, the company averaged 2,500 changes merged per day. By September, it was over 30,000. Then, on October 16, a second Anthropic report explained where all those merges come from — by August, the company's employee-directed agents were logging six hours of work for every hour worked by a human.</p>
+
+        <p>Hold those two numbers together and git stops looking like settled infrastructure. Git is a decentralized system: every clone is a complete, self-contained repository that can compute diffs, read history, and answer blame while offline. That design won because humans work offline, humans read history locally, and humans merge a few times a day. Anthropic's clients for source control are now, in the team's own words, "agents and jobs that are online by definition." The properties that made git excellent for distributed, offline work were, again in their words, actively undermining their ability to scale.</p>
+
+        <p>Most coverage filed the story under "Anthropic is not your company" — a frontier lab with a token budget nobody else would pay, hitting problems nobody else would hit. That is the wrong read, and the post itself says so: the team expects this class of problems to become commonplace "over the next six to 12 months." The transferable insight is not "replace git." It is that <strong>agent write volume is a different workload class</strong>, and the systems downstream of the model — version control, CI, review — were all dimensioned for human output rates. The first of those systems just got rebuilt at the frontier, and the architecture that replaced it tells you what agent-scale storage actually needs to be.</p>
+
+        <h2>The Write Volume Nobody Budgeted For</h2>
+
+        <p>Start with the load, because the load is the whole story. The history of Anthropic's main branch alone is almost 100 GB. A compressed working copy is over 25 GB. CI performs on the order of 25 million code checkouts per day — before counting developer environments, agent sandboxes, and research jobs. Fetched naively, the team calculated, that would be over 600 PB of git traffic per day. Let that unit sink off the page: <em>petabytes</em>, daily, just to give build jobs the code they need to build.</p>
+
+        <p>Anthropic used every standard mitigation first: shallow clones, sparse checkouts, promisor remotes, internal mirrors, repository snapshots seeded into blob storage. At peak they operated several hundred internal git mirrors. It bought time and then stopped buying anything — mirrors fell behind as the merge rate climbed, and seeds drifted further from the tip of main between refreshes, which made everything that depends on history, like diff and blame, progressively worse on partial clones. The mirrors also ran out of disk and memory headroom, because git's scaling story assumes the repository fits comfortably on a machine.</p>
+
+        <p>Then the observation that should be quoted in every infrastructure planning meeting for the next two years: like most companies, Anthropic was using git as a centralized system with one authoritative copy anyway — and almost none of its actual clients needed the decentralized parts. The offline capability was pure overhead. The local history computation was being duplicated across hundreds of mirrors of the same data. So they asked what source control looks like if you design for the fact that agents are always online, and the answer was a system called Scion.</p>
+
+        <h2>A Write-Ahead Log With a Code Review Tool Bolted On</h2>
+
+        <p>Scion is best understood not as a faster git but as a database that happens to store code. The unit of work is a "changeset" — an entry in a write-ahead log. Where a git commit points at a tree, a changeset stores the list of files that changed relative to its first parent, plus content-addressed pointers to the compressed file contents in blob storage. Changesets are created server-side and are available everywhere, instantly. There is nothing to push, because there is no local history to push from.</p>
+
+        <p>The server does the operations git does locally: it creates commits, performs merges and rebases, and answers questions about file history and blame. The client — <code>scn</code>, backed by a node-local <code>scion-daemon</code> — is a thin layer that lays out working files and talks to the server. Since everything is content-addressed and immutable, any server can cache any object without coordinating with any other, and the fleet is a strict cache hierarchy: node-local daemons, regional <code>scion-cache</code> servers that stream objects from memory in the exact format the daemon consumes, and authoritative <code>scion-servers</code> reading from Spanner or cloud storage. Every tier answers identical RPCs and maintains a hit rate above 99%.</p>
+
+        <p>The results: a footprint 200x smaller than the git mirroring infrastructure it replaced, in CPU and memory. Checkouts two orders of magnitude faster — seconds instead of minutes. CI alone recovered 25% of its CPU capacity. There are no packfiles, so there is no repository maintenance. There is no fully materialized copy of the repository anywhere, not even on the server.</p>
+
+        <p>Simon Willison called it "like a reinvention of centralized source control along the lines of Subversion," and he is right about the topology — but the retrograde part of Subversion was never the centralization. It was the absence of content addressing, the absence of an API, and the inability to scale horizontally. Scion is centralized the way Spanner is centralized. Two design choices mark the difference. First, refs — branches and tags, the pointers every git server has to agree on — are discouraged, and moving one is a single compare-and-swap on a Spanner row, decoupled from changeset creation entirely. Global state that every server must agree on is treated as the scaling hazard it is. Second, every query the client can make is also exposed via API, so a CI job or tool that wants to know who last changed a line or how two commits relate just asks — no local repository, no clone, no vendor-specific workaround. Many jobs at Anthropic now skip the checkout altogether.</p>
+
+        <p>That last point generalizes beyond monorepos. The most expensive habit in most CI fleets is cloning a repository to ask it a question. Anthropic's answer was to make the repository something you <em>query</em>. Yours, today, is a forge API and a partial clone — same direction, smaller step.</p>
+
+        <h2>Merge First, Test After</h2>
+
+        <p>Buried near the end of the post is the sentence with the longest half-life: "A proper merge queue doesn't make much sense at agent scale. What does CI even mean when hundreds or even thousands of changes can merge while tests are running?"</p>
+
+        <p>Anthropic could not replicate the industry standard — a global repository lock on the merge queue — at their volume. So they inverted the doctrine: changes merge into main, and automated testing runs <em>post-merge, pre-deploy</em>. Concurrent changes conflict with each other. And here is the sentence that ends fifteen years of trunk-based-development training in one clause: "Claude can typically fix these conflicts faster than humans can even identify them."</p>
+
+        <p>Merge queues exist because merges are expensive in human attention: someone has to understand the conflict, adjudicate it, and re-verify the result. That assumption quietly inverted. When the class of worker that creates the conflict can also resolve it in seconds, the queue stops being a safety feature and becomes a throughput tax — a serialization point protecting a resource that is no longer scarce. The verification work doesn't disappear. It relocates, from before the merge to after it, which means the quality of your post-merge test suite and your pre-deploy gates becomes the actual correctness boundary of your system. This is the verification gap this blog has tracked all year, arriving at the merge queue from the other direction.</p>
+
+        <h2>Seven Engineers Whose Job Was Saying No</h2>
+
+        <p>The team that built all this — Scion, the Antique review tool, code search, and a source-control IAM system — was seven people, and the migration took five months, during which daily merge volume grew by another 10x. An early internal snapshot of Claude Mythos Preview rewrote their git-to-Scion ingestion pipeline to use 20x less memory and run 4x faster, preserving the implicit ordering invariants the humans had sweated over. Claude was, in the team's framing, both the reason the system was needed and the reason it could be built in time.</p>
+
+        <p>But read what the humans actually contributed, because it is the most precise description of engineering value I have seen in any of these posts. Every engineer on the team rates Claude as better at writing code than they are. What they supplied was the constraints. Agents "will sometimes violate core system constraints to satisfy a pattern that should never have been allowed" — one kept brute-forcing linear reads of the commit log to find when a change merged, instead of asking the review tool. Adversarial review, which Anthropic uses heavily, turned myopic in Claude's hands: one overly defensive review of a trusted internal service produced layers of pointless validation and complexity. The engineers' recurring role, in their own words, was to tell Claude no.</p>
+
+        <p>That is harness engineering pushed all the way down into the storage layer. The scarce input is no longer code — it is the encoded "no": the invariants, the boundaries, the decisions about which hypotheticals deserve defense. It's the same argument this blog makes about the model layer, and that <em>Harness Engineering</em> makes at book length — except here the harness isn't prompts and tools around a model, it's the constraint system around a version control rewrite, and the humans who could see it were the ones who shipped it.</p>
+
+        <p>One more detail worth stealing: Anthropic runs what they call "superfans" — Claude agents assigned to obsess over the health of a single component each, with access to telemetry and logs, "like an experienced engineer who has nothing better to do than refresh charts and look for anything strange." A scion-daemon superfan. An Antique merge-queue superfan. Traditional alerts still exist; the superfans catch what alerts can't express. It is the cheapest monitoring upgrade available to anyone already paying for tokens.</p>
+
+        <h2>You Are Anthropic, Scaled Down</h2>
+
+        <p>The obvious objection is that 30,000 merges a day is a frontier-lab pathology. The October 16 employment study is the counterargument, because it shows the ratio arriving before the volume. Agent hours at Anthropic passed human hours in March 2026; by August the interactive, employee-directed agents alone worked six hours per human hour. Code commits per engineer are running at five times their velocity of six months ago. Non-technical employees went from two coding-agent sessions a month in August 2025 to ninety a month by May — a sales rep building her own pipeline dashboard over MCP in an afternoon. The junior share of technical hires fell from 27% to 9%.</p>
+
+        <p>Your absolute numbers are smaller. Your ratios are on the same curve, and the binding constraint is the same one their study names: human attention. One engineer described the job as facing "an army of Claudes, with every one asking for my attention." Among non-technical employees, merely reading everything their agents produced would consume half the work week. Meanwhile the read side is amplifying too — Anthropic's own Claude Code telemetry shows context per request up 2.6x in six months, with the input-to-output token ratio moving from 189:1 to 324:1, which is why Opus 5.5's price cut landed mostly on cache reads.</p>
+
+        <p>So the honest translation table is this. Building Scion: don't — Anthropic explicitly says it doesn't transfer, and they're not releasing it. Treating the repository as a queryable service instead of a clonable folder: start now, with partial clones and forge APIs. Pricing checkouts as your real CI cost: start now; count how many jobs clone the whole repo to read one diff. Moving verification after the merge: pilot it now, on a surface where a bad merge is survivable. Directory-level permissions on sensitive code: worth more every month that non-engineers keep committing.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p><strong>1. Measure your merge rate and its agent share.</strong> Merges per day, and what fraction of those changes were authored by agents. Anthropic's curve starts as a curiosity and ends as an architecture decision; you want to see the slope while it's still cheap to watch.</p>
+
+        <p><strong>2. Count your full clones.</strong> Every CI job, sandbox, and script that clones the repository to ask it a question — who changed this line, what's in this diff. Convert the top offenders to API queries or partial clones. That's the Scion insight at 1/1000th the scale.</p>
+
+        <p><strong>3. Price your queue.</strong> How long does a change wait in your merge queue, and what fraction of that wait is protecting human attention that no longer needs protecting? If agents author most of your changes, test moving one workflow to post-merge verification and measure escape rate, not vibes.</p>
+
+        <p><strong>4. Write down the "no"s.</strong> Every time an agent on your team violates a constraint — the brute-force read, the needless validation layer — that's a constraint that lives in someone's head and nowhere else. Encode it. The team that ships at agent volume is the one whose constraints survive contact with a model that can out-write its engineers.</p>
+
+        <p><strong>5. Assign a superfan.</strong> One agent, one component, telemetry access, standing instruction to notice anything strange. If Anthropic's monitoring lesson fits your budget better than their storage lesson, take that one first.</p>
+
+        <p>The repository became a database. The merge queue became a suggestion. The engineer became the constraint system. None of that is a metaphor — it is a literal description of what shipped at Anthropic this month, and a preview of what ships everywhere the agent ratio keeps climbing.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
