@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Notebook Won the Game — Abuiliazeed</title>
+  <meta name="description" content="Four Gemini 4 Argon agents beat Minecraft in 27 hours with zero human input — while dying 605 times and erroring on 22% of 2,783 programs. The lesson isn't intelligence. It's bookkeeping.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-notebook-won-the-game.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-notebook-won-the-game.html">
+  <meta property="og:title" content="The Notebook Won the Game">
+  <meta property="og:description" content="Four Gemini 4 Argon agents beat Minecraft in 27 hours with zero human input — while dying 605 times and erroring on 22% of 2,783 programs. The lesson isn't intelligence. It's bookkeeping.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Notebook Won the Game">
+  <meta name="twitter:description" content="Four Gemini 4 Argon agents beat Minecraft in 27 hours with zero human input — while dying 605 times and erroring on 22% of 2,783 programs. The lesson isn't intelligence. It's bookkeeping.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-10-19">October 19, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Notebook Won the Game</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>605 deaths. 22% of all programs ended in an error. Six server crashes mid-run. And at the end of it, the dragon was dead. Last week, a Google DeepMind team dropped four Gemini 4 Argon agents into a randomly generated Minecraft survival world with one paragraph of instructions — the objective is to defeat the Ender Dragon, any means within the rules of survival mode is permitted, the players decide how to share the work — and gave them nothing else. No roles, no game logic, no human input. Twenty-seven hours and fourteen minutes later, after writing and running 2,783 JavaScript programs, the team won. The whole run cost $1,620 at list price, by The Decoder's accounting.</p>
+
+        <p>Most coverage read this as "AI beats another video game," filed between chess and Go. That misses the actual result. Prior Minecraft agents were purpose-built systems — policies trained on gameplay, or language models bolted to game-specific planners, curricula, and skill libraries. These four were stock coding agents, the same ones engineers use for everyday software work, each on its own cloud machine with a shell, a version-controlled workspace, and persistent memory. The run is the first end-to-end autonomous completion of the game using only the standard Mineflayer bot library. What got demonstrated was not gaming skill. It was <strong>27 hours of unattended goal persistence by general-purpose agents that failed constantly</strong>.</p>
+
+        <p>That reframing matters for anyone building agent systems, because the interesting engineering in this run is not in the programs. It is in what happened between them.</p>
+
+        <h2>What Actually Ran</h2>
+
+        <p>The mechanics are worth being precise about, because the architecture is the finding. Each agent controlled a player through Mineflayer, an open-source JavaScript library maintained by the volunteer PrismarineJS ecosystem. The agents never saw pixels and never pressed keys. They acted by writing a short program — <em>walk to these coordinates and mine every iron ore within 16 blocks</em> — running it, and reading the text that came back: position, health, inventory, or the error. Then they wrote the next one. The median program ran for 33.5 seconds. Over the full session, each player had a program executing only about 40% of the time; the rest went to reading results, thinking, and writing the next attempt.</p>
+
+        <p>Coordination happened through the game's own chat — 229 messages in total, roughly one message per twelve programs — and through a shared memory: a persistent notebook with a private part and a team part. When one agent died, the others recovered its items. Nobody assigned roles; the four divided the work themselves, kept shared notes of coordinates and lessons, and re-planned as the world pushed back. A fifth instance of the same agent, the Observer, watched the entire session as an independent witness for cheating and specification gaming.</p>
+
+        <p>For calibration: HowLongToBeat's median for a human player finishing Minecraft's main story is 45 hours, and the random-seed speedrun record is under seven minutes. A team of four on Easy difficulty, playing through programs rather than a screen, landed at 27 hours — and roughly 81 in-game days. Slow against specialists, trivially fast against the median human, and doing something neither does: running unattended overnight.</p>
+
+        <h2>The Program Became Disposable</h2>
+
+        <p>Here is the number that should reorganize how you think about long-horizon autonomy: 22%. Twenty-two percent of the 2,783 programs ended in an error, and the run succeeded anyway. The dragon fight alone killed the agents 69 times across nearly 14 hours. If your mental model of a successful long-running agent is "a brilliant plan executed cleanly," this run is the opposite: a pile of mostly-failing, seconds-long, throwaway actions whose aggregate converged on the goal.</p>
+
+        <p>Most people think the bottleneck at long horizons is planning intelligence — the model needs to think harder about what to do. The Minecraft run suggests the actual bottleneck is <strong>failure economics</strong>: making each attempt so cheap that error stops being an event and becomes a texture. A program that took 33 seconds to write and run and failed cost the team almost nothing. Six hundred and five deaths cost the team almost nothing — respawn, re-equip from shared stores, try again. The design that makes failure cheap is what buys endurance, not brilliance.</p>
+
+        <p>But cheap failure alone just produces fast thrashing. What turned 2,783 disposable programs into a win was the part that compounded: the notebook. The clearest example is the End, where the dragon lived. Between attempts — between deaths 1 and 69 — the agents inspected the dragon's internal state from the game API, down to its current behavior phase, and wrote down rules for the next attempt: never wait on the arrival platform; approach only while the dragon is perched; leave the End on purpose to reset it when it gets stuck. Seventeen and a half hours in, all four agents jumped into the void within six minutes of each other — deliberately, using the game's own death-respawn mechanics to force the stuck dragon to reset. That is not a planning triumph. That is institutional knowledge, accumulated one failure at a time in a format that survived every subsequent failure.</p>
+
+        <p>The breakthrough itself was a notebook entry. Around hour 21, one agent worked out that the ten crystals atop the obsidian pillars were healing the dragon to full health, and that no pickaxe was needed to reach them: stack dirt beside each pillar, punch the crystal, dig back down. The team then spent four hours and forty minutes executing that single insight, and the dragon died thirty-nine minutes after the last crystal fell. The programs were disposable. The observation was not.</p>
+
+        <h2>What Survived the Compaction</h2>
+
+        <p>Underneath the story sits a harness decision that deserves more attention than it will get. No context window holds 27 hours of execution. The agents compacted their context the same way they would for long software work, and their instructions told them to keep in memory <em>what must survive a compaction</em>: work in progress, next steps, hard-won state. That sentence is the entire art of long-horizon agent design in one clause. Everything the team learned about the dragon lived in the notebook precisely because it could not live in the context.</p>
+
+        <p>This is the layer I called harness engineering in <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>, and it is where the frontier is quietly moving. The model is fixed; the question is what you build around it — and for long-running agents, the single highest-leverage component is the memory and compaction policy. Not because memory is glamorous, but because it is the only mechanism that converts thousands of failing steps into progress instead of repetition. An agent that cannot survive its own context resets is an agent with a maximum useful task length, no matter how smart it is per step.</p>
+
+        <p>Note also how little coordination the run required: 229 messages across 27 hours. The shared notebook did most of the work that multi-agent architectures try to do with orchestration layers. State in a common place, updated as a side effect of work, beats message-passing ceremony — the same lesson every distributed-systems engineer relearns annually.</p>
+
+        <h2>The Observer Was Not Decoration</h2>
+
+        <p>Any claim of autonomous success invites the cheating question, and the DeepMind team answered it with the right instrument: total recording. Every program and its output, every chat message, periodic world snapshots, and the full server log — where the win itself is recorded, 27 hours 14 minutes after the first program. Cheat commands were disabled; no program issued a server command or made a network request — the agents had web search available and never touched it, settling the "did they just download a walkthrough" objection. The Observer, an independent instance of the same agent, watched for specification gaming throughout and found none, and the authors' manual audit of sampled logs agreed.</p>
+
+        <p>The transferable point is not "agents don't cheat." It is that <strong>autonomy is only credible at full telemetry</strong>. A 27-hour unattended run is exactly the kind of artifact an enterprise will be asked to trust, and the reason this one is quotable is that its proof lives in a server log rather than a press release. If your agent pipelines don't record every action, input, and output at this granularity, your autonomy claims are unfalsifiable — including to yourself.</p>
+
+        <h2>Persistence Became a Product the Same Week</h2>
+
+        <p>The timing is what makes this more than a game story. Days after the run circulated, Meta shipped Muse Wonder and Muse Wonder Full, built around two named capabilities: Active Memory (carrying important context across conversations and retrieving the relevant details) and Active Focus (continuing toward a goal through blockers, trying alternatives, adapting). The launch materials pitch exactly the properties the Minecraft run exercised — and Meta evaluates them with purpose-built tests: FocusBench for goal persistence, and SWE-Marathon for long-running software work.</p>
+
+        <p>Meta's own model-card numbers make the strategic split explicit. On SWE-Marathon, Muse Wonder Full scores 57.5 against 46.3 for Claude Opus 5.5 and 42.5 for GPT-6 Astra — an eleven-point lead in sustained execution. Yet on the Artificial Analysis composite index, Opus 5.5 still leads, 58 to 56. By Meta's own table, the more intelligent model in aggregate is the less persistent one on long-horizon work. Competitor runs were best-effort and the caveats are real, but the direction is unmistakable: <strong>the labs have stopped selling only intelligence per step and started selling time-on-task</strong>. Endurance is being unbundled from IQ and priced separately.</p>
+
+        <p>Read the two events together and a 2027 planning assumption falls out: the unit of agent work is becoming the day, not the turn. DeepMind demonstrated a day-long task completed by general-purpose agents; Meta productized the memory and focus that make it repeatable; the remaining gap — reliability across repeated runs, which a single first-launch attempt cannot show — is now the measurable frontier.</p>
+
+        <h2>The Limitations That Matter</h2>
+
+        <p>The authors are unusually direct about what the run does not prove, and the list should travel with the headline. The agents perceived the world through an API that tells them exactly which blocks and creatures surround them — including blocks behind solid rock and the dragon's internal phase state — with a pathfinding plugin planning their routes. A human has to see and interpret; the agents read ground truth. Playing from pixels, as DeepMind's own SIMA does, remains much harder. They played on Easy. Gemini 4 Argon also knows a great deal about Minecraft and Mineflayer from training data, so this tested turning knowledge into working programs, not learning a game cold. Six server restarts interrupted the world. And it is a single run — the first launch they tried — so it demonstrates possibility, not a success rate.</p>
+
+        <p>None of that dims the useful part. Enterprise work is also API-shaped: agents that act by writing code against systems that report state as text. Your production agent reading a dashboard API and a database is closer to Mineflayer than to pixels. The run's limitations define the next benchmarks — pixels, harder difficulty, repeated trials — while its architecture is available for copying today.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p><strong>1. Write down your compaction survivors.</strong> For your longest-running agent task, list explicitly what must survive a context reset: in-flight state, next steps, learned constraints, resource locations. If that list lives nowhere, every long task your agents run is quietly capped by your context window. This is the single highest-leverage hour available to you.</p>
+
+        <p><strong>2. Stand up the shared notebook before the second agent.</strong> If you run multi-agent work, replace ad-hoc message-passing with a common, structured memory that every agent updates as a side effect of working. The Minecraft team coordinated an entire 27-hour project on 229 messages because the notebook carried the rest.</p>
+
+        <p><strong>3. Start measuring error economics, not error rates.</strong> Track the median cost of a failed attempt — time, tokens, dollars — and the time-to-recovery after failure. The 22% error rate was survivable because each failure cost 33 seconds. Your agents' error rate is only a problem insofar as failures are expensive; measure the denominator.</p>
+
+        <p><strong>4. Record everything, server-log grade.</strong> Every program, every output, every message, one immutable log. The DeepMind team can prove a negative — no cheating — because nothing went unrecorded. Set that bar for your own autonomy claims before a regulator, a customer, or a postmortem sets it for you.</p>
+
+        <p><strong>5. Run your own marathon.</strong> Pick one internal task that genuinely takes four or more hours. One paragraph of instructions, no human input, full recording, and a success criterion that lives in a log. Whether it succeeds or stalls, the artifact you get back — where it lost the thread, what it forgot, when it recovered — will teach you more about your harness than any benchmark chart.</p>
+
+        <p>The dragon was never the point. Four general-purpose agents held one goal across 2,783 mostly-failing programs, 605 respawns, and a night's worth of context resets, because everything worth keeping was written down. The programs were disposable. The notebook wasn't. That is what 27 hours of autonomy actually looks like — and it is now a copying license, not a research result.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
