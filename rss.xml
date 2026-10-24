@@ -5,8 +5,22 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Sun, 18 Oct 2026 08:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 24 Oct 2026 08:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Where the 30% Went</title>
+      <link>https://abuiliazeed.github.io/blog/where-the-30-percent-went.html</link>
+      <guid>https://abuiliazeed.github.io/blog/where-the-30-percent-went.html</guid>
+      <description>AI agents made engineers 30% more productive at writing code across 718 firms — and shipped software didn't move. A Harvard study traced the gain into a review queue running 49% slower. The 30% isn't gone; it's stranded.</description>
+      <pubDate>Sat, 24 Oct 2026 08:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>The Notebook Won the Game</title>
+      <link>https://abuiliazeed.github.io/blog/the-notebook-won-the-game.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-notebook-won-the-game.html</guid>
+      <description>Four Gemini 4 Argon agents beat Minecraft in 27 hours with zero human input — while dying 605 times and erroring on 22% of 2,783 programs. The run's real lesson isn't intelligence. It's bookkeeping: everything worth keeping was written down, and everything written down survived the night.</description>
+      <pubDate>Mon, 19 Oct 2026 08:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>The Repository Became a Database</title>
       <link>https://abuiliazeed.github.io/blog/the-repository-became-a-database.html</link>

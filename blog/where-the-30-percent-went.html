@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Where the 30% Went — Abuiliazeed</title>
+  <meta name="description" content="Across 718 firms, AI coding agents raised per-engineer code output 30% — and shipped software stayed flat. The gain drained into a review queue running 49% slower. Here's where it went, and how to get it back.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/where-the-30-percent-went.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/where-the-30-percent-went.html">
+  <meta property="og:title" content="Where the 30% Went">
+  <meta property="og:description" content="Across 718 firms, AI coding agents raised per-engineer code output 30% — and shipped software stayed flat. The gain drained into a review queue running 49% slower. Here's where it went, and how to get it back.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Where the 30% Went">
+  <meta name="twitter:description" content="Across 718 firms, AI coding agents raised per-engineer code output 30% — and shipped software stayed flat. The gain drained into a review queue running 49% slower. Here's where it went, and how to get it back.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-10-24">October 24, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">Where the 30% Went</h1>
+      </header>
+
+      <article class="blog-post-body">
+        <p>Here is the most consequential arithmetic in software engineering right now. After a firm adopts AI coding agents, each engineer produces roughly 30% more code — about 1,500 additional lines per month, consistent across three independent measures. Shipped software, measured as completed units of work reaching production, rises by about 3%. That 3% is statistically indistinguishable from zero.</p>
+
+        <p>Those numbers come from the best dataset anyone has assembled on the question: a Harvard study tracking 718 firms, 725,938 workers, and roughly 300 million work events from January 2021 through March 2026, published as a working paper in August by economists Fiona Chen and James Stratton. Most coverage read it as "AI coding doesn't deliver." The data supports something more precise, and more useful: AI coding delivers exactly what it was built to deliver. It made the cheapest stage of software production even cheaper. The gain is real — and it is stranded in the queue behind that stage.</p>
+
+        <h2>What 300 Million Work Events Showed</h2>
+
+        <p>The researchers had something no productivity survey gets: the exhaust of actual work. Their data partner, Jellyfish, aggregates GitHub activity, Jira issue tracking, calendar data, HR records, and — critically — usage telemetry for GitHub Copilot, Cursor, and Claude Code. That last source lets them observe adoption timing firm by firm and run a staggered difference-in-differences design: compare what happened at firms when they adopted, against firms that hadn't yet, on the assumption that procurement schedules move independently of growth trajectories.</p>
+
+        <p>On the input side, the results are unambiguous. AI agents — tools that write and submit code semi-autonomously — raised lines of code per worker-month by 30% (1,494 lines on a baseline of 5,017), commits by 20%, and pull requests by 23%. All three effects are statistically significant. The older autocomplete-style assistants did far less: 12% more lines, 9% more commits, 5% more pull requests, with only the commit effect clearly distinguishable from noise. Agents are not a marginal upgrade to typing speed. They changed how much code enters the pipeline.</p>
+
+        <p>Then the study asks the question that matters: did more code become more software? Output is measured two ways — Jira issues resolved, which happens when a unit of work is deployed, and epics resolved, which happens when a feature is actually finished. For agents, resolved issues rose 0.12 per worker-month on a baseline of 3.67 — call it 3%, not statistically significant. The confidence intervals rule out any increase above 12%, well short of the 30% jump in code volume. Epics: nothing. A machine-learning check confirmed teams weren't simply taking on bigger issues, which would have disguised output growth. Employment didn't move either — the estimates rule out even a 2.9% decline in headcount.</p>
+
+        <p>Thirty percent more code in, statistically zero more software out. Every grand claim about AI transforming development runs into that ratio.</p>
+
+        <p>The caveats deserve their sentence: it's an observational study, not a randomized trial; Jira resolutions are a proxy for output; and the data ends in March 2026. But with 300 million events behind it, this is the hardest look the industry has taken at itself.</p>
+
+        <h2>Where the 30% Went</h2>
+
+        <p>The study doesn't just document the gap; it located it. After agent adoption, the average time from pull request to merge rose 49% — from 7.03 days to about 10.5. The share of pull requests sent back with formal change requests nearly doubled, from 13% to roughly 25%. Comments per pull request rose 35%. And firms responded the only way available: they pulled more people into review, with the share of workers reviewing at least one pull request a month climbing from 29% to 33%.</p>
+
+        <p>The mechanism is mundane, which is why it keeps surprising people. The same data shows engineers spend only 30–40% of their time writing code. The other 60–70% goes to everything around it — planning, review, testing, deployment, the meetings where intent gets negotiated. When you accelerate a stage that accounts for a third of the pipeline, you don't get a third more product. You get a congestion problem at the next stage, because the constraint was never the typing.</p>
+
+        <p>Manufacturing internalized this decades ago; it's the theory of constraints. Speed up one station on a line and throughput rises only until the next-slowest station saturates — after that, every improvement at the fast station just builds inventory in front of the slow one. In software, the inventory is now pull requests, and the slow station is review. The review queue didn't become the bottleneck because reviewing got harder. It became the bottleneck because everything upstream got faster.</p>
+
+        <h2>Why AI Review Didn't Absorb It</h2>
+
+        <p>The obvious rebuttal is that AI should review too — and the study checked. By March 2026, nearly 80% of firms had adopted some AI code review tooling. It didn't move the bottleneck. AI accounted for 23.3% of review comments, only 10.8% of pull requests received any AI feedback at all, and the review slowdown persisted straight through that adoption.</p>
+
+        <p>The reason is that the industry keeps misclassifying what review is. Review looks like reading, and reading is automatable. But the valuable part of review is certification: a named human deciding that this change matches the intent, is safe to expose to customers, and is worth attaching their judgment to. You can automate the parsing. You cannot automate the accountability — and reviewers, being sensible people, don't surrender it to a system that has no stake in being wrong.</p>
+
+        <p>The doubled rework rate tells the rest of the story. Agent-written code isn't arriving broken; it's arriving <em>unfinished in intent</em> — plausible implementations that a reviewer must interrogate against requirements the code itself doesn't state. That interrogation is precisely the part that doesn't parallelize with more model.</p>
+
+        <h2>This Week's Answer: Route Around the Queue</h2>
+
+        <p>Now set this week in order, because the industry's actual response arrived on schedule — and it isn't better reviewing.</p>
+
+        <p>On October 22, Replit shipped its Monitoring Agent: when a production alert fires, the agent reads the app's logs and metrics, diagnoses the cause, produces a fix, validates it, and reports what changed — with automatic publishing of validated fixes available as a separate, experimental opt-in. On October 23, GitHub made Agentic Autofix generally available: the Copilot coding agent takes a code-scanning alert, examines the relevant files, drafts a fix, then re-runs CodeQL — GitHub's static security analysis — to verify the vulnerability is actually gone before opening a draft pull request, with up to 25 alerts batched into one. Mintlify's Autopilot beta does the same shape for documentation: watch the code and support traffic, open a pull request when the docs drift, let a human merge.</p>
+
+        <p>Notice what all three have in common, because it's the tell. None of them attempts to review better. They pick work whose definition of done is already executable. CodeQL either still fires on the fix or it doesn't. The production alert either recurs or it doesn't. The docs either match the API or they don't. The check replaces the review — and a check runs in seconds, doesn't fatigue, and doesn't carry accountability for judgment calls it never had to make.</p>
+
+        <p>That's why full autonomy went generally available in maintenance first. Not because vulnerability patching is easier than feature work — in many ways it's harder — but because its "done" was already machine-readable. The products that closed the loop this week are the first mass-market acknowledgment of what the Harvard data showed: the review bottleneck is real, AI reviewing didn't clear it, so route agents to work where no human certifier is needed at all.</p>
+
+        <h2>Done Is a Harness Decision</h2>
+
+        <p>Step back and the two stories fuse into one principle: <strong>review time is a lagging indicator of unspecified intent.</strong> Every hour a human spends reviewing is an hour of requirements that were never written down precisely enough to check mechanically. The doubled rework rate isn't a model-quality problem. It's the cost of "done" being defined in a human's head instead of in the pipeline.</p>
+
+        <p>Feature work passes through review slowly because its definition of done is social — a negotiation between what was asked, what was built, and what the reviewer believes the product needs. Maintenance work with executable acceptance criteria passes through quickly because done was settled before the work started. The difference isn't the difficulty of the task. It's whether the harness — the environment the agent runs inside, with its checks, gates, and success signals — can answer "is this finished?" without asking a human. Building that environment is the discipline I wrote <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em> to name, and it's where the 30% actually gets unlocked: not by generating more code, but by making finished code cheap to recognize.</p>
+
+        <p>One more number from the study sharpens the urgency. A year after adoption, only about 20% of engineers at the median firm were using an agent — and the review queue still slowed by half. The congestion you're reading about happened at one-fifth penetration. Teams planning to "fix review later, when agents are everywhere" have the sequencing exactly backwards: the queue problem arrives long before the adoption curve does.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p><strong>1. Measure pass-through, not output.</strong> Track two ratios: resolved work items per pull request merged, and median time from pull request opened to merged. If the first is falling or the second is climbing as agent usage grows, you are building inventory, not software. These are your factory numbers; instrument them before buying anything.</p>
+
+        <p><strong>2. Mine your last 100 review comments.</strong> Every recurring class of comment — naming, error handling, missing test cases, schema drift — is a check that hasn't been written yet. Convert the top three into CI rules this week. This is the highest-leverage review work available, it compounds, and every comment you mechanize is a future pull request that never needs a human certifier.</p>
+
+        <p><strong>3. Route agents to executable-done work first.</strong> Dependency bumps, alert triage, vulnerability patching, docs drift, flaky-test quarantine. Let the check be the reviewer, exactly as CodeQL does for Autofix. This is where autonomous agents earn the trust that later justifies more scope.</p>
+
+        <p><strong>4. Don't buy seats to fix a queue.</strong> Adding coding-agent seats to a review-congested team increases the arrival rate at the congested stage — you are paying to make the queue longer. Buy review capacity or convert checks first, then scale generation.</p>
+
+        <p><strong>5. Keep a human name on the merge — and staff it.</strong> The study's employment zero, combined with its rework doubling, says the human certifier is still the throughput unit of software production. Treat review as a staffed, measured system stage, not a courtesy engineers perform between tasks.</p>
+
+        <p>The 30% isn't a myth and isn't a mirage. It's real output sitting in the wrong account — issued as code, redeemable only as shipped software, and held up at the one stage that still runs on human certification. The first teams to convert their review intent into executable checks get to withdraw it. Everyone else just holds the inventory.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
