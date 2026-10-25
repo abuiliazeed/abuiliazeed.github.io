@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Sat, 24 Oct 2026 08:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 25 Oct 2026 05:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Waiting Is the Expensive Part</title>
+      <link>https://abuiliazeed.github.io/blog/waiting-is-the-expensive-part.html</link>
+      <guid>https://abuiliazeed.github.io/blog/waiting-is-the-expensive-part.html</guid>
+      <description>AWS open-sourced Infinity, a runtime that suspends an agent at every tool call and fits 75,000 waiting agents in the memory of a Raspberry Pi. The insight underneath: the unit cost of an agent isn't tokens — it's a process parked in memory while it waits on builds, CI, and humans.</description>
+      <pubDate>Sun, 25 Oct 2026 05:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>Where the 30% Went</title>
       <link>https://abuiliazeed.github.io/blog/where-the-30-percent-went.html</link>

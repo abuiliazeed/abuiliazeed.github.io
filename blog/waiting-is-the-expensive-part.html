@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Waiting Is the Expensive Part — Abuiliazeed</title>
+  <meta name="description" content="AWS open-sourced Infinity, a runtime that suspends an agent at every tool call — 75,000 idle agents fit in 8 GB. The real cost of agent fleets isn't tokens. It's waiting.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/waiting-is-the-expensive-part.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/waiting-is-the-expensive-part.html">
+  <meta property="og:title" content="Waiting Is the Expensive Part">
+  <meta property="og:description" content="AWS open-sourced Infinity, a runtime that suspends an agent at every tool call — 75,000 idle agents fit in 8 GB. The real cost of agent fleets isn't tokens. It's waiting.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Waiting Is the Expensive Part">
+  <meta name="twitter:description" content="AWS open-sourced Infinity, a runtime that suspends an agent at every tool call — 75,000 idle agents fit in 8 GB. The real cost of agent fleets isn't tokens. It's waiting.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-10-25">October 25, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">Waiting Is the Expensive Part</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Seventy-five thousand agents in eight gigabytes of memory. That is the number AWS led with when it open-sourced Infinity on October 23 — a Rust runtime from Hydro, its research collaboration with UC Berkeley, that supposedly fits an agent fleet on a Raspberry Pi 5. The tech press ran the Pi comparison everywhere. Almost everyone quoted the wrong number.</p>
+
+        <p>The number that matters is roughly 100 KB. That is AWS's measured cost of one <em>idle</em> agent under Infinity — an agent parked mid-task, waiting for a build to finish, for a CI pipeline to report, for a human to approve a pull request, or for another agent to answer. Under every mainstream framework, a waiting agent is a running process: a task, a stack, an open connection, often a whole container or sandbox billed by the second. Under Infinity, a waiting agent is pure data — its conversation history, nothing else. No task. No stack. No connection. The 75,000 figure is just what you get when you divide 8 GB by 100 KB and accept that memory, not compute, is what an idle fleet actually consumes.</p>
+
+        <p>The industry has spent two years optimizing what agents <em>think</em> — token prices, context windows, model routing, caching. Infinity's wager is that the next cost wall is what agents <em>do while waiting</em>, and that the answer is the same one server engineering gave a decade ago: stop holding a thread for every open request.</p>
+
+        <h2>Read the Fine Print First</h2>
+
+        <p>Before the analysis, the caveats — because AWS deserves credit for printing them, and because anyone evaluating this runtime needs them in view. The 100 KB figure comes from a benchmark with a <em>simulated</em> model, not a real one. Eighty thousand agents ran twenty turns each, 3.2 million completions in total, on a single thread of an AMD EPYC 9R14 with in-memory stores, streaming completions of about 1.2 KB. Memory grew linearly at ~100 KB per idle agent, which is where the 75,000-in-8 GB extrapolation comes from. Nobody ran this on an actual Raspberry Pi. Real agents with long histories, fat tool outputs, or screenshots would weigh more per head. And in any real fleet, model calls — not memory — remain the dominant cost line.</p>
+
+        <p>So the Pi number is a measurement of one specific thing: what an agent costs when it is doing nothing. That sounds like a rounding error until you ask what fraction of an agent's life is exactly that. For long-horizon agents — the kind that watch repositories, babysit migrations, run validation loops, or wait on human approvals — the honest answer is usually "most of it."</p>
+
+        <h2>Agents Spend Their Lives Waiting</h2>
+
+        <p>Look at the actual duty cycle of a coding agent. The model-call portion — the part everyone obsesses over — takes seconds. The tool portion takes minutes, hours, or days: a full build and test cycle, a CI pipeline, a deploy canary, a pull-request review from a human who is at lunch, another agent working through its own twenty-step task. The agent's "run" is 5% thinking and 95% standing in line.</p>
+
+        <p>Now look at how frameworks actually host that. The dominant pattern is still a resident process per session — a harness process holding state in memory, an event loop blocking on tool results, and increasingly a sandbox, container, or full VM rented for the agent's entire lifetime. The industry is quietly rebuilding thread-per-request at container prices. Server engineering killed this pattern when concurrency hit the wall: Node's event loop, nginx's worker model, async/await in every language. Agents regressed it because the token invoice made the wait invisible. A process blocked on a three-hour CI run costs no tokens, so nobody's dashboard flags it. It costs memory, fleet ceiling, and cloud minutes — the costs that never show up on the model bill.</p>
+
+        <p>This is also why "agent cloud" became a venture category this month. Daytona just raised a $60 million Series B at a $1 billion valuation to give agents their own computers, and Google announced its own Agent Compute Engine in the same week. Daytona's founder describes the demand plainly: agents "spin up thousands of short, stateful jobs nobody planned in advance." Everyone building this layer has noticed the same thing — agents need somewhere to exist for hours while doing minutes of work. Infinity's answer is the contrarian one: the somewhere can be a database row.</p>
+
+        <h2>An Agent Is a Conversation, Not a Process</h2>
+
+        <p>The core move in Infinity is a reframing of what an agent <em>is</em>. At the moment an agent calls a tool, its conversation history already contains everything needed to continue it. So the runtime treats the tool call as an <code>await</code> point — the same suspension trick languages use for stackless coroutines — and runs each agent as a sequence of bounded slices: load the history from a store, run exactly one model completion, persist the output, dispatch at most one tool call, end the slice. Nothing in a slice ever blocks.</p>
+
+        <p>Everything that can resume an agent — user text, tool results, events from other agents — arrives as a message on an input queue. The design is actor-shaped: each agent thread has its own queue, identified by a thread ID; messages within a thread are processed in order, one slice at a time; slices across threads run in parallel. When a thread has no pending messages, its task simply exits. The next message starts a new one. An agent is not a program that runs; it is a conversation that continues.</p>
+
+        <p>Two implementation details deserve more attention than they will get, because they are where the engineering difficulty actually lives. First, durability ordering: Infinity persists a turn <em>before</em> dispatching its tool call, so the call is on record before its result can possibly arrive. Streamed model output is buffered and committed only when the turn completes — a failed stream is discarded and retried rather than half-written. Second, idempotency: queues redeliver, so every input carries a stable ID and the state store records which IDs each thread has already processed, making each slice safe to run twice. These are the unglamorous guarantees — crash recovery, at-least-once tolerance, no distributed locks — that separate a research demo from a runtime. Getting them right is precisely the harness-engineering work this site exists to talk about, and it is a long way from "prompt the model in a loop."</p>
+
+        <h2>Serverless Agents Stop Being a Contradiction</h2>
+
+        <p>The payoff of slice-based execution is deployment shape. Because a slice loads all its state from storage and waits on nothing, it can run inside a function that starts, does one unit of work, and exits. Infinity calls this step mode, and the reference deployment is textbook AWS: an SQS FIFO queue as the input queue (one message group per agent thread, which serializes each agent's slices without distributed locks), a Lambda function that runs one step per delivery, conversation histories in Aurora DSQL, deduplication records in DynamoDB, timers via SQS delivery delays and EventBridge Scheduler. CDK constructs ship in the repo.</p>
+
+        <p>The consequence, in AWS's own words: an agent waiting on a three-day CI pipeline uses no compute until the pipeline reports its result. Scale to zero stops being a billing feature and becomes an agent architecture. The watchman agent that monitors a repository, the migration agent that checks in every morning, the reviewer agent that wakes on every pull request — all of these become nearly free between events, because between events they do not exist. They are rows in a database.</p>
+
+        <p>This also reframes the fleet question. Every few weeks another lab announces a thousand-agent swarm, and the immediate objection is infrastructure: where do you put a thousand resident processes and their sandboxes? Infinity's answer is that you don't put them anywhere. A million-agent fleet is a large table and a queue — and the constraint moves back to where it belongs, model throughput and coordination, not process hosting.</p>
+
+        <h2>The Open Problems Are the Interesting Part</h2>
+
+        <p>AWS labels Infinity an early research release, and the post is unusually candid about what is unsolved. Three of the open questions matter more than the rest.</p>
+
+        <p><strong>Models have never seen this conversation shape.</strong> To deliver an asynchronous event to a model, Infinity fabricates a synthetic tool call — an assistant tool call the model never made, followed by the event dressed as its result. Clever, because it works with existing model APIs unchanged. But today's models were trained overwhelmingly on synchronous conversations: call a tool, get a result, continue. Nobody has measured how well they reason when events arrive interleaved, out of band, hours into a thread. The runtime may be ready before the models are.</p>
+
+        <p><strong>Event authenticity is an unsolved security problem.</strong> AWS says so explicitly: how do you prove an event reaching an agent is genuine? Once an agent wakes on queue messages, whoever can post to the input queue controls the agent's next perception of reality. This is message injection — prompt injection's infrastructure-grade sibling. A hostile message on the right queue doesn't persuade an agent; it <em>is</em> the agent's world for one slice. Any production use of this pattern needs signed events, verified producers, and per-sender authorization, and none of that is built yet.</p>
+
+        <p><strong>The scheduler is naïve.</strong> Threads are currently processed in arrival order, with no priorities — a user waiting on an interactive agent queues behind a thousand background workers. And compaction for large, long-running trees of parent and child agents is explicitly unstudied. These are fixable engineering gaps, but they mark the distance between a research runtime and a production one.</p>
+
+        <h2>RAP Points at the Protocol Layer</h2>
+
+        <p>Buried under the runtime is a protocol idea worth tracking separately: the Reactive Agent Protocol, RAP, which ships alongside Infinity as an open specification. RAP serves tools over the network <em>without holding a connection open</em> — results and subscription events are delivered whenever they are ready, including to agents that currently have no process at all. A tool can mark its first result as the start of a subscription and push later events to the same agent for as long as it lives. Existing MCP servers run unchanged through a compatibility layer.</p>
+
+        <p>That last sentence is the strategic one. The protocol stack this site has covered — MCP for tools, A2A for agent-to-agent — quietly assumes synchronous sessions: connect, call, wait, respond. RAP is the first serious crack in that assumption, and the compatibility layer is the adoption path. You do not rip out MCP; you let the transport learn to let go. If Infinity's execution model spreads, the session model underneath everyone's tooling becomes the next thing to renegotiate.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p><strong>Measure your duty cycle.</strong> Instrument your agents to log time-in-model versus time-waiting-on-tools, per run. Most teams have never seen this number, and it is the single input that decides whether runtime work like Infinity matters to you. If your agents are 80% blocked on builds, CI, and approvals — and long-horizon agents usually are — you are paying hosting costs for standing in line.</p>
+
+        <p><strong>Stop holding processes during long waits.</strong> You do not need Infinity to get most of the win. For any agent that waits on things slower than itself: checkpoint the transcript to durable storage, tear the process down, and resume from the checkpoint when the webhook or callback arrives. A queue, an object store, and a resume function get you the poor man's version in a week. The expensive part was never the resumption — it was renting the process through the wait.</p>
+
+        <p><strong>Persist before you dispatch.</strong> Adopt the durable-turns ordering in whatever harness you run: record the tool call in the transcript before executing it, and commit streamed output only on turn completion. You get crash recovery and near-exactly-once behavior almost for free, on any stack, today.</p>
+
+        <p><strong>Treat your queues as an attack surface.</strong> The moment your agents wake on messages, message injection inherits everything prompt injection can do — with infrastructure privileges. Signed events, verified producers, and strict per-queue authorization belong in the design now, not after the first incident.</p>
+
+        <p><strong>Watch RAP, and test it through the compatibility layer.</strong> Run one existing MCP toolchain behind RAP's MCP compatibility layer and see what breaks when the connection drops mid-session. That experiment costs an afternoon and tells you how ready your stack is for event-driven agents.</p>
+
+        <h2>The Bigger Picture</h2>
+
+        <p>Strip away the Raspberry Pi framing and Infinity is making one disciplined argument: the harness around the model is becoming a scheduler of resumable conversations, not a babysitter for resident processes. That is the thesis of harness engineering — that the leverage lives in the system around the model — taken to its logical endpoint, the one I built a whole book around for people running agents in production. AWS, which sells the compute that idle agents currently burn, just published the blueprint for burning none of it. That alone should tell you which direction the infrastructure is going.</p>
+
+        <p>The industry spent 2026 making agents smarter. The next phase of agent engineering is starting to look like the last decade of server engineering, and the pattern is familiar: the winners were never the ones with the fastest hardware — they were the ones who stopped paying for waiting.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
