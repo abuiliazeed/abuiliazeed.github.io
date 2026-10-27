@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agents Assume a Frozen World — Abuiliazeed</title>
+  <meta name="description" content="The strongest coding agent measured drops from 67% to 25% when one workspace change lands mid-task — and 17 of 17 systems score exactly zero on tool and session changes. SWE-Shift's data on why agents can't survive a moving world, and the harness fixes that actually move the number.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/agents-assume-a-frozen-world.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/agents-assume-a-frozen-world.html">
+  <meta property="og:title" content="Agents Assume a Frozen World">
+  <meta property="og:description" content="The strongest coding agent measured drops from 67% to 25% when one workspace change lands mid-task — and 17 of 17 systems score exactly zero on tool and session changes. SWE-Shift's data on why agents can't survive a moving world, and the harness fixes that actually move the number.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Agents Assume a Frozen World">
+  <meta name="twitter:description" content="The strongest coding agent measured drops from 67% to 25% when one workspace change lands mid-task — and 17 of 17 systems score exactly zero on tool and session changes. SWE-Shift's data on why agents can't survive a moving world, and the harness fixes that actually move the number.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-10-27">October 27, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">Agents Assume a Frozen World</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>67.35% to 24.79%. Same model, same task, same repository, same conversation, same reasoning setting. GPT-6 Astra — the strongest coding agent anyone has measured — loses 43 points, and the model never changed. Nothing about the task got harder. Exactly one thing happened: while the agent was working, the workspace moved underneath it.</p>
+
+        <p>That number comes from SWE-Shift, a benchmark published this week by a research team that asked a question every existing coding benchmark quietly avoids: what happens to an agent when the world doesn't hold still while it works? The answer, across 17 agent systems and 1,080 controlled continuation runs, is that the entire industry has been optimizing for an environment that does not exist.</p>
+
+        <p>Most people read agent failure stats and think "the model wasn't smart enough." This data says something else entirely. The model was plenty smart. The harness taught it to trust a world that had already stopped being true.</p>
+
+        <h2>The Experiment Nobody Was Running</h2>
+
+        <p>Every repository-level benchmark you've heard of — SWE-bench, its Verified and Pro descendants, the multilingual variants — shares one hidden assumption: once the agent starts, nothing changes. The repo is frozen at a commit. The dependencies are pinned. The task description is final. The agent works in a photograph.</p>
+
+        <p>Real development is a film. A teammate merges to your branch while you're mid-refactor. A dependency gets bumped. An API schema changes. A test suite goes flaky. The requirements in the ticket get edited after a call you weren't on. Professional software work is defined by change arriving mid-task — that's arguably what makes it professional work instead of a homework problem.</p>
+
+        <p>SWE-Shift's design is the cleanest experimental answer to this I've seen, because it isolates the change itself. The agent works on a real task from a real repository. At a scheduled checkpoint, the runner snapshots everything: workspace, controller state, available tools, the full conversation history. Then it restores that snapshot twice. The <strong>Clean</strong> continuation resumes normally. The <strong>Shifted</strong> continuation resumes into a workspace where one task-relevant change has just landed — a collaborator edit, an interface change, a revised goal, a piece of evidence that's now stale.</p>
+
+        <p>Because both continuations share an identical prior execution, the gap between them is caused by the change and nothing else. This is the agent version of a controlled trial, and it's the first one run at scale: 120 scenarios across 12 families of change, each triggered at nine positions from 10% to 90% through the task, across 17 systems. The systems span the whole market — GPT-6 Astra and GPT-5.6 Sol in the Codex app, Claude Opus 5 and Claude Fable 5.1 in Claude Code, both at max reasoning, plus thirteen open-weight systems from Kimi K3 and DeepSeek V4 down to a 27B Qwen, all served locally on 32 B300 GPUs under identical million-token budgets.</p>
+
+        <p>The changes are fair by construction. Every scenario is verified to be recoverable — a valid path to completion still exists after the change, using tools the agent can reach. And every change is discoverable: it shows up as a workspace diff, a delivered message, or a state the agent can query. Nobody is ambushing the agent with information it could never have found.</p>
+
+        <h2>The Collapse</h2>
+
+        <p>All 17 systems drop. Not most — all. The frontier falls hardest.</p>
+
+        <p>GPT-6 Astra goes from 67.35% clean success to 24.79% after a change, with paired success — both continuations succeeding from the same snapshot — at 20.34%. Claude Fable 5.1: 62.01% to 18.33%. Claude Opus 5: 53.76% to 16.09%. GPT-5.6 Sol: 46.22% to 12.56%.</p>
+
+        <p>The most useful number in the whole paper is the Conditional Retention Rate: of the successes an agent achieves in a clean world, what fraction survives a change? Astra retains 30.20%. Read that again — the best agent on the planet, running at maximum reasoning in its vendor's own flagship harness, keeps fewer than one in three of its wins when the workspace moves.</p>
+
+        <p>And capability doesn't predict retention. Kimi K2.6, a mid-tier open model with a clean score of 20.50%, retains 34.63% of its successes — <em>more</em> than Astra. DeepSeek V4 Pro posts higher paired success than Kimi K3 despite lower clean scores. Whatever makes an agent robust to change, it isn't the same thing that makes it score well on a frozen benchmark. We have been ranking agents on one axis while production runs on the other.</p>
+
+        <p>Then there are the zeros, and they're the real story.</p>
+
+        <ul>
+          <li><strong>Tool and session changes:</strong> a tool, authorization, schema, or session protocol changes after execution begins. Paired success is 0.00% for 17 of 17 systems.</li>
+          <li><strong>Stale evidence:</strong> an observation the agent is relying on describes an earlier state of the world. 0.00% for 17 of 17 systems.</li>
+          <li><strong>Runtime and resource changes:</strong> a process, lock, port, or cache changes mid-task. Zero for 16 of 17 — the sole survivor scored 0.60%.</li>
+          <li><strong>Newly disclosed constraints:</strong> a hidden requirement becomes visible during the run. Zero for 13 of 17.</li>
+        </ul>
+
+        <p>The strongest system ever measured scores exactly zero — not rarely, not occasionally, <em>structurally</em> — on the two failure classes that are most guaranteed to occur in production: interfaces changing and evidence going stale.</p>
+
+        <p>It's not uniform incompetence, which is what makes this interesting. When a user directly edits the code the agent is working on, Kimi K3 handles it 63.5% of the time — near its clean ceiling. When an indirect collaborator change lands, GPT-6 Astra recovers 57.3% of the time. Agents can absorb a visible diff. What they cannot absorb is anything that invalidates their assumptions without announcing itself as a diff: a tool that now behaves differently, an auth token that expired, a test result from before the change they're still treating as current.</p>
+
+        <h2>Why the Zeros Are the Story</h2>
+
+        <p>Tool changes and stale evidence are the two families every system fails. They're also the two families getting more common by the quarter.</p>
+
+        <p>The industry just spent two years wiring agents into everything through tool-calling protocols. Every integration point is now a mid-execution change vector: schemas drift, endpoints get versioned, sessions expire, a dependency publishes a patch. And the same week SWE-Shift landed, OpenAI shipped GPT-6.1 Terra — a model whose explicit pitch is high-volume computer use at $1 per million input tokens, reading invoices and entering them into accounting software all day. Agents are being positioned to live for hours inside live systems that other humans and other agents are modifying concurrently. Those environments don't freeze. Nobody has scheduled a snapshot for them.</p>
+
+        <p>Consider what the zero actually means. In the benchmark, the change is guaranteed to be discoverable through tools the agent already has. In production, nobody guarantees anything — the schema change lands silently, the teammate merges without pinging you, the token expires without a farewell message. If 17 out of 17 systems score zero when discovery is a solved problem, the real-world number isn't better. It's undefined, and undefined in this context means broken.</p>
+
+        <h2>The Tests Stay Green While the Work Is Destroyed</h2>
+
+        <p>Here's the part that should genuinely worry anyone running agents against real repositories. The benchmark's audit cases show agents failing in ways their own verification cannot see.</p>
+
+        <p>In one Django scenario, a collaborator adds an API that controls when migration operations can be combined. The agent correctly uses the API, then — while fixing the original issue — deletes it. All 39 of the original task's tests pass. The task is complete, the diff is clean, everything is green. The preservation check fails: a teammate's valid work has been silently removed, and the test suite has no way to know, because the test suite predates the change.</p>
+
+        <p>In a scikit-learn scenario, the agent restores its access to current task evidence — and then edits code without querying that source again. The original checks pass. But the required fresh observation is missing, and the patch exceeds its allowed scope. The agent's final claim of "done" was certified against evidence from a world that no longer existed.</p>
+
+        <p>This is the deep finding, and it goes well beyond coding agents: <strong>a passing test suite is a record of the past</strong>. It certifies the task as originally specified. It says nothing about work that arrived after the spec, requirements that changed, or evidence that went stale. Every verification loop that runs against saved state — cached test output, a transcript summary, a checklist the agent wrote for itself three hours ago — is certifying a snapshot, not the world.</p>
+
+        <h2>You Can't Buy Your Way Out</h2>
+
+        <p>The obvious objection: just give the agent more tokens to think, more room to re-plan. The team tested that. They scaled the post-change budget from 500,000 tokens per continuation to 16 million — a 32x range.</p>
+
+        <p>Doubling the budget helps a little at first: up to a 4x increase, each doubling adds 0.79 to 2.67 points. Beyond that, the curve goes flat. Quadrupling from 4x to 16x adds a total of 0.19 to 0.28 points. At 16 million tokens per continuation — an absurd budget, more than most teams spend on a feature — paired success is still between 7% and 12%.</p>
+
+        <p>Sixteen times the compute moves the number by less than a rounding error. And the frontier apps didn't outperform the 27B open models on retention by anything resembling their price gap. The failure isn't in the reasoning. It's structural: the harness hands the agent a context and implicitly promises that the context is the world. When that promise breaks, more thinking inside the same broken context is just more confident confusion.</p>
+
+        <h2>What Actually Moves the Number</h2>
+
+        <p>The most encouraging result in the paper is also the cheapest one. In diagnostic controls, the team modified what the agent gets after the fork. They added three things: a <strong>change notice</strong> — an explicit message that something changed; a <strong>read-only state refresh</strong> — letting the agent observe the current world; and a <strong>history reset</strong> — removing the pre-change dialogue so the agent doesn't carry forward assumptions from the old world.</p>
+
+        <p>Together they add 5.98 to 8.71 points of paired success. Individually, the history reset is the largest single gain in four of the five tested systems. Stop and appreciate that: the most effective intervention was <em>deleting context</em>. The agent's own transcript — the thing every harness fights to preserve, compress, and pipe back in — becomes a liability after a change, because it encodes a world that no longer exists.</p>
+
+        <p>Timing matters too, and not in the direction you'd guess. For the frontier systems, changes that land late in the run are far more destructive: GPT-6 Astra loses 20 points when the intervention arrives at 70–90% through the task versus 10–30%. Claude Fable loses 15. The more work exists before the change, the more there is to invalidate and the more poisoned context there is to reason over. A few small open models actually gain slightly when changes arrive late — probably because there's less accumulated context to betray them. Longer sessions aren't just expensive, as we saw with suspended-agent runtimes last week. They're fragile. Exposure to change compounds with every step.</p>
+
+        <p>Note the ceiling, though: even with all three fixes, paired success tops out around 11–18%. The interventions claw back a fraction of the collapse. Nobody has solved this. The gap between "agent that scores well on a frozen benchmark" and "agent that survives a normal Tuesday" remains wide open — which means it remains a place where engineering, not capital, is the differentiator.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p>If you run agents on real code, treat SWE-Shift as a free audit of your assumptions. Five things are worth doing immediately:</p>
+
+        <ol>
+          <li><strong>Run one chaos test.</strong> Start an agent on a real task, and mid-run, push a conflicting commit to the branch or bump a dependency. Watch what it does. Most teams have never done this once, and the benchmark says the median outcome is silent breakage with green tests.</li>
+          <li><strong>Force re-observation before writes.</strong> Any external event — a merge, a deploy, a schema change — should invalidate the agent's context. Your harness should re-run status, re-read the diff, and re-check the evidence before the next edit, not trust the transcript.</li>
+          <li><strong>Build a change feed.</strong> Route merges, dependency bumps, and schema changes to running agents as explicit messages. The single cheapest intervention in the controls was telling the agent that something changed. In production, that's a webhook — infrastructure you can build in an afternoon.</li>
+          <li><strong>Verify preservation, not just the task.</strong> After a run, diff the workspace for work that vanished, not just tests that pass. The Django case passed 39 tests while deleting a colleague's API. If your CI can't catch that, your CI is certifying the past.</li>
+          <li><strong>Keep sessions short and resumable.</strong> Late changes hurt most, and long contexts carry the most stale assumptions. Checkpoint often, fork instead of continuing, and treat the checkpoint-and-replan loop as your default execution model — it's one of the core disciplines in my book, <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>, and this benchmark is the strongest evidence for it yet.</li>
+        </ol>
+
+        <h2>The Unfrozen World</h2>
+
+        <p>Every benchmark that made coding agents look competent over the past two years froze the world on their behalf. That courtesy was never available in production, and it's getting less available by the day as merge volumes climb into the tens of thousands per day and agents are pointed at live systems for hours at a stretch.</p>
+
+        <p>The reflex in the industry will be to wait for the next model. The data says that's the wrong bet: retention doesn't track capability, sixteen times the budget buys nothing, and the single best fix measured so far costs zero tokens. The agents that survive the next few years won't be the smartest ones. They'll be the ones whose harnesses assume the world moves — and keep the agent honest about what it currently knows.</p>
+
+        <p>Your agent doesn't fail because the task was hard. It fails because Tuesday happened.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
