@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Tue, 27 Oct 2026 05:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 28 Oct 2026 05:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Agent Joined the Org Chart</title>
+      <link>https://abuiliazeed.github.io/blog/the-agent-joined-the-org-chart.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-agent-joined-the-org-chart.html</guid>
+      <description>On October 27, IBM, Salesforce, and Akamai shipped the same missing subsystem within hours of each other: identity, budgets, and kill switches for AI agents. The safety debate wasn't answered — it was routed around. Agents just got employee records, expense accounts, and termination procedures.</description>
+      <pubDate>Wed, 28 Oct 2026 05:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>Agents Assume a Frozen World</title>
       <link>https://abuiliazeed.github.io/blog/agents-assume-a-frozen-world.html</link>

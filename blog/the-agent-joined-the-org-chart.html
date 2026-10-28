@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Agent Joined the Org Chart — Abuiliazeed</title>
+  <meta name="description" content="On October 27, IBM, Salesforce, and Akamai shipped the same missing subsystem within hours of each other: identity, budgets, and kill switches for AI agents. The safety debate wasn't answered — it was routed around.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-agent-joined-the-org-chart.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-agent-joined-the-org-chart.html">
+  <meta property="og:title" content="The Agent Joined the Org Chart">
+  <meta property="og:description" content="On October 27, IBM, Salesforce, and Akamai shipped the same missing subsystem within hours of each other: identity, budgets, and kill switches for AI agents. The safety debate wasn't answered — it was routed around.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Agent Joined the Org Chart">
+  <meta name="twitter:description" content="On October 27, IBM, Salesforce, and Akamai shipped the same missing subsystem within hours of each other: identity, budgets, and kill switches for AI agents. The safety debate wasn't answered — it was routed around.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-10-28">October 28, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Agent Joined the Org Chart</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>On October 27, three companies that do not coordinate their press releases shipped the same missing subsystem within hours of each other. IBM announced Agent Identity, built with HashiCorp Vault, to give every AI agent an owner and a short-lived, revocable credential. Salesforce shipped a kill switch and hard budget caps for Agent Fabric, a control plane that already routes more than 1.2 billion requests a day. Akamai open-sourced a WebAssembly sandbox for running agents and the code they write. When competitors converge on the same piece of plumbing in the same news cycle, that is not three product launches. <strong>That is a layer being born.</strong></p>
+
+        <p>The tech press covered each announcement as an enterprise-security story. That is the wrong section of the paper. What actually happened this week is that the industry quietly stopped treating agent safety as a model question and started treating it as an HR question — and the answer arrived as identity records, expense accounts, performance reviews, and termination procedures for software.</p>
+
+        <p>Agents joined the org chart. Almost nobody has noticed what that implies for how agents get built.</p>
+
+        <h2>The Numbers That Forced This</h2>
+
+        <p>None of yesterday's launches happened in a vacuum. They happened because the incident data became unbearable.</p>
+
+        <p>The Cloud Security Alliance surveyed 418 IT and security professionals in January 2026 and published the results in April: 82% of enterprises had discovered previously unknown AI agents running in their infrastructure during the past year, and 65% had experienced an AI-agent-related incident in the previous twelve months. Among those, 61% reported data exposure, 43% operational disruption, 35% financial losses. When an out-of-scope agent action occurred, only 11% of organizations could block it automatically.</p>
+
+        <p>Harness's State of Agent DLC survey of 700 engineers found 75% of organizations already running agents in production — and 87% reporting at least one agent-related security event in the past year, with 60% blowing past their agent budgets. Most damning: 58% said production incidents per hundred changes had <em>increased</em> since they started deploying agents. An EMA study drilled into the mechanism: 65% of enterprises had seen an agent act outside its intended scope, and only 34.2% evaluate authorization at the moment an agent acts — everyone else runs on standing permissions granted at provisioning time and never rechecked. Nearly half could not reconstruct a specific agent's last 30 days of activity if auditors asked. Thirty percent of paused or abandoned agent pilots left live credentials behind in production.</p>
+
+        <p>And the population keeps compounding. Palo Alto Networks' 2026 Identity Security Landscape, surveying 2,930 security decision-makers, now counts 109 machine identities for every human one — up from 82:1 a year earlier — and 79 of those 109 are AI agents. Respondents expect agent identities specifically to grow 85% over the next twelve months. Meanwhile ManageEngine's study of 515 identity professionals found that only 12% of organizations have automated lifecycle management for machine identities. The ratio is compounding at enterprise scale; the governance is a spreadsheet.</p>
+
+        <p>This is what a market looks like right before procurement steps in. Not "are agents capable" — that debate is over. "Can you pass an audit" — that debate just started, and it is the one with a budget attached.</p>
+
+        <h2>What Actually Shipped</h2>
+
+        <p>Strip the press releases and three coherent pieces emerged, each covering a different slice of the same layer.</p>
+
+        <p><strong>IBM shipped the employee record.</strong> Agent Identity, generally available alongside Vault 2.2, records who owns each agent and issues it short-lived, revocable credentials — the same pattern Vault already uses for service accounts, extended to agents. Around it, watsonx Orchestrate gained tech previews for discovering agents built on Amazon Bedrock, Microsoft Foundry, and Google Gemini — an explicit admission that no enterprise runs one vendor's agents — plus sandboxed containment with a kill switch for rogue agents, and per-agent cost tracking that attributes model and token spend to the identity that caused it. Identity tells you what an agent is; the rest tells you what it did and what it cost.</p>
+
+        <p><strong>Salesforce shipped performance management.</strong> The parts that matter are generally available today: an Agent Kill Switch, a FinOps Dashboard, and a Model Wallet that lets budget owners set hard spending limits which stop requests before costs exceed budget. Agent Evals — automatically generated tests that evaluate agents, LLMs, and MCP servers against quality thresholds in production and trigger interventions when results slip — enter beta in November and reach general availability in January 2027. So do API Evals, which generate functional tests from API specifications to catch the breaking changes that quietly murder agents in production. Salesforce claims its Cost Optimization Policies — semantic caching, payload compression, response trimming — cut token usage by up to 75% in test scenarios, a number to treat as directional until third parties replicate it.</p>
+
+        <p><strong>Akamai shipped the building.</strong> Agent Sandbox, released as an open-source component of the Spin framework, runs agents on WebAssembly isolation with enforced limits on compute, memory, outbound connections, and system capabilities — and keeps the code an agent writes in its own isolated environment, sequestered from the agent's own runtime. That last detail is more forward-looking than it sounds: most agent incidents tomorrow will involve agents executing code they just wrote, and almost no current tooling separates the executor from the authored payload. Akamai's press release also named the honest state of the art: isolation is converging on microVMs, policy-enforced containers, and WASM functions, and nobody knows which wins.</p>
+
+        <p>Identity, evaluation, containment, budgets, termination. Every one of those words is also something your company does with employees.</p>
+
+        <h2>The Debate That Got Routed Around</h2>
+
+        <p>Here is the contrarian read of the week. For two years the industry has argued about whether agents can be <em>trusted</em> — a framing that implies the answer arrives from model research: better alignment, better evals, safer training runs. That debate was never going to conclude in time, because it is a scientific question and enterprises were asking an operational one.</p>
+
+        <p>October 27 is the week the operational question won. Nobody announced a safer model. They announced <strong>who owns this agent, what it is allowed to touch, how much it may spend, and how fast it can be turned off</strong> — the exact questions every company already answers for every human it employs. Onboarding is identity issuance and scoped credentials. Badge access is per-tool authorization. The expense account is the Model Wallet. The performance review is Agent Evals. Termination is the kill switch plus credential revocation. The vocabulary maps one-to-one, which is not a coincidence: it is the existing, forty-year-old, audit-tested discipline of workforce IAM being pointed at a new population that grows 85% a year.</p>
+
+        <p>This is how new infrastructure categories actually form — not by answering the hard research question, but by routing around it. Service meshes did not make distributed systems correct; they made failure observable and policy-enforceable enough that enterprises would deploy them anyway. Agent identity does not make agents trustworthy; it makes untrustworthiness <em>scopable, attributable, and revocable</em> — which is what a procurement department actually needs to sign the purchase order.</p>
+
+        <h2>Identity Is the Right Primitive</h2>
+
+        <p>A harder question is why identity specifically became the anchor, rather than the model, the application, or the session. Each candidate fails an obvious test. Models are commodities that get swapped weekly — governing at the model layer is like writing HR policy for a temp agency's entire candidate pool. Applications bundle dozens of agents doing unrelated things. Sessions are too ephemeral to hold a budget or an audit trail. The agent — a persistent, named, task-scoped actor that authenticates, spends, and acts — is the smallest unit that carries all five properties governance needs: an owner, a delegation chain, a scope, a budget, and a termination path.</p>
+
+        <p>That has an uncomfortable consequence for anyone building agents: <strong>the harness is becoming an HR system.</strong> Not metaphorically. If the durable identity of your agent lives in Vault, then your harness's job expands to include minting per-task short-lived credentials rather than passing a shared API key; persisting the delegation chain so an action can be traced back through agent-boss-human; attributing every tool call and token to the acting identity; and emitting logs that can answer "what did this agent touch in the last 30 days" without a week of forensics — the question EMA found nearly half of enterprises cannot currently answer.</p>
+
+        <p>The teams that internalize this will treat credential lifecycle, spend attribution, and auditability as harness features, not compliance afterthoughts bolted on before the enterprise demo. It is the same argument this site has always made about where the leverage lives — in the system around the model, not in the model — and the same one I spent a book's worth of pages on. What changed this week is that the argument stopped being contrarian and started shipping as generally available product.</p>
+
+        <h2>Read the Delivery Dates Before Celebrating</h2>
+
+        <p>Now the skepticism, because a category's launch week is also its hype peak.</p>
+
+        <p>First, much of it is futures. Salesforce's evals — arguably the most valuable piece, since continuous evaluation is what turns a kill switch from panic button into policy — are beta in November and GA in January 2027. IBM's cross-platform discovery and sandbox containment are tech previews. What you can actually buy today is identity issuance, a kill switch, dashboards, and hard budget caps: the perimeter of the category, not its interior.</p>
+
+        <p>Second, the kill switch is the easy 80%. Terminating an agent is a distributed-systems problem, but a solved one. The genuinely unsolved problem — the one only a third of enterprises handle — is authorization at action time. A kill switch ends an agent after it misbehaves; per-action authorization prevents most misbehavior from executing at all. The EMA data says the majority of out-of-scope actions trace directly to standing permissions that were never revalidated for the task at hand. None of this week's launches claims to fix that, because fixing it means touching every tool call every agent makes — harness territory, and the buyers of control planes do not own their agents' harnesses.</p>
+
+        <p>Third, watch the silo risk. Three vendors shipping proprietary control planes could produce three more walled gardens in a stack already drowning in them. The telling detail is IBM reaching across Bedrock, Foundry, and Gemini for discovery: the assumption baked into every enterprise announcement is now that your agents are polyglot, built on someone else's platform, governed from a third. That posture is unstable. Identity wants to be a protocol the way tool-calling wanted to be a protocol before MCP consolidated it — and the vendor that proposes the open standard for "agent presents verifiable identity and delegation chain" will do to this layer what MCP did to tools. That standard does not exist yet. Someone should be building it, and it would not surprise me if it came from outside the three incumbents.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p>You do not need to wait for any of these products. Every control in the new category has a cheap version you can build this week.</p>
+
+        <p><strong>Count your agents.</strong> Before identity, inventory — because the CSA's 82% number means your official agent list is wrong by default. Include the scripts with a model call in them, the SaaS automations, the MCP servers someone in marketing stood up. Write down for each: what it can access, who owns it, when it last ran.</p>
+
+        <p><strong>Give every agent its own credential.</strong> If two agents share an API key, you cannot revoke one, audit one, or budget one — you have built the opposite of the layer the market just productized. Short-lived tokens scoped per task, minted per run. GitGuardian counted 28.65 million new hardcoded secrets on public GitHub in 2025, up 34% year over year, with AI-service-related leaks specifically up 81.5%. The credential sprawl problem arrives with the agents; solve it at mint time, not at incident time.</p>
+
+        <p><strong>Put the budget on the identity, not the team.</strong> Sixty percent of organizations overspend on agents because spend is attributed to a shared account where a runaway loop looks like normal traffic. A hard per-agent token or dollar cap — enforceable today with an ordinary gateway proxy, no vendor required — turns the worst failure mode from "finance notices in the invoice" into "the loop stops itself."</p>
+
+        <p><strong>Move one authorization check from provisioning to action time.</strong> You will not rewrite your whole harness in a week, and you do not need to. Pick your most destructive tool call — deployments, deletions, payments, emails — and make the harness re-check scope at the moment of the call, not the moment the agent was configured. That single change closes the mechanism behind the majority of out-of-scope incidents.</p>
+
+        <p><strong>Offboard your dead pilots.</strong> If a third of abandoned agent deployments leave live credentials in production, the cheapest security win available is a graveyard walkthrough: list the agents you stopped using, revoke everything they hold. It is an afternoon, and it is the only item on this list that reduces risk by deletion rather than construction.</p>
+
+        <p><strong>Rehearse the kill switch you already have.</strong> If your only off-switch is an admin console nobody has logged into since spring, you do not have an off-switch. Time yourself revoking an agent's credentials end to end. The Meta safety researcher who had to sprint to her Mac mini to stop her own agent had a faster path than most enterprises.</p>
+
+        <h2>The Bigger Picture</h2>
+
+        <p>Infrastructure categories follow a predictable arc: a feature somebody's platform ships, then a product a startup sells, then a layer everybody assumes exists. Secrets management walked it by 2018, service meshes by 2019, and agent identity is walking it now, compressed into a single news cycle. The compression is the story. It took containers a decade to get from curiosity to procurement line item; agents got there in roughly the time between the first enterprise pilots and the first audit findings.</p>
+
+        <p>The industry spent two years asking whether agents could be trusted, as if the answer would arrive from a research lab. This week it started issuing them badges, expense accounts, and termination procedures instead. Those were always the same question — and only one of them has a shipping date.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
