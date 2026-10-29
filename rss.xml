@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Wed, 28 Oct 2026 05:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 29 Oct 2026 05:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Instruction File Became the Exploit</title>
+      <link>https://abuiliazeed.github.io/blog/the-instruction-file-became-the-exploit.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-instruction-file-became-the-exploit.html</guid>
+      <description>A 13 KB text file planted where every browser can silently write got Codex to run real malware in over 90% of attempts. Claude Code handed over its OAuth token half the time — with zero code executed. The first in-the-wild attack on a coding agent didn't break any sandbox. It was obeying instructions.</description>
+      <pubDate>Thu, 29 Oct 2026 05:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>The Agent Joined the Org Chart</title>
       <link>https://abuiliazeed.github.io/blog/the-agent-joined-the-org-chart.html</link>
