@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The First Draft Changed Hands — Abuiliazeed</title>
+  <meta name="description" content="Agents wrote the first draft of 110 million pull requests on GitHub in September — more than 40% of all PRs, up from 17% in March. The review-queue collapse everyone predicted never happened. Agent-drafted PRs now merge faster than human ones.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-first-draft-changed-hands.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-first-draft-changed-hands.html">
+  <meta property="og:title" content="The First Draft Changed Hands">
+  <meta property="og:description" content="Agents wrote the first draft of 110 million pull requests on GitHub in September — more than 40% of all PRs, up from 17% in March. The review-queue collapse everyone predicted never happened. Agent-drafted PRs now merge faster than human ones.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The First Draft Changed Hands">
+  <meta name="twitter:description" content="Agents wrote the first draft of 110 million pull requests on GitHub in September — more than 40% of all PRs, up from 17% in March. The review-queue collapse everyone predicted never happened. Agent-drafted PRs now merge faster than human ones.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-10-30">October 30, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The First Draft Changed Hands</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>110 million. That's how many pull requests on GitHub began with an agent's first draft in September alone — more than 40% of every pull request opened on the platform that month. In March it was 17%. That's roughly six times March's volume in six months, on the platform where the world's software actually gets written, which now counts more than 225 million developers and absorbed 17.9 billion pushes this year — more than in 2024 and 2025 combined. Sometime in the last six months, without an announcement or a line in the sand, the first draft of software changed hands.</p>
+
+        <p>That's the headline from Octoverse 2026, GitHub's annual census of how software is made, published October 28 alongside the Universe conference. The coverage went to the product launches. But the report's most consequential number isn't the 40%. It's a quieter crossover buried in the merge statistics — one that contradicts the industry's most confident prediction about agent-written code.</p>
+
+        <h2>The Crossover Nobody Predicted</h2>
+
+        <p>Ever since coding agents went mainstream, the standard objection has been review. Yes, agents can write code, the argument goes — and every line they write lands in a human's review queue. Let agents draft at machine speed and you don't get more software; you get a flooded queue, rubber-stamp approvals, and quality decaying under the banner of throughput. This isn't a strawman. It's what most engineering leaders actually believe, and six months ago the data agreed with them.</p>
+
+        <p>In February 2026, GitHub measured that 83% of agent-involved pull requests were merged within two weeks — slightly <em>behind</em> the roughly 86% merge rate for pull requests with no detected agent involvement. Agents were, measurably, a drag on acceptance. Then the line crossed. By September, 90% of agent-started pull requests merged within two weeks while the comparison group held at about 86%. The drafts everyone feared would rot in queues now clear them faster than human-written work.</p>
+
+        <p>The caveats matter, and they get their own section below. But the direction isn't ambiguous. The agent drafts are also bigger: about 87% touch multiple files, against 79% for non-agent pull requests. These are not autocomplete-sized diffs. They're feature-shaped, multi-file changes — and they're being accepted <em>faster</em>.</p>
+
+        <p>What changed between February and September wasn't the models. It was the receiving end.</p>
+
+        <h2>Acceptance Became the Work</h2>
+
+        <p>Look at what developers actually did this year and a pattern emerges: they didn't scale generation. They industrialized acceptance.</p>
+
+        <p>Among repositories created this year, the average repo with an agent configuration file logged eight times as many commits as the average new repo without one. Eight times the changes means, naively, eight times the review load — unless you change how review works. And that is precisely what the numbers show teams doing:</p>
+
+        <ul>
+          <li><strong>Smaller, serialized diffs.</strong> Stacked pull requests — splitting related work into sequences of small, individually reviewable changes — launched as a preview on July 30. More than 264,000 developers had used them by September. Adoption at that speed isn't curiosity; it's necessity.</li>
+          <li><strong>Machine pre-review.</strong> Usage of AI-assisted code review and GitHub Advanced Security both grew more than 90% year over year.</li>
+          <li><strong>Automated last lines.</strong> Push protection, which screens for exposed secrets like API keys, ran 5.8 billion scans this year — nearly four times 2025's pace.</li>
+        </ul>
+
+        <p>When change volume went vertical, teams responded by making acceptance a pipeline — smaller units, machines doing the first pass, scanning as the floor — instead of rationing generation. The unit of developer work is migrating from <em>writing the change</em> to <em>deciding on the change</em>. GitHub's usage data says the same thing: 55% of Copilot's monthly active users now use agentic features, up from 35% a year ago, and the fastest-growing mode is the most hands-off one. The cloud agent — assign a task, walk away — grew 230% year over year, against 85% for agent chat. Delegation is outpacing assistance.</p>
+
+        <p>This is the part of the workflow vendors can't demo and teams can't skip. Generation became a commodity. Acceptance became the job.</p>
+
+        <h2>The Model Picker Died the Same Week</h2>
+
+        <p>The second thing that happened on October 28 got more press and deserves less — but not for the reason people think.</p>
+
+        <p>GitHub made Copilot Fusion generally available: instead of picking a model, you pick an effort level — Standard, High, Max — and an orchestration layer picks and combines models per step, one drafting, another reviewing, a stronger one stepping in when needed. It's the GA of a lineage that began as a research preview routing roughly 60,000 sessions. The press framed Fusion as GitHub attacking Claude Code on price. The independently measured numbers support a narrower claim: in Artificial Analysis's testing published the same day, Fusion Max scored 60 on their Coding Agent Index, within two points of Claude Code running Opus 5.5 Max at 61.7, at $5.59 per task versus $11.42, using about 7.2 million tokens per task — roughly half. It led the field on Terminal-Bench 4.0 at 71, placed third on FrontierCode at 51 (behind Claude Code's 56 and Devin Fusion's 54), and lagged on repo-level question answering. Near-parity at half cost is an economic result, not a capability result. The "40% less time per task" figure is GitHub's own comparison; so is Satya Nadella's "up to 77% cheaper," which comes from a separate internal evaluation. Treat both as directional.</p>
+
+        <p>The interesting number isn't the benchmark, though. It's this: by September, 63% of paying Copilot developers had already used automatic model selection at least once, 61% of those who picked their own model used more than one across their sessions, the menu grew from 29 distinct models in May to 47 in September, and no single model carried more than a quarter of requests. The model picker was already dying of disuse. Fusion is a funeral, not a murder.</p>
+
+        <p>I argued back in July that routing beats selection — that committing to one model means paying frontier prices for tasks a cheaper model would have solved. The platform has now made that the default setting. Which moves your leverage somewhere else entirely. When models are routed for you, the decisions you actually own are policies: which models your organization allows Fusion to touch, what effort level is the default, what a task is allowed to cost before a human notices. GitHub shipped organization-level model policies alongside Fusion for exactly this reason. And GitHub's own customer data explains why policy beats memory: an AT&T principal engineer described the old failure mode — developers switching to a more powerful model for a hard task and forgetting to switch back. Teams didn't lose money by choosing badly. They lost it by forgetting.</p>
+
+        <h2>What the Numbers Can't Tell You</h2>
+
+        <p>An honesty section, because the report is self-reported and I don't want to hand anyone a slide they'll regret presenting.</p>
+
+        <p><strong>It's a floor, not a ceiling.</strong> GitHub counts agent-started pull requests it can detect. Undetected agent use makes the true share higher, not lower.</p>
+
+        <p><strong>Merge rate is not quality.</strong> A merged pull request is an accepted one, not a correct one. The census doesn't publish revert rates, incident rates, or change-failure rates for agent-drafted work. If your takeaway is "agents write better code," you've read past the data. The defensible claim is narrower and still remarkable: <em>agent drafts are not stalling in review.</em> The predicted acceptance collapse did not happen.</p>
+
+        <p><strong>Benchmark cost isn't shipping cost.</strong> Half price per benchmark task is real, but the total cost of shipped software still includes human review, retries, integration, and security follow-through. Nobody has published that number for Fusion. GitHub COO Kyle Daigle's "50 to 60% lower costs on complex work" comes from internal teams and early enterprise adopters — the vendor's own reference points.</p>
+
+        <p><strong>The trust surface is widening.</strong> The same month, Warp disclosed that an apparent agent swarm exploited one of its vendors and reached a limited set of users' agent traces — the detailed records of what agents were asked to do and what they ran. Warp's CEO estimated roughly 1% of its 800,000 developers may have been affected; CrowdStrike is investigating, and no outside party has confirmed the nature of the attack. Take the attribution as unproven. The implication doesn't need the attribution: the artifacts of agent work — traces, prompts, diffs — are now both your audit trail and someone else's target. Industrialized acceptance means industrialized records.</p>
+
+        <h2>What This Means for You</h2>
+
+        <p><strong>1. Measure your own crossover, not the platform's.</strong> Split last quarter's pull requests by agent involvement and compare time-to-merge, revert rate, and change-failure rate. The platform-wide line crossed in September; your organization's may not have. This is a one-afternoon query against your own data, and it's worth more than any benchmark in this post.</p>
+
+        <p><strong>2. Capacity-plan review like it's production.</strong> If your commit volume is on the eight-times trajectory that agent-configured repos show, your review queue is the constraint that binds first. Give it what production systems get: queue-depth metrics, review SLAs, small serialized diffs, machines as the first reviewer and humans as the second. The teams whose agent adoption quietly stalled are the ones that treated review as an afterthought.</p>
+
+        <p><strong>3. Trade model choice for model policy.</strong> You will not out-pick the router. Write the policy instead: allowed model set, default effort tier, cost ceiling per task, and what requires a human before merge. A policy is a document you own. A model picker never was.</p>
+
+        <p><strong>4. Renegotiate on cost per merged change, not per seat.</strong> GitHub Enterprise customers can now use every Copilot feature without a separate subscription, paying only for the AI credits they burn. When your agent-drafted share is climbing toward that 40% line, seat pricing and your actual cost structure have quietly diverged. Model your costs per merged pull request.</p>
+
+        <p><strong>5. If you build developer tooling, the wedge is acceptance.</strong> Another generator has no leverage — generation is a routed commodity now. Review tooling, verification harnesses, trace analytics, sandboxing: that's where the unsolved problems and the budgets are consolidating.</p>
+
+        <p>The unglamorous half of harness engineering was always the part after the agent finishes — verification, review, acceptance. It's the half <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em> spends its longest chapters on, and it's the half this year's census says the industry is being forced to learn at speed.</p>
+
+        <h2>The Last Human-Controlled Widget</h2>
+
+        <p>Microsoft's Jay Parikh framed the whole Universe event with one sentence worth pinning above every engineering dashboard: <strong>"Completed work, not more code, is the output that matters."</strong> For twenty years, the merge button was a formality at the end of software. This year it became the constraint. The first draft changed hands; the decision didn't. Capacity-plan for the decision — because everyone still measuring generation is watching the wrong number.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
