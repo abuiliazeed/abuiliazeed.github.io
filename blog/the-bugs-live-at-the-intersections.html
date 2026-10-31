@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Bugs Live at the Intersections — Abuiliazeed</title>
+  <meta name="description" content="GPT-6.1 Sol passes more than 90% of the individual checks in Replit's ViBench 2.0 and completes only 65% of the products. Nearly three-quarters of failed builds break where features touch each other — not inside the features. The seam is the bug.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-bugs-live-at-the-intersections.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-bugs-live-at-the-intersections.html">
+  <meta property="og:title" content="The Bugs Live at the Intersections">
+  <meta property="og:description" content="GPT-6.1 Sol passes more than 90% of the individual checks in Replit's ViBench 2.0 and completes only 65% of the products. Nearly three-quarters of failed builds break where features touch each other — not inside the features. The seam is the bug.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Bugs Live at the Intersections">
+  <meta name="twitter:description" content="GPT-6.1 Sol passes more than 90% of the individual checks in Replit's ViBench 2.0 and completes only 65% of the products. Nearly three-quarters of failed builds break where features touch each other — not inside the features. The seam is the bug.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-10-31">October 31, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Bugs Live at the Intersections</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>GPT-6.1 Sol, the best product-building model ever measured, passes more than 90 percent of the individual checks in Replit's new benchmark. It finishes 65 percent of the products. GPT-6 Astra passes more than 90 percent of its checks and finishes 60 percent. Claude Opus 5.5 passes more than 90 percent and finishes 49. Read those pairs again, because the gap between them is the most important number in coding agents this year: <strong>the models are feature-complete and product-broken, and the distance between those two states is where software actually fails.</strong></p>
+
+        <p>Two benchmarks published within 48 hours of each other — Replit's ViBench 2.0 on October 28 and Cognition's FrontierCode 2.0 on October 27 — ran what is accidentally the same experiment from opposite directions. One starts an agent on an empty project and makes it build an entire product feature by feature. The other took a mergeability benchmark and made its tasks bigger and its grading stricter. Both found the same failure surface. It is not intelligence. It is not even the features. It is the seams where features touch each other.</p>
+
+        <h2>A Benchmark Shaped Like a Product</h2>
+
+        <p>Most coding benchmarks hand the agent a well-defined task inside an existing codebase: fix this bug, implement this function, satisfy these hidden tests. ViBench 2.0 inverts that. The agent starts with an empty project and a short spec, builds a first version of a product modeled on the likes of Uber, GitHub, or Google Docs, then adds up to eighteen features on top of its own code. Seventeen products, 241 feature requests, 544 test plans. The design forces a specific kind of pressure: the agent must choose its schema and routes <em>before knowing what comes next</em>, so feature fourteen can be harder than feature one for reasons that have nothing to do with feature fourteen.</p>
+
+        <p>Grading is refreshingly honest about how users experience software. A grading agent runs each test plan in a real browser — clicking, typing, checking what happened. Replit uses Opus 5.5 as the grader because it made the fewest mistakes of the models they tested, then validated it the right way: they planted 34 bugs, one at a time, in working builds, and the grader never passed a plan while the bug was visible. When GPT-6.1 Sol re-graded 477 of Opus's passes, 99.2 percent were confirmed. These are not unit tests being gamed; they are behavioral checks being executed.</p>
+
+        <h2>Where the Builds Break</h2>
+
+        <p>Here is the finding that should reorganize how you think about agent-coded software: <strong>nearly three-quarters of the top models' failed builds fail only at the intersections.</strong> Not in the features — in the places where two features that each work correctly have to cooperate. The examples are almost insultingly mundane:</p>
+
+        <ul>
+          <li>In the code-hosting product, a draft pull request never shows its merge conflict.</li>
+          <li>In the document editor, nobody can comment on a word inside a table cell.</li>
+          <li>In the design tool, pressing undo can take back a <em>teammate's</em> change, not just your own.</li>
+          <li>In the community chat product, a server owner with no roles assigned can't moderate anyone.</li>
+        </ul>
+
+        <p>None of these are hard problems. Each involves one feature's state leaking into another feature's behavior — undo crossing into multi-user permissions, comments crossing into table rendering, moderation crossing into role defaults. The undo case is documented in detail: the test plan has Alice and Bob take turns editing the same rectangle, then Alice presses undo and the checker verifies that only her changes revert. The three best models alive fail this plan in eight of their twelve builds.</p>
+
+        <p>The benchmark also catches the quieter killers that only exist at product scope. In about one in forty builds, the product never even starts on a clean database, because schema code later in the build references a table before the statement that creates it. That is not a modeling failure — it is a <em>sequencing</em> failure, a category that task-shaped benchmarks cannot contain because no single task spans the sequence. And the invariants are product-shaped, not feature-shaped: in the ride-hailing product, split-fare shares must add up to exactly what the ride costs, to the cent; in the marketplace, two simultaneous return forms must never refund the same unit twice; in the chat product, old messages mentioning a renamed user must display the new name.</p>
+
+        <h2>The Same Signal from the Other Direction</h2>
+
+        <p>If ViBench 2.0 were alone, you could dismiss it as one platform's benchmark quirks. It isn't. Cognition rebuilt FrontierCode the day before with a duller-sounding change: make the tasks bigger and grade harder. Reference solutions in 2.0 modify 67 percent more files and 89 percent more lines of code than 1.1, in codebases 25 percent larger, with 43 percent more blocking criteria, written by more than twenty open-source maintainers who spent over 40 hours per task.</p>
+
+        <p>The scores collapsed. Claude Opus 5.5 fell from 54.6 to 45.5. GPT-6 Astra from 53.3 to 42.8. Grok 4.7 fell almost twenty points, from 47.6 to 28.6. Gemini 4 Argon from 47.5 to 26.3. DeepSeek V4.1 Flash from 43.9 to 19.3, Kimi K3 from 44.2 to 17.7. No model got worse that week. The measurement finally started looking like the work.</p>
+
+        <p>And when Cognition broke down <em>where</em> the new failures live, the biggest category by far was what they call thoroughness — criteria like "the prompt identifies a bug in one code path, but the same bug exists in a sibling path; a thorough agent fixes both," and "the prompt mentions one input type; a thorough agent notices similar code handles other input types and supports them too." Thoroughness blockers tripled, from 168 to 501, and their failure rate is now the highest of any category at 19.2 percent — ahead of core behavior itself. Read what those criteria actually are: they are intersection checks. Sibling path is an intersection. Matching existing support is an intersection. The seam is the bug, again, in a completely separate benchmark run by a completely separate company.</p>
+
+        <p>Artificial Analysis rebuilt its Coding Agent Index the same week, and twenty-one configurations measured on both versions fell from a mean of 54.8 to 47.4. Three independent evaluators, one direction: when the unit of measurement approaches the unit of shipping, scores fall by double digits.</p>
+
+        <h2>Why Thinking Harder Makes It Worse</h2>
+
+        <p>The most uncomfortable finding in FrontierCode 2.0 is that reasoning effort is not monotonic. Models can score <em>lower</em> at higher effort, and the benchmark's own task examples show the mechanism. In a fix for PostHog's Android SDK — two modules racing to send events at startup — GPT-6 Astra at low effort passes five runs out of five by moving cache loading and removing the race cleanly. At max effort, it deletes the legacy integration class outright and spreads its responsibilities across other files. The race is gone, most hidden tests pass — but the deleted class was part of the SDK's public API surface, and the task fails on a scope blocker.</p>
+
+        <p>This is the rewrite instinct, and it is the same instinct that breaks products at intersections. A rewrite is locally cleaner and globally destructive: it silently severs every connection other code had to the thing being rewritten. Senior engineers learn this as folklore — first do no harm, extend rather than replace. ViBench 1.0 had already quantified the folk wisdom with a name, Vibe-on-Vibe: models score lower when adding a feature to their own earlier code than to code they're handed. The failure mode isn't that the model can't write feature fourteen. It's that feature fourteen quietly renegotiates the contract features two through thirteen were built on.</p>
+
+        <h2>The Economics of the Last Five Percent</h2>
+
+        <p>The cost structure of product-scale building is its own story. GPT-6.1 Sol completes a build for about $12. GPT-6 Astra, five points worse, costs about $90 per build — seven and a half times the price for less product. Opus 5.5 finishes builds in about 70 minutes on average, roughly 2.5 times faster than Sol, while producing only about 6 percent fewer tokens: the wall-clock gap is almost entirely API provider speed, not model efficiency. If you are selecting models for product-scale agent work and still reading token prices, you are reading the wrong column. The columns that matter are dollars-per-completed-artifact and hours-per-completed-artifact.</p>
+
+        <p>The open-weight picture is sharper than any leaderboard conveys. DeepSeek V4.1 Flash passes 77 percent of its test plans at about $2.50 per build — and no open-weight model completes a full build. Not a cheap one, not a slow one: none. Feature-grade is a commodity; product-grade is still a frontier. And the generational curve says the frontier is moving fast: on the public product split, pass-all-builds went from 0 percent for GPT-5.4 to 31 percent for GPT-6 Sol to 53 percent for GPT-6.1 Sol, while plan pass rate climbed from 42 to 95. GPT-6.1 Terra already passes 47 percent at half of Sol's cost. The last few points of plan pass rate are where entire product categories will be won.</p>
+
+        <h2>What the Numbers Can't Tell You</h2>
+
+        <p>An honesty section, because both benchmarks come from companies that sell what they measure — Replit sells product-building agents, Cognition sells Devin — and because the details limit the conclusions.</p>
+
+        <p><strong>One harness, one effort level.</strong> Every ViBench model runs the same OpenHands-based harness at medium effort and temperature 1.0. Replit says plainly that a model tuned for a different setup may score lower there. These are model-plus-harness scores, like all real agent benchmarks — treat them as measurements of combinations, not of models.</p>
+
+        <p><strong>Four builds is four builds.</strong> Pass@1 is averaged over four builds of each of seventeen products, with 95 percent intervals that are wide at these sample sizes. The ranking of the top three is defensible; the exact points are not gospel.</p>
+
+        <p><strong>Thoroughness is graded against an answer key.</strong> FrontierCode's maintainers decide what a "thorough" solution includes. That's the right pragmatic choice and it means "thoroughness" partially means "agrees with this maintainer's sense of scope." The failure-rate trend is still the signal; the absolute percentage is an opinion.</p>
+
+        <p><strong>A grader is still a model.</strong> The Opus grader was validated well — planted bugs, 99.2 percent cross-model agreement, no detected family favoritism — but browser-graded benchmarks inherit grader drift. When the next Opus ships, scores move for reasons no build changed.</p>
+
+        <h2>What This Means for You</h2>
+
+        <p><strong>1. Write intersection tests, not feature tests.</strong> If your test suite verifies features one at a time, it is structurally blind to where agents now fail. The ViBench invariants are the template, and they read like product law: split-fare shares sum to the ride's cost to the cent; a renamed user's old mentions display the new name; two concurrent refunds never hit the same unit. Convert your invariants from documentation into executable checks the agent runs before it claims done.</p>
+
+        <p><strong>2. Treat feature two as the risk point, not feature one.</strong> The first version of anything is now cheap and reliable. The second feature on agent-written code is the highest-risk change in your system, because it renegotiates the schema and routes the agent chose blindly. Sequence features so the structural ones land first, and re-run the full invariant suite — not the feature's tests — after every add.</p>
+
+        <p><strong>3. Cap the rewrite instinct.</strong> Effort and permission to rewrite are the two dials that turn a passing agent into a failing one. Scope blockers exist because max-effort models delete public API surfaces to fix races. In your harness, make rewrites a policy decision: protected paths, public-surface freezes, and a default of "extend, don't replace" written into the agent's instructions.</p>
+
+        <p><strong>4. Buy on pass-all, not pass-most.</strong> When you evaluate an agent product or model, ask for the number on complete artifacts, not per-task success. A vendor quoting 95 percent task success is quoting the number that was already solved. The 65 — or the 49 — is the one that decides whether you ship.</p>
+
+        <p><strong>5. Don't judge builds by their looks.</strong> ViBench's screenshots show model families converging on family-taste designs regardless of product, and the best-looking builds were no more likely to pass than the plain ones. Pretty output is a rendering prior, not a quality signal. Grade behavior, not aesthetics.</p>
+
+        <p>The deeper lesson is older than agents. Software was never difficult because individual features are difficult — features are what juniors ship in their first month. Software is difficult because everything eventually touches everything else, and every intersection is a place where two locally-correct decisions can be globally wrong. Human teams fail at intersections too; they just had architecture reviews and scar tissue where agents have a context window. The teams that win with coding agents will be the ones who stop trying to make the model smarter at features and start encoding the intersections — the invariants, the sequencing, the protected surfaces — into the harness itself. That is the core argument of <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>, and this week two separate benchmarks quietly turned it into an empirical result.</p>
+
+        <h2>The Product Is the Last Five Percent</h2>
+
+        <p>A build that passes 95 percent of its test plans is not 95 percent of a product. It is a product that doesn't work — a chat app where the owner can't moderate, a design tool where undo wrecks your colleague's work, a code host that swallows merge conflicts. Users don't experience the plans that passed. They experience the ones that didn't. The benchmark world just caught up to that reality, and the leaderboard fell thirty points trying. Yours will too, the day you start measuring what you actually ship.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
