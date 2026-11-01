@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Agents Never Meet — Abuiliazeed</title>
+  <meta name="description" content="Five cold copies of Qwen 3.8 27B — coordinating only through files on disk — scored 92.4% on hard competitive coding, nominally past Claude Fable 5's 90.4%. The agents never share a conversation. The shared transcript, not the model, was the bottleneck.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-agents-never-meet.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-agents-never-meet.html">
+  <meta property="og:title" content="The Agents Never Meet">
+  <meta property="og:description" content="Five cold copies of Qwen 3.8 27B — coordinating only through files on disk — scored 92.4% on hard competitive coding, nominally past Claude Fable 5's 90.4%. The agents never share a conversation. The shared transcript, not the model, was the bottleneck.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Agents Never Meet">
+  <meta name="twitter:description" content="Five cold copies of Qwen 3.8 27B — coordinating only through files on disk — scored 92.4% on hard competitive coding, nominally past Claude Fable 5's 90.4%. The agents never share a conversation. The shared transcript, not the model, was the bottleneck.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-11-01">November 1, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Agents Never Meet</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Thirty-nine cents. That is the median cost per problem for a team of five coding agents that just posted a higher score than a frontier model on hard competitive programming — 9.8 out of 10 on the first ten LiveCodeBench Hard problems, against 8.0 for Claude Fable 5 running alone on the same ten. The result appeared on November 1, from a team called Memdoor, and it replicates a finding from a research paper that has been sitting in plain sight since August: run fresh copies of one small model as a team that coordinates exclusively through files on disk, and they reach the frontier's neighborhood without ever sharing a conversation.</p>
+
+        <p>Not once during the run do the agents see each other's chat. There is no group thread, no message bus, no shared scratchpad of rolling transcript. There are five files.</p>
+
+        <p>Most people think multi-agent systems are, fundamentally, agents talking to each other — delegating, negotiating, reviewing each other's reasoning in a shared context, like a well-run team in a conference room. The best-measured orchestration result of the quarter says the opposite: <strong>the winning configuration is agents that never talk.</strong> They read a ledger, they write a ledger, and every conversation they have dies with them.</p>
+
+        <h2>What Actually Ran</h2>
+
+        <p>The recipe Memdoor reproduced is called GVS5H, published on arXiv by researchers at Persis Capital and released with code and paper. The name is a joke — "Gorilla vs. 5 Humans" — but the method is dead serious, and it is almost embarrassingly simple. Take one model. Spawn fresh instances of it in fixed roles. Give them a shared workspace of five files: <code>task.md</code> for the problem, <code>plan.md</code> for the manager's strategy, <code>tasks.json</code> for the task list, <code>notes.md</code> for curated findings, and <code>solution.py</code> for the current answer. Workers never address each other; each one enters cold, sees the ledger plus the single task assigned to it, does the task, and exits.</p>
+
+        <p>The loop runs like this. A manager reads the problem and writes a three-to-six sentence plan with a handful of seed tasks. A first worker does not write a solution at all — it brainstorms: identifies the core difficulty, lists candidate approaches and pitfalls, appends them to the notes. The manager folds that into one task list and names the single next task. A fresh worker executes that one task, rewrites <code>solution.py</code>, and — this detail matters more than it looks — <em>rewrites</em> <code>notes.md</code> as a curated whole rather than appending to it. Then a verifier runs the solution against the problem's public tests, and a failing run overrides everything: it vetoes the manager's "done" verdict and forces a fix-or-switch task. A finalizer worker emits the answer if the budget runs out first.</p>
+
+        <p>The paper's headline numbers, on the 100 most recent hard LiveCodeBench problems, five passes each, pinned backends, 128K token cap:</p>
+
+        <ul>
+          <li><strong>Qwen3.8-27B alone: 66.8%.</strong> With the ledger: <strong>92.4%</strong> — a gain of 25.6 points, with a corrected p-value under 0.0001. Claude Fable 5, single call: 90.4%.</li>
+          <li><strong>Qwen3.8-Flash-Next:</strong> 84.2% alone, <strong>93.0%</strong> orchestrated — nominally 2.6 points past Fable 5, at what the authors measure as 9% of its cost.</li>
+          <li><strong>DeepSeek V4.1 Flash:</strong> 88.4% alone, 92.0% orchestrated. Even GPT-5.6 Terra and Luna gain 7.2 and 10.8 points respectively.</li>
+        </ul>
+
+        <p>Now the fresh part. Memdoor re-implemented the workflow on Qwen3.8-27B — planner, two parallel ideators, a solver, a manager, plus a repair worker — reusing the paper's exact prompts, so the comparison is an implementation test, not a prompt-engineering rerun. On the first ten LiveCodeBench Hard problems, over five passes, the team scored a mean 9.8 of 10, versus 9.6 for the original scaffold on the same ten and 8.0 for Fable 5 alone. Fifty runs consumed 15.3 million output tokens and cost $35.79 — $38.77 if you count the sixteen attempts that didn't complete. The median run took forty minutes and $0.39.</p>
+
+        <p>The Qwen weights are open. The paper's team served theirs locally, in FP8 on their own vLLM. This is not a rented-moat result; it is a recipe anyone with one serious GPU can run.</p>
+
+        <h2>Why Cold Entry Wins</h2>
+
+        <p>The interesting question is not that five agents beat one — compute is compute. It is <em>why</em> refusing to share a conversation helps. Three mechanisms are visible in the data.</p>
+
+        <p><strong>The transcript tax is real, and small models pay it hardest.</strong> Every token of shared chat an agent inherits is attention spent on somebody else's process — the digressions, the dead ends, the reasoning that was already abandoned. Perplexity measured this directly in August: Qwen 3.8 27B advertises a 260K context window but starts struggling well before half of that. A shared-transcript architecture multiplies that burden — every agent pays for every other agent's noise, in the exact currency the model is shortest on. Cold entry flips it: each agent's entire effective window is spent on its one assigned task.</p>
+
+        <p><strong>Curated memory beats append-only memory.</strong> The notes file is not a log; it is rewritten as a curated whole by whichever worker just acted. That is the difference between a transcript and an edited document — the ledger remembers conclusions and forgets the arguing. The paper's own transcript analysis attributes the gains to exactly this pair: decomposition of the problem, and persistence of the context that matters. Persistent state, ephemeral conversations.</p>
+
+        <p><strong>Execution outranks consensus.</strong> The verifier is not another agent with an opinion. It is the public test suite, and its verdict is ground truth: a failing run overrides the manager's declaration of done. Most multi-agent designs close their loop with peer review — one model judging another model's reasoning in the same shared context that produced it. This one closes the loop with a program. The disagreement that matters is settled by execution, not by deliberation, which is also why contamination of the shared context cannot metastasize: a worker's wrong turn dies in its own context, and only the corrected artifact survives into the ledger.</p>
+
+        <p>Notice the gradient in the numbers, because it is the tell: the smaller the model, the more the scaffold adds. The 27B gained 25.6 points; Flash-Next gained 8.8; DeepSeek V4.1 Flash, already strong alone, gained 3.6. Frontier models gained too — Terra and Luna both improved — just less, because they were already paying less of the transcript tax. Orchestration is not intelligence; it is overhead recovery. It refunds the attention your architecture was wasting.</p>
+
+        <h2>The Economics, Stated Honestly</h2>
+
+        <p>Memdoor's fifty runs imply a blended output cost of roughly $2.34 per million tokens. Run the same 15.3 million output tokens at a frontier output rate — public trackers list Claude Fable 5.1 around $50 per million — and the volume alone would cost about $765, some twenty times the entire team's bill. Treat that as arithmetic on token volume, not a measured head-to-head: Fable's actual spend per problem on these tasks was never published, and the frontier model presumably needs fewer tokens per attempt. The honest comparison the paper does make is Flash-Next versus Fable at matched accuracy: 93.0 versus 90.4, at 9% of the cost.</p>
+
+        <p>But the dollar price is the less interesting half of the economics, because the weights are open and the paper served them locally. Self-hosted, the marginal dollar cost trends toward zero. What does not shrink is wall time: <strong>forty minutes median per problem.</strong> Five cold agents each re-reading a ledger is an inherently serial ceremony. You are buying the score with latency.</p>
+
+        <p>That constraint is the routing rule. For interactive coding — a human waiting on the next diff — a forty-minute team of small models is a non-starter, and the frontier singleton stays correct. For batch workloads, it is close to free money: overnight test-repair runs, backlog burns, migration sweeps, any queue of well-specified problems with machine-checkable answers. The pattern is not "replace your coding model." It is "the third of your work that is batch, priced at 9%, at 90-plus percent quality, on hardware you own."</p>
+
+        <h2>Read the Fine Print</h2>
+
+        <p>Before you rip out your message bus, four caveats — all stated by the authors themselves, which is a credit to them.</p>
+
+        <p><strong>The frontier never got the harness.</strong> Fable 5 was run single-call only; it contributed no orchestrated arm. The fair claim is that orchestrated small models reached the frontier singleton's range — statistically a tie, with the 27B nominally two points ahead and the paper's own interval showing the gap could go either way. Give the frontier the same ledger and it gains too, as Terra and Luna demonstrated. Nobody has yet measured orchestrated-versus-orchestrated at the top.</p>
+
+        <p><strong>Gains are not universal.</strong> The paper is blunt that some models were unchanged or worse under the scaffold. This is a per-model empirical question, not a law.</p>
+
+        <p><strong>Contamination is unresolved at the edges.</strong> The paper's hundred-problem set is drawn from the most recent contests specifically to limit training contamination, but Memdoor's ten-problem slice dates from contests held March 29 to April 6, 2025 — old enough that the authors flag, in their own words, that contamination cannot be ruled out. Ten problems, five passes: a signal, not a swap-in.</p>
+
+        <p><strong>Competitive coding is a friendly arena.</strong> These are self-contained problems with public tests and a hidden grader — a verification luxury most real repositories do not have. The ledger pattern transfers to repo work; the clean verifier may not, and anyone who has watched an agent pass its own tests while breaking the build knows the difference.</p>
+
+        <h2>The Pattern Is Converging</h2>
+
+        <p>Step back and this is the third independent arrival at the same architecture in six weeks. Prime Intellect's rewrite swarm ran its reviewer and implementer in separate contexts, with nothing that wrote code grading its own work. Perplexity's local-agent research concluded that small models collapse under harnesses built for infinite context, and shipped skills that load on demand instead of resident bloat. Now a measured +25.6 with a public recipe and a bill attached. Separation of contexts is quietly becoming the load-bearing wall of multi-agent design, and every result lands on the same side: <strong>shared transcripts dilute; shared state compounds.</strong></p>
+
+        <p>One more data point, from the same week: Alibaba Cloud published an enterprise agent handbook — thirty chapters, eighteen case studies, Apache 2.0 — and its internal survey is blunt enough to be useful. Of the teams surveyed, only 18% got agents into production, and 10% reached a 90% task success rate. The three recurring failure symptoms: harmful actions, bills that climb, and — the one that connects — <em>losing the thread on long tasks</em>. Losing the thread is a transcript disease. It is what an append-only context does after its twentieth exchange. The ledger is the treatment: it is the difference between a team that remembers its decisions and a team that remembers its chatter. That coordination topology — not model selection — is a harness decision, and it is the kind of unglamorous architecture choice that decides whether the other 82% ever ship; it gets a full chapter in <em>Harness Engineering</em> for exactly that reason.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p><strong>Find the meeting.</strong> Grep your stack for the seam where two agents share a live context — a shared scratchpad, a rolling group transcript, a subagent that inherits the parent's full history. That seam is where attention goes to die. List them; you already know which one is noisiest.</p>
+
+        <p><strong>Replace one seam with five files.</strong> You do not need five roles to test the pattern. Two is enough: a planner that reads the task and writes <code>plan.md</code> and <code>notes.md</code>, and an implementer that enters cold with those two files and nothing else. Run it on ten real tasks from your backlog and compare against your current shared-context flow. The spread you measure on your own workload beats any benchmark in this post.</p>
+
+        <p><strong>Curate, don't append.</strong> If your memory file only ever grows, it is a log, not a memory. Require whichever agent acted last to rewrite the notes as a curated whole — conclusions kept, argument dropped. This one rule is most of the value.</p>
+
+        <p><strong>Give the loop a judge that outranks opinion.</strong> A test run, a build, a lint gate — something whose failure vetoes any agent's claim of done. The moment "the tests failed" is treated as ground truth over "the manager said finished," your loop stops being theater.</p>
+
+        <p><strong>Re-price one batch workload.</strong> Take the most machine-checkable slice of your queue — the test-repair runs, the mechanical migrations — price it at your frontier rate, then price five cold copies of a 27B you can self-host at forty minutes each. Run it overnight, once. That single delta is the business case, and no vendor needs to bless it.</p>
+
+        <p>Claude Fable 5 is still the strongest single caller anyone measured this quarter. Nothing here dethrones it. The lesson of the week is smaller and sharper: the meeting was the bottleneck. The best-performing team in the benchmark never met — it just kept good notes.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>

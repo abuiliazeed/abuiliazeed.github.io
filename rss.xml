@@ -5,8 +5,29 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Thu, 29 Oct 2026 05:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 01 Nov 2026 08:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Agents Never Meet</title>
+      <link>https://abuiliazeed.github.io/blog/the-agents-never-meet.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-agents-never-meet.html</guid>
+      <description>Five cold copies of a 27B open-weights model, coordinating only through files on disk, scored 92.4% on hard competitive coding — nominally past Claude Fable 5's 90.4%. The agents never share a conversation. The shared transcript, not the model, was the bottleneck.</description>
+      <pubDate>Sun, 01 Nov 2026 08:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>The Bugs Live at the Intersections</title>
+      <link>https://abuiliazeed.github.io/blog/the-bugs-live-at-the-intersections.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-bugs-live-at-the-intersections.html</guid>
+      <description>GPT-6.1 Sol passes more than 90% of the individual checks in Replit's ViBench 2.0 — and completes only 65% of the products. Nearly three-quarters of failed builds break where features touch each other, not inside the features. The seam is the bug.</description>
+      <pubDate>Sat, 31 Oct 2026 05:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>The First Draft Changed Hands</title>
+      <link>https://abuiliazeed.github.io/blog/the-first-draft-changed-hands.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-first-draft-changed-hands.html</guid>
+      <description>Agents wrote the first draft of 110 million pull requests on GitHub in September — over 40% of all PRs, up from 17% in March. The review-queue collapse everyone predicted never arrived; agent-drafted PRs now merge faster than human ones.</description>
+      <pubDate>Fri, 30 Oct 2026 05:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>The Instruction File Became the Exploit</title>
       <link>https://abuiliazeed.github.io/blog/the-instruction-file-became-the-exploit.html</link>
