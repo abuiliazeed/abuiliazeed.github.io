@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Proof Went Through CI — Abuiliazeed</title>
+  <meta name="description" content="A proof that took a hundred mathematicians decades and 15,000 pages became 43.1 million machine-checked lines of Lean in 24 days — and the agents found counterexamples in a published argument from 1986. The checker, not the model, is the story.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-proof-went-through-ci.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-proof-went-through-ci.html">
+  <meta property="og:title" content="The Proof Went Through CI">
+  <meta property="og:description" content="A proof that took a hundred mathematicians decades and 15,000 pages became 43.1 million machine-checked lines of Lean in 24 days — and the agents found counterexamples in a published argument from 1986. The checker, not the model, is the story.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Proof Went Through CI">
+  <meta name="twitter:description" content="A proof that took a hundred mathematicians decades and 15,000 pages became 43.1 million machine-checked lines of Lean in 24 days — and the agents found counterexamples in a published argument from 1986. The checker, not the model, is the story.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-11-02">November 2, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Proof Went Through CI</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Forty-three point one million lines, every one of them checked by a machine, none of them accepted on reputation. That is what a startup called Axiom Math released on October 26: the first complete computer-checked proof of the Classification of Finite Simple Groups — widely considered the longest proof in the history of mathematics — produced over 24 days by swarms of dozens of AI agents that a small team of engineers and mathematicians directed.</p>
+
+        <p>The human original runs to roughly 15,000 pages across more than 500 papers by about 100 mathematicians, written over decades; the last major piece, Aschbacher and Smith's 1,221-page quasithin case, landed in 2004. Mathematicians call it the enormous theorem. It now exists as a Lean repository with a checkable build.</p>
+
+        <p>But the line count is not the headline. The headline is that while translating that literature, the agents found explicit counterexamples to an argument that has been sitting inside the published record since 1986 — a gap roughly a hundred mathematicians and forty years of peer review never caught. And the second headline, the one most of the coverage missed: <strong>the result has almost nothing to do with how smart the models are.</strong> Axiom doesn't even name the models — "a changing mix," the announcement says. What produced this artifact is that the agents were working in the one environment on earth that cannot be charmed, hurried, or convinced: a proof assistant that rechecks every step and refuses to compile a gap.</p>
+
+        <h2>What Actually Ran</h2>
+
+        <p>The Classification of Finite Simple Groups is mathematics' periodic table: every finite group decomposes into simple groups the way molecules decompose into atoms, and CFSG is the complete list of those atoms — cyclic groups of prime order, alternating groups, families of Lie type, and 26 orphaned "sporadic" groups, the largest of which — the Monster — has a 54-digit number of elements. Proving the list is complete took the field half a century of distributed, paper-based effort. No single person has ever read all of it. That is not an insult; it is the documented condition of the literature.</p>
+
+        <p>Axiom's version of events, from their research post: on October 1 they opened a Slack channel. They had prepared two things — existing Lean foundations (Mathlib, plus about 1.2 million lines from an earlier project called Qiuzhen-CFSG) and a "proof map" assembled from the published literature, which decomposed the theorem into 108 milestones and roughly 380 smaller tasks with explicit dependencies. On October 2 the first swarm went live. Agents claimed milestones through GitHub issues and reported results in Slack. Lead agents decomposed difficult arguments and reviewed the statements being formalized; other agents hunted for existing results or wrote Lean; human mathematicians investigated obstructions; engineers kept the build productive.</p>
+
+        <p>That last sentence deserves more attention than it got. On October 10, the channel announced the agents had proved the Monster simple. On October 13, exactly one milestone closed — and the team's response was not "get a better model" but "replan around smaller, precisely stated theorems." When agents hit a hard target, they sometimes assumed enormous prerequisites instead of proving them; those assumptions were caught and tens of thousands of lines were deleted. Task granularity and statement precision — not intelligence — were the throughput levers. If you have run an agent fleet on a real backlog, none of this surprises you. It is the same disease and the same cure, at 43 million lines of scale.</p>
+
+        <h2>The Bugs Peer Review Never Caught</h2>
+
+        <p>Formalization does not trust; it checks. And checking fifty years of human writing turned up problems. Most were minor — typos, errors in tables, dropped hypotheses. Axiom counts 34 "noteworthy deviations from the published record"; the errata document published two days later runs to 96 entries and is careful to say it is not a tally of 96 errors. One example from the quasithin volumes: a lemma asserted two quantities were equal. The agents found a counterexample in SL₂(5), where one quantity is 1 and equality needed 2. The lemma became an inequality, and every later case split that leaned on the equality had to be rebuilt.</p>
+
+        <p>The substantial one is the Unbalanced Group Theorem, a load-bearing component of the classification. Following John Walter's 1986 memoir, the agents found counterexamples to a closure assertion the argument relied on: an operation Walter assumed would keep you inside a specified family of groups can in fact land on a group the family explicitly excludes. The worked example starts at PSL₂(49); a certain involution's centralizer contains PSL₂(7) as a component — and 7 is a Mersenne prime, which the family excludes by definition. Two more counterexamples follow the same shape.</p>
+
+        <p>Scope matters, and Axiom states it precisely: this is a gap in one published route, not a refutation of the theorem, or even of the proposition's conclusion. The classification stands. Closing the gap took a different argument, built on Ronald Solomon's 1976 theory of maximal 2-components, whose key step — Theorem 2.3, "preservation of simple tops" — Axiom describes as a new result proved by its AxiomProver system. Solomon and Richard Lyons, two of the people who built the original classification, were consulted along the way. Then the deflating detail, which is why you should trust the account: after the formalization, Axiom's own mathematicians found a shorter human-scale deduction that reaches the same conclusion without the new theorem at all. The machine's contribution was real — it found the hole and produced a working repair — but it was not the only repair available once humans looked at the hole it had found.</p>
+
+        <p>In 2005, Michael Aschbacher — who knows something about long proofs — wrote that it is impossible to write out a very long and complicated argument without error. He was right, and the formalization is the audit that proves it: peer review is a statistical process applied to 15,000 pages; Lean is a binary process applied to every line. One of them found the counterexamples from 1986. The other one was peer review.</p>
+
+        <h2>The Checker Is the Story</h2>
+
+        <p>In July, a three-page PDF appeared claiming a frontier model had proved the Cycle Double Cover Conjecture — in prose no machine could check, resting entirely on reputation (<a href="the-proof-gap.html">I wrote about it at the time</a>). Four months separate that artifact from this one. The models improved over those four months, sure. But the delta between "a proof nobody can check" and "a proof anyone can check" is not intelligence. It is the acceptance environment.</p>
+
+        <p>Look at what actually carried the claim. The repository is <code>sorry</code>-free — no placeholder admits an unproved step — with a recorded count of zero. It depends on exactly three standard axioms and no <code>native_decide</code> shortcuts, and Lean can enumerate every axiom any theorem depends on, so a hidden assumption would surface in the ledger. A configuration file tells Lean's comparator tool to check that the solution proves <em>exactly</em> the stated theorem, nothing weaker. A full verification build runs in under 24 hours on ordinary hardware. Every one of those properties is a property of the harness, not the model.</p>
+
+        <p>And the honest engineering detail of the whole story: the bottleneck was never generation. Axiom's engineers report that agents produced proofs faster than Lean could recheck them, and that changing one shared result forced rechecks of everything downstream — so they built distributed caching of build results across the swarm and externalized expensive finite calculations into certificates that could be checked separately. That sped verification up by orders of magnitude. Read that again as a software engineer: <strong>the agents were the cheap part; the checker was the infrastructure.</strong> Axiom did not scale the swarm until the model got better. It scaled the swarm once verification got faster.</p>
+
+        <p>The rest of the industry is living the mirror image. GitHub's Octoverse report, released the same week, says agents originated more than 40% of all pull requests in September — about 110 million of them — up from 17% in March. Nobody's review capacity grew 2.5x in six months. The constraint is no longer writing code; it is the queue of humans and pipelines that decide whether code is acceptable. Mathematics just showed what the endgame looks like when that queue is instant, mechanical, and impossible to negotiate with. The division of labor Axiom landed on — humans inspect the specification, the machine checks the deduction — is the whole game, and it is the central argument of <em>Harness Engineering</em>: the environment you build around a model decides what its output is worth.</p>
+
+        <h2>The Fine Print, Stated Honestly</h2>
+
+        <p>Before you redraw your roadmap around this, four caveats — all disclosed by Axiom itself, which is to their credit.</p>
+
+        <p><strong>It is currently one company's claim.</strong> Lean checks the deductions in the public repository, but as of the end of October, no independent full rebuild had been publicly reported, and Axiom explicitly invites the Lean community to rerun the build and group theorists to audit the statement. The invitation is the right sign; the audit is the missing one.</p>
+
+        <p><strong>A checker cannot check what the statement says.</strong> Lean verifies that the proof proves the stated theorem — it does not verify that the stated theorem is what mathematicians mean by CFSG. That review "is enforced by review, not mechanically," as the underlying TauCeti roadmap puts it. A subtly wrong definition would compile green and still be wrong. The specification is the residual human surface area, and it is the single most important place a human looks.</p>
+
+        <p><strong>The numbers wobble.</strong> The post says 43.1 million lines; the company's own launch thread said 50 million. The post says 34 noteworthy deviations; a contributor said "100 substantive fixes"; the errata document lists 96 entries. The 24 days also produced the combined codebase on top of Mathlib and the 1.2 million lines inherited from Qiuzhen-CFSG, not 43 million fresh lines. None of this smells like deception — it smells like a fast-moving project with inconsistent counts — but quote the caveated numbers, not the press release.</p>
+
+        <p><strong>Mathematics is the friendly arena.</strong> A proof assistant with a fifty-year head start and a kernel that accepts or rejects already existed. Your repository has no Lean for "this refactor is safe" or "this migration is complete." Tests underspecify; types are weak theorems; code review is prose. The story transfers as a direction, not a recipe.</p>
+
+        <h2>What Software Should Steal</h2>
+
+        <p>Four transferable lessons, in descending order of how little attention they're getting.</p>
+
+        <p><strong>Statements before swarms.</strong> The real product of the first week was the proof map — 108 milestones with explicit dependencies, derived from the literature before the first agent ran. When throughput collapsed on October 13, the fix was smaller, more precisely stated theorems, not a model swap. Your equivalent: write the machine-checkable statement of done before you spawn the fleet. An agent with a precise target and a checker is a labor force; an agent with a vibe and a merge button is a liability with a fast clock.</p>
+
+        <p><strong>Audit assumed prerequisites.</strong> The most instructive failure mode of the project was agents assuming enormous prerequisites rather than proving them — tens of thousands of lines, deleted. Your version of this is the agent that imports a library to avoid implementing a function, mocks a test to avoid satisfying it, or assumes an API contract nobody wrote down. The lines survive review far more easily in code than they did in Lean, because nothing downstream fails to compile. You have to go looking.</p>
+
+        <p><strong>Make acceptance unbypassable, then cheap.</strong> Your CI is a toy Lean the moment anything — human or agent — can merge around it. The order of operations Axiom's engineering implies: first make the checker total (no skipped suites, no forced merges, no tests that pass by construction), then make it fast (caching, parallelism, certificate-style artifacts for expensive checks), because a slow checker is what actually caps your agent throughput.</p>
+
+        <p><strong>Measure your verification latency.</strong> The single number that predicts how much agent output your organization can absorb is not tokens per second. It is how long your environment takes to say no. Axiom got 43 million accepted lines out of a system whose rejection latency was minutes and whose full rebuild was a day. Most teams run agents against review queues measured in human days, and then wonder why the swarm stalls.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p><strong>Count your <code>sorry</code>s.</strong> Grep the main branch for the local equivalents: skipped tests, <code>|| true</code>, commented-out assertions, suites excluded from CI, merges that landed with a red check. That count is your honest distance from a machine-checkable repository, and it is the number this story says matters.</p>
+
+        <p><strong>Pick one agent workflow and give it a checker it cannot charm.</strong> Not the whole backlog — one lane, like dependency upgrades or test repair. Define the acceptance predicate (build passes, behavior diff empty, property tests hold), wire it so the agent literally cannot merge without it, and measure the rejection rate. That number tells you more about your agents than any benchmark.</p>
+
+        <p><strong>Time the no.</strong> Measure how long it takes your environment to reject a bad change today — from push to red, including human queue time if humans are the gate. Whatever shrinks that number is, as of this month, the highest-leverage infrastructure work in an agent-heavy codebase. Axiom spent its engineering budget on verification caching, not on model selection, and it is now the only organization on earth with a computer-checked enormous theorem to show for a month of work.</p>
+
+        <p>The enormous theorem is a repository now, with a build anyone can run. The right conclusion is not that agents have become mathematicians. It is that agents were always going to be exactly as trustworthy as the thing checking their work — and for one famous, fifty-year, 15,000-page proof, that thing finally existed.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
