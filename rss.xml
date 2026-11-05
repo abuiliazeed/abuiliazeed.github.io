@@ -5,8 +5,36 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Sun, 01 Nov 2026 08:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 05 Nov 2026 05:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Verifier Never Arrived</title>
+      <link>https://abuiliazeed.github.io/blog/the-verifier-never-arrived.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-verifier-never-arrived.html</guid>
+      <description>The best bug-hunting agent ever benchmarked finds 19.3% of known bugs — one in five — on its own vendor's benchmark. The same week, the best model completes 12% of eight-hour professional tasks. Generation outran verification, and the receipts are public.</description>
+      <pubDate>Thu, 05 Nov 2026 05:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>The Kill Switch Cuts the Brain, Not the Hands</title>
+      <link>https://abuiliazeed.github.io/blog/the-kill-switch-cuts-the-brain.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-kill-switch-cuts-the-brain.html</guid>
+      <description>CrowdStrike shipped the first kill switch for AI agents from a top-tier security vendor — but what works on day one cuts model access at a gateway, not the running processes. Stopping an agent is a five-plane distributed-systems shutdown, and nobody has built all five planes yet.</description>
+      <pubDate>Wed, 04 Nov 2026 05:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>The Agent Became a Daemon</title>
+      <link>https://abuiliazeed.github.io/blog/the-agent-became-a-daemon.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-agent-became-a-daemon.html</guid>
+      <description>DeepSeek's internal super-agent reads company chats, notices bugs nobody reported to it, and starts reproducing them — unprompted. The next frontier isn't a smarter model. It's uptime.</description>
+      <pubDate>Tue, 03 Nov 2026 05:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>The Proof Went Through CI</title>
+      <link>https://abuiliazeed.github.io/blog/the-proof-went-through-ci.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-proof-went-through-ci.html</guid>
+      <description>The longest proof in mathematics — 15,000 pages, a hundred authors, half a century — became 43.1 million machine-checked lines in 24 days. The agents also found counterexamples hiding in the literature since 1986. The checker, not the model, is the story.</description>
+      <pubDate>Mon, 02 Nov 2026 05:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>The Agents Never Meet</title>
       <link>https://abuiliazeed.github.io/blog/the-agents-never-meet.html</link>

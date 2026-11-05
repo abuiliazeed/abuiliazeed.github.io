@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Verifier Never Arrived — Abuiliazeed</title>
+  <meta name="description" content="The best bug-hunting agent ever benchmarked finds 19.3% of known bugs — one in five — on its own vendor's benchmark. The same week, the best model completes 12% of eight-hour professional tasks. Generation outran verification.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-verifier-never-arrived.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-verifier-never-arrived.html">
+  <meta property="og:title" content="The Verifier Never Arrived">
+  <meta property="og:description" content="The best bug-hunting agent ever benchmarked finds 19.3% of known bugs — one in five — on its own vendor's benchmark. The same week, the best model completes 12% of eight-hour professional tasks. Generation outran verification.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Verifier Never Arrived">
+  <meta name="twitter:description" content="The best bug-hunting agent ever benchmarked finds 19.3% of known bugs — one in five — on its own vendor's benchmark. The same week, the best model completes 12% of eight-hour professional tasks. Generation outran verification.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-11-05">November 5, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Verifier Never Arrived</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>19.3%. That is the share of known bugs found by the best bug-hunting agent ever benchmarked — one in five — on a benchmark its own vendor built, ran, and graded, with a full hour per product area and every home-field advantage a first-party evaluation can provide. It is the highest number in the table. Read it again: the winning score is a number that would get a build system decommissioned.</p>
+
+        <p>The benchmark is QA Bench, published November 2 by Momentic, a YC W24 company whose product is a testing agent called Mo. It lands in the same month that agents drafted the first version of 110 million pull requests on GitHub — over 40% of all PRs, up from 17% in March. The supply side of software has scaled past what most engineering organizations can review. The demand side — the checking — just published its scorecard, and the scorecard says almost nobody is home.</p>
+
+        <h2>What QA Bench Actually Measured</h2>
+
+        <p>Momentic picked four of the most-used open-source web applications alive: Gitea, Metabase, Twenty, and Saleor — 192,600 combined GitHub stars, codebases ranging from 644 thousand to 3.15 million lines. They split the apps into 20 product areas, pinned each to an upstream commit, and assembled a reference set of 1,396 human-labeled bugs. None of the bugs were planted for the occasion. They are real defects in real shipped software, reviewed and labeled, alongside 501 rejected reports so that precision can be measured too.</p>
+
+        <p>Each agent configuration gets one product area in a fresh sandbox with seeded data and the same brief: explore the running application and report what's broken. No source code. No internet. No peeking at the labels. Thirty minutes or sixty. An LLM judge with a human reviewer then matches each report against the reference set. Ten configurations ran: Mo; Codex with two GPT-6.1 variants; Claude Code with two Claudes; each general agent in two browser-tool configurations; and Devin.</p>
+
+        <p>This is the right shape for a QA benchmark. Real apps, real bugs, fixed time, black-box access — this is the job. The results are the story, and they are bleak in a very specific way.</p>
+
+        <h2>The Winner Misses Four in Five</h2>
+
+        <p>At the sixty-minute budget, averaged over three runs per area:</p>
+
+        <ul>
+          <li><strong>Mo: 269.3 bugs matched, 19.3% recall, 84.2% precision, $2.67 per bug.</strong> The clear winner — 3.1× the best Codex configuration, 4.6× the best Claude Code one.</li>
+          <li><strong>Codex, GPT-6.1 Sol, Playwright MCP: 86.3 bugs, 6.2% recall, 86.0% precision, $0.80 per bug.</strong> The cheapest bugs on the board.</li>
+          <li><strong>Claude Code, Opus 5.5, Playwright MCP: 59.0 bugs, 4.2% recall, $4.09 per bug.</strong></li>
+          <li><strong>Devin: 27.0 bugs, 1.9% recall.</strong> Claude Code with Sonnet 5.5 closes the table at 15.0 bugs, 1.1%.</li>
+        </ul>
+
+        <p>Notice what isn't broken. Precision sits between 80% and 86% across the field — these agents are not inventing phantom bugs. When they report a defect, it's usually real. The failure mode is coverage: the best configuration in history, in an hour, against a set of 1,396 bugs, leaves 1,127 of them on the table. This is not a hallucination problem. It's a "you don't know what you didn't find" problem, which is the oldest problem in quality assurance and the one automation was supposed to solve.</p>
+
+        <p>Hold the contrast in your head, because it's the whole argument. The same GPT-6.1 Sol that completes 65% of entire products on Replit's ViBench 2.0 — passing more than 90% of individual feature checks along the way — finds 6.2% of the bugs in software other people wrote. Generation and detection are not one skill moving in one direction. They are different skills moving at different speeds, and the widening gap between them is your review queue.</p>
+
+        <h2>The Conflict of Interest Makes It Worse, Not Better</h2>
+
+        <p>Momentic says it plainly at the top of the post: <em>"Momentic built, designed, ran, and graded the benchmark."</em> Mo won it. The judge was GPT-6.1 Sol — the model inside the runner-up configuration. Codex ran with web search enabled while others didn't. Mo, uniquely, had to produce a reproduction video and a written report for every bug it filed. There are no error bars, and Devin got a single pass. If you're tempted to throw the whole thing out on these grounds, sit with one detail first.</p>
+
+        <p>The candidate labels came from bug bashes run by Mo, Claude Code, and Codex — three of the agents being graded. A bug that none of them can find has no path into the reference set. The 1,396 bugs are, by construction, bugs this cohort of agents could at least once find. And the best of the cohort, on its home field, against a set its family helped curate, in a full hour, finds one in five.</p>
+
+        <p>The conflict of interest doesn't inflate the headline number. It deflates the denominator. Whatever these agents' true recall is against all the bugs that exist, it is lower than 19.3%.</p>
+
+        <h2>The Eight-Hour Version of the Same Result</h2>
+
+        <p>The same week, SemiAnalysis published GDPx — 206 tasks across 11 professional domains, from chip design and cybersecurity to finance and legal work, each running inside a realistic environment for up to eight hours, three attempts per task. Claude Opus 5.5 leads at 12.0%. Gemini 4 Carbon follows at 10.9%, GPT-6 Astra at 9.6%. The authors describe it as "a true frontier-level benchmark: even the best model scores just 12%." And in the per-domain coverage, finance and legal tasks reportedly scored zero — for every model tested, the entire thirteen-model field.</p>
+
+        <p>Different benchmark, same signature. Wherever the work has an executable oracle — code that compiles, tests that run, a build that either ships or doesn't — agents are now competent and sometimes excellent. Wherever correctness has to be judged rather than executed — a contract clause, a trade, a bug that may or may not exist behind a screen you can't see behind — the frontier completes one task in eight, and the hardest domains complete none.</p>
+
+        <p>GDPx is not a QA benchmark. But its zero-scoring domains are the QA problem at professional scale: no oracle, no credit. The models were never going to verify their way out of this by being bigger, because verification isn't a capability that falls out of next-token prediction at scale. It's a different kind of work — the work of proving the absence of failures — and it has to be engineered around, not wished into the weights.</p>
+
+        <h2>The Harness Moved the Number as Much as the Model</h2>
+
+        <p>For people who run agents rather than sell them, QA Bench's most reusable finding isn't about Mo at all. It's this: for the same model, swapping the browser tool changed the number of bugs found by 10% to 58%. Playwright MCP versus agent-browser — same model, same brief, same hour, same sandbox. A tooling decision produced a swing bigger than the gap between model families. The layer under the model didn't tune the result; it re-ranked it.</p>
+
+        <p>Then there's time. Mo rose 52% going from thirty minutes to sixty. Claude Code with Opus 5.5 rose 55%. The Codex configurations gained 16% or actually lost ground. Whether an agent converts extra budget into extra coverage is not a property of the model — it's a property of the harness: what it re-explores, what it remembers between attempts, whether it digs deeper or wanders in circles. GDPx's designers clearly agree; they gave their tasks eight hours, because the frontier now runs on patience.</p>
+
+        <h2>What This Means for You</h2>
+
+        <p><strong>1. Stop asking what an agent can write. Start asking what it can find.</strong> Take your last fifty closed bug reports, replay them against a pinned build in a sandbox, run your current agent for an hour, and count the matches. That number — not any leaderboard — is your QA posture. Momentic put the dataset on Hugging Face and the harness on GitHub precisely so you can do this on your own product.</p>
+
+        <p><strong>2. Budget time, not tokens.</strong> The agents that scale with budget found 3–4× the bugs of the ones that don't. If your harness caps effort to control cost, you've optimized for the cheapest zero on the board. QA is the one lane where spending more compute is almost always correct, because the alternative — the missed bug in production — is what the whole budget was for.</p>
+
+        <p><strong>3. Choose your tools with the rigor you reserve for models.</strong> A 10–58% coverage swing from the browser layer is not a rounding error; it's the difference between middling and near the top of this table. Instrument it, A/B it, and re-test it every quarter, because today's best tool is a property of this month's models.</p>
+
+        <p><strong>4. Treat your review capacity as production infrastructure.</strong> When 40% of PRs are agent-drafted, the reviewer is the constraint on throughput and the last line of defense simultaneously. Staff it, measure its queue depth, and alert on it like you'd alert on any other saturated system — because it is one.</p>
+
+        <p><strong>5. Never accept "the agent tested it" as evidence.</strong> The best tester on earth, under its vendor's most favorable conditions, finds one bug in five. An agent attesting to its own work is a claim with a measured floor of roughly 80% unwarranted confidence. Verification needs to come from outside the thing being verified — a different harness, a different pass, a seeded canary only your team knows is there.</p>
+
+        <h2>You Are the Verifier</h2>
+
+        <p>The generation problem is being solved in public, weekly, with splashy launches and commodity pricing. The verification problem got its first honest leaderboards this week, and the best score between them is 19.3% on the vendor's own field. Nothing about this is an argument against agents; the economics already won that argument. It's an argument about where the remaining leverage lives. The thesis of <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em> is that durable advantage was never in the model — it's in the layer that checks the model. This week, the checkers finally published their numbers.</p>
+
+        <p>Until those numbers move, every agent-written pull request ends at a human. The queue isn't overhead on the agent revolution. The queue <em>is</em> the agent revolution's remaining bottleneck — and this week it finally has a measurement.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
