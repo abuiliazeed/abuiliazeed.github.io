@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Leaderboard Is a Tie. The Bill Is Not. — Abuiliazeed</title>
+  <meta name="description" content="ServiceNow graded 34,000 coding-agent attempts on its own platform: the top seven model-harness combos are a statistical tie, but the cheapest costs $0.11 per attempt and the dearest $4.21. Token price predicted none of it. Loop length did.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/agent-cost-lives-in-the-loop.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/agent-cost-lives-in-the-loop.html">
+  <meta property="og:title" content="The Leaderboard Is a Tie. The Bill Is Not.">
+  <meta property="og:description" content="ServiceNow graded 34,000 coding-agent attempts on its own platform: the top seven model-harness combos are a statistical tie, but the cheapest costs $0.11 per attempt and the dearest $4.21. Token price predicted none of it. Loop length did.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Leaderboard Is a Tie. The Bill Is Not.">
+  <meta name="twitter:description" content="ServiceNow graded 34,000 coding-agent attempts on its own platform: the top seven model-harness combos are a statistical tie, but the cheapest costs $0.11 per attempt and the dearest $4.21. Token price predicted none of it. Loop length did.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-11-06">November 6, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Leaderboard Is a Tie. The Bill Is Not.</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>$0.11 and $4.21. Those are the per-attempt costs of two coding-agent configurations that solved, within statistical noise, the same share of real engineering tasks — 69.7% for GPT-6.1 Sol driven by Claude Code, 69.2% for Claude Opus 5 driven by OpenCode. Thirty-eight times the price bought a lead of half a point, on a table where a lead has to reach 6.6 points before it means anything at all. The most expensive thing in your agent stack is not the model you picked. It is the belief that the pick mattered.</p>
+
+        <p>The numbers come from ServiceNow, which this week published the benchmark every large engineering org should have built two years ago and almost none has. They call it Touchstone. It mines tasks from real pull requests merged into their repositories, runs any model under any harness in a sealed copy of the repo, and grades each attempt by running the tests the original engineers wrote — no model judging another model's work, no vibes, no partial credit. About 34,000 graded attempts ran between September and October on a six-million-line Java platform where a Gradle test cycle takes five to ten minutes. If you have ever suspected that no vendor leaderboard reflects your codebase, this is what it looks like when someone finally measures theirs.</p>
+
+        <p>Three findings in the data should rewire how your team budgets, selects, and configures agents. None of them flatters the current defaults.</p>
+
+        <h2>The Top of the Table Is Noise</h2>
+
+        <p>SWE-2 under Devin CLI finished first at 71.7%. Claude Opus 5 under Claude Code took second at 70.8%. Seven combinations landed within 2.7 points of each other. With 200 tasks and three attempts per combination, a lead has to reach roughly 6.6 points before it is distinguishable from chance for a single pair — and 11.5 points once you correct for the fact that a leaderboard quietly compares every pair against every other. Of the 666 pairs in the full table, 153 survived that correction. Most of the table is a tie wearing different logos.</p>
+
+        <p>Sit with what that does to the average model-selection meeting. Teams spend days arguing over differences their own data could never detect, on benchmarks that are not even their code. Those arguments are not just wasted time — they are budget decisions made on noise, and noise is expensive in exactly one direction: toward the pricier cell.</p>
+
+        <p>The tie also hides a column that matters more than the ranking. ServiceNow tracked <em>solved on all three attempts</em> — the share of tasks a combination got right every single time, which is much closer to what a developer experiences when they run an agent once and read the diff. SWE-2, GPT-6.1 Sol, and Gemini 3.7 Flash all sat at 62 to 64% on that measure. Kimi K3 under OpenCode solved 56% of tasks overall but only 38.5% consistently, because 16% of its attempts ran out the clock. Averages flatter agents that are brilliant twice and asleep once. Consistency is a separate number, and almost nobody asks for it.</p>
+
+        <h2>The Empty Middle of the Cost Curve</h2>
+
+        <p>Plot every combination by cost per attempt against share of tasks solved, and the efficient frontier has exactly four points on it: GPT-5.6 Luna under OpenCode at $0.05 and 61.7%; the same model under Devin CLI at $0.07 and 64.5%; GPT-6.1 Sol under Claude Code at $0.11 and 69.7%; and SWE-2 under Devin CLI at $1.48 and 71.7%. Three of the four best quality-per-dollar cells on the entire board cost eleven cents or less.</p>
+
+        <p>Here is the part that should end some procurement debates: between $0.11 and $1.48 sit fifteen other combinations, and not one of them solves more tasks than the eleven-cent cell does. The middle of the cost curve is empty in the only sense that matters — everything in it is dominated on both axes. You can pay up to thirteen times more per attempt for a worse solve rate, and teams do, constantly, because the invoice is denominated in tokens nobody converts to tasks.</p>
+
+        <p>Divide the spend by successes instead of attempts and the gap stretches further: GPT-6.1 Sol delivered a passing change for fifteen cents; Claude Opus 5 under OpenCode needed $6.08. ServiceNow's own conclusion is blunt — routine agent work belongs on the cheap frontier cells, with SWE-2 and Opus 5 reserved for the tasks that actually need them, because "the data does not support paying thirty times more for the typical task."</p>
+
+        <h2>Token Price Predicts Almost Nothing</h2>
+
+        <p>The finding I keep re-reading is the one about price. Engineers estimate a model's cost from its price per million tokens. On this data, that estimate can be off by an order of magnitude — in either direction.</p>
+
+        <p>Claude Sonnet 5 and Claude Sonnet 5.5 have identical list prices. Sonnet 5 cost $1.19 per attempt, making 55 model calls and running a median of six and three-quarter minutes. Sonnet 5.5 cost seven cents, making 8 calls and finishing in 26 seconds. Solve rates: 64.8% against 63.0%. The newer model, at the same token price, is seventeen times cheaper to run — because it does the work in one-seventh the round trips.</p>
+
+        <p>Claude Opus 5 lists at $5 in, $25 out; Opus 5.5 lists 20% lower. Per attempt, Opus 5 cost $3.31 and Opus 5.5 cost $0.67 — a five-fold gap from a 20% discount. Opus 5 made 63 model calls per attempt and read 3.6 million tokens of context doing it; Opus 5.5 made 22 calls and read 0.7 million. Kimi K3 lists 65% more per token than Sonnet 5 and cost two cents more per attempt. The price list is not wrong, exactly. It is measuring the wrong thing.</p>
+
+        <p>The variable that actually tracks cost is <strong>model calls per attempt</strong> — how many times the loop comes back to the model before the task is done. That is a joint property of the model's working style and the harness driving it, which is why the same model under two harnesses differed in cost by anywhere from 30% to more than double while solving the same share of tasks. Cost is not price times volume. Cost is behavior times price, and behavior varies by nearly an order of magnitude while you were reading the rate card.</p>
+
+        <h2>The Cargo Cult Audit</h2>
+
+        <p>Then ServiceNow tested the things everyone does because everyone does them. The results are unkind.</p>
+
+        <p><strong>Turning reasoning effort up did not pay.</strong> Across four models, the dial raised cost per attempt by 1.1× to 2.6× and moved solve rates between −2.5 and +3.5 points — none of it surviving statistical correction. Teams are paying double for a coin flip and calling it thoroughness.</p>
+
+        <p><strong>Loading the repository's own agent instructions did not pay either.</strong> Giving the agent the repo's <code>CLAUDE.md</code> and <code>AGENTS.md</code> made Opus 5.5 attempts 58% more expensive and no better at solving tasks. A minimal, hand-curated instruction pack was followed faithfully, cost 28% more, and also bought nothing. The files everyone maintains as a best practice are, on this evidence, a tax on headless runs. ServiceNow's takeaway is the heretical one: don't load them.</p>
+
+        <p><strong>Context-compression tools did not move the bill.</strong> Two of them, Headroom and RTK, removed 7 to 9% of input tokens and changed total cost by nothing measurable. The savings were consumed by extra model calls, and most of the traffic they compress is already discounted cache. The tools are solving a problem the invoice no longer has.</p>
+
+        <p>One more result deserves a sentence: the harness itself was decisive for three of ten models and invisible for the other seven. Kimi K3 swung ten points between harnesses, much of it timeouts. MiniMax M3 swung twelve — largely by surrendering without changing anything in 96 attempts under Claude Code. Model-harness fit is empirical, not ideological. You discover it by running your own tasks, which is the entire point of building your own scoreboard.</p>
+
+        <h2>What This Means for You</h2>
+
+        <p><strong>1. Change your cost unit.</strong> Stop quoting price per million tokens and start quoting cost per attempt and calls per attempt on your own tasks. The first number belongs to the vendor. The second two are a behavior profile — yours — and they are the only ones that predict the bill.</p>
+
+        <p><strong>2. Route by tier, and skip the middle.</strong> Default routine work to the cheap frontier cell you measured; escalate the rare hard task to the expensive one. The empty middle of the cost curve is not a gap waiting to be filled by a mid-priced subscription. It is the region where money goes to be dominated on both axes.</p>
+
+        <p><strong>3. Kill the max-effort default.</strong> If a 1.1–2.6× cost increase cannot survive a significance test on 200 real tasks, it will not survive yours. Effort is a dial for the escalated tier, not a lifestyle.</p>
+
+        <p><strong>4. Audit your instruction files against a control run.</strong> If your <code>AGENTS.md</code> costs 58% more and buys zero, you are maintaining documentation for the agent that the agent does not need. Measure, then decide — especially for headless runs.</p>
+
+        <p><strong>5. Build the benchmark. It is cheaper than you think.</strong> Touchstone needs nothing a team with a test suite and a history of merged pull requests does not already have. ServiceNow is explicit that the hard parts were not the runner but the gates: proving a test actually detects the change, keeping the answer out of the prompt, keeping it out of the workspace, and refusing to report a difference the data cannot support. Two hundred tasks, three attempts each, and your arguments about models become arguments about evidence.</p>
+
+        <h2>The Commodity at the Top</h2>
+
+        <p>The tie at the top of ServiceNow's table is good news wearing a boring outfit. It means raw solve quality at the frontier has become a commodity — close enough that seven combinations are interchangeable within noise, and the honest answer to "which model is best?" is "for which loop?" What is not a commodity is everything the table says actually moves the numbers: how many round trips a model-harness pair takes, whether it finishes in 26 seconds or 31 minutes (both are real medians on this board), whether it solves consistently or only occasionally, and whether your router sends the typical task to the eleven-cent cell or the four-dollar one.</p>
+
+        <p>That is a harness engineering problem, start to finish — treating the loop around the model as the product, which is the argument I spent a book making in <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>. But this week you don't need the book. You need the 34,000 attempts of someone else's evidence: the models tied, the loops didn't, and the difference is a line item on your invoice.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
