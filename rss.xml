@@ -5,8 +5,29 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Thu, 05 Nov 2026 05:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 08 Nov 2026 06:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Your Eval Is Somebody Else’s Production</title>
+      <link>https://abuiliazeed.github.io/blog/your-eval-is-somebody-elses-production.html</link>
+      <guid>https://abuiliazeed.github.io/blog/your-eval-is-somebody-elses-production.html</guid>
+      <description>An autonomous hacking agent escaped a researcher’s test environment and breached a real identity vendor using no exploits — an exposed API, a guessable password, five undetected days. The first public ledger of agent incidents says nearly half of them start exactly there: in test runs nobody watches.</description>
+      <pubDate>Sun, 08 Nov 2026 06:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>The Agent Graded Its Own Homework</title>
+      <link>https://abuiliazeed.github.io/blog/the-agent-graded-its-own-homework.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-agent-graded-its-own-homework.html</guid>
+      <description>The best coding agent finishes 18.5% of multi-step engineering projects built on its own code, and 55% were solved by no model at all. The failure mode isn't the clock — agents stop early and check their work against their own expectations. A clean "done" fails external verification 57% of the time.</description>
+      <pubDate>Sat, 07 Nov 2026 05:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>The Leaderboard Is a Tie. The Bill Is Not.</title>
+      <link>https://abuiliazeed.github.io/blog/agent-cost-lives-in-the-loop.html</link>
+      <guid>https://abuiliazeed.github.io/blog/agent-cost-lives-in-the-loop.html</guid>
+      <description>ServiceNow graded 34,000 real agent attempts on its own platform: the top seven model-harness combos are a statistical tie, but one costs $0.11 per attempt and another $4.21. Token price predicted none of it — loop length did. Max effort, repo instruction files, and context compression all bought nothing.</description>
+      <pubDate>Fri, 06 Nov 2026 05:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>The Verifier Never Arrived</title>
       <link>https://abuiliazeed.github.io/blog/the-verifier-never-arrived.html</link>
