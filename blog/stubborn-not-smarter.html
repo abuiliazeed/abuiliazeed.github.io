@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stubborn, Not Smarter — Abuiliazeed</title>
+  <meta name="description" content="RL-trained agents pick worse next steps than their own base models in most matched states — and still finish far more tasks. Agentic RL buys error recovery, not intelligence, and under a tight turn budget the model ranking flips. OpenAI's $1.2M security pipeline run prices the same lesson: the stopping rule, not the model, was the biggest lever.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/stubborn-not-smarter.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/stubborn-not-smarter.html">
+  <meta property="og:title" content="Stubborn, Not Smarter">
+  <meta property="og:description" content="RL-trained agents pick worse next steps than their own base models in most matched states — and still finish far more tasks. Agentic RL buys error recovery, not intelligence, and under a tight turn budget the model ranking flips. OpenAI's $1.2M security pipeline run prices the same lesson: the stopping rule, not the model, was the biggest lever.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Stubborn, Not Smarter">
+  <meta name="twitter:description" content="RL-trained agents pick worse next steps than their own base models in most matched states — and still finish far more tasks. Agentic RL buys error recovery, not intelligence, and under a tight turn budget the model ranking flips. OpenAI's $1.2M security pipeline run prices the same lesson: the stopping rule, not the model, was the biggest lever.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-11-09">November 9, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">Stubborn, Not Smarter</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Put a reinforcement-trained agent and the untrained base model it came from into the exact same state &mdash; same observation, same history, same everything &mdash; and ask each for its next move. Most of the time, the trained model now picks the worse action. On FrozenLake, a planning benchmark where every state has a provably optimal move, the RL-trained agent chose the better next action in only <strong>42.8%</strong> of matched states. On DeepCoder-MT, a multi-turn coding environment, it managed <strong>46.8%</strong>. The base model &mdash; the exact weights the training run started from &mdash; wins the majority of head-to-head comparisons.</p>
+
+        <p>And the trained model still finishes far more tasks. It survives errors the base model dies on, sustains longer horizons, and converts failed trajectories into completed ones. A paper posted to arXiv on November 4 &mdash; <em>What Does Multi-Turn Reinforcement Learning Really Improve in LLM Agents?</em> &mdash; is the cleanest decomposition yet of where that improvement actually comes from, and the answer is not intelligence. It is recovery.</p>
+
+        <p>Most people think agentic RL makes models smarter. The measurements say it mostly makes them stubborn. That distinction sounds academic until you realize it decides which model you should buy, how much budget to give it, and when to cut it off &mdash; and a $1.2 million OpenAI pipeline run published the same week prices every one of those decisions.</p>
+
+        <h2>The Experiment That Separated Smart from Stubborn</h2>
+
+        <p>The research team trained Qwen3-4B and Qwen3-8B with GRPO &mdash; today&rsquo;s default agentic RL algorithm &mdash; across four interactive benchmarks: FrozenLake for planning, DeepCoder-MT for multi-turn code generation with unit-test feedback, BFCL for tool calling, and InterCode-SQL for database work. Then they did something most evaluation skips: instead of only comparing final scores, they collected <em>matched states</em> &mdash; situations both models actually reach &mdash; sampled 16 actions from each policy in each state, and scored the actions independently. For FrozenLake, by dynamic programming against the provably optimal move. For DeepCoder-MT, by unit-test pass rate.</p>
+
+        <p>The step-level comparison is a tie at best, slightly favoring the base model. But the trajectory-level results overwhelmingly favor the trained one. And the training dynamics explain how both things can be true simultaneously: over the course of the run on DeepCoder-MT, the trajectory-level reward rose by 0.331 while the step-level reward <em>fell</em> by 0.097. The model was getting measurably better at finishing tasks and measurably worse at individual decisions &mdash; in the same training run, moving in opposite directions.</p>
+
+        <p>There is a telling detail buried in the likelihood analysis. On Terminal-Bench, the trained model&rsquo;s individual actions look almost ordinary to the base policy &mdash; the per-action probabilities barely differ. But the cumulative probability the trained policy assigns to its own complete successful trajectories is roughly nine times higher. RL didn&rsquo;t rewrite the moves. It rewrote which sequences of moves the model believes in.</p>
+
+        <h2>The Advantage Lives One Step After the Mistake</h2>
+
+        <p>If the trained model isn&rsquo;t better at choosing actions, why does it win? The researchers built an error-state pool: take a working trajectory, deliberately inject a wrong action at the previous step, and hand both models the wreckage. The picture inverts completely. From error states, the RL model picked the superior recovery action in <strong>65.7%</strong> of FrozenLake cases and <strong>67.3%</strong> of DeepCoder-MT cases. Continued from identical error states, it finished the task 51.3% of the time versus the base model&rsquo;s 38.6% on FrozenLake, and 38.5% versus 22.9% on DeepCoder-MT.</p>
+
+        <p>The tool-calling numbers are the most production-relevant. Across 191 conversation prefixes that already contained a failed tool call, the trained model repaired the call with its very next action 41.4% of the time; the base model managed 27.2%. That gap &mdash; noticing you passed an unsupported argument and removing it instead of repeating the mistake &mdash; is the entire distance between an agent that needs a babysitter and one that doesn&rsquo;t.</p>
+
+        <p>Depth completes the picture: early in trajectories, the trained model is often <em>worse</em>; the advantage emerges late, in exactly the region where errors have accumulated and lesser policies have already lost the thread. RL, it turns out, discovered the same thing every senior engineer knows: in long-horizon work, the highest-leverage skill is what you do immediately after your own mistake.</p>
+
+        <h2>Tighten the Budget and the Ranking Flips</h2>
+
+        <p>Here is the result that should reorganize your model selection process. The paper evaluates along two axes &mdash; how many parallel attempts you sample, and how many turns each attempt gets. The full turn budgets were generous: 70 for FrozenLake, 24 for BFCL, 10 for the coding and SQL tasks. Cut the budget to 25% and the trained model&rsquo;s advantage doesn&rsquo;t just shrink &mdash; it reverses. Qwen3-4B with GRPO scored 28.7% against the base model&rsquo;s 30.3% on FrozenLake, and 29.2% against 34.0% on DeepCoder-MT. On the larger 8B model at DeepCoder-MT, standard GRPO scored 31.5% against the base&rsquo;s 42.8% &mdash; an eleven-point <em>loss</em> attributable to training, at the full budget.</p>
+
+        <p>Recovery is a strategy that spends turns. Give the agent fewer turns than its recovery habit requires and you&rsquo;ve bought a model that starts slow, takes worse first steps, and never reaches the part of the trajectory where it excels &mdash; while paying RL-model prices for the privilege. Every leaderboard you&rsquo;ve ever seen assumes the generous end of the budget axis. Your production environment assumes whatever your cost cap, timeout, or patience says. If those two numbers differ, the leaderboard ordering you selected on may not exist at your setting.</p>
+
+        <p>The authors&rsquo; fix is instructive: BudgetMix, which trains across randomly sampled budgets and tells the model its remaining budget, gained 7.5 points over standard RL at 25% budget, 5.3 at 50%, 4.0 at 75%, with parity at full budget &mdash; and it flipped the step-level comparison back to positive. Budget is not merely an ops knob applied after training. It is a capability variable that can be trained into the model &mdash; which means harness configuration and model capability are now officially the same design space.</p>
+
+        <p>The paper closes on a warning worth pinning above every deployment dashboard: gains &ldquo;may diminish or reverse under tight budgets,&rdquo; which is most dangerous for workflows with irreversible actions &mdash; payments, database writes, emails sent. Recovery is worthless when the failure cannot be retried. In those workflows, per-step quality is the whole game, and the trained model&rsquo;s slight step-level deficit stops being a rounding error and becomes the deciding fact.</p>
+
+        <h2>The Same Lesson, Priced at $1.2 Million</h2>
+
+        <p>The same week, OpenAI published <em>A thousand fewer paths to root</em>, a write-up of an autonomous vulnerability pipeline that ran against the live Linux kernel in mid-October: discovery, dynamic validation, exploitability assessment, patch generation, human review. The numbers are already famous &mdash; 2,308 candidate findings, 1,724 reproduced inside 30 hours, 1,169 working local privilege escalation exploits, 948 distinct vulnerabilities with patches attached, $1,213,430 in API credits, $1,279 per vulnerability.</p>
+
+        <p>Read through the recovery lens and the run becomes a different document. The triage agents refined each proof of concept iteratively &ldquo;until it reproduced the reported behavior or exhausted the potential ways of triggering it.&rdquo; That is stamina, not brilliance &mdash; exactly the property the RL paper isolates. Only 3.1% of candidate findings were outright analysis errors; the hard, expensive part was never judgment. It was grinding through reproduction.</p>
+
+        <p>The cost breakdown says so outright. The discovery screening stage cost $44,194. The exploitation stage cost $775,929 &mdash; 64% of the entire run. Processing a privilege-escalation candidate averaged $558, but a <em>successful</em> exploit averaged just $359. Failures cost more than successes. In a recovery-heavy regime, spend concentrates in the attempts that never converge, and OpenAI&rsquo;s own retrospective names the lever: &ldquo;defining a reasonable give-up condition, such as stopping the attempt after making no progress for one hour, would have reduced the cost of ExploitDev significantly.&rdquo; The single biggest cost improvement available to the most advanced agent pipeline in production literature was not a better model. It was a stopping rule.</p>
+
+        <p>Recovery has a failure mode, too, and it&rsquo;s the subtle one. In an early run, the pipeline reported 200 successful exploits; human review found that 20 of them had achieved root through a <em>different</em> zero-day than the vulnerability they were assigned. The agent recovered into a success nobody asked for. OpenAI&rsquo;s takeaway &mdash; &ldquo;verify the path to a result in addition to verifying the result itself&rdquo; &mdash; is the control you need once your agents get stubborn: a determined model will find <em>a</em> way, and it will report it as <em>your</em> way.</p>
+
+        <p>The trajectory of the economics matters as much as the totals. A July run on GPT-5.6 Sol found 166 vulnerabilities for $513,690 &mdash; roughly $3,100 each. October&rsquo;s run found 948 at $1,279 each, over five times more novel vulnerabilities despite three months of upstream hardening between runs. On the hardened kernelCTF configuration, $32,936 bought 21 exploits &mdash; against 26 confirmed zero-days accepted by that program in all of 2026. Whatever you thought the half-life of a kernel bug was, price it lower.</p>
+
+        <h2>What This Means for Your Harness</h2>
+
+        <p>None of this argues against RL-trained agents. It argues for knowing what you bought and provisioning for it &mdash; because the model supplies the stubbornness, and everything it needs to capitalize on that stubbornness lives in your harness:</p>
+
+        <ul>
+          <li><strong>Select models at the budget you actually run.</strong> Re-run your bake-off at 25%, 50%, 75% and 100% of your real production turn cap. If the ordering changes &mdash; and the paper shows it can &mdash; your selection process has been optimizing for a setting you don&rsquo;t operate in.</li>
+          <li><strong>Make the budget explicit, and consider it part of capability.</strong> BudgetMix proves the remaining-budget signal can be trained for. In deployment, that means your turn cap is not an accounting detail &mdash; it is a model-behavior setting. Treat changing it like changing the model.</li>
+          <li><strong>Write the give-up condition before the first run.</strong> One hour of no progress was worth &ldquo;significantly&rdquo; less spend on the most sophisticated pipeline ever published. A no-progress timeout is the cheapest cost lever in agent operations, and almost nobody configures it.</li>
+          <li><strong>Measure recovery, not just success.</strong> Track success rate from error states, next-action repair rate after failed tool calls, and the share of budget consumed after the first error. Those are the numbers that predict whether a model&rsquo;s RL premium pays off in <em>your</em> environment.</li>
+          <li><strong>Match the model to the reversibility of the work.</strong> Retriable, sandboxed work rewards recovery models &mdash; give them budget. Irreversible actions reward per-step quality &mdash; where the base model ties or wins, and a determined agent is a liability. Route accordingly.</li>
+          <li><strong>Verify the path, not just the outcome.</strong> Twenty exploits &ldquo;succeeded&rdquo; through the wrong vulnerability. For any agent whose output you act on, record the trace and confirm the result was achieved the assigned way &mdash; especially when the result looks like a win.</li>
+        </ul>
+
+        <h2>What to Do This Week</h2>
+
+        <ul>
+          <li>Pull your agent config and find the turn cap, timeout, and retry policy. If any of the three is unset or inherited by accident, you are running an unprovisioned recovery model &mdash; fix that today; it&rsquo;s an afternoon.</li>
+          <li>Add a no-progress give-up rule to your longest-running agent task and diff the spend for a week. Failures cost more than successes; this is where the money is.</li>
+          <li>Pick your two candidate models and run ten identical tasks with the budget capped at a quarter of normal. You are testing whether your leaderboard survives contact with your cost cap.</li>
+          <li>Instrument one workflow with error-state logging: where the first error lands, what the agent does next, whether it recovers. That trace is worth more than any benchmark delta you&rsquo;ll read this month.</li>
+        </ul>
+
+        <p>The uncomfortable conclusion isn&rsquo;t that RL training fails. It succeeds at something more specific than the marketing says: it trains the get-up, not the jump. Persistence only pays where the environment lets a failed attempt continue, which means the value of every &ldquo;agentic&rdquo; model is conditional on harness properties &mdash; budget, stopping rules, path verification &mdash; that most teams still configure by folklore. The model supplies the stubbornness. The conditions that turn stubbornness into finished work are yours to build; that division of labor is the core argument of <em>Harness Engineering</em>, and as of this month it has a unit price: $1,279 per stubborn, verified, patched outcome.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>

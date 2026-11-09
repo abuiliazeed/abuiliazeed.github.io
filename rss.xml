@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Sun, 08 Nov 2026 06:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Mon, 09 Nov 2026 06:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Stubborn, Not Smarter</title>
+      <link>https://abuiliazeed.github.io/blog/stubborn-not-smarter.html</link>
+      <guid>https://abuiliazeed.github.io/blog/stubborn-not-smarter.html</guid>
+      <description>RL-trained agents pick a worse next step than their own base models in most matched states — and still finish far more tasks. Agentic RL buys error recovery, not intelligence, and under a tight turn budget the ranking flips entirely. OpenAI's $1.2M kernel-securing pipeline prices the same lesson: the stopping rule beat the model.</description>
+      <pubDate>Mon, 09 Nov 2026 06:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>Your Eval Is Somebody Else’s Production</title>
       <link>https://abuiliazeed.github.io/blog/your-eval-is-somebody-elses-production.html</link>
