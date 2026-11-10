@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Harness Became the Customer — Abuiliazeed</title>
+  <meta name="description" content="Meta's Muse Ember costs $0.10 per million input tokens, and most humans will never type to it — it was designed, trained, and priced for the subagent slot in someone else's harness. When a frontier lab ships models to a routing layer instead of a chat window, model selection stops being your internal decision and becomes their product line.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-harness-became-the-customer.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-harness-became-the-customer.html">
+  <meta property="og:title" content="The Harness Became the Customer">
+  <meta property="og:description" content="Meta's Muse Ember costs $0.10 per million input tokens, and most humans will never type to it — it was designed, trained, and priced for the subagent slot in someone else's harness. When a frontier lab ships models to a routing layer instead of a chat window, model selection stops being your internal decision and becomes their product line.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Harness Became the Customer">
+  <meta name="twitter:description" content="Meta's Muse Ember costs $0.10 per million input tokens, and most humans will never type to it — it was designed, trained, and priced for the subagent slot in someone else's harness. When a frontier lab ships models to a routing layer instead of a chat window, model selection stops being your internal decision and becomes their product line.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-11-10">November 10, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Harness Became the Customer</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Ten cents per million input tokens. Half a dollar per million output. A quarter-cent for cached input. On November 9, Meta released Muse Ember, and the price is the least interesting thing about it. The interesting thing is who the model is for: not a person at a keyboard. A slot in someone else&rsquo;s software.</p>
+
+        <p>Meta describes Ember as &ldquo;designed for complex reasoning execution and the work agents repeat all day: tool calls, coding subtasks, routing, extraction, and long document parsing.&rdquo; Read that sentence again. No frontier lab has ever shipped a model whose launch copy is a requirements doc for the subagent position. The partner quote Meta chose to feature — from the founder of Cline, whose product orchestrates coding agents — says it outright: teams are &ldquo;running it as the subagent in their harness,&rdquo; and Ember is &ldquo;purpose-built for, and excels at, subagent work.&rdquo;</p>
+
+        <p>Most people think the model race is about who has the smartest frontier model. That race still exists — Anthropic shipped Claude Fable 5.2 the same day at $8 per million input tokens. But a second race quietly started, and it may decide more about how software gets built: who supplies the executor — the cheap, fast, reliable model that handles the overwhelming majority of steps in an agent loop. Meta just made the strongest bid yet. The customer for a frontier model is no longer a user. It&rsquo;s a harness.</p>
+
+        <h2>A Spec Sheet Written by a Harness</h2>
+
+        <p>Look at Ember&rsquo;s specifications and try to find a single line aimed at a human chat session. There isn&rsquo;t one. Every spec maps to a need that only exists inside an agent loop:</p>
+
+        <p><strong>Up to 512K output tokens.</strong> No human asks for a half-million-token reply. An agent executing a long workflow — refactor, test, fix, re-test, summarize — does. Output limits sized like transcripts, not chat messages, tell you the intended workload.</p>
+
+        <p><strong>A one-million-token context window.</strong> Meta&rsquo;s own framing: it can &ldquo;take in a full codebase or document set in a single call.&rdquo; That&rsquo;s a model built to be handed a repository and a task, the way a harness hands work to a subagent.</p>
+
+        <p><strong>Cached input at $0.004 per million — 25 times cheaper than fresh input.</strong> This is the most quietly strategic number in the launch. Agent loops re-read the same files, the same system prompt, the same conversation history at every step. Pricing cache at a quarter-cent is a bet that Ember&rsquo;s traffic will be massively repetitive — the traffic pattern of loops, not conversations.</p>
+
+        <p><strong>A pricing cliff at 200K prompt tokens</strong> ($0.30 per million input beyond it, $1.50 output). The vendor is now explicitly charging by context size, which means your context-management strategy has a line-item cost. Harnesses that compress context get one price; harnesses that lazily replay everything get another.</p>
+
+        <p><strong>Native text, image, audio, and video input.</strong> Screenshots, charts, scanned documents, voice memos, meeting recordings — &ldquo;without a separate model.&rdquo; For a harness, that&rsquo;s not a feature; it&rsquo;s the elimination of a whole class of glue code and per-hop latency.</p>
+
+        <p>Then there&rsquo;s the speed evidence, because a model in a loop is only as fast as the slowest step. You.com measured a p95 of 2.2 seconds per request — four to thirteen times faster than the leading open-weight models they tested — with 36 to 48 percent fewer output tokens for the same work. Cloudflare saw it run up to 30 percent faster at the tail. Fewer tokens for the same result is a double win when you pay per token twice: once in dollars, once in loop duration.</p>
+
+        <h2>The Benchmarks Meta Chose to Lose</h2>
+
+        <p>Here is the detail that convinced me this launch is more than marketing. In Meta&rsquo;s own comparison table, Claude Haiku 5.5 wins one benchmark — and Meta marked it &ldquo;best result&rdquo; anyway.</p>
+
+        <p>On FrontierCode 2.0, which scores &ldquo;real engineering tasks judged on mergeability,&rdquo; Haiku scores 34.9 to Ember&rsquo;s 27.2. Everywhere else in the execution zone, Ember wins or ties: Terminal-Bench 4.0 (agentic terminal coding) at 40.9 versus Haiku&rsquo;s 39.2 and GPT-6 Luna&rsquo;s 16.4; the Coding Agent Index at 46 versus 37 and 31; AutomationBench — end-to-end business workflows like pulling records, calling tools in sequence, updating systems — at 37.8 versus Luna&rsquo;s 20.2 and Haiku&rsquo;s 13.9; OSWorld computer use at 69.5 partial credit, ahead of both.</p>
+
+        <p>That is not a uniform win. It&rsquo;s a profile: strong at high-volume, well-specified steps; deliberately weaker at the deep, ambiguous, merge-or-die engineering work that Anthropic&rsquo;s models are tuned for. Meta published its own model&rsquo;s weakness in the launch table because the weakness is the point. Ember isn&rsquo;t supposed to make the hard judgment calls. It&rsquo;s supposed to execute the ones a smarter model already made — Meta&rsquo;s own slogan for the pairing: &ldquo;Muse Wonder plans, Muse Ember handles the volume.&rdquo;</p>
+
+        <p>One footnote in Meta&rsquo;s table deserves a blog post of its own: the Terminal-Bench numbers were run with each model &ldquo;in its best published harness&rdquo; — Ember inside mini-swe-agent, Haiku inside Claude Code, Luna inside Codex. The era of benchmarking naked models is over. Even the labs now concede that the score belongs to the model-plus-harness system, which is the argument this blog has been making all along.</p>
+
+        <h2>The Portfolio Is the Routing Table</h2>
+
+        <p>For two years, model routing was your problem. You built the gateway, you wrote the escalation rules, you decided which tasks deserved the frontier model. Meta&rsquo;s release makes routing their product line. The portfolio now reads like a routing policy: Muse Wonder for the hardest problems, Muse Spark for full-strength coding and agentic workflows at $1.25/$4.25 per million, Muse Ember for &ldquo;repeatable coding and agentic tasks at scale.&rdquo;</p>
+
+        <p>The spread inside one vendor is the story. Meta&rsquo;s own numbers: Ember scores 36 on the Artificial Analysis Intelligence Index at about $0.14 per task; Muse Spark 1.3 scores 37 at $2.39 per task. One point of composite intelligence, seventeen times the price. And against competitors, Meta claims Ember matches Claude Haiku 5.5&rsquo;s best score at roughly a third of the cost per task while beating every GPT-6 Luna setting on the efficiency frontier.</p>
+
+        <p>When I wrote about the token budget era in August, the routing inversion — default to the cheapest capable model, escalate to the frontier by exception — was an organizational discipline companies had to impose on themselves. Four months later, the labs are selling the inversion as inventory. You don&rsquo;t assemble tiers from whatever last year&rsquo;s models happen to cost; you buy purpose-built tiers from a catalog. The economical execution slot, which used to be an afterthought in everyone&rsquo;s harness, is now the most contested product category in the industry — TechCrunch noted Ember lands cost-competitive with open-weight executors like DeepSeek V4.1 Flash and GLM 5.3 Flash, which tells you exactly which market Meta is shooting at.</p>
+
+        <h2>Why Now: The Bill Moved to the Volume Tier</h2>
+
+        <p>The timing isn&rsquo;t accidental. Last week I wrote about ServiceNow grading 34,000 real agent attempts on its own platform: the top seven model-harness combinations were a statistical tie on quality, while cost per attempt ranged from $0.11 to $4.21 — and what predicted the bill was loop length, not token price. The industry has internalized that lesson. The expensive part of an agent isn&rsquo;t the genius at the planning step; it&rsquo;s the hundreds of mundane steps underneath it, executed thousands of times a day.</p>
+
+        <p>So the market split into two races. The frontier race — Fable 5.2 the same day at $8/$40, with outputs 30 percent faster and an optional mode at 2.5 times the speed — competes on judgment and latency for the moments that matter. The executor race competes on cents-per-completed-step for everything else. These are different engineering problems with different winners. Meta is the first of the big labs to field a dedicated entry in both.</p>
+
+        <p>And note how Ember was built: it is &ldquo;the first trained using Muse Wonder Full&rdquo; — Meta&rsquo;s frontier model manufactured its own volume-tier descendant. That&rsquo;s the trickle-down economics of model capability becoming an explicit production process: the frontier model&rsquo;s job description now includes building the cheap model that will replace it in 90 percent of calls. Meta closed the announcement by saying it has &ldquo;even more efficient models in training.&rdquo; The cheap seat is going to keep getting cheaper.</p>
+
+        <h2>What This Means for Your Harness</h2>
+
+        <p>First: your cheap slot deserves a purpose-built executor, not a hand-me-down. A lot of harnesses still fill the volume tier with whatever small model they tried first. That was defensible when all small models were generalists. It isn&rsquo;t now. Executor-class models are trained on the exact work your loop does most — tool-call hygiene, targeted fixes, extraction, long-document parsing — and benchmarked on agentic tasks rather than chat trivia.</p>
+
+        <p>Second: select executors on execution benchmarks, in your loop. Ember&rsquo;s pitch is a composite index and Meta&rsquo;s internal suite; useful, but the ServiceNow lesson applies to buyers too — real cost and quality live in model-in-your-harness. Run your own fifty-task swap trial: same tasks, same harness, two candidate executors, measure cost per <em>completed</em> step and steps per dollar, not price per million tokens.</p>
+
+        <p>Third: make cache and context pricing part of your context strategy. A 25-to-1 price ratio between cached and fresh input is an architectural instruction. Keep the stable corpus — system prompts, repo context, standing instructions — structured so it caches, and let the volatile per-step payload ride on top. Harnesses that treat every step as a fresh start are about to pay for the habit.</p>
+
+        <p>Fourth: watch for leaderboard drift. When labs optimize for the Artificial Analysis task mix, the leaderboard slowly becomes a spec for one kind of work. Your step distribution is not their task mix. The routing layer — deciding which model handles which step — is the highest-leverage component in agent-first development, and it&rsquo;s the central subject of my book, <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>. Nothing about today&rsquo;s launch changes that; it just means the router now has better inventory to route to.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p><strong>Measure your step mix.</strong> Instrument one production agent workflow and classify its steps: how many are repeatable execution (tool calls, extraction, targeted fixes, routing) versus judgment (architecture, ambiguous debugging, tradeoffs)? If execution steps are under about 70 percent of volume, routing isn&rsquo;t your bottleneck — don&rsquo;t spend the week on it.</p>
+
+        <p><strong>Price your current executor.</strong> Take that workflow&rsquo;s logs and compute what it would have cost at Ember&rsquo;s list pricing — including the cache discount for repeated context. For most volume-heavy loops the number is small enough to change the conversation about what you&rsquo;re willing to automate.</p>
+
+        <p><strong>Run the swap trial.</strong> Fifty real tasks, your harness, current cheap model versus one executor-class candidate. Track completion rate, cost per completed step, and p95 step latency. Two hours of setup, and you&rsquo;ll know whether the executor tier is real for your workload or just real for Meta&rsquo;s benchmarks.</p>
+
+        <p>The launch of a $0.10 model is not a race to the bottom. It&rsquo;s the arrival of a tier system for intelligence — judgment at the top, execution at volume prices, and a routing layer deciding between them. The labs have noticed where the tokens actually go. Your harness is the place they go, which makes you the customer now. Act like one: measure the workload, audition the candidates, and stop paying frontier prices for steps a quarter-cent model can carry.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
