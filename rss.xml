@@ -5,8 +5,29 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Mon, 09 Nov 2026 06:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Thu, 12 Nov 2026 06:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Repository Nobody Reviews</title>
+      <link>https://abuiliazeed.github.io/blog/the-repository-nobody-reviews.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-repository-nobody-reviews.html</guid>
+      <description>Amazon shipped a 200-service AWS emulator this week, and no human has written or reviewed a line of its code. The trick isn't better code generation — it's a spec that already existed, an oracle that can't be persuaded, and a merge gate that turns thousands of daily agent fixes into software you can trust without reading.</description>
+      <pubDate>Thu, 12 Nov 2026 06:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Zapier Grades the Flagships Now</title>
+      <link>https://abuiliazeed.github.io/blog/zapier-grades-the-flagships-now.html</link>
+      <guid>https://abuiliazeed.github.io/blog/zapier-grades-the-flagships-now.html</guid>
+      <description>Google's strongest model ever launched with its #1 rankings stamped on benchmarks owned by Cursor, Perplexity, and Zapier — and Anthropic's own launch table the same day conceded Zapier's benchmark to Google. The scoreboard for frontier intelligence moved into other companies' products, cost per task became a model spec, and the intro price doubles in twenty days.</description>
+      <pubDate>Wed, 11 Nov 2026 06:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>The Harness Became the Customer</title>
+      <link>https://abuiliazeed.github.io/blog/the-harness-became-the-customer.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-harness-became-the-customer.html</guid>
+      <description>Meta's Muse Ember costs $0.10 per million input tokens, and most humans will never type to it — it was designed, trained, and priced for the subagent slot in someone else's harness. Meta's own launch table shows where it deliberately loses, and that's the point: the model market just split into judgment and execution, and the routing layer is the customer.</description>
+      <pubDate>Tue, 10 Nov 2026 06:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>Stubborn, Not Smarter</title>
       <link>https://abuiliazeed.github.io/blog/stubborn-not-smarter.html</link>
