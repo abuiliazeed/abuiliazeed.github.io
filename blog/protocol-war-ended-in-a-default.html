@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Protocol War Ended in a Default — Abuiliazeed</title>
+  <meta name="description" content="Sierra's Poppy agent protocol hit 1.0 this week: every Shopify store now auto-publishes a machine-readable permission file, and Meta's 10M-user Muse agent checks it before any homepage. The protocol war ended in a default, not a committee.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/protocol-war-ended-in-a-default.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/protocol-war-ended-in-a-default.html">
+  <meta property="og:title" content="The Protocol War Ended in a Default">
+  <meta property="og:description" content="Sierra's Poppy agent protocol hit 1.0 this week: every Shopify store now auto-publishes a machine-readable permission file, and Meta's 10M-user Muse agent checks it before any homepage. The protocol war ended in a default, not a committee.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Protocol War Ended in a Default">
+  <meta name="twitter:description" content="Sierra's Poppy agent protocol hit 1.0 this week: every Shopify store now auto-publishes a machine-readable permission file, and Meta's 10M-user Muse agent checks it before any homepage. The protocol war ended in a default, not a committee.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-11-14">November 14, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Protocol War Ended in a Default</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Sometime this week, every Shopify store in more than 175 countries started publishing a file most of their owners will never see. It sits at <code>/.well-known/poppy.json</code>, it describes what AI agents are allowed to do on the site, and it was turned on without asking a single merchant.</p>
+
+        <p>On the other side of the handshake, Meta flipped the same switch. Muse — the personal agent more than ten million people have now set up — <strong>checks for that file first on every site it visits</strong>, before it renders a page, before it fills a cart, before it does anything at all. Not as an option. As the default path.</p>
+
+        <p>Five weeks ago, the Personal Agent Protocol was a draft with a press release and a partner list. <a href="protocol-wars-front-door.html">I wrote then that the protocol wars had moved to the front door</a> — that Sierra and Meta's Poppy and Google's UCP were drawing battle lines over how a customer's agent transacts with a business. That framing is already obsolete. The war at that layer is over, and it didn't end in a committee, a foundation, or a truce between rivals. It ended because one company controlled the default on the merchant side, another controlled the default on the agent side, and both of them shipped.</p>
+
+        <p>Most coverage will file this under "standards milestone." That undersells what happened by an order of magnitude. <strong>A machine-readable permission surface for the entire commercial web just went live by default, and almost nobody who is now speaking it decided to.</strong></p>
+
+        <h2>What Actually Shipped</h2>
+
+        <p>The facts, stripped of launch-page language:</p>
+
+        <ul>
+          <li><strong>Poppy hit version 1.0 on November 13</strong>, roughly five weeks after the draft. Sierra says design partners tested it against real websites, real APIs, and real agents in that window, and the 1.0 revisions reflect what broke.</li>
+          <li><strong>Shopify enabled it for every merchant on its platform.</strong> Every store now automatically publishes a Poppy file across 175+ countries. No merchant configuration, no opt-in, no announcement most merchants would have read.</li>
+          <li><strong>Poppy is now on for everyone who uses Muse</strong>, which automatically looks for it first on every site it visits — Poppy site or not.</li>
+          <li><strong>Sixty more companies joined as design partners</strong>, taking the total past one hundred: Affirm, Cisco, Delta, Hyatt, Intuit, Salesforce, Twilio, Wayfair, Wix, Zoom, Turkish Airlines, Synchrony, Mercury, SoFi, Lemonade, HelloFresh, GoodRx, Travelers. Several — Mercury, Synchrony, Turkish Airlines — are already live.</li>
+          <li><strong>The whole thing rides existing standards:</strong> OAuth for account access, signed session JWTs for agent identity, OpenAPI and MCP for API channels, and — this is the interesting one — UCP, Google's competing commerce protocol, for the actual shopping.</li>
+        </ul>
+
+        <p>That last bullet is where the story turns. Last month the headline was rivalry: Sierra's alliance versus Google's alliance, Walmart hedging both sides. This month, Shopify co-authored Poppy's commerce extension, and it <em>links the two protocols</em>. Poppy handles what happens when an agent arrives — who it is, who it acts for, what it's allowed to do. UCP handles the transaction: finding products, filling a cart, checking out. The extension connects them, right down to UCP Ask, where a shopper's agent can talk directly to a store's own agent.</li>
+
+        <p>Two rivals didn't settle. They <strong>composed</strong>. The mechanical thinness I guessed at in October — "both implementable behind a thin adapter" — turned out to be an overestimate of the distance between them. There is no adapter. There's one flow.</p>
+
+        <h2>Standards Don't Win Committees. They Win Defaults.</h2>
+
+        <p>There's a pattern here that anyone building infrastructure should tattoo somewhere visible. OAuth didn't win because it was the best-argued authorization spec; it won because it shipped inside sign-in buttons on half the consumer web. robots.txt won because it was built into crawlers, not because sites voted for it. MCP won 2025 the same way — it arrived pre-installed in Claude's desktop client, and the ecosystem formed around whatever was already wired in.</p>
+
+        <p>Poppy is the cleanest two-sided execution of this playbook I've ever seen. On the merchant side: Shopify didn't ask its merchants anything, because it didn't need to — the platform controls the default, and the default is now a published permission manifest. On the agent side: Meta didn't ask Muse users anything either. Ten million agents started checking for the file on every visit, which means every company on earth now has a functional reason to publish one, because the biggest consumer agent treats its absence as an unknown.</p>
+
+        <p>Notice what's missing from that story: governance. There was no standards-body vote, no RFC consensus, no antitrust review of the fact that two companies jointly decided the shape of the machine-facing web for an entire commerce platform. The Linux Foundation spent eighteen months formalizing agent-to-tool and agent-to-agent protocols. The agent-to-business layer — arguably the one with the most money attached — got settled in five weeks by a startup, a commerce platform, and a social network, by shipping.</p>
+
+        <p>The uncomfortable corollary: <strong>the next protocol war will also be decided this way, and you are probably not one of the companies holding a default.</strong> If your strategy for a contested layer is "wait for the standard to emerge," understand that standards don't emerge — they get pre-installed.</p>
+
+        <h2>Read the Spec Like a Harness Engineer</h2>
+
+        <p>Here's the part that should make practitioners sit up. If you strip away the commerce framing and read the Poppy spec as an engineer, you are reading a harness design document pointed at the entire web.</p>
+
+        <ul>
+          <li><strong>A capability manifest at a well-known URL.</strong> <code>poppy.json</code> is functionally a tool schema for your company: which channels exist, which APIs are exposed, which MCP servers can be called, what sign-in requires. This is exactly what you write for a coding agent's tool surface — published to the world.</li>
+          <li><strong>Identity separated from authorization.</strong> A signed session JWT says "this agent, acting for this pseudonymous user." OAuth separately grants account access. Request identity and permission to act are decoupled — the same split you make when a harness authenticates a session but scopes each tool call.</li>
+          <li><strong>No cross-company tracking by construction.</strong> User IDs are stable within one company and opaque and different across companies. The spec makes the privacy property structural rather than promissory.</li>
+          <li><strong>Don't build a second perimeter.</strong> Poppy recommends Web Bot Auth signatures so existing bot defenses can authenticate the operator before anything else runs. The WAF you already pay for stays in the loop.</li>
+          <li><strong>Company content is data, not instructions.</strong> That's a prompt-injection defense written into a web standard. A page, an API response, a store agent's reply — none of it may be treated as commands to the visiting agent.</li>
+          <li><strong>Tokens never enter model context.</strong> Access tokens, refresh tokens, session tokens, private keys — the spec requires them to stay out of the model's context window entirely. Secrets hygiene, mandated.</li>
+          <li><strong>Ask before irreversible actions.</strong> The commerce extension requires the agent to get the customer's approval before certain actions. Every message in a conversation is labeled as written by a person or an AI, and any exchange can escalate to a direct conversation with a human.</li>
+        </ul>
+
+        <p>Scope manifests, identity-permission separation, injection defenses, secrets-out-of-context, approval gates, human escalation, per-message auditability — that is not a coincidence. That is the internal checklist of every serious agent harness built in the last two years, extracted, standardized, and pointed outward at the storefront instead of inward at the codebase. Harness engineering, externalized — it's the same discipline I laid out in <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>, and the fact that a web protocol now embeds its rules tells you where the discipline went from niche to load-bearing.</p>
+
+        <p>Which reframes what Shopify merchants actually got this week. They didn't get "a new protocol." They got a permission system for agents they've never met — with defaults someone else chose. The design is good. The design being good is not the same as the design being yours.</p>
+
+        <h2>The Fine Print, Read Aloud</h2>
+
+        <p>Now the reasons this is less settled than it looks.</p>
+
+        <p><strong>The "1.0" is still a draft.</strong> The specification's own introduction says draft 1.0 "adds fixes for problems implementers find, which can include changes that aren't backward compatible." Read that twice. A version label that admits breaking changes is marketing; the stability story is "we'll try." Anyone building against Poppy this quarter is building against a moving target, and Sierra has been explicit that the rules allow setups to break.</p>
+
+        <p><strong>Adoption is being measured in published files, not completed transactions.</strong> A hundred design partners and millions of auto-published manifests describe supply. Nobody has published a number for agent-mediated purchases flowing through the protocol, because that number is presumably still small. The handshake is standardized; whether the traffic follows is next year's question.</p>
+
+        <p><strong>Liability still has no owner.</strong> In October I noted PYMNTS data showing 93% of merchants believe AI providers should bear the financial loss when an agent errs. Version 1.0 does not touch it. No reason code for "agent error," no dispute flow, no answer to who eats the wrong-ticket refund. The protocol standardizes the hello; the harm is still unallocated. That doesn't get fixed by a spec — it gets fixed by a fight, and it's still coming.</p>
+
+        <p><strong>The holdouts are building their own doors.</strong> Amazon blocked Muse from its site in September; in November it began rolling out Alexa shopping by text to invited US customers — search, cart, purchase, price tracking — entirely inside its own agent. OpenAI, meanwhile, was on Poppy's draft partner list in October and this week shipped its own parallel rails: Businesses in ChatGPT, where merchants claim profiles and sponsor "Business Agents" as destinations for ChatGPT's ads, and ChatGPT Wallet, where OpenAI's agents complete purchases using network-issued payment tokens, with per-transaction approval, backed by Amex, Mastercard, and Visa. The card networks standardized agent payment the same week. The front door is being built alright — by four or five companies, each holding a different default, each negotiating on behalf of merchants who weren't in the room.</p>
+
+        <p>That's the real texture of this week: not "a standard emerged," but <strong>the agent-facing web got its shape from a handful of default-owners in a ten-day span</strong> — Shopify, Meta, OpenAI, Amazon, the card networks — and everyone else woke up to it. For a store on Shopify, that may be fine; the platform's incentives roughly point at merchant sales. For everyone else, the question of who represents you in the machine-readable web now has an answer, and it isn't you.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p><strong>Fetch your own file.</strong> Curl <code>https://yourdomain/.well-known/poppy.json</code>. If you're on Shopify, see what the platform already says about you — which channels, which scopes, which irreversible actions get flagged. If you're not, you're returning a 404 to ten million agents, and that silence is also a decision. Make it deliberately or not at all.</p>
+
+        <p><strong>Treat publication as an API launch, because it is one.</strong> If you publish your own Poppy file, the scope list, the irreversible-action list, and the sign-in policy are your new attack surface and your new customer contract at once. Run it through the same security review as a public API. Sierra's implementation kit includes a validator; use it, and version the file like you'd version an endpoint — against a spec that admits it may break you.</p>
+
+        <p><strong>Instrument the endpoint.</strong> Log every agent session that arrives: which agent, which channel it picked, what it asked for, where it escalated. This is demand telemetry for a distribution channel that didn't exist last month, and the merchants who watch it first will see the agent-traffic curve before their competitors believe it exists.</p>
+
+        <p><strong>If you build agents, behave like your reputation is per-domain — because it now is.</strong> A signed session header means sites can identify your agent specifically and rate it. Send the header, respect the scopes, honor the ask-first list, keep tokens out of context. On a protocol designed around identity, a misbehaving agent isn't anonymous traffic anymore; it's a named party building a record.</p>
+
+        <p>The last protocol cycle taught us that every settlement seeds the next war one layer up. This week taught the sharper lesson: those wars don't get decided by who argues best. They get decided by who ships a default. Your front door is machine-readable now. The only question left is whether you wrote the file — or somebody wrote it for you.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
