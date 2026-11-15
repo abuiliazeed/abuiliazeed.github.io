@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Thu, 12 Nov 2026 06:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 15 Nov 2026 06:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Agent Got a Wallet</title>
+      <link>https://abuiliazeed.github.io/blog/the-agent-got-a-wallet.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-agent-got-a-wallet.html</guid>
+      <description>An AI agent can now complete a card purchase legally — a fresh card number per transaction, one Face ID tap, and real card details the agent never sees. The payment rails were the easy part. The approval step is the product, and 1,100 leaked credential files already tell us how approval UX ends under repetition.</description>
+      <pubDate>Sun, 15 Nov 2026 06:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>The Repository Nobody Reviews</title>
       <link>https://abuiliazeed.github.io/blog/the-repository-nobody-reviews.html</link>
