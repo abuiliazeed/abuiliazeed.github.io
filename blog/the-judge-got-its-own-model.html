@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Judge Got Its Own Model — Abuiliazeed</title>
+  <meta name="description" content="Google's newest model can't write a sentence. It scores up to 1,000 yes/no, multiple-choice and rubric questions in one pass, returns calibrated probabilities, and bills zero output tokens. The decision layer just became a model class — and on the independent leaderboard, specialists are beating the frontier lab at it.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-judge-got-its-own-model.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-judge-got-its-own-model.html">
+  <meta property="og:title" content="The Judge Got Its Own Model">
+  <meta property="og:description" content="Google's newest model can't write a sentence. It scores up to 1,000 yes/no, multiple-choice and rubric questions in one pass, returns calibrated probabilities, and bills zero output tokens. The decision layer just became a model class — and on the independent leaderboard, specialists are beating the frontier lab at it.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Judge Got Its Own Model">
+  <meta name="twitter:description" content="Google's newest model can't write a sentence. It scores up to 1,000 yes/no, multiple-choice and rubric questions in one pass, returns calibrated probabilities, and bills zero output tokens. The decision layer just became a model class — and on the independent leaderboard, specialists are beating the frontier lab at it.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-11-16">November 16, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Judge Got Its Own Model</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>On Wednesday, Google shipped a model that cannot write. Hand it one document — a PDF, a call recording, a screenshot, a log dump, up to about 256K tokens of mixed text, images, audio and video — plus up to a thousand questions, and <code>gemini-decision-1</code> returns no prose at all. It returns probabilities: a yes/no call with a confidence score, a multiple-choice pick with the full distribution across candidates, a rubric grade with per-level scores. One forward pass, 150–250 milliseconds end to end, ten cents per million input tokens and <strong>zero tokens billed for output</strong> — because there is no output to bill.</p>
+
+        <p>Most people read the model business as convergence: every lab shipping bigger generative frontiers that sound more human. The more important movement this month is fission. The agent stack is splitting into distinct model classes by job — one tier that plans, one that executes, and, as of November 11, a third that only decides. The new Gemini Decisions API is the loudest entry in a category that already has an independent leaderboard, a price war, and specialists outperforming the frontier lab on the metric that matters. Judgment stopped being a prompt. It became a model class.</p>
+
+        <h2>What Actually Shipped</h2>
+
+        <p>The facts, stripped of launch-page language:</p>
+
+        <ul>
+          <li><strong>One shared input, up to 1,000 independent questions per request.</strong> The input is billed once no matter how many questions you attach; each question adds only its own instruction tokens. Latency stays nearly flat from 1 to 100 questions, per Google's own numbers.</li>
+          <li><strong>Three question types, all closed-set.</strong> Yes/no (which Google calls <em>noul</em> — a term TypeSafe's Jev model coined first, and which Google adopted), multiple choice among 2 to 255 options with normalized probabilities for every candidate, and ordered rubric scoring with probabilities per level.</li>
+          <li><strong>Confidence is the deliverable.</strong> Every answer carries a 0–1 score, so your code can automate above a threshold, fall back below it, and route the ambiguous middle to a human.</li>
+          <li><strong>The price.</strong> $0.10 per million input tokens, $0 for output. Google claims it runs nearly 5x cheaper than Gemini 3.5 Flash-Lite across its shared benchmark suite — $0.88 versus $4.14 for comparable work, on Google's numbers.</li>
+          <li><strong>What's missing on day one:</strong> context caching and the Batch API. Re-send the same document on the next request, and you pay for it in full again.</li>
+        </ul>
+
+        <p>And it is not alone. TypeSafe's Jev already handles cheap classification at 4.2 cents per million input tokens — still the cheapest of the three big entries, as Simon Willison noted. OpenAI's Decisions API runs on GPT-6 Luna at the same ten-cent input rate. Amazon's Strands Decider lets you run the decision model on your own infrastructure. Artificial Analysis now tracks twenty-two models on its Decision Index. When an independent leaderboard exists, a market exists; when specialists hold the top of it, the market is already competitive.</p>
+
+        <h2>Most of Your Agent's Calls Were Never Writing</h2>
+
+        <p>Walk through what a serious agent actually does in a loop. It routes the incoming request to the right handler. It picks which tool to call. It gates the action against policy before executing. It grades the draft output against the requirements. It decides: retry, escalate, or stop. Almost none of this is authorship — every one of those steps is a choice among options you can enumerate in advance.</p>
+
+        <p>Until now, all of it ran on chat models. You paid for prompt scaffolding and output tokens to answer questions shaped like "reply with only the letter of the best option," and you got confidence you couldn't trust, because a generative model is trained to be convincing, not calibrated. The decision layer was the hidden cost center of every agent bill — and the least reliable part of every agent run, for the same reason.</p>
+
+        <p>In July I wrote about Fireworks' finding that <a href="the-router-ate-the-model.html">routing between two models beat both models</a> on 1,030 real agentic tasks, at up to 50x lower cost. Back then routing was a harness trick: orchestration code you wrote yourself and benchmarked on your own workload. As of this month it is a SKU. The trick became a product category, complete with an index and a price war, in under four months.</p>
+
+        <p>Anthropic's own launch materials make the structural point from the other direction. Claude Fable 5.2 shipped November 9 with explicit Advisor and Orchestrator modes — the frontier model's newest feature is dispatching work to smaller models — and Anthropic's documentation notes that in harnesses which invite delegation, subagents can account for a large share of session cost. An orchestrated agent makes far more decisions than artifacts. Every one of those decisions used to be a generative call. That is the demand signal the decision-model category just plugged into.</p>
+
+        <h2>Calibration Is the New Headline Metric</h2>
+
+        <p>Here is the part worth slowing down for, because it is the first time a model launch has led with this number instead of a benchmark score.</p>
+
+        <p>Accuracy asks: was the answer right? Calibration asks: when the model said it was 80 percent sure, was it right about 80 percent of the time? The distinction is everything once code acts on the answer. A calibrated 62 percent is actionable — route it to a human. An overconfident wrong answer is an outage with a confident error message attached. Expected calibration error of 0.0250, Google's headline claim, means the model's stated confidence tracks its observed hit rate within roughly two and a half points across its evaluation suite.</p>
+
+        <p>Now the part the launch page doesn't lead with. Google's calibration claim — 0.0250 against Jev 1.14's 0.0494 and GPT-6 Luna's 0.0721 — is measured on Google's own seven shared evals. Artificial Analysis scored the same model the same day on its Decision Index: 66 out of 100, ranked twelfth of twenty-two, tied with Jev 1.14 and Elephant 9B, seven points behind Drex Max v1.1 and GLiDE v1.2 at 73. On Brier score, Decision 1 posts 0.18 where Drex Max posts 0.16, and on When2Call the gap widens to 0.14 versus 0.04. Both results can be true — they are different tests — but only one of them was designed by someone other than the vendor. And on cost per million tasks, Decision 1 lands at $345 against a category median of $137, with Drex Max at $103.</p>
+
+        <p>The lesson is not "Google shipped a bad model." It's that <strong>judgment is now a contested market where specialists win on calibration and price, and a vendor's own suite is marketing until an independent board says otherwise.</strong> The frontier lab entered its own new category mid-pack and expensive — which is the single most encouraging data point I've seen for this layer, because it means the category is real enough to be won by someone other than the biggest player.</p>
+
+        <h2>The Stack Splits Into Three Price Tiers</h2>
+
+        <p>Line up November's launches and a budget structure emerges that didn't exist a year ago:</p>
+
+        <ul>
+          <li><strong>The coordinator.</strong> Claude Fable 5.2 at $8 per million input and $40 per million output — down 20 percent from Fable 5.1 — with orchestration as a native mode. Anthropic's showcase runs: roughly a thousand agents formalized the proof of Fermat's Last Theorem in the Lean proof language in 30 hours, in a single run on an earlier snapshot, where the equivalent Opus 5.5 team reached 26 percent at 18 hours and largely stalled. An engineer's empty-folder operating-system task reportedly coordinated more than a thousand subagents for eight days and produced a system that boots. A Uber staff engineer described a 10–12 hour security audit that dispatched about 170 reviewer agents and came back with a write-up, fix pull requests, and a policy proposal.</li>
+          <li><strong>The executor.</strong> Meta's Muse Ember, also November 9, at $0.10/$0.50 per million tokens — Artificial Analysis pegs it around $0.14 per task, matching Claude Haiku 5.5's index score at roughly a third of Haiku's cost per task, and beating both Haiku and GPT-6 Luna on business-automation and coding-agent indices. Cached input costs $0.004 per million.</li>
+          <li><strong>The decider.</strong> gemini-decision-1 and its rivals: dimes per million input tokens, no output bill, sub-quarter-second latency, probabilities you can threshold.</li>
+        </ul>
+
+        <p>Three tiers, three jobs, one loop. The planning layer got cheaper while gaining the ability to delegate; the execution layer is racing toward commodity pricing; and the connective tissue between them — the routing, gating, grading and verifying — just got its own price curve instead of riding the generative one. When the coordinator dispatches a thousand subagents, the arithmetic of the run stops being dominated by prose. It's dominated by choices.</p>
+
+        <h2>Read the Fine Print Before You Migrate</h2>
+
+        <p>Four cautions before you rewrite your harness around this:</p>
+
+        <ul>
+          <li><strong>Closed-set means closed-set.</strong> These models score options you enumerate. Open-ended synthesis, design, and writing stay generative. Forcing open work into 255 options doesn't make it cheap — it makes it confidently wrong.</li>
+          <li><strong>No caching changes your task math.</strong> If your loop re-grades the same large documents every pass, you re-bill them every pass. Token price and task price are different numbers, an illusion I've written about before — <a href="per-token-illusion.html">the cheap rate on the pricing page is rarely the cost on the invoice</a>. On the Decision Index, that gap put Decision 1 near the top of the per-task cost table despite the bottom-tier token price.</li>
+          <li><strong>Know what each model is bad at.</strong> On Artificial Analysis' document-extraction eval, Decision 1 got all fifteen questions right on 33 percent of documents, against 63 percent for the category leader. Reading dense documents carefully is not yet this entry's strength; scoring choices against them is.</li>
+          <li><strong>Batch your questions.</strong> The input bills once per request and latency is nearly flat up to a hundred questions — the API is designed for asking everything you want to know about one document in a single call, not a question per request.</li>
+        </ul>
+
+        <h2>What to Do This Week</h2>
+
+        <p><strong>Count your decision calls.</strong> Instrument your harness for one week and classify every LLM call: does it produce an artifact, or does it pick between options you could have enumerated in advance? Most teams that actually measure this discover the majority of calls — and the majority of their spend — is picking. That measurement step is the opening move of the whole harness-engineering practice I laid out in <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>, and this month it got a lot more lucrative.</p>
+
+        <p><strong>Move one hot loop, and measure both costs.</strong> Log triage, pull-request screening, output grading, model routing — pick the call you make ten thousand times a day and port it to a decision model. Then run your own 200-task sample with known answers before and after. This week's split between Google's suite and Artificial Analysis' board is the entire argument for owning your own eval: in a new category, the vendor's leaderboard and the independent one disagree, and yours is the only one that bills you.</p>
+
+        <p><strong>Design for the confidence number, not the answer.</strong> Automate above your threshold, hold the middle band for human review, and log borderline cases — calibration is only useful if the thresholds exist. A judge whose uncertainty you can act on is an SLA. A judge whose uncertainty you ignore is a random number generator with good manners.</p>
+
+        <p><strong>Rebid your stack.</strong> If one model does your planning, your execution and your gating, you are paying frontier prices for executor work and chat-model prices for judgment. The three-tier split only pays off if you actually split.</p>
+
+        <p>In July, deciding which model should handle a task was a trick you built yourself. In November it's a product category with twenty-two entrants, a specialist beating the frontier lab on calibration, and a price floor under a dime. The generative frontier will keep getting the keynotes. But the inner loop of every serious agent — route, gate, grade, verify, escalate — is quietly migrating to models that never write a word. The judge got its own model, and the judge is hiring.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
