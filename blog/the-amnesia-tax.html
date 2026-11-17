@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Amnesia Tax — Abuiliazeed</title>
+  <meta name="description" content="Microsoft Research audited where coding agents' tokens actually go: 30% of tool calls repeat earlier work in the same repo, 16 of 23 loaded tool descriptions never get called, and failed tasks eat a third of the budget. The agent bill is an amnesia problem — and this week both ends of the stack shipped fixes.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-amnesia-tax.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-amnesia-tax.html">
+  <meta property="og:title" content="The Amnesia Tax">
+  <meta property="og:description" content="Microsoft Research audited where coding agents' tokens actually go: 30% of tool calls repeat earlier work in the same repo, 16 of 23 loaded tool descriptions never get called, and failed tasks eat a third of the budget. The agent bill is an amnesia problem — and this week both ends of the stack shipped fixes.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Amnesia Tax">
+  <meta name="twitter:description" content="Microsoft Research audited where coding agents' tokens actually go: 30% of tool calls repeat earlier work in the same repo, 16 of 23 loaded tool descriptions never get called, and failed tasks eat a third of the budget. The agent bill is an amnesia problem — and this week both ends of the stack shipped fixes.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-11-17">November 17, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Amnesia Tax</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Thirty percent. After a coding agent has finished five tasks in a repository, that is how much of what it does is déjà vu — tool calls repeating an action from an earlier task in the same codebase. Not similar work. The same discovery, re-performed and re-billed, because nothing carried over. That number comes from an audit Microsoft Research and UC Berkeley published yesterday, in which they instrumented Claude Code on sixty real bug-fixing tasks and simply counted where the tokens went.</p>
+
+        <p>Most teams treat the agent bill as a pricing problem. Pick a cheaper model, chase cache discounts, argue about dollars per million tokens. The audit says the bigger leak is upstream of all of that: your agent has amnesia, and amnesia is a subscription. The same day the paper landed, Alibaba and Tencent shipped models trained to spend fewer tokens per task, and an open-source plugin that learns a repository's habits quietly passed six thousand stars. In one 48-hour window, both ends of the stack — the weights and the harness — started attacking the same tax.</p>
+
+        <h2>The Waste Audit</h2>
+
+        <p>The TokenEconomizer team's first move wasn't building anything. It was profiling — running Claude Code through sixty SWE-Bench tasks in sequence, per repository, and classifying every tool call. Three patterns accounted for most of the waste:</p>
+
+        <ul>
+          <li><strong>Rediscovery.</strong> Once a repository had five completed tasks in its history, 30% of tool calls repeated an action from an earlier task in that same repository. Only 7% matched actions from <em>other</em> repositories' histories. Read those two numbers together, because the gap is the whole story: the repetition isn't generic agent clumsiness. It's repo-specific knowledge — how the tests run here, which file the config lives in, what the build command is — being re-derived from scratch every session, at full token price.</li>
+          <li><strong>Paying rent on unused capability.</strong> The agent loaded 23 tool descriptions into context on every single turn. Sixteen of them were never called. Not once. That is input-token rent on two-thirds of the toolbox, paid every turn of every task, for capability the agent demonstrably does not want in this repository.</li>
+          <li><strong>Failure concentration.</strong> The 17% of tasks that ultimately failed consumed 32% of total spending. Failure is where money pools — an agent that doesn't know it's stuck keeps grinding through variants of an approach that will never work, and every variant is a billable conversation.</li>
+        </ul>
+
+        <p>There's a fourth finding that matters for anyone who has already installed a cost-saving plugin: the team tested three popular open-source ones, each built around a fixed strategy — always trim context, always summarize, always something. Each saved money in some repositories and lost it in others. Cost control that isn't adapted to the specific repository is a coin flip wearing a lab coat.</p>
+
+        <h2>The Plugin That Pays Attention</h2>
+
+        <p>The fix the team shipped, TokenEconomizer, is an Apache-2.0 plugin that sits next to your existing agent — it works with Claude Code, Codex, GitHub Copilot CLI and others — without modifying the agent or its model. After each session it reads the log and updates what it knows about the repository. Then it intervenes through exactly three mechanisms, each mapped to one of the wastes above:</p>
+
+        <ul>
+          <li><strong>Micro-skills</strong> capture repository facts as one-line notes — the things the agent keeps rediscovering. A note only enters the starting context after several sessions confirm the pattern, and it is retired the moment later evidence contradicts it.</li>
+          <li><strong>Tool pruning</strong> removes tools that this repository's history says the agent is unlikely to use, while always retaining the core tools for running commands and editing files. Removed tools can be restored on demand.</li>
+          <li><strong>Failure-loop intervention</strong> watches for an agent hitting the same wall repeatedly. A judge model — a small decider, not the agent grading itself — decides whether the run is truly stuck or merely slow. If stuck, the agent gets a short note suggesting a different approach. If it's still stuck after the nudge, the plugin alerts the developer. It never kills the turn itself.</li>
+        </ul>
+
+        <p>The results, on the authors' own numbers: across 277 SWE-Bench tasks in six repositories and five agent–model combinations, mean cost per task fell 18.4–30.9%. It was the cheapest option in all thirty repository-combination pairs. Success rates held or improved — pass@1 actually rose in four of the five combinations. Cumulative cost dropped below the no-plugin baseline by the sixth task in every repository, which means the learning curve pays for itself inside a working week. The savings transferred, at lower rates, to sequential web development (16–21%) and to security auditing, where every task is a brand-new repository (6.4–19.6%) — evidence that even generic loop hygiene is worth something, while repo-specific memory is worth several times more.</p>
+
+        <p>Compare that to the industry's default cost lever: dialing reasoning effort down. The team measured that too. It saved similar or larger amounts — and substantially degraded performance. That is the real finding hiding in this release. You can buy savings with quality or buy them with memory. Only one of those compounds.</p>
+
+        <h2>Why This Memory Doesn't Poison</h2>
+
+        <p>Regular readers will raise an eyebrow, and they should. Four days ago I wrote about <a href="agent-memory-teaching-it-to-fail.html">the 2026 research showing agent memory teaching agents to fail</a> — distilled lessons silently breaking tasks the bare agent solved, with a 54% regression in the worst controlled study. The failure mechanism was abstraction: lessons extracted from trajectories, stored without their evidence, followed on faith. Why isn't a plugin that injects learned notes into every future session the same trap?</p>
+
+        <p>Because its design choices read like a checklist reply to those papers. Notes are one line and repository-scoped, never global wisdom about how to live. Promotion requires repeated confirmation across multiple sessions — a pattern, not an anecdote. Retirement is automatic on the first contradiction. The thing watching for failure is a separate judge model, not the agent's own confidence. And everything it learns stays on your machine; there is no shared lesson bank for one bad week to contaminate. The rule both threads of research converge on is the same: <strong>abstraction should be a view you compute from evidence, not a thing you keep on faith — and every stored lesson must stay small, scoped, falsifiable, and cheap to throw away.</strong></p>
+
+        <p>There's a nice tell in the project's commit history: this week the loop-guard judge was moved onto Apple's on-device model. The watchdog that decides whether your agent is stuck now runs for free, locally, on the same machine. The economics of supervision are collapsing along with everything else.</p>
+
+        <h2>The Labs Are Fighting the Same War Inside the Weights</h2>
+
+        <p>While the harness people were learning repositories, the model people were teaching restraint. Alibaba's Qwen4-Max, released the same morning, cuts average cost per task on its Work360 evaluation across 721 specialized fields from $4.43 to $1.67 — a 62% drop — while using 35% fewer tokens in high-effort mode than its predecessor and charging $0.075 per million cached reads. Tencent's Hy4 flash, also this week, used reinforcement learning to cut average end-to-end output tokens per task by 50%, and its internal blind evaluation — 85 users, 259 real tasks — landed user satisfaction close to Claude Haiku 5.5 at a fraction of the per-task cost, with the shortest completion times in the field. Both sets of numbers are vendor-reported. Both point the same direction.</p>
+
+        <p>What changed is where efficiency lives. For two years, spending fewer tokens per task was a harness trick — context trimming, caching, routing, compression. Now it is a training objective. The model itself is being post-trained to not ramble, to stop when done, to write the fix instead of the essay. The thrift moved into the weights.</p>
+
+        <p>But here is the structural limit, and it is why the plugin still found 18–31% savings on models that were already optimized for it: pretraining cannot know which of <em>your</em> 23 tools you never call, or how <em>your</em> test suite is invoked, or that <em>your</em> agent has re-derived the migration path four times this month. Repository-specific waste is invisible from the outside. The labs can fix generic verbosity; only something that watches your sessions can fix the amnesia tax. This is the layer splitting in real time — and the metric that exposes it is cost per completed task, not price per million tokens. On the refreshed Artificial Analysis coding-agent index published Friday, systems scoring above 48 points spread from $1.51 to $44.22 per task: a 29-fold range among roughly equal performers. I've argued before that <a href="per-token-illusion.html">the pricing page is an illusion</a>; the index now quantifies it monthly.</p>
+
+        <h2>Defaults Are a Budget Line</h2>
+
+        <p>One more item from the same 48 hours, small but instructive. Browser Use, the open-source browser-automation framework, shipped version 1.0.6 with a single-line change: the default model for <code>Agent(task)</code> flipped from <code>bu-fast</code> to <code>BU 4.0</code>. The release notes list BU 4.0 at $1.80 per million input tokens and $9.00 per million output, against $0.12 and $0.60 for the old default — fifteen times the price — and include the warning, verbatim, that "this costs more if you pass no <code>llm</code>." Every user who never configured a model got silently repriced by a patch release.</p>
+
+        <p>The harness is not neutral; I've made that argument <a href="harness-is-not-neutral.html">at length before</a>. What's new is watching the neutrality claim extend to budgets. A framework's defaults are purchasing decisions made on your behalf, and this month's evidence says they deserve the same audit as its security. When you adopt an agent framework, the first three questions are no longer just what it can do and what it can access — they include what it assumes, and what the assumptions cost.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p><strong>Run the waste audit yourself.</strong> You do not need Microsoft Research for this. Take one week of agent logs from one repository and answer three questions: What fraction of tool calls repeat an action from an earlier task in the same repo? How many tool descriptions load each turn, and how many have ever been called? What share of spend went to tasks that ultimately failed? All three are grep-able questions. The first number over 20% means your amnesia tax is real.</p>
+
+        <p><strong>Fix the two mechanical leaks by hand.</strong> Prune the tool list per repository — if the history says the browser tools never fire in this repo, don't load them. And write the ten facts the agent keeps rediscovering directly into your project's standing instructions: how tests run, where config lives, what not to touch. That is micro-skills v0, implemented with a text file, and it captures most of the value before you install anything.</p>
+
+        <p><strong>Adopt or re-implement the loop guard.</strong> The single largest line in most agent bills is a failure that didn't know it had failed. A small judge that distinguishes stuck from slow — escalating to you instead of burning tokens on the fourth variation of a doomed approach — is an afternoon of work now that decision models cost dimes, and it is the opening move of the measurement-first practice I laid out in <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>.</p>
+
+        <p><strong>Change the number on the dashboard.</strong> Track cost per completed task, not cost per million tokens. The token rate is set by vendors; the task rate is set by your harness, and it is the only figure that survives the next model migration.</p>
+
+        <p>The agent that remembers everything is a liability — the research this month proved it can poison itself. The agent that remembers nothing is an expense account. What shipped this week, from a Berkeley plugin to two Chinese flagship models to a browser framework's release notes, is the same message from every direction: the frontier of agent economics is no longer intelligence per parameter. It's value per session, and sessions are finally being allowed to learn.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
