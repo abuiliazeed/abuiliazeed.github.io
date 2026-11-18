@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Tue, 17 Nov 2026 06:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 18 Nov 2026 06:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Software Went Fixed-Price</title>
+      <link>https://abuiliazeed.github.io/blog/software-went-fixed-price.html</link>
+      <guid>https://abuiliazeed.github.io/blog/software-went-fixed-price.html</guid>
+      <description>A monitoring platform in two days on a $3,000 cap, 51 of 51 checks passed, no human plan. Replit's Missions ships agent swarms under a real fixed-price contract — success criteria, budget cap, independent AI judge — and the same day, Genesys renamed its billing unit from tokens to work. The estimate didn't get better; it got replaced by a decision.</description>
+      <pubDate>Wed, 18 Nov 2026 06:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>The Amnesia Tax</title>
       <link>https://abuiliazeed.github.io/blog/the-amnesia-tax.html</link>

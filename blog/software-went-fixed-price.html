@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Software Went Fixed-Price — Abuiliazeed</title>
+  <meta name="description" content="Replit's Missions sells capped attempts at outcomes: define success, set the budget, and an independent AI judge decides when the work is done. The same day, Genesys stopped billing tokens and started billing work. Fixed-price software failed for forty years because verification was expensive — it isn't anymore.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/software-went-fixed-price.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/software-went-fixed-price.html">
+  <meta property="og:title" content="Software Went Fixed-Price">
+  <meta property="og:description" content="Replit's Missions sells capped attempts at outcomes: define success, set the budget, and an independent AI judge decides when the work is done. The same day, Genesys stopped billing tokens and started billing work. Fixed-price software failed for forty years because verification was expensive — it isn't anymore.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Software Went Fixed-Price">
+  <meta name="twitter:description" content="Replit's Missions sells capped attempts at outcomes: define success, set the budget, and an independent AI judge decides when the work is done. The same day, Genesys stopped billing tokens and started billing work. Fixed-price software failed for forty years because verification was expensive — it isn't anymore.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-11-18">November 18, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">Software Went Fixed-Price</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>Two days, $3,000, fifty-one checks out of fifty-one.</p>
+
+        <p>That is Replit's account of DataCat, an application-monitoring platform — dashboards, alerts, tracing, its own collector agent and tracing libraries — which a swarm of Replit's agents planned, built, tested, and load-tested against goals the team set up front. No human wrote the implementation plan; the product explicitly refuses to ask you for one. Replit open-sourced the result. Every number in that sentence is the company's own, from a controlled run it conducted itself, unaudited — its head-to-head against a single Claude Code agent was one run per setup, vendor-scored. Hold the skepticism. The interesting thing that shipped on Tuesday is not the swarm.</p>
+
+        <p>It's the contract. <strong>Replit Missions does not sell agent time, tokens, or seats. It sells capped attempts at outcomes.</strong> You type an objective in plain English — "get every page of the site loading in under 500 milliseconds" — and before a single agent starts, you negotiate the terms of the work with the product itself: what counts as success, what the spending limit is, which actions require your approval. Then a swarm plans, builds, tests, and iterates while an independent AI judge scores the work against your criteria, and the mission ends when the criteria pass, the budget runs out, or the swarm hits a decision only you can make.</p>
+
+        <p>The same day, in a press release from an entirely different industry, Genesys — enterprise customer experience — announced it was renaming its billing unit from "AI Tokens" to "Experience Units" and repricing everything by whether an interaction was simple, moderate, or complex. Its own words: "a broader shift from paying for AI technology to measuring the work performed." Two unrelated vendors, twenty-four hours apart, converged on the same conclusion: <strong>the unit of sale for agent work stopped being the input and became the outcome.</strong></p>
+
+        <h2>What Actually Shipped Is a Contract</h2>
+
+        <p>The mechanics deserve a slow read, because the novelty is not "agents working in parallel." It's that the entire engagement is mediated by a document, and the document is executable.</p>
+
+        <p>Take the launch's worked example: "win our first 10 paying enterprise customers." Missions doesn't accept that as-is. Setup interrogates you. What counts as an enterprise customer for your business? Do paid pilots count toward the ten, or only signed annual contracts above a minimum value? Your answers don't go into a requirements wiki that nobody rereads — they become the grading rubric the judge will enforce. You set a spending limit (Replit's example: $1,000) and mark the actions that need permission: contacting prospects, sharing a proposal, changing customer-facing materials, making product commitments. You agree on acceptable tradeoffs in advance — offering pilots, discounting annual contracts. The result, which Replit calls the Mission Agreement, is scope, budget, timeline, completion criteria, and approval gates, frozen before work begins and held in place even as the agents change their approach. Even your own messages to a running mission bill against its budget. Replit's president, Michele Catasta, explained the design choice: asking users to plan every step "would force the human to worry about implementation details, and not afford the flexibility the AI system might need to accomplish complex objectives."</p>
+
+        <p>The interface shows what this costs while it happens. Spend is broken out per phase on the product's example mission: $6.40 to plan and scope, $18.25 to build the checkout flow, $4.90 to run the test suite — and $2.15 for the judge's review. <strong>The referee bills on your budget, in line items, where you can watch it.</strong> Spending is checked at every step, paid services are blocked when the limit is hit, and any budget increase routes through you first. The distinction from the adjacent product is the tell: a Replit Routine runs on a schedule. A Mission runs toward a definition of done.</p>
+
+        <h2>Why Fixed-Price Software Always Died</h2>
+
+        <p>"Pay for outcomes, not hours" has been the dream of every software buyer since software consulting existed, and fixed-price contracts have been its graveyard. The postmortems all read the same: scope crept, the vendor absorbed the creep until the margin died, change orders turned the relationship adversarial, and both sides lawyered over what "done" meant. The industry's equilibrium became time-and-materials — not because buyers liked it, but because the two costs fixed pricing depends on were unbearable: <strong>iteration was expensive, and verification was expensive.</strong> Retrying a failed approach burned human weeks. Checking a deliverable against its spec burned more.</p>
+
+        <p>Agents collapse both costs, and that — not intelligence per dollar — is what makes the pricing model viable again. Iteration first: a swarm can attempt a dozen implementations in parallel because a failed attempt is priced in tokens, not engineer-months. Verification second, and this is the load-bearing change: <strong>the acceptance test became a runtime component instead of a human activity.</strong> DataCat's success criteria were executable — detect a deliberately introduced database bug within 60 seconds (it alerted in 38, and traced the failure to the exact query); absorb 26 million activity records and 4.4 million log entries over a three-hour load test with zero data loss; pass 36 data-correctness checks and 15 alert-reliability checks. Fifty-one of fifty-one. When "done" can run in CI, verifying a deliverable stops being the expensive half of the contract.</p>
+
+        <p>Which exposes the deeper inversion. The $3,000 was not an estimate — nobody at Replit forecast that DataCat would cost exactly $3,000. It was a decision about what the outcome was worth. <strong>The estimate didn't get more accurate; it got replaced by a number you choose.</strong> And the failure mode is stated plainly in the product's own FAQ: if the budget runs out first, work stops with the outcome unresolved. You bought a capped attempt, not a guarantee — which is precisely what makes the contract signable at all. The vendor can't invoice its way out of a miss. The buyer can't scope-creep its way into an open-ended one.</p>
+
+        <h2>The Judge Is the Load-Bearing Wall</h2>
+
+        <p>Between the swarm and the payment sits the most important component in the stack: an independent AI judge, separate from the workers, that evaluates results against the agreed criteria, sends back specific feedback — the product's own example is a draft proposal returned because it never covered data retention — and declares the mission complete only when the criteria pass. This is the same architecture that let Amazon ship a two-hundred-service AWS emulator no human has reviewed: <a href="the-repository-nobody-reviews.html">an oracle that cannot be persuaded</a>. And judges became cheap enough to be infrastructure this week, when <a href="the-judge-got-its-own-model.html">scoring got its own model class</a> — which is why the referee's line item is $2.15 instead of $215.</p>
+
+        <p>The judge is exactly as good as your criteria are mechanical. For DataCat, done-ness was latency targets, data-loss counts, and check suites — things a machine can grade without taste. For the enterprise-sales mission, the setup interrogation is doing the real work: forcing you to operationalize a fuzzy goal into countable units before any agent starts. That interrogation is the product's true interface. Most "agent failures" are unoperationalized success criteria wearing a trench coat — "improve the funnel" can't be judged by anything, human or model, until it becomes "p95 under 400ms, checkout and signup tests green," which is the product page's own example of a well-formed success check. And the moment grading is automated, Goodhart's law reports for duty: a worker optimized against fixed criteria will find the criteria's edges. The defense is the same as it ever was — criteria that execute, budgets that bound, and an escalation path to a human when the rubric and reality diverge.</p>
+
+        <h2>The Swarm Math That Makes the Cap Affordable</h2>
+
+        <p>None of this works without the cap, because swarms without caps are terrifying. The capability side arrived earlier this month: Anthropic says roughly a thousand Claude agents formalized Fermat's Last Theorem in thirty hours, and that one engineer coordinated more than a thousand subagents across eight days — <a href="stubborn-not-smarter.html">vendor-reported, but consistent with everything else shipping this quarter</a>. Models are now designed and priced for the subagent slot in someone else's harness — <a href="the-harness-became-the-customer.html">the routing layer became the customer</a>. What was missing was never fleet capacity. It was a purchase order. No finance department on earth approves "a thousand agents, unknown duration, open-ended cost." A budget cap converts that into "$3,000, done when the checks pass."</p>
+
+        <p>Replit's own benchmark shows what the cap buys. Across thirteen NumPy optimization tasks, a single agent topped out at a 4× speedup; a 16-agent swarm reached 17×; 32 agents reached 19×. Parallel exploration isn't a speed trick — it's how the system finds solutions a single thread never would, and in the company's head-to-head, the mission-built platform ingested traces at 49,000 per second against 9,800 for the same prompt run through a single Claude Code agent. But look at the shape of the curve: 4× to 17× is a thirteen-point jump for the first sixteen agents; 17× to 19× is two points for the next sixteen. Diminishing returns are real, visible, and now priced. The buyer decides whether the last doubling is worth it — per mission, in advance, at a slider. That used to be a negotiation with a vendor's sales engineer; now it's a form field.</p>
+
+        <p>The approval gates also age better inside an agreement than outside one. Repeated approvals are where agent UX goes to die — <a href="the-agent-got-a-wallet.html">the reason I argued the approval step, not the payment rails, was the real product when agents got wallets</a>. Missions' answer is to approve boundaries once, up front, and escalate only at the gates you chose: publishing, spending increases, customer contact. The human is a signatory, not a bystander clicking yes.</p>
+
+        <h2>The Same Day, the Same Signal</h2>
+
+        <p>Genesys's announcement deserves a second look precisely because it isn't a coding tool. Its effort-based pricing classifies every interaction as simple, moderate, or complex — tiered by the tools the task requires — and bills each interaction once, in Experience Units, so straightforward tasks cost less than gnarly ones. The company framed the rename as moving "from paying for AI technology to measuring the work performed." Same day, Cognition launched Devin Bots: persistent agents that lead teams of Devins, retain context across sessions, and own an outcome end-to-end — maintaining an open-source repository, managing releases — surfacing only the decisions that need human judgment. Persistent ownership of an outcome is the organizational twin of pricing by outcome.</p>
+
+        <p>Line up the year and a pattern completes itself. The per-token price was always an illusion — <a href="per-token-illusion.html">an input meter pretending to be a price of work</a>. Then <a href="zapier-grades-the-flagships-now.html">cost per completed task became the way frontier models get graded</a>. Then <a href="the-token-budget-era.html">organizations capped their own consumption</a> with gateways and division-level budgets. This week the last piece landed: the seller prices the outcome, the buyer caps the spend, and a judge enforces the boundary between them. Measure, budget, sell. Notice what is deliberately still unsold: judgment. Criteria authorship and the approval gates stay with the human — not as a limitation, but as the one clause in the contract that isn't delegable.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p><strong>Write one mission agreement for work you already delegate.</strong> Take a goal you currently hand to a coding agent — not a toy one, a recurring one — and before the next run, write three things: success criteria that can execute (tests, thresholds, timings — never adjectives), a dollar cap you'd defend to your CFO, and the list of actions that require you. Run the next session under those terms, in whatever harness you already use. The product is optional this week; the discipline isn't. It's also the spine of the spec-first practice in <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>.</p>
+
+        <p><strong>Sort your goals into mechanical and fuzzy, and only contract the mechanical.</strong> If done-ness can't run as a check today, a fixed-price mission against it is a coin flip with paperwork. Fuzzy goals still need humans in the loop — operationalize them first, then delegate.</p>
+
+        <p><strong>Keep the referee off the field.</strong> Worker and judge must never be the same session optimizing the same objective. Different model, different context, criteria it cannot renegotiate. At current judge-model prices, independence costs about as much as a coffee.</p>
+
+        <p><strong>Make the cap a runtime enforcement, not a hope.</strong> Checked at every step, spend visible per phase, increases gated on approval. If your harness can't answer "how much has this goal cost so far, and what did each phase spend," you don't have a budget — you have a vibe.</p>
+
+        <p>For forty years, paying for software by outcome was a negotiation fantasy that died in the verification phase. This month, iteration got cheap, the judge got cheaper, and the change order became a config file. The scarce skill in the stack is no longer estimation — it's specification: whether you can write down, in terms a machine can execute, what "done" means. Get that right, and the swarm handles the rest, right up to the number you set.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
