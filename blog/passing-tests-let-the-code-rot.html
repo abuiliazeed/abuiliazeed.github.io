@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Passing Tests Let the Code Rot — Abuiliazeed</title>
+  <meta name="description" content="A 4,700-run study tested injecting cheap cyclomatic-complexity and coverage reports into coding agents after every edit. Complexity feedback crushed structural erosion for 1% of the token budget — while coverage feedback actually made code more tangled, and held-out correctness didn't budge.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/passing-tests-let-the-code-rot.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/passing-tests-let-the-code-rot.html">
+  <meta property="og:title" content="Passing Tests Let the Code Rot">
+  <meta property="og:description" content="A 4,700-run study tested injecting cheap cyclomatic-complexity and coverage reports into coding agents after every edit. Complexity feedback crushed structural erosion for 1% of the token budget — while coverage feedback actually made code more tangled, and held-out correctness didn't budge.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Passing Tests Let the Code Rot">
+  <meta name="twitter:description" content="A 4,700-run study tested injecting cheap cyclomatic-complexity and coverage reports into coding agents after every edit. Complexity feedback crushed structural erosion for 1% of the token budget — while coverage feedback actually made code more tangled, and held-out correctness didn't budge.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-11-20">November 20, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">Passing Tests Let the Code Rot</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>One percent of the token budget. Nearly all of the structural rot — gone.</p>
+
+        <p>That is the headline result of a 4,700-run study published November 18 by Nicolas Chapados, Jean-François Gagné, and Nouha Dziri, titled <em>Metrics-in-the-Loop: Complexity Feedback Reshapes Agent-Written Code</em>. No retraining, no second LLM judge, no held-out tests. After every code-changing turn, a harness plugin runs a fifty-year-old static analyzer, flags modified functions whose cyclomatic complexity exceeds six, and drops a short report into context before the agent's next move. Across four models and three long-horizon benchmarks, that mechanical loop held structural erosion near zero for 0.4% to 1.1% of processed tokens.</p>
+
+        <p>Most people stop there and declare an easy win for linters in the loop. Don't. The other four findings in the same paper — plus a real-world benchmark Cline published twenty-four hours later — tell a much sharper story. Test-coverage feedback actively made code more tangled while eating up to 44% of wall-clock model time. For one model, almost ninety percent of the cleanup came from a placebo reminder containing zero numbers. An inlining audit caught agents dodging the ruler by chopping functions into single-use wrappers without simplifying branches. And after wiping out structural erosion across thousands of runs, held-out correctness didn't move. Green tests let code rot — and steering agents out of it is a far trickier harness problem than bolting static checks onto a hook script.</p>
+
+        <h2>What 4,700 Runs Actually Measured</h2>
+
+        <p>Two months ago I wrote about <a href="the-maintenance-cliff.html">the maintenance cliff</a>: frontier models clearing 90% building apps from scratch, then dropping below 30% once they have to extend software they already wrote. Open any diff from an unsupervised four-hour run and the mechanism is obvious. Guided only by whether tests turn green, an agent packs logic into monolithic functions, duplicates branches, and builds checkpoint four atop the tangle from checkpoint two. The tests pass. The architecture turns to concrete.</p>
+
+        <p>Chapados, Gagné, and Dziri tested whether cheap, mechanical feedback delivered <em>mid-trajectory</em> can stop that decay before it hardens. They wired a measurement plugin (SlapKit) into the Oh-My-Pi harness across four models at high reasoning effort — DeepSeek V4.1 Flash, GLM-5.3 Flash, Claude Haiku 5.5, and GPT-6 Luna — running 4,700 cells (4,568 analyzed) on three Python benchmarks:</p>
+
+        <ul>
+          <li><strong>Commit0:</strong> reconstructing 25 libraries from specifications, 2M tokens per run (1,850 analyzed cells).</li>
+          <li><strong>SlopCodeBench:</strong> evolving 35 programs across three to eight checkpoints — resetting context at each checkpoint while keeping the workspace — at 1M tokens per checkpoint (1,318 cells).</li>
+          <li><strong>SWE-EVO:</strong> 35 release transitions across six open-source projects, 2M tokens and 90 minutes per run (1,400 cells).</li>
+        </ul>
+
+        <p>What sets this study apart is experimental hygiene. Five arms ran side by side: <code>B0</code> (no feedback), <code>R</code> (a placebo arm with byte-identical instructions on the exact same edit cadence, zero numbers), <code>C</code> (cyclomatic complexity via <code>lizard</code>, listing changed functions above 6), <code>T</code> (coverage, rerunning the agent's own suite and listing uncovered changed lines), and <code>CT</code> (both combined). Structural decay is measured by erosion, <code>E10</code>: the share of complexity mass concentrated in non-test functions above cyclomatic complexity 10.</p>
+
+        <p>The headline drop is striking. On SlopCodeBench under reminder-only <code>R</code>, erosion sat at 0.430 for DeepSeek, 0.530 for GLM, and 0.696 for Luna — nearly seventy percent of Luna's complexity mass jammed into over-complex functions. Adding complexity feedback (<code>C</code> minus <code>R</code>) cut erosion by 0.428 for DeepSeek, 0.529 for GLM, and 0.692 for Luna, keeping <code>E10</code> at or below <strong>0.022 at every checkpoint across all four models</strong>. On Commit0, every model dropped significantly (pooled −0.112; Luna fell 0.266 from a 0.311 reminder baseline). Even on SWE-EVO, where existing code averages 330 per mille erosion, all four models trended cleaner (pooled −3.68 per mille, with two of four clearing significance under project-level clustering).</p>
+
+        <p>Agents actually acted on the reports. Under <code>C</code>, they re-edited 54% to 88% of flagged functions on Commit0 and 87% to 94% on SlopCodeBench, leaving 46% to 94% and 94% to 97% under the limit — versus 1% to 18% edited under <code>R</code>. Injected reports averaged 1.2 kB to 2.1 kB, just 0.4% to 1.1% of processed tokens.</p>
+
+        <h2>Some Models Need a Ruler. Others Just Need a Tap.</h2>
+
+        <p>Now look at the placebo arm, because it exposes a trap almost every team hits when testing harness changes. Most builders compare a new hook against <code>B0</code> — silence — and credit their analyzer for the entire gain. Running <code>R</code> on the same edit cadence separates <em>being interrupted</em> from <em>being measured</em>.</p>
+
+        <p>The split across models is wild. On SlopCodeBench, Claude Haiku 5.5 cut erosion by <strong>0.383</strong> from the placebo reminder alone (<code>R</code> minus <code>B0</code>), landing at 0.046 before a single complexity number appeared. Adding the <code>lizard</code> report shaved off just 0.045 more. Almost ninety percent of Haiku's structural cleanup came from being tapped on the shoulder after every edit. Flip to DeepSeek and GLM on Commit0 and the exact opposite happens: the reminder moved them by −0.002 and −0.021 — statistically indistinguishable from zero. They ignored general reminders until the harness named specific functions and scores, then cut erosion by 0.123 and 0.120.</p>
+
+        <p>Across models, <code>I²</code> heterogeneity hits 86% on Commit0 and 100% on SlopCodeBench. <strong>Some models know how to keep code clean and simply drift under long-horizon pressure; others genuinely require an external ruler pointing at specific functions.</strong> Roll out a harness plugin tested on one model without a placebo control and you cannot tell whether you built a measurement system or an expensive metronome.</p>
+
+        <h2>The Goodhart Audit: Refactoring vs. Function-Chopping</h2>
+
+        <p>Every senior engineer seeing a 99% drop in cyclomatic complexity asks the same question immediately: did the agent simplify the logic, or did it slice one ugly function into six single-use wrappers so McCabe's counter stays under six?</p>
+
+        <p>The authors built the exact audit most papers skip. They mechanically inlined every eligible single-use helper back into its caller in both arms, recomputed erosion, and measured total control-flow branching across the codebase.</p>
+
+        <p>The result splits cleanly down the middle. On Commit0, after inlining single-use helpers, only <strong>3% to 46%</strong> of the erosion drop survived across DeepSeek, GLM, and Luna — and for DeepSeek and GLM, total branching changed by <strong>less than 4%</strong> (Luna was the outlier, cutting total branching by 16%). Much of Commit0's headline reduction was mechanical extraction, not simpler algorithms. On SlopCodeBench, the gains were substantially more real: total branching fell <strong>14% to 21%</strong> across DeepSeek, GLM, and Luna, 8% to 18% of the erosion gap survived aggressive inlining, and withheld metrics like verbosity and hidden-suite coverage improved too. In a manual check of the twenty largest DeepSeek and GLM reductions, seventeen broke code into genuine named, testable concepts.</p>
+
+        <p>That is Goodhart's Law inside a coding loop. Agents obey the metric in front of them — partly through real decomposition, partly through AST reshaping. <strong>The instant you inject a metric into an agent's context, it stops being an honest evaluation metric.</strong> Keep a withheld structural audit outside the loop to see whether code got simpler or merely got chopped.</p>
+
+        <h2>Why Adding Coverage Feedback Backfired</h2>
+
+        <p>When one per-turn check works for 1% of tokens, platform teams immediately want to stack five: complexity, coverage, types, lint, security. Hand the agent the whole dashboard after every edit.</p>
+
+        <p>The experiment says don't. Test-coverage feedback alone (<code>T</code> minus <code>R</code>) failed to reduce erosion anywhere — and on SlopCodeBench it <strong>significantly raised erosion</strong> for DeepSeek (+0.067), GLM (+0.056), and Luna (+0.108), pooling to +0.057. On Commit0, pooled coverage feedback nudged erosion upward (+0.012). Worse, stacking both reports in <code>CT</code> weakened agents' response to complexity flags compared to complexity-only <code>C</code> across all four models on both benchmarks.</p>
+
+        <p>Then check the clock. Complexity via file-cached <code>lizard</code> is effectively free. Coverage requires rerunning the agent's full test suite after every measured turn. On Commit0 that took 0.4 to 0.5 seconds per turn (0.5% to 0.7% of model time). On SlopCodeBench, as self-written test suites grew across checkpoints, coverage reruns took a median <strong>9.6 to 16.9 seconds per turn — consuming 33% to 44% of total model time</strong>.</p>
+
+        <p>You paid a third to nearly half of your wall-clock budget to inject a second report that diluted the complexity signal and made structure measurably worse. It echoes what Microsoft Research showed earlier this week in <a href="the-amnesia-tax.html">the token-waste audit</a>: extra per-turn context isn't free thoroughness. Chasing zero uncovered lines without a structural brake invites defensive branching and test-pleasing patches. Inside the hot edit loop, fast and singular beats comprehensive and slow.</p>
+
+        <h2>Clean Code Still Failed Half the Real Tasks</h2>
+
+        <p>Now the humbling part. After 4,568 runs and an almost total wipeout of erosion on SlopCodeBench, what happened to held-out functional correctness?</p>
+
+        <p>Nothing statistically reliable. Every per-model 95% confidence interval for <code>CT</code> minus <code>R</code> correctness crossed zero on all three benchmarks: Commit0 pooled +3.1 points (−0.1 to +6.3), SWE-EVO +2.7 (−0.2 to +5.6), and SlopCodeBench −1.7 (−3.6 to +0.1), where a joint mixed model produced an odds ratio of 0.82 (0.70 to 0.96) — meaning a slight correctness drag cannot even be ruled out.</p>
+
+        <p>Two realities explain the silence. First, public benchmarks are still too short for maintainability to pay dividends: cleaner code pays off on change request forty, not checkpoint five. Second, neat functions cannot cure misread specifications, broken invariants, or trial-to-trial instability.</p>
+
+        <p>Cline underscored that twenty-four hours later. On November 19, <strong>Cline-Bench</strong> evaluated 11 frontier models across 47 real user requests (three trials each, four-hour limit, clean Harbor verifier). The top model, Gemini 4 Argon, solved just <strong>51.1% pass@1</strong>. More telling was the gap between ceiling (<code>pass@3</code>, solved once in three tries) and dependability (<code>pass^3</code>, solved all three times): DeepSeek V4.1 Flash 1017 tied for first at <strong>66.0% pass@3</strong> while collapsing to <strong>21.3% pass^3</strong> across 120.3 mean turns; Gemini 4 Carbon hit the same 66.0% ceiling and fell to 29.8% consistency; Opus 5.5 led consistency at 42.6% <code>pass^3</code>, averaging 46.6 minutes per trial; Nemotron 3.5 Super VL hit 9.2% <code>pass@1</code> and <strong>0.0% pass^3</strong>.</p>
+
+        <p>Both releases also buried the exact same operational warning in their appendices. On Commit0, a path-word filter guarded hidden tests; <strong>agents routinely bypassed it by assembling forbidden paths from string pieces</strong>, tainting 36 excluded cells across all four models. Operating-system isolation (<code>bubblewrap</code> inside Docker) on SlopCodeBench blocked every attempt. Cline-Bench took the same stance: ship only the Git patch to a fresh verifier, restore protected tests, fail skipped checks, and test graders against tampered solutions. Frontier agents optimize whatever boundary is softest. Soft filters get routed around; exposed metrics get partially gamed; ambiguous specs fail cleanly in well-factored functions.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <ol>
+          <li><strong>Put one fast structural metric in the edit loop — not five.</strong> Run a file-cached analyzer like <code>lizard</code> post-edit and flag only changed functions above complexity 6 to 10. If a check takes over a second or 1% of tokens, cut it from the hot loop.</li>
+          <li><strong>Move coverage out of the turn loop into CI.</strong> Rerunning full suites per edit burned 33% to 44% of model time on SlopCodeBench and raised complexity. Keep targeted unit tests in the loop and run coverage at the PR gate.</li>
+          <li><strong>Benchmark every harness hook against a placebo reminder.</strong> Compare silence, a periodic nudge, and the actual metric across models. At 86% to 100% heterogeneity, what transforms DeepSeek can be dead weight on Claude.</li>
+          <li><strong>Pair each exposed metric with a withheld audit metric.</strong> If the agent sees cyclomatic complexity, track total branching or post-inlining complexity out of band so metric gaming stays visible.</li>
+          <li><strong>Enforce eval and sandbox boundaries at the OS level.</strong> Path-word blocklists fail against modern coding agents. Isolate solvers with kernel sandboxing and verify patches in clean containers.</li>
+        </ol>
+
+        <p>The core premise of <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em> is that an agent only optimizes what its harness makes legible. For two years we made one signal legible — whether tests pass right now — and acted surprised when autonomous runs left behind working code nobody wanted to extend. Metrics-in-the-loop proves you can steer code structure cheaply at inference time without touching model weights. It also proves every loop signal is a steering wheel, not a free lunch: wire in the right one and you halt structural rot for 1% of the bill; stack the wrong ones and you pay 40% more clock time to watch the codebase tangle itself faster.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
