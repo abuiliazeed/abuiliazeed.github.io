@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Fri, 20 Nov 2026 06:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 21 Nov 2026 06:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Loop Moved Inside the Weights</title>
+      <link>https://abuiliazeed.github.io/blog/the-loop-moved-inside-the-weights.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-loop-moved-inside-the-weights.html</guid>
+      <description>Thinking Machines Lab shipped Inkling 2 Mini, an Apache 2.0 looped transformer that runs 24 physical layers as 48 logical passes in 20 GB — cutting reasoning tokens by 53% while beating dense 27B coding models on 5.4B active weights. Paired with RadixArk's pure-RL DaisyRose-27B, local models just opened a third scaling axis — and handed harness engineers a fresh KV-cache and monitorability problem.</description>
+      <pubDate>Sat, 21 Nov 2026 06:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>Passing Tests Let the Code Rot</title>
       <link>https://abuiliazeed.github.io/blog/passing-tests-let-the-code-rot.html</link>
