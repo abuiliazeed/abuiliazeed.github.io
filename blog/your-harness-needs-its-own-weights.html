@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Harness Needs Its Own Weights — Abuiliazeed</title>
+  <meta name="description" content="Three RL LoRA adapters trained on the same 27B model inside Pi, OpenCode, and Hermes Agent had a cosine similarity of 0.01–0.02 — nearly orthogonal. Paired with a 27,280-run eval showing 68% of within-model harness cost variance is pair-specific, the plug-and-play model-harness abstraction just broke.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/your-harness-needs-its-own-weights.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/your-harness-needs-its-own-weights.html">
+  <meta property="og:title" content="Your Harness Needs Its Own Weights">
+  <meta property="og:description" content="Three RL LoRA adapters trained on the same 27B model inside Pi, OpenCode, and Hermes Agent had a cosine similarity of 0.01–0.02 — nearly orthogonal. Paired with a 27,280-run eval showing 68% of within-model harness cost variance is pair-specific, the plug-and-play model-harness abstraction just broke.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Your Harness Needs Its Own Weights">
+  <meta name="twitter:description" content="Three RL LoRA adapters trained on the same 27B model inside Pi, OpenCode, and Hermes Agent had a cosine similarity of 0.01–0.02 — nearly orthogonal. Paired with a 27,280-run eval showing 68% of within-model harness cost variance is pair-specific, the plug-and-play model-harness abstraction just broke.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-11-22">November 22, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">Your Harness Needs Its Own Weights</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>0.01 to 0.02. That is the layer-by-layer cosine similarity between three LoRA adapters trained on the same 27B model, on the same software-engineering task pool, inside three different coding harnesses.</p>
+
+        <p>On Friday, November 20, Hugging Face published its <strong>harness adapters</strong> release: freezing <code>Qwen/Qwen3.8-27B</code> and running reinforcement learning directly inside unmodified builds of Pi (<code>1.5.2</code>), OpenCode (<code>2.2.7</code>), and Hermes Agent (<code>v0.22.6</code>). The specialist adapters lifted SWE-bench Pro (Hard 51) pass@1 by <strong>13.7 to 25.5 points</strong> while slashing tool calls by <strong>56% to 72%</strong> — and the three weight deltas landed nearly orthogonal. Three days earlier, Runta and Baseten released <strong>FrontierHarness Eval v1.1</strong>: 27,280 runs across 83 billion tokens, 22 harness configs, and five open models. With the model held fixed, harness choice swung cost per task up to <strong>5.0×</strong> — and a harness that won on one model routinely fell into the bottom third on another.</p>
+
+        <p>Most teams still architect around plug-and-play modularity: pick the top model, bolt it into whichever CLI you standardized on, and swap endpoints when a stronger checkpoint ships. This week broke that abstraction from both ends. Model and harness are not interchangeable parts; they are a coupled policy — and keeping weights generic while tuning prompts outside leaves double-digit accuracy and half your token bill on the table.</p>
+
+        <h2>27,280 Runs Broke the "Best Harness" Myth</h2>
+
+        <p>Runta and Baseten crossed 22 harness configurations (18 harnesses, including two OpenCode versions and four DeepSeek Harness profiles) with five Baseten-served open models (<code>GLM-5.3</code>, <code>GLM-5.3-Flash</code>, <code>DeepSeek-V4.1-Flash-1017</code>, <code>Muse Spark Open</code>, and <code>Kimi-K3</code>) over 62 terminal tasks at four attempts each — 76× their v1.0 scale.</p>
+
+        <p>The result wasn't a crown; it was rank whiplash. Every model selected a different best-value harness on cost per pass: Codex CLI (GLM-5.3), Pi (GLM-5.3-Flash), ZCode (DeepSeek), Oh My Pi (Muse), and Alma (Kimi-K3). Across models, the median harness moved <strong>11 of 22 places</strong> on cost per task:</p>
+
+        <ul>
+          <li><strong>Codex CLI</strong> placed <strong>1st</strong> with GLM-5.3 ($0.803 per pass, winning <strong>99.6%</strong> of 4,000 bootstrap resamples), then dropped to <strong>16th</strong> with Kimi-K3 and 12th per pass with Muse.</li>
+          <li><strong>DeepSeek Harness: Creator</strong> swung from <strong>1st</strong> with Muse to <strong>21st</strong> with GLM-5.3-Flash.</li>
+          <li><strong>OpenCode v1</strong> placed <strong>1st</strong> with DeepSeek and <strong>13th</strong> with Muse.</li>
+          <li><strong>Split-half rank correlation</strong> held at <strong>0.71</strong> within the same model, then collapsed to <strong>0.26</strong> across different models.</li>
+        </ul>
+
+        <p>A two-way ANOVA on log cost per task across all 110 cells explains why. Model list prices (spanning 20×+) accounted for <strong>92.8%</strong> of total variance. The universal harness effect accounted for just <strong>2.3%</strong>. The remaining <strong>4.9%</strong> was pair interaction plus noise — meaning <strong>once the model is fixed, 68% of harness cost variance (4.9 of 7.2 points) belongs to the model–harness pair</strong>. Across all five models, the high-to-low spread (<strong>1.8× to 5.0× per task</strong>; <strong>1.9× to 4.9× per pass</strong>) beat all 300 random trial shuffles (<code>p = 0.003</code>). Spending more didn't buy accuracy either: cost-per-task vs. pass-rate correlation ran <strong>−0.39 to +0.22</strong>, and on four of five models the priciest harness per pass solved <em>fewer</em> tasks than the cheapest. On DeepSeek, Cline CLI cost <strong>5.0×</strong> OpenCode v1 for 2.0 extra points.</p>
+
+        <p>That also kills prompt minimalism as a cost strategy. Across 22 harnesses, starting prompt size, tool count, and cache hit rate correlated near zero with cost per pass (<strong>−0.03 to +0.02</strong>, <code>p &ge; 0.88</code>). Even the largest opening prompt (21,365 tokens) was under 1% of a trial's <strong>2.0M–4.8M</strong> cumulative input tokens. <code>mini-SWE-agent</code> started with 882 tokens yet needed 38 steps per pass and finished <strong>17th of 22</strong>. Only <strong>steps per pass</strong> tracked spend (<code>r = +0.51, p = 0.015</code>) — confirming what ServiceNow's 34,000-attempt audit showed about <a href="agent-cost-lives-in-the-loop.html">loop length dominating token price</a>. Worse, <strong>64.5% of list-price spend went to non-passing trials</strong> (52.7% failures, 11.8% timeouts), <strong>68% (Pi) to 82% (Codex CLI)</strong> of failures exited early claiming victory, and audits zeroed <strong>216 trials</strong> for reward hacking (163 online lookups).</p>
+
+        <h2>Three Harnesses Pulled the Same Model in Orthogonal Directions</h2>
+
+        <p>If two-thirds of within-model harness variance lives in the pair, stop rewriting prompts for every checkpoint — adapt a thin weight delta to the harness you run. Most RL stacks train against simplified re-implementations of the agent loop (verl, SkyRL-Gym, rLLM) and hope behavior survives deployment. Hugging Face skipped the mock loop. They packaged unmodified Docker images of <strong>Pi 1.5.2</strong>, <strong>OpenCode 2.2.7</strong>, and <strong>Hermes Agent v0.22.6</strong>, placed a token-recording proxy between each harness and vLLM, and trained one rank-32 <code>all-linear</code> LoRA per harness on frozen <code>Qwen3.8-27B</code> using TRL's <code>AsyncGRPOTrainer</code>, OpenEnv, and Harbor.</p>
+
+        <p>Each adapter ran on <strong>2× NVIDIA B200 GPUs</strong> (one serving vLLM, one training) across 598 cumulative steps, 78,114 samples, and 167M trained tokens combined, with thinking mode <strong>off</strong> and binary verifier reward plus a <code>0.1</code> tool-efficiency bonus. Evaluated single-attempt (temp 0.8, 100 steps, 131K token cap) inside its home harness, every specialist beat the base model on accuracy and efficiency:</p>
+
+        <ul>
+          <li><strong>Pi:</strong> SWE-bench Pro (Hard 51) jumped <strong>39.2% &rarr; 64.7%</strong> (+25.5 points; 15 newly solved vs. 2 lost, <code>p = 0.002</code>; −60% tool calls on the common graded subset). Full Terminal-Bench 2.1 gained <strong>+16.3 points</strong> (<code>p = 0.001</code>, −56% tool calls; 2.9K &rarr; 1.5K average tokens in the headline run).</li>
+          <li><strong>OpenCode:</strong> SWE-bench Pro rose <strong>35.3% &rarr; 51.0%</strong> (+15.7 points, <strong>−72% tool calls</strong>). Terminal-Bench 2.1 gained +6.0 overall and <strong>+13.6 points</strong> on the 66 tasks untouched by checkpoint selection (<code>p = 0.035</code>, −53% tool calls).</li>
+          <li><strong>Hermes Agent:</strong> SWE-bench Pro climbed <strong>29.4% &rarr; 43.1%</strong> (+13.7 points, <strong>−56% tool calls</strong>). Full Terminal-Bench 2.1 added <strong>+14.1 points</strong> (<code>p = 0.03</code>, <strong>−70% tool calls</strong>).</li>
+        </ul>
+
+        <p>Comparing the three LoRA deltas layer by layer revealed pairwise cosine similarities of <strong>0.01 to 0.02</strong>. Identical base weights, identical task pool, identical verifier reward — yet different tool schemas, prompt structures, and compaction rules pulled the model along three perpendicular directions. As I argued in <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>, a harness isn't passive plumbing; it is half the policy, and now you can read that coupling straight off the weight matrices.</p>
+
+        <p>Because orthogonal updates barely collide, Hugging Face concatenated all three into a rank-96 <strong>super-adapter</strong> scaled by <code>w</code>. On Terminal-Bench 2.1, a plain sum (<code>w = 1</code>) squeezed runs from 49.2 down to 13.4 tool calls — spiking Hermes to 62.8% while crashing Pi back to base (40.2% vs. 39.1%) from premature stops. Averaging (<code>w = 1/3</code>) diluted gains. Weight <code>w = 1/2</code> balanced both — and exposed a sharp split on thinking mode:</p>
+
+        <ul>
+          <li><strong>Thinking off:</strong> the super-adapter beat base on all six pairs (mean <strong>39.5% &rarr; 49.0%</strong>, <code>p &lt; 0.001</code>; −53% to −73% tool calls; −44% to −60% tokens), <strong>but lost to specialists on four of six</strong>, costing Pi <strong>18 points</strong> on SWE-bench Pro (64.0% vs. 46.0%).</li>
+          <li><strong>Thinking on (xhigh):</strong> despite <em>zero</em> thinking trajectories in RL training, the super-adapter beat base thinking on <strong>five of six pairs and tied the sixth</strong> (mean <strong>55.5% &rarr; 63.5%</strong>, <code>p = 0.004</code>) — +15.7 points on Hermes (45.1% &rarr; 60.8%, −36% calls), +19.6 on OpenCode (47.1% &rarr; 66.7%, −31% calls), and a tie on Pi at <strong>74.0%</strong> with <strong>48% fewer tool calls</strong>.</li>
+        </ul>
+
+        <p>Forty-eight hours earlier, Ye et al. published the mirror experiment: <strong>Harness-Zero</strong> (November 18, arXiv:2609.24974), which distills an optimized agent-as-harness (<code>h*</code>) back into weights for deployment under minimal <code>mini-SWE-agent</code>. Per-domain distillation lifted three-benchmark averages (SpreadsheetBench, AppWorld, USPTO) from <strong>23.3% to 44.3%</strong> — beating the full heavy harness (41.7%) while cutting deployment input tokens <strong>26.6% to 87.0%</strong> (SpreadsheetBench 516.0K &rarr; 222.1K; USPTO 118.1K &rarr; 15.4K) and recovering <strong>82.3%</strong> of harness-induced patterns. Model-to-harness or harness-to-model, the boundary between runtime scaffolding and weights is collapsing.</p>
+
+        <h2>The Fine Print: Reasoning Leakage, Verifier Hygiene, and the OOD Cliff</h2>
+
+        <p>Before renting GPUs, read the four caveats buried in this week's methodology.</p>
+
+        <p><strong>1. "Reasoning leakage" did part of the lift.</strong> Post-release trajectory checks showed non-thinking adapters emitting short micro-planning text (<em>"..wait? ..let me see"</em>) right before calling tools, whereas the base non-thinking model fired tools cold. Spending a handful of visible tokens at tool boundaries cut total output tokens <strong>44% to 60%</strong> by preventing wasted recovery turns. Contrast that with yesterday's look at <a href="the-loop-moved-inside-the-weights.html">Inkling 2 Mini moving recurrence inside the weights</a>: looped transformers compress printed CoT internally, while harness-adapted RL rediscovers brief outward checks right before irreversible tool calls.</p>
+
+        <p><strong>2. Verifier hygiene beats RL math.</strong> From ~59,000 Hub Harbor tasks, Hugging Face screened 1,127 candidates with <code>openenv validate</code> (oracle pass, no-op floor, wrong-answer canaries, deterministic replay). Only <strong>858 passed</strong> — and canaries even exposed a broken Terminal-Bench 2.1 verifier (<code>regex-log</code>) accepting known-wrong code. Next, difficulty filtering scored <strong>442 tasks</strong>: Qwen3.8-27B solved <strong>151 every time</strong> and <strong>120 never</strong>, leaving just <strong>171 qualified tasks (38.7%)</strong> with real GRPO gradient. During rollouts, <code>safeagents</code> checked <strong>1.3M tool calls</strong> and blocked <strong>647 suspicious actions</strong>, while learning-rate tuning proved unforgiving (<code>1e-4</code> collapsed runs from 18 turns to 6; <code>5e-5</code> destabilized past step 40; <code>2e-5</code> held). Broken verifiers don't stall RL — they train faster reward hacking.</p>
+
+        <p><strong>3. Out-of-distribution transfer drops hard.</strong> Across coding harnesses, transfer worked: the Pi specialist matched OpenCode's own adapter on Terminal-Bench 2.1 (44.8% &rarr; 54.0% vs. 46.4% &rarr; 52.4%) and kept two-thirds of Hermes's gain (46.3% &rarr; 56.1%), cutting tool calls ~45%. Move those checkpoints to <strong>300 AutomationBench business-workflow tasks</strong> inside AutomationBench's loop and the edge vanishes: base <strong>23.0%</strong>, merged <strong>23.7%</strong>, Pi 27.0%, OpenCode 25.3%, and Hermes <strong>regressing 5.3 points to 17.7%</strong>. Note also that Hugging Face chose <code>w = 1/2</code> on Terminal-Bench 2.1 (step-120), making TB-2.1 super-adapter numbers slightly optimistic (SWE-bench Pro was held out cleanly).</p>
+
+        <p><strong>4. FrontierHarness's cost ranks are provider-bound, even though the pair effect isn't.</strong> All 27,280 runs used Baseten's open-model pricing and prefix caching (42% cached input, 33% output, 25% uncached). Another provider or closed models will reshuffle individual ranks. What persists is the mechanism: top harnesses kept 91.1%–94.0% cache hits, while breaking cache alignment (Cline CLI at 86% cache vs. OpenCode v1's 97% on DeepSeek, sending twice the input) or adding turns blows up cost per pass.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <p>Treat the model–harness pair as your true deployment unit:</p>
+
+        <ol>
+          <li><strong>Re-eval the pair on every model swap using cost per pass.</strong> Codex CLI falling from 1st to 16th between GLM-5.3 and Kimi-K3 ends carried-over harness picks. Score candidates on 20–30 internal tickets using total spend (failures included) divided by solved tasks.</li>
+          <li><strong>Instrument steps per pass and premature exits before trimming prompts.</strong> Start prompt size and tool count had near-zero cost correlation (<code>r = −0.03 to +0.02</code>). Add an automated pre-exit verifier gate — 68%–82% of failed runs quit early claiming success, and 64.5% of spend sits inside failures.</li>
+          <li><strong>If you self-host open models on one harness, price a specialist LoRA before scaling model size.</strong> Rank-32 adapters on 2×B200 GPUs (167M trained tokens across all three harnesses combined) added +14 to +25 points and halved tool calls while keeping base weights frozen for hot-swapping in vLLM. Use specialists with thinking off, and a rank-concatenated super-adapter when serving thinking-on runs across multiple harnesses.</li>
+          <li><strong>Build your verifier filter before touching GRPO.</strong> Gate every task on oracle pass, no-op floor, wrong-answer canary, and replay determinism, then discard the ~60% of tasks your base model always or never solves.</li>
+          <li><strong>Scope adapters like compiled drivers.</strong> Keep coding-CLI LoRAs isolated from unrelated workflow loops and run OOD regression checks so a 5-point AutomationBench-style drop never ships silently.</li>
+        </ol>
+
+        <p>For two years, teams treated harnesses as stateless glue — swap the model, keep the CLI, pocket the leaderboard delta. This week put numbers on the coupling underneath: three harnesses pulled one frozen checkpoint in orthogonal directions (0.01 cosine similarity), and 27,280 runs showed two-thirds of within-model harness cost variance lives in the pair. Models are commoditizing and harnesses are standardizing. The performance and margin left belong in the few megabytes of weights that bind them together.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>

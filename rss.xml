@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Sat, 21 Nov 2026 06:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sun, 22 Nov 2026 06:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Your Harness Needs Its Own Weights</title>
+      <link>https://abuiliazeed.github.io/blog/your-harness-needs-its-own-weights.html</link>
+      <guid>https://abuiliazeed.github.io/blog/your-harness-needs-its-own-weights.html</guid>
+      <description>Three RL LoRA adapters trained on the same 27B model inside Pi, OpenCode, and Hermes Agent had a cosine similarity of 0.01–0.02 — nearly orthogonal. Paired with a 27,280-run eval showing 68% of within-model harness cost variance is pair-specific, the plug-and-play model-harness abstraction just broke.</description>
+      <pubDate>Sun, 22 Nov 2026 06:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>The Loop Moved Inside the Weights</title>
       <link>https://abuiliazeed.github.io/blog/the-loop-moved-inside-the-weights.html</link>
