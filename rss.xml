@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Sun, 22 Nov 2026 06:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Tue, 24 Nov 2026 06:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Merge Gate Just Became a Harness</title>
+      <link>https://abuiliazeed.github.io/blog/the-merge-gate-just-became-a-harness.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-merge-gate-just-became-a-harness.html</guid>
+      <description>Anthropic launched Claude Ship yesterday — pairing Code Review with PR Steward and a repo-level .claude/approvals.yml policy engine after doubling merged PRs and cutting reverts by 40% internally. Read the security docs closely, though: the agent designed not to merge still relies on GitHub branch rules for merges and force-pushes, one YAML default approves PRs with zero review, and PR text can steer the classifier deciding whether a human sees the diff.</description>
+      <pubDate>Tue, 24 Nov 2026 06:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>Your Harness Needs Its Own Weights</title>
       <link>https://abuiliazeed.github.io/blog/your-harness-needs-its-own-weights.html</link>
