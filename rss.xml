@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Tue, 24 Nov 2026 06:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Wed, 25 Nov 2026 06:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Agent Lane Has No Free Tier</title>
+      <link>https://abuiliazeed.github.io/blog/the-agent-lane-has-no-free-tier.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-agent-lane-has-no-free-tier.html</guid>
+      <description>Google just made Workspace MCP servers generally available and mandated them for AI agents starting February 1, 2027. Read the billing docs and the new Workspace AI Tools Addendum closely: REST apps keep 114 million free requests a day, scaled MCP agents get zero, and every vector embedding or memory index derived from Workspace now carries a 30-day legal expiration date.</description>
+      <pubDate>Wed, 25 Nov 2026 06:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>The Merge Gate Just Became a Harness</title>
       <link>https://abuiliazeed.github.io/blog/the-merge-gate-just-became-a-harness.html</link>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Agent Lane Has No Free Tier — Abuiliazeed</title>
+  <meta name="description" content="Google just made Workspace MCP servers generally available and mandated them for AI agents starting February 1, 2027. Read the billing docs and the new Workspace AI Tools Addendum closely: REST apps keep 114 million free requests a day, scaled MCP agents get zero, and every vector embedding or memory index derived from Workspace now carries a 30-day legal expiration date.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-agent-lane-has-no-free-tier.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-agent-lane-has-no-free-tier.html">
+  <meta property="og:title" content="The Agent Lane Has No Free Tier">
+  <meta property="og:description" content="Google just made Workspace MCP servers generally available and mandated them for AI agents starting February 1, 2027. Read the billing docs and the new Workspace AI Tools Addendum closely: REST apps keep 114 million free requests a day, scaled MCP agents get zero, and every vector embedding or memory index derived from Workspace now carries a 30-day legal expiration date.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Agent Lane Has No Free Tier">
+  <meta name="twitter:description" content="Google just made Workspace MCP servers generally available and mandated them for AI agents starting February 1, 2027. Read the billing docs and the new Workspace AI Tools Addendum closely: REST apps keep 114 million free requests a day, scaled MCP agents get zero, and every vector embedding or memory index derived from Workspace now carries a 30-day legal expiration date.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-11-25">November 25, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Agent Lane Has No Free Tier</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>114 million free requests a day for traditional apps. Zero for scaled AI agents. And a 30-day legal expiration date on every vector embedding, memory index, and organizational graph your agent builds along the way.</p>
+
+        <p>Yesterday, November 24, Google made its managed <strong>Workspace MCP servers</strong> and <strong>Workspace CLI</strong> generally available across Gmail, Drive, Docs, Sheets, Slides, Calendar, Chat, and Tasks, alongside <strong>Google Cloud Agent Gateway</strong>, Model Armor screening, and the <a href="https://workspace.google.com/terms/ai-tools/" target="_blank" rel="noopener noreferrer">Workspace AI Tools Addendum</a>. Under that contract, AI agents must stop calling traditional Workspace REST APIs directly. Technical enforcement begins <strong>February 1, 2027</strong>; scaled billing begins <strong>April 1, 2027</strong>.</p>
+
+        <p>Most people read yesterday's posts as a governance upgrade — DLP checks, human confirmations, and dedicated agent identities in the request path. That part is real and solves a genuine security failure. It also obscures the larger architectural move buried in the billing tables and legal definitions: Google just split the SaaS API surface into a human-app lane on REST and an agent lane on MCP, turned an open protocol into a request-one-metered tollbooth, and wrote <code>AI Harness</code> into binding Terms of Service with rules that collide head-on with modern RAG, memory, and evaluation stacks.</p>
+
+        <h2>Why the Twenty-Year REST Contract Broke</h2>
+
+        <p>Give Google its due first. In the <a href="https://cloud.google.com/blog/products/identity-security/deploying-agents-safely-in-your-enterprise" target="_blank" rel="noopener noreferrer">Google Cloud launch post</a>, Workspace Engineering VP Chandu Thota and GCP President Brad Calder published what agent traffic is doing to a platform serving 4 billion users and 13 million organizations:</p>
+
+        <ul>
+          <li>Workspace APIs now handle <strong>more than 2.8 trillion calls a month</strong>.</li>
+          <li>Public Google Drive API traffic is <strong>more than 2.5&times; its 2022 volume</strong>.</li>
+          <li>API callers drive <strong>more than 18 billion Drive reads every day</strong>.</li>
+        </ul>
+
+        <p>Traditional REST APIs assumed a valid OAuth token implied deterministic software moving at human pace. Autonomous agents invert that model. Give an agent broad Gmail and Drive scopes, slip a prompt injection into an incoming email or shared doc, and it can read confidential files, change sharing permissions, or send external mail at machine speed before any admin sees a log.</p>
+
+        <p>Google's technical fix puts four controls directly in the request path:</p>
+
+        <ul>
+          <li><strong>Mandatory agent identity:</strong> OAuth 2.0 clients calling Workspace MCP servers must enable <em>Use this client for an AI-powered agent</em> (<code>is_agentic</code>). MCP servers reject non-agent OAuth clients, forcing teams to separate agent and non-agent traffic.</li>
+          <li><strong>Inline policy and prompt screening:</strong> Every MCP call runs through Workspace permissions, DLP rules, classification labels, and Model Armor prompt-injection screening, with audit logs and revocation in the Admin Console.</li>
+          <li><strong>Native human-in-the-loop (HITL) gates:</strong> Drafts and summaries run autonomously; sending external emails, changing Drive sharing, or bulk edits require IT-governed user confirmation.</li>
+          <li><strong>Protocol-level egress control on GCP:</strong> Cloud Agent Gateway fronts LLM, MCP, and A2A traffic, verifying Agent Identities against Agent Registry and enforcing IAM and default-deny outbound rules.</li>
+        </ul>
+
+        <p>That mirrors where the whole ecosystem is heading — from <a href="the-registry-became-the-moat.html">Microsoft's Agent Registry</a> locking down identity to <a href="protocol-war-ended-in-a-default.html">Shopify auto-publishing agent permission files</a>. Security now lives in the protocol boundary, and CISOs will endorse it.</p>
+
+        <p>Then engineering opens the <a href="https://developers.google.com/workspace/guides/quota-pricing" target="_blank" rel="noopener noreferrer">quota and pricing docs</a> — and sees what the new gate costs.</p>
+
+        <h2>114 Million Free vs. Zero: Inside the Billing Table</h2>
+
+        <p>Google launched two project-wide usage tiers on November 24: a free <strong>Standard Tier</strong> (no billing account) and a paid <strong>Scaled Tier</strong> (configured for the entire Google Cloud project, not per API or MCP server). Unit prices look identical across REST and MCP — four buckets from $0.10 to $0.50 per 1,000 successful (<code>2xx</code>) requests. The asymmetry sits in the daily no-charge allowance:</p>
+
+        <table>
+          <thead>
+            <tr>
+              <th>Service &amp; Bucket</th>
+              <th>REST Scaled Free</th>
+              <th>MCP Scaled Free</th>
+              <th>Price / 1K</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Gmail Light (metadata, labels)</td>
+              <td>70,000,000 / day</td>
+              <td><strong>0 / day</strong></td>
+              <td>$0.10</td>
+            </tr>
+            <tr>
+              <td>Gmail Medium (messages, drafts)</td>
+              <td>10,000,000 / day</td>
+              <td><strong>0 / day</strong></td>
+              <td>$0.20</td>
+            </tr>
+            <tr>
+              <td>Gmail Premium (<code>get_thread</code>, <code>search_threads</code>)</td>
+              <td>1,000,000 / day</td>
+              <td><strong>0 / day</strong></td>
+              <td>$0.50</td>
+            </tr>
+            <tr>
+              <td>Calendar Plus (all methods)</td>
+              <td>1,000,000 / day</td>
+              <td><strong>0 / day</strong></td>
+              <td>$0.25</td>
+            </tr>
+            <tr>
+              <td>Drive Light (metadata, permissions)</td>
+              <td>20,000,000 / day</td>
+              <td><strong>0 / day</strong></td>
+              <td>$0.10</td>
+            </tr>
+            <tr>
+              <td>Drive Medium (create, copy, update)</td>
+              <td>7,000,000 / day</td>
+              <td><strong>0 / day</strong></td>
+              <td>$0.20</td>
+            </tr>
+            <tr>
+              <td>Drive Plus (<code>search_files</code>, <code>list_recent_files</code>)</td>
+              <td>4,000,000 / day</td>
+              <td><strong>0 / day</strong></td>
+              <td>$0.25</td>
+            </tr>
+            <tr>
+              <td>Drive Premium (<code>read_file_content</code>, downloads)</td>
+              <td>1,000,000 / day</td>
+              <td><strong>0 / day</strong></td>
+              <td>$0.50</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p>Add up the REST column: <strong>114 million free requests per day</strong> per billing account across those eight buckets, resetting at midnight Pacific Time. Better still, enterprises running internal REST tools can skip Scaled Tier altogether using Google's <strong>internal-use exception</strong> to raise per-project REST quotas for free.</p>
+
+        <p>Now compare the four traps built into the agent lane:</p>
+
+        <ol>
+          <li><strong>The 5,000-to-zero cliff.</strong> Standard Tier caps every GA Workspace MCP server at <strong>5,000 requests per day, per project, per product</strong>, with quota requests disabled. A 50-person team running agents against Gmail and Drive crosses 5,000 calls before lunch. Enrolling the Cloud project in Scaled Tier removes that free allowance completely: starting April 1, 2027, Gmail, Calendar, and Drive MCP calls are billed <strong>from the very first request</strong>.</li>
+          <li><strong>No internal-use escape hatch.</strong> Google's <a href="https://developers.google.com/workspace/guides/quota-usage-tiers" target="_blank" rel="noopener noreferrer">usage tiers guide</a> states it flatly: <em>&ldquo;MCP server quotas aren't eligible for increases under the internal-use exception.&rdquo;</em> Your own internal agent reading your own paid Workspace domain pays from call one once it outgrows 5,000 daily calls.</li>
+          <li><strong>Agent-native reads sit in the priciest buckets — and multiply.</strong> <code>search_threads</code>, <code>get_thread</code>, <code>read_file_content</code>, and <code>download_file_content</code> sit in Premium ($0.50/1K); <code>search_files</code>, <code>list_recent_files</code>, and every Calendar tool sit in Plus ($0.25/1K). And composite MCP tools bill as <strong>multiple billing units</strong> when they fan out across underlying APIs — in the <a href="https://developers.google.com/workspace/calendar/api/guides/quotas" target="_blank" rel="noopener noreferrer">Calendar MCP quota table</a>, a single <code>delete_event</code> carries a query cost of 10.</li>
+          <li><strong>Split volume-discount tracks.</strong> Programmatic monthly discounts (17% marginal from $20K–$50K, 30% from $50K–$100K, 70% from $100K–$165K, 40% flat above $165K) run on <strong>separate tracks for REST and MCP</strong>. High-volume REST integrations do nothing to discount your MCP bill.</li>
+        </ol>
+
+        <p>Trying to dodge the toll by staying on REST fails on February 1, 2027: technical enforcement caps any AI agent calling Workspace REST APIs directly at Standard Tier quotas regardless of tier, while the addendum bans obfuscating agent classification. For two years, the industry pitched MCP as USB-C for AI. Yesterday showed what happens when the data owner hosts the MCP server: the interoperability standard becomes a clean, protocol-level billing meter.</p>
+
+        <h2>&ldquo;AI Harness&rdquo; Just Entered the Terms of Service</h2>
+
+        <p>Pricing changes unit economics; the <a href="https://workspace.google.com/terms/ai-tools/" target="_blank" rel="noopener noreferrer">Workspace AI Tools Addendum</a> (last modified November 24, 2026) changes architecture. Google is the first hyperscaler to define the agent harness directly inside binding API Terms of Service:</p>
+
+        <blockquote>&ldquo;AI Harness&rdquo; means the software layer that can deploy an AI Agent, invoke tools or APIs, or orchestrate tasks across one or more AI Agents.</blockquote>
+
+        <p>In <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>, I treat the harness as an engineering layer; as of yesterday, it is also a regulated legal category. Clause 1 mandates that any access tool driven by an AI Agent, AI Harness, or AI model must use a Google MCP server. Then read how Google defines <strong>&ldquo;Google Technical Information&rdquo;</strong>:</p>
+
+        <blockquote>Information related to the GWS Service(s) obtained or derived from access to or interaction with the GWS Access Point(s) (including vector embeddings, memory indexes, user profiles, organizational graphs, and findings) or from failure patterns established from calls to GWS Access Points.</blockquote>
+
+        <p>Under Clauses 2(b)–2(f), any harness connected to Google Workspace may <strong>not</strong>:</p>
+
+        <ul>
+          <li>Store any <code>Google Technical Information</code> for <strong>more than 30 days</strong> (2b) or process it outside <strong>active, user-authorized tasks</strong> (2c).</li>
+          <li>Retain user data or derived embeddings, memory indexes, or org graphs after disconnect or revocation (2d).</li>
+          <li>Scrape or systematically probe Workspace endpoints, MCP servers, skills, documentation, or outputs beyond an active task (2e).</li>
+          <li>Use user data <strong>or</strong> <code>Google Technical Information</code> — including failure patterns — for <strong>model training, fine-tuning, evaluation dataset building, or model distillation</strong> (2f).</li>
+        </ul>
+
+        <p>Look at the collision that unfolded on the exact same day. On November 24, <a href="https://www.langchain.com/blog/the-agent-lake" target="_blank" rel="noopener noreferrer">LangChain launched &ldquo;The Agent Lake&rdquo;</a> — pitching SmithDB, LangSmith Engine (60M+ production traces analyzed), and SmithTune to convert recurring agent failure patterns into eval datasets and fine-tuned models. The same day at Ignite 2026, <a href="https://devblogs.microsoft.com/foundry/whats-new-in-microsoft-foundry-ignite-2026/" target="_blank" rel="noopener noreferrer">Microsoft Foundry previewed Agent Optimizer</a> to mine conversations into reusable skills. Meanwhile, an entire wave of enterprise AI products — search copilots, persistent RAG platforms, agentic CRMs, and memory layers — built their core UX by syncing Drive and Gmail into long-lived vector stores and organizational graphs.</p>
+
+        <p>Clause 2 puts a legal wall straight through all three patterns. No persistent Drive vector index past 30 days. No durable org graph from Gmail metadata. No feeding Workspace traces or failure patterns into an eval set or LoRA fine-tune — even stripped of user text — because <em>failure patterns established from calls to GWS Access Points</em> are explicitly covered, with immediate suspension or termination under Clause 3.</p>
+
+        <p>The competitive asymmetry needs no conspiracy theory. Third-party harnesses get a 5,000-call Standard ceiling, zero free Scaled MCP allowance, a 30-day memory wipe, and a ban on trace-derived evals. Google's own Gemini agents run natively inside Workspace's boundary — which Google's blog explicitly notes returns <em>&ldquo;synthesized summaries within Workspace's boundary&rdquo;</em> rather than letting external harnesses own the index.</p>
+
+        <h2>The Playbook Every System of Record Will Copy</h2>
+
+        <p>Every major SaaS system of record — Microsoft 365, Salesforce, Slack, Atlassian, ServiceNow, Notion — faces the same two pressures: surging machine-speed read traffic and enterprise CISOs alarmed by over-scoped agent OAuth tokens. Underneath sits a deeper commercial fear: if third-party harnesses pull enterprise context over free REST APIs into external vector stores and memory lakes, the SaaS vendor gets demoted to dumb storage while the harness captures the workflow and the margin.</p>
+
+        <p>Google just handed enterprise SaaS a four-step blueprint that security teams will applaud:</p>
+
+        <ol>
+          <li><strong>Ship first-party MCP servers and a governed CLI</strong> with real security controls: DLP, prompt-injection screening, audit logs, and HITL confirmations.</li>
+          <li><strong>Split identity at OAuth</strong> (<code>is_agentic</code>) so deterministic apps and autonomous agents never share a lane.</li>
+          <li><strong>Cap REST fallback and meter MCP from call one</strong>, removing internal-use exemptions so internal agents pay too.</li>
+          <li><strong>Fence derived context in an AI Tools Addendum</strong> with short memory TTLs and bans on trace-derived evals and fine-tuning.</li>
+        </ol>
+
+        <p>That ends the default <em>sync-and-index</em> agent architecture — pull everything over free REST, embed it once, query cheaply forever — and replaces it with <em>ephemeral, server-mediated retrieval</em>. It also doubles the penalty for sloppy harnesses. In <a href="the-amnesia-tax.html">The Amnesia Tax</a>, I covered Microsoft Research's finding that after five tasks in the same repo, 30% of agent tool calls repeat prior work. On free REST, repeated reads only inflate LLM tokens. When <code>search_threads</code> and <code>read_file_content</code> bill at $0.50/1K from request one and composite tools multiply calls, an amnesiac harness pays twice on every wasted turn.</p>
+
+        <h2>What to Do Before February 1, 2027</h2>
+
+        <p>You have nine weeks until Google's MCP mandate and Workspace AI Tools Addendum take effect on February 1, 2027, and four months before Scaled Tier MCP billing begins on April 1. Five moves belong on your roadmap now:</p>
+
+        <ol>
+          <li><strong>Split agent traffic into dedicated Cloud projects and <code>is_agentic</code> OAuth clients now.</strong> Because Scaled Tier applies project-wide and strips free MCP allowances, never mix deterministic REST apps and AI agents in one Cloud project. Keep traditional apps in Standard or internal-use projects and isolate agents with hard budget alerts.</li>
+          <li><strong>Price April 1 in billing units, not raw tool calls.</strong> Turn on the new quotas dashboard and Cost Estimator, export CSVs with composite MCP multipliers applied, and model your hottest loops at $0.25/1K (Plus) and $0.50/1K (Premium) — knowing REST spend sits on a separate discount track.</li>
+          <li><strong>Kill repeat reads inside active sessions.</strong> Cache retrieved threads, files, and metadata in ephemeral, task-scoped memory for the duration of an active user-authorized run so agents stop re-fetching the same documents three times per task.</li>
+          <li><strong>Enforce Clause 2 across RAG, memory, and eval pipelines.</strong> Add automated 30-day TTLs and OAuth-revocation purge hooks to any Workspace-derived embeddings, memory indexes, or org graphs before February 1, and filter Workspace traces and failure patterns out of eval-dataset and fine-tuning pipelines.</li>
+          <li><strong>Build every SaaS connector for the two-lane model.</strong> Add per-connector call metering, short-TTL context isolation, and HITL confirmation hooks into your harness abstraction layer now — before the next system of record closes its REST lane on a 60-day clock.</li>
+        </ol>
+
+        <p>The free REST API was the quiet subsidy behind the first wave of enterprise AI agents. Yesterday, Google ended that subsidy across 2.8 trillion monthly calls — using security governance as the rationale, MCP as the meter, and a 30-day contract clause as the moat. If your harness still assumes data access is free and derived memory is yours to keep, your architecture just picked up a February 1 expiration date.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
