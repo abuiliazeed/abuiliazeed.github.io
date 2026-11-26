@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>98% Right, 29% Done — Abuiliazeed</title>
+  <meta name="description" content="ShellBench ran 53,100 agent attempts across 12 models and 5 harnesses. On one dinner task, 522 of 531 agents picked the right restaurant and 152 passed: the model now does the deciding, roughly a third of what's left is bookkeeping, and the harness decides the bill.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/98-percent-right-29-percent-done.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/98-percent-right-29-percent-done.html">
+  <meta property="og:title" content="98% Right, 29% Done">
+  <meta property="og:description" content="ShellBench ran 53,100 agent attempts across 12 models and 5 harnesses. On one dinner task, 522 of 531 agents picked the right restaurant and 152 passed: the model now does the deciding, roughly a third of what's left is bookkeeping, and the harness decides the bill.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="98% Right, 29% Done">
+  <meta name="twitter:description" content="ShellBench ran 53,100 agent attempts across 12 models and 5 harnesses. On one dinner task, 522 of 531 agents picked the right restaurant and 152 passed: the model now does the deciding, roughly a third of what's left is bookkeeping, and the harness decides the bill.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-11-26">November 26, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">98% Right, 29% Done</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>522 of 531 AI agents picked the right restaurant. 152 passed.</p>
+
+        <p>The task reads like something you would text a capable assistant: find one venue that everyone in the dinner party can reach, afford, and eat at. The workspace behind that sentence held 180 files. A saved listing showed Marlowe Bistro as open; an email confirmed a private hire that same evening. The available Baan Thai reservation was at the farther of two branches. A voucher, travel times, and an allergy list narrowed it further. The rubric had nine checks, and one of them asked the answer to name the files behind its budget and timing. <strong>331 attempts failed on that criterion alone</strong>, which earned them the same grade as an agent that recommended a closed restaurant.</p>
+
+        <p>The task comes from <a href="https://openclaw.ai/blog/shellbench" target="_blank" rel="noopener noreferrer">ShellBench</a>, published November 24 by the OpenClaw Foundation with researchers from Parsewave, Hugging Face, Red Hat, NVIDIA, and UC Berkeley. One hundred everyday tasks, built from 10.4 million real, anonymized user requests, each dropped into a messy workspace with a median of 188 files: emails, calendar exports, spreadsheets, receipts, saved web pages, some outdated, some bait. Twelve models ran through five harnesses (Claude Code, Codex, Hermes, OpenClaw, Pi) at three reasoning levels, three attempts each: <strong>53,100 graded runs</strong>, scored all-or-nothing against 721 criteria, 381 of which are safety checks. The <a href="https://arxiv.org/abs/2611.32946" target="_blank" rel="noopener noreferrer">paper</a> is the cleanest dataset yet on the question this column keeps circling: model or harness?</p>
+
+        <p>The headline answer is the model. The interesting answer is in the appendix.</p>
+
+        <h2>The Headline Is Right. I&rsquo;m Not Going to Argue With It.</h2>
+
+        <p>Model choice explains <strong>95.7%</strong> of the variance in pass rate across the study. Harness choice explains <strong>0.36%</strong>. GPT-6 Astra led at 62.5%, Claude Fable 5.2 and GPT-6.1 Sol followed at 61.9% and 61.4%, and the five harness averages landed between 42.9% and 45.2%.</p>
+
+        <p>This column has spent a lot of words arguing that <a href="model-is-the-wrong-variable.html">the model is the wrong variable</a> and that <a href="same-model-three-harnesses-31-points.html">the same model can swing 31 points across three harnesses</a>. That evidence came from coding benchmarks, where the harness does work the model cannot do on its own: run the tests, read the failure, compile, try again. ShellBench tests a different kind of labor. Read a messy folder, decide, account for the decision. On that labor the model does nearly all of it. Four open-source harnesses finished within <strong>0.19 points</strong> of one another. The one proprietary harness came last.</p>
+
+        <p>If you were hoping to buy pass rate on everyday tasks by switching harnesses under a frontier model, the data says keep your money. That part of the argument is over, and it is worth conceding without a hedge.</p>
+
+        <p>But &ldquo;the harness doesn&rsquo;t matter&rdquo; is not what the paper shows. It shows something narrower, and once you see it, more useful.</p>
+
+        <h2>The Harness Effect Didn&rsquo;t Vanish. It Cancelled.</h2>
+
+        <p>A main effect of 0.36% is an average across twelve models. The interaction term, which measures how far each harness pushes each specific model away from that model&rsquo;s own average, is <strong>4.0%</strong>, eleven times larger. Harnesses push models in different directions, and the pushes net out to nearly zero. An average of opposing effects looks like no effect.</p>
+
+        <p>You can watch it happen in Claude Code. GPT-6 Astra scored between 62.4% and 65.3% in the four open-source harnesses. In Claude Code it scored <strong>55.4%</strong>. GPT-6.1 Sol&rsquo;s best result anywhere was 64.7%; in Claude Code it fell to <strong>53.2%</strong>. Measured on consistency, the share of tasks an agent passed on all three attempts, the gap widens: Astra 54.7% at its best harness versus <strong>37.7%</strong> in Claude Code, Sol 50.0% versus <strong>35.0%</strong>. Claude Fable 5.2 was entirely comfortable there, at 63.0%, its second-best harness.</p>
+
+        <p>The paper also logs how each harness behaves. In Claude Code, every one of the eleven shared models read more file text (61% above its own average), rewrote its answers more often (53%), and made more tool calls (59%; the three OpenAI models made 144% to 184% more). Hermes and Pi read 20% and 28% less than their models&rsquo; averages. Across the whole table, five models posted their best score in Claude Code and five posted their worst. The paper does not explain the split. My guess is that a scaffold which reads everything and revises constantly pays off for some models and taxes others. That is a guess. The measurement is not.</p>
+
+        <p>This is <a href="models-now-ship-with-harness-compatibility.html">model-harness compatibility</a> with a clean dataset behind it. The right question was never &ldquo;which harness is best.&rdquo; It is &ldquo;which harness fits the model I actually run,&rdquo; and that is testable in an afternoon: ten of your own tasks, three attempts each, two harnesses.</p>
+
+        <h2>About a Third of the Failures Are Bookkeeping</h2>
+
+        <p>Back to the dinner. The paper reproduces a Claude Opus 5.5 trace on that task. The agent&rsquo;s note named the calendar, the booking, and the voucher. It passed eight of nine criteria. The WhatsApp thread and the usual-spend receipt, in the authors&rsquo; words, &ldquo;appear in neither the recorded tool output nor the note.&rdquo; The agent never opened them. It reached a correct answer on partial evidence, then could not show its work, because on two of the files the request depended on there was no work to show.</p>
+
+        <p>The authors then rescored every run without two families of criteria. <em>Source</em> criteria, 87 of them across 77 tasks, check that the answer names the files it used, including the record that settles a conflict. <em>Stale-information</em> criteria check that the agent identified a superseded record as superseded. Remove both and GPT-6 Astra goes from 62.5% to <strong>74.7%</strong>. GPT-6.1 Sol from 61.4% to <strong>73.4%</strong>. Claude Opus 5.5 from 47.0% to <strong>64.1%</strong>. Do the division for all twelve models and these two criterion types account for a <strong>median of 32% of every failure</strong>, between a fifth and just over a third depending on the model.</p>
+
+        <p>Sit with that. Roughly a third of the time an agent fails at everyday work, it has not decided anything wrong. It failed to account for what it read, or for what it never read. It stayed silent on a 3:45 school pickup (79.5% of attempts missed that one, and an answer that says nothing about the pickup fails it too). It planned from a saved train page left over from an earlier trip. It recommended a venue on budget and timing grounds without naming the voucher or the calendar that set them. The authors&rsquo; own reading is that six of the ten most-failed safety criteria &ldquo;partly measure whether the answer is complete.&rdquo;</p>
+
+        <p>Not everything is bookkeeping, and the rest deserves honesty. On a freight reconciliation task, <strong>40.3%</strong> of attempts recommended a duplicate or incorrect invoice payment. That is a real error with a real price. It is simply not the largest category, and the largest category is the one no shipped harness addresses.</p>
+
+        <p>The harness does move this failure. The averages just bury it. On the dinner task, GPT-6.1 Sol running in Codex failed source-naming on <strong>eight of nine</strong> attempts. The same model in OpenClaw failed it on <strong>one of nine</strong>. Codex and OpenClaw&rsquo;s overall pass rates differ by 0.19 points. Rescore everything without the source and stale criteria and Codex climbs from fourth among the five harnesses to first. Same model, different harness, a different failure mode, invisible in the headline number.</p>
+
+        <p>The completeness lens also explains a safety result that looks odd on its own. Of the 26,151 runs that met every correctness criterion, <strong>9.9%</strong> still failed a safety requirement. Correct answers leak. In this data safety is 75.5% a model property and 4.7% a harness property, and Claude Code&rsquo;s apparent safety edge over Codex (3.0 points) shrinks to 0.5 once you set aside runs that produced no files at all. Do not infer safe from correct. Gate them separately.</p>
+
+        <h2>What the Harness Still Decides: The Bill and the Wait</h2>
+
+        <p>If pass rate has stopped being a harness decision, cost and latency have not. For GPT-6 Astra, Pi averaged <strong>$0.60</strong> per run at a 65.3% pass rate. OpenClaw averaged <strong>$1.94</strong> at 62.4%. Divide cost by pass rate and the same model costs <strong>$0.92 per passed task in Pi against $3.11 in OpenClaw</strong>: 3.4 times the spend for the same grade. The mechanism sits in the token counts. Pi averaged 192,000 input tokens per run, Claude Code 500,000. Pi&rsquo;s median run finished in 1.31 minutes; OpenClaw&rsquo;s took 2.86.</p>
+
+        <p>Every cost here is the paper&rsquo;s estimate, recorded tokens at list prices as of November 18 with grading excluded, so treat them as ratios rather than invoices.</p>
+
+        <p>The model side of the ledger is just as lopsided. GPT-6.1 Sol passed 61.4% of attempts at $0.19 each; GPT-6 Astra passed 62.5% at $1.10. That is $0.31 per passed task against $1.76. Count only tasks passed on all three attempts, the number that predicts whether you can walk away, and it is $1.24 against $6.76. The authors put it plainly: 100 attempts with Astra cost about $91 more than 100 with Sol and yield roughly one additional pass. The top three models are tied. They are not priced alike. When capability converges, the leaderboard stops being a capability ranking and becomes a price list.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <ol>
+          <li><strong>Re-run the harness question on your own model.</strong> Pick ten tasks your agent actually does, three attempts each, two harnesses, scored on all-three rather than best-of. You are not looking for the better harness. You are looking for the one that is compatible with your model, and for a ten-point cliff you would otherwise never notice.</li>
+          <li><strong>Add an accounting gate before the answer leaves.</strong> Have the harness derive a checklist from the request, one entry for every constraint it names, and keep a ledger of every file opened. Fail the run if a constraint goes unaddressed, or if the answer rests on a file the agent never opened or never cited. This is a structural check, not a prompt. A prompt asks the model to remember; the harness can make forgetting a failed state.</li>
+          <li><strong>Gate safety separately from correctness.</strong> One in ten fully correct runs failed a safety check. A completion signal is not a safety signal, and a harness that only asks &ldquo;did it finish&rdquo; will pass every one of them.</li>
+          <li><strong>Price per finished run, not per token.</strong> The spread across open harnesses was 0.19 points of pass rate and 3.4 times on cost per pass. Your procurement conversation should match.</li>
+          <li><strong>Judge twice.</strong> Six of 40 unchanged submissions received both a pass and a fail under repeated automated grading. Some of what looks like agent inconsistency is the grader. Before you blame the model for a 50% all-three rate, re-judge a sample.</li>
+        </ol>
+
+        <p>In <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>, I described the harness as everything that sits between the model and the outcome. ShellBench&rsquo;s appendix lets me sharpen that. The model handles the deciding now. Close to a third of what remains is bookkeeping, and bookkeeping is the harness&rsquo;s job. The agent that picks the right restaurant 98% of the time was never the bottleneck. The one that cannot tell you which five files it based the pick on is.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
