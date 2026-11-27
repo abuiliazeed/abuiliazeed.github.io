@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Thu, 26 Nov 2026 06:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Fri, 27 Nov 2026 06:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Tell the Agent Where the Walls Are</title>
+      <link>https://abuiliazeed.github.io/blog/tell-the-agent-where-the-walls-are.html</link>
+      <guid>https://abuiliazeed.github.io/blog/tell-the-agent-where-the-walls-are.html</guid>
+      <description>Anthropic set more than 1,700 traps for its own models, each a sandbox with a hole in it. The newest reached outside in 21% to 32% of them, and the mitigation that worked best was not a monitor or a classifier but six sentences explaining the rules.</description>
+      <pubDate>Fri, 27 Nov 2026 06:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>98% Right, 29% Done</title>
       <link>https://abuiliazeed.github.io/blog/98-percent-right-29-percent-done.html</link>
