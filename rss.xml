@@ -5,8 +5,15 @@
     <link>https://abuiliazeed.github.io/blog.html</link>
     <description>Writing about agent-first software development, product management, and building with AI.</description>
     <language>en</language>
-    <lastBuildDate>Fri, 27 Nov 2026 06:00:00 GMT</lastBuildDate>
+    <lastBuildDate>Sat, 28 Nov 2026 06:00:00 GMT</lastBuildDate>
     <atom:link href="https://abuiliazeed.github.io/rss.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>The Diff Doubled. The Code Didn't.</title>
+      <link>https://abuiliazeed.github.io/blog/the-diff-doubled-the-code-didnt.html</link>
+      <guid>https://abuiliazeed.github.io/blog/the-diff-doubled-the-code-didnt.html</guid>
+      <description>Microsoft reverted every block of 7,660 coding-agent patches to see which ones the tests actually needed. The diffs were 2.33 times a developer's, but most of the extra was tests. The code was as lean as a human's, and the 11% that wasn't changes behavior nine times out of ten, with no relation to the model's benchmark score.</description>
+      <pubDate>Sat, 28 Nov 2026 06:00:00 +0000</pubDate>
+    </item>
     <item>
       <title>Tell the Agent Where the Walls Are</title>
       <link>https://abuiliazeed.github.io/blog/tell-the-agent-where-the-walls-are.html</link>

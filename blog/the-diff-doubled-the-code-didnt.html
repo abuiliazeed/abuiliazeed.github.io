@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Diff Doubled. The Code Didn't. — Abuiliazeed</title>
+  <meta name="description" content="Microsoft replayed 7,660 coding-agent patches block by block, reverting each one to see whether the tests still passed. The diffs were 2.33 times a developer's, but most of the extra was tests. The code was as lean as a human's, and the 11% that wasn't changes behavior nine times out of ten.">
+  <meta name="author" content="Abuiliazeed">
+  <link rel="canonical" href="https://abuiliazeed.github.io/blog/the-diff-doubled-the-code-didnt.html">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="https://abuiliazeed.github.io/blog/the-diff-doubled-the-code-didnt.html">
+  <meta property="og:title" content="The Diff Doubled. The Code Didn't.">
+  <meta property="og:description" content="Microsoft replayed 7,660 coding-agent patches block by block, reverting each one to see whether the tests still passed. The diffs were 2.33 times a developer's, but most of the extra was tests. The code was as lean as a human's, and the 11% that wasn't changes behavior nine times out of ten.">
+  <meta property="og:site_name" content="Abuiliazeed">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="The Diff Doubled. The Code Didn't.">
+  <meta name="twitter:description" content="Microsoft replayed 7,660 coding-agent patches block by block, reverting each one to see whether the tests still passed. The diffs were 2.33 times a developer's, but most of the extra was tests. The code was as lean as a human's, and the 11% that wasn't changes behavior nine times out of ten.">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/blog.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>◆</text></svg>">
+</head>
+<body>
+
+  <nav class="navbar scrolled" id="navbar">
+    <div class="navbar-inner">
+      <a href="../index.html" class="navbar-brand">Abuiliazeed</a>
+      <div class="navbar-links">
+        <a href="../index.html#books">Books</a>
+        <a href="../index.html#apps">Apps</a>
+        <a href="../index.html#projects">Projects</a>
+        <a href="../blog.html" style="color: var(--color-text); font-weight: 500;">Blog</a>
+        <a href="https://github.com/abuiliazeed" target="_blank" rel="noopener noreferrer" class="navbar-icon">
+          <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="blog-post">
+    <div class="container">
+
+      <header class="blog-post-header">
+        <div class="blog-post-meta">
+          <time datetime="2026-11-28">November 28, 2026</time>
+          <span class="meta-sep">·</span>
+          <span>9 min read</span>
+        </div>
+        <h1 class="blog-post-title">The Diff Doubled. The Code Didn't.</h1>
+      </header>
+
+      <article class="blog-post-body">
+
+        <p>The median coding agent changed <strong>2.33 times as many lines</strong> as the developer who fixed the same bug. That number has been circulating for months as a verdict: agents over-edit, diffs balloon, review load doubles.</p>
+
+        <p>Microsoft Research <a href="https://arxiv.org/abs/2611.34875" target="_blank" rel="noopener noreferrer">went through every one of those lines</a>. On November 25, researchers Aakash Goel, Benjamin Steenhoek, and Yu Hu published a study of <strong>7,660 resolved patches</strong> from GitHub Copilot CLI, covering 18 frontier models on SWE-bench Verified and DeepSWE. For each patch they did something nobody had done at this scale: they cut it into blocks, traced every block to the step in the agent&rsquo;s run that wrote it, reverted the block, and reran the tests. A block is needed if the tests fail without it.</p>
+
+        <p>Three results came out, and they pull in different directions. The extra lines are mostly tests and documentation, not code. The code itself is, on average, as lean as a developer&rsquo;s, and leaner for 11 of the 18 models. And the <strong>11% of code blocks that were not needed</strong> are not lint: <strong>89% of them change behavior</strong>, and the model&rsquo;s benchmark score says nothing about which models write them.</p>
+
+        <h2>Revert Every Block</h2>
+
+        <p>The method is the contribution, so it is worth thirty seconds. Delta Residue Attribution, as the paper calls it, starts by replaying the agent&rsquo;s recorded file edits on the original repository and checking that the replayed final state matches the submitted patch exactly; <strong>96.7%</strong> of SWE-bench Verified trajectories do. It then splits the diff into units, contiguous blocks of changed lines in one file, and labels each unit by the role of the step that wrote it: exploring, reproducing, fixing, revising, cleaning up.</p>
+
+        <p>Then the blunt part. For each unit, revert it in the task container and rerun the task&rsquo;s tests. If they fail, the unit was needed. If they pass, it was not. The share of needed units is the patch&rsquo;s necessity, and the authors report it for code separately from tests, because SWE-bench resets test files during grading and an agent&rsquo;s test edits never count for or against it.</p>
+
+        <p>There is an obvious objection: the tests are incomplete, so a block the tests do not need may still be the right fix. The authors answer it two ways. They grade the human developer&rsquo;s patch for the same bug with the same method, so the comparison is like for like. And they run behavioral probes on the unneeded blocks, asking a model to write inputs that call the changed code under both the full patch and the reverted one, then comparing what comes out.</p>
+
+        <p>The developer baseline also calibrates how much to trust the number. The task tests alone call <strong>33%</strong> of the developer&rsquo;s own code blocks unneeded. Add the probes, and that falls to <strong>3%</strong>. So the raw test-based figure is an upper bound, and every comparison below is a ratio between agents and humans measured the same way, not a frequency.</p>
+
+        <h2>The Bloat Is Mostly Tests</h2>
+
+        <p>Here is what the extra lines actually are. On SWE-bench Verified, <strong>61%</strong> of the extra edits are test-file changes, <strong>13%</strong> are documentation, <strong>21%</strong> are code, and 5% are comments and formatting. Four out of five agent patches touch a test file.</p>
+
+        <p>Take the tests out and the picture flattens. Outside test files, the median agent changes <strong>1.09 times</strong> the developer&rsquo;s lines. Count blocks instead of lines and the ratio is <strong>0.86</strong>; the per-task median is exactly 1.00. By necessity, the agents&rsquo; code scores <strong>0.887</strong> against the developers&rsquo; <strong>0.864</strong>. Eleven models leave significantly less unneeded code than the humans, four show no detectable difference, and three leave more: Gemini 3.6, 3.7, and 3.8 Flash.</p>
+
+        <p>That is the first place the paper contradicts the way the 2.33 figure gets used. Agents are not writing 2.3 times the code. They are writing roughly the code and more than twice the paperwork around it.</p>
+
+        <p>And the paperwork is good. The team ran mutation testing, injecting <strong>1,962 small artificial bugs</strong> across 271 tasks and counting which tests caught them. The tests the agent added killed <strong>68.1%</strong>, against <strong>45.6%</strong> for the regression tests already in the repository. They caught <strong>22.7%</strong> of the bugs that the benchmark&rsquo;s own hidden tests missed. One caveat on process: most agents wrote those tests after the fix, and only <strong>8.7%</strong> recorded a test that failed and then passed before the fix was complete, so these are mostly descriptions of what the code now does rather than specifications written first.</p>
+
+        <p>One honest wobble. Under the stricter oracle that adds the behavioral probes, the agent-versus-developer gap flips sign, from +2.3 points to &minus;4.5. &ldquo;Leaner than a human&rdquo; depends on how you grade. &ldquo;About the same&rdquo; holds under both, and it is still a long way from &ldquo;2.3 times the bloat.&rdquo;</p>
+
+        <h2>The Eleven Percent That Bites</h2>
+
+        <p>The code that was not needed is the part that should change how you review. Of <strong>3,987 unneeded code blocks</strong>, the behavioral probes ran on 3,559, and <strong>89% changed behavior</strong>: an exception raised or swallowed on inputs near the ones the task tested. The remaining 11% were inert guards and duplicate checks.</p>
+
+        <p>This is why &ldquo;unneeded&rdquo; does not mean &ldquo;ignore it.&rdquo; A reviewer can skip a duplicate null check. A reviewer cannot skip a block that alters what happens on an edge case the tests never reached, precisely because the tests never reached it. Every one of those blocks is a decision the agent made that no test ratifies and no test forbids. <a href="passing-tests-let-the-code-rot.html">Passing tests have never guaranteed that the code underneath is sound</a>; this is the same gap measured block by block.</p>
+
+        <h2>The Leaderboard Cannot See It</h2>
+
+        <p>The second result should change how you pick a model. Across the 18 models, the correlation between resolve rate and code necessity on SWE-bench Verified is <strong>&minus;0.10</strong>, which is to say none. Claude Sonnet 5 resolved 80.6% of tasks with a necessity of 0.922. Gemini 3.7 Flash resolved 81.4% with a necessity of 0.789. Within a point of each other on the score. The second leaves <strong>3.6 times as many unneeded code blocks per task</strong>, 1.23 against 0.34.</p>
+
+        <p>On DeepSWE, the longer-horizon benchmark, the correlation goes the other way: <strong>&minus;0.59</strong>. The models that solve more tasks leave more unneeded code. The composition of the bloat moves too. DeepSWE tasks are feature builds with about six times more blocks per patch, and there <strong>58% of the extra edits are code</strong>, not tests. The longer the task, the more the excess migrates from the test file into the source.</p>
+
+        <p>The paper&rsquo;s recommendation follows directly: benchmarks should report necessity next to resolve rate, with a developer baseline. <a href="the-diff-replaced-the-benchmark.html">The unit of proof has been moving from scores to merged diffs</a>. This study says the diff needs its own score, because a benchmark number tells you how often a model finishes and nothing about how much of what it finishes you will have to read.</p>
+
+        <h2>Cleanup Does Not Belong in the Loop</h2>
+
+        <p>The third result kills a popular fix. If unneeded code were debugging leftover, the harness could catch it in the loop: revert exploratory edits, forbid scratch scripts, ask the agent to tidy before it submits. The attribution says that is the wrong place to look. Of the 3,987 unneeded code blocks, <strong>154</strong> came from debug steps. <strong>83%</strong> came from the step that wrote the fix, and 11% from revisions to it. Scratch scripts and print statements almost never survive into a resolved patch.</p>
+
+        <p>Stopping at the first green run of the agent&rsquo;s own tests confirms it. The early patch still passes the hidden tests <strong>97.3%</strong> of the time, and its necessity moves from 0.700 to 0.710. The unneeded code was already there when the tests first went green. It is not scaffolding the agent forgot to remove. It is part of how the agent understood the fix.</p>
+
+        <h2>Two Cleanups, Two Ways to Be Wrong</h2>
+
+        <p>So the cleanup has to happen after the patch is written, and the paper tested two ways to do it without access to the hidden tests.</p>
+
+        <p>The first is to ask the model. Show it its own final diff and have it justify every block, dropping the ones it cannot. This is precise: <strong>65.7%</strong> of what it drops is genuinely unneeded, and it breaks only <strong>1.8%</strong> of patches. But it finds only <strong>35.5%</strong> of the unneeded code. The model is good at recognizing junk and bad at hunting for it. It drops 40.5% of the unneeded blocks that behave like the patch without them, and only 14.7% of the ones that behave like the full patch. It finds the inert guards and misses the behavior changes, which are the ones that matter.</p>
+
+        <p>The second is to let the tests decide. Revert each block and keep the revert if the agent&rsquo;s own test command and the repository&rsquo;s existing regression tests still pass. This finds <strong>67.3%</strong> of the unneeded code, nearly twice the self-audit, but only <strong>46.3%</strong> of what it drops is really unneeded, and <strong>89.1%</strong> of patches still resolve afterwards. It applied to 2,495 of 6,724 patches, because the rest had no standalone test command that could be rerun.</p>
+
+        <p>Run both and intersect the drops, and precision rises to <strong>67.7%</strong> with <strong>98.3%</strong> of patches intact. The tests find; the model confirms.</p>
+
+        <p>The false drops deserve a sentence of their own. Most of them, the authors write, are code that implements behavior neither the existing tests nor the agent&rsquo;s tests exercise. That is not only a cleanup error. It is a map of where the test suite is blind, which is the same place the next bug will come from.</p>
+
+        <h2>What to Do This Week</h2>
+
+        <ol>
+          <li><strong>Stop gating on diff size.</strong> Split test edits from code edits in whatever dashboard tracks your agents&rsquo; output. A 400-line diff that is 300 lines of tests is a different object from a 400-line diff that is 400 lines of source, and the first one is probably improving your regression coverage.</li>
+          <li><strong>Measure necessity on your own tasks before you trust a leaderboard.</strong> Pick twenty recent resolved agent patches, revert the code blocks one at a time, and rerun your suite. A day of work, and you learn more about a model&rsquo;s review cost than its benchmark number will ever tell you.</li>
+          <li><strong>Put the audit after the fix, and run both kinds.</strong> Test-based reversion to find candidates, a model pass to confirm them, and a human look at whatever the tests wanted to drop. Expect the model to miss two-thirds and the tests to over-drop half.</li>
+          <li><strong>Keep the tests. Check their timing.</strong> The agent&rsquo;s tests are the strongest in the repository by mutation score, and they catch bugs the official ones miss. If your harness can make the agent write them before the fix rather than after, you get a failing test as evidence the bug was reproduced.</li>
+          <li><strong>If you fine-tune, debloat the trajectories.</strong> The authors recommend dropping test-unneeded units from training patches before supervised fine-tuning. Over-editing is written into the fix step, so that is where training has to change it.</li>
+          <li><strong>Log every false drop.</strong> When test-based pruning wants to remove a block and a human keeps it, you have found a behavior your suite does not cover. Write the test.</li>
+        </ol>
+
+        <p>In <em>Harness Engineering: The Complete Guide to Agent-First Software Development</em>, I argued that a harness is judged by what it makes reviewable. This study gives that word a measurement. Reviewable is not small. It is the share of the patch a test can defend, and the share of the rest that changes behavior anyway. The first is a number you can compute today. The second is the reason you still read the diff.</p>
+
+      </article>
+
+      <div class="blog-post-footer">
+        <a href="../blog.html">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to blog
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+</body>
+</html>
